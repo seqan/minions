@@ -38,11 +38,15 @@ TEST_F(cli_test, with_argument)
 
     };
     EXPECT_EQ(result.exit_code, 0);
-    EXPECT_EQ(expected.substr(0,14), result.out.substr(0,14));
-    EXPECT_EQ(expected[38], result.out[38]);
-    EXPECT_EQ(expected.substr(46,24), result.out.substr(46,24));
-    EXPECT_EQ(expected[84], result.out[84]);
-    EXPECT_EQ(expected.substr(93,24), result.out.substr(93,24));
-    EXPECT_EQ(expected[132], result.out[132]);
+    std::istringstream iss(result.out);
+    std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+                                     std::istream_iterator<std::string>());
+
+    EXPECT_EQ(expected.substr(0,9), results[0]);
+    EXPECT_EQ("0", results[4]);
+    EXPECT_EQ(expected.substr(47,14), results[6]);
+    EXPECT_EQ("0", results[11]);
+    EXPECT_EQ(expected.substr(94,14), results[13]);
+    EXPECT_EQ("0", results[18]);
     EXPECT_EQ(result.err, std::string{});
 }

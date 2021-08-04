@@ -17,12 +17,14 @@ TEST(comparison, small_example)
     testing::internal::CaptureStdout();
     do_comparison({DATADIR"example1.fasta"});
     std::string std_cout = testing::internal::GetCapturedStdout();
-    EXPECT_EQ(expected.substr(0,14), std_cout.substr(0,14));
-    EXPECT_EQ(expected[38], std_cout[38]);
-    EXPECT_EQ(expected.substr(46,24), std_cout.substr(46,24));
-    EXPECT_EQ(expected[84], std_cout[84]);
-    seqan3::debug_stream << expected.substr(74,24) << " "<<expected[84] << " " <<expected[76] << " " << expected[78] << "\n";
-    EXPECT_EQ(expected.substr(93,24), std_cout.substr(93,24));
-    EXPECT_EQ(expected[132], std_cout[132]);
-    seqan3::debug_stream <<expected.substr(93,24) << " "<< expected[132] << "\n";
+    std::istringstream iss(std_cout);
+    std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+                                     std::istream_iterator<std::string>());
+
+    EXPECT_EQ(expected.substr(0,9), results[0]);
+    EXPECT_EQ("0", results[4]);
+    EXPECT_EQ(expected.substr(47,14), results[6]);
+    EXPECT_EQ("0", results[11]);
+    EXPECT_EQ(expected.substr(94,14), results[13]);
+    EXPECT_EQ("0", results[18]);
 }
