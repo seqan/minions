@@ -27,11 +27,7 @@ int main(int argc, char ** argv)
         return -1;
     }
 
-    compare(sequence_files, seqan3::views::kmer_hash(seqan3::shape{seqan3::ungapped{19}}), "kmer_hash (19)         ");
-    compare(sequence_files, seqan3::views::minimiser_hash(seqan3::shape{seqan3::ungapped{19}},
-                                                          seqan3::window_size{19}), "minimiser_hash (19, 19)");
-    compare(sequence_files, seqan3::views::minimiser_hash(seqan3::shape{seqan3::ungapped{19}},
-                                                          seqan3::window_size{23}), "minimiser_hash (19, 23)");
+    do_comparison(sequence_files);
 
     return 0;
 }
