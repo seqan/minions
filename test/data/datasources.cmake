@@ -5,4 +5,4 @@ include (cmake/app_datasources.cmake)
 # copies file to <build>/data/*
 declare_datasource (FILE example1.fasta
                     URL ${CMAKE_SOURCE_DIR}/test/data/example1.fasta
-                    URL_HASH SHA256=6e30fc35f908a36fe0c68a7a35c47f51f9570da16622fb0c072a20e6a9ba5b3e)
+                    URL_HASH SHA256=e7236e7b86303d84a86a4454044125005433857416183cdaac0f4cdf7ac34e06)
