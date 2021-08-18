@@ -15,9 +15,9 @@ See Issue #1 for a list of methods that will be added in the future.
 
 # Download
 ```
-git clone --recurse-submodules https://github.com/MitraDarja/comparison.git
-mkdir build-comparison && cd build-comparison
-cmake ../comparison
+git clone --recurse-submodules https://github.com/seqan/minions.git
+mkdir build-minions && cd build-minions
+cmake ../minions
 make
 ```
 Run test to check, if Comparison is working as intended. All tests should pass.
