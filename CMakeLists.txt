@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 3.8)
 ## CUSTOMISE
 
 # Define the application name and version.
-project (Comparison VERSION 1.0.0)
+project (minions VERSION 1.0.0)
 
 ## BUILD
 
@@ -26,6 +26,9 @@ set (FontReset "${Esc}[m")
 
 # Dependency: SeqAn3.
 find_package (SeqAn3 QUIET REQUIRED HINTS lib/seqan3/build_system)
+
+# Dependency: robin_hood.
+add_subdirectory(lib/robin-hood-hashing)
 
 # Use ccache.
 include ("${SEQAN3_CLONE_DIR}/test/cmake/seqan3_require_ccache.cmake")

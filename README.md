@@ -24,3 +24,9 @@ Run test to check, if Comparison is working as intended. All tests should pass.
 ```
 make test
 ```
+
+Download the data that is used to perform the comparison.
+```
+wget https://ftp.imp.fu-berlin.de/pub/seiler/raptor/example_data.tar.gz
+tar xfz example_data.tar.gz
+```
