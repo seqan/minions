@@ -32,6 +32,7 @@ TEST_F(cli_test, with_argument)
     cli_test_result result = execute_app("minions", data("example1.fasta"));
     std::string expected
     {
+        "SPEED                  	Minimum	Mean	StdDev	Maximum\n"
         "kmer_hash (19)         	159493	159493	0	159493\n"
         "minimiser_hash (19, 19)	241282	241282	0	241282\n"
         "minimiser_hash (19, 23)	157535	157535	0	157535\n"
@@ -42,11 +43,12 @@ TEST_F(cli_test, with_argument)
     std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                      std::istream_iterator<std::string>());
 
-    EXPECT_EQ(expected.substr(0,9), results[0]);
-    EXPECT_EQ("0", results[4]);
-    EXPECT_EQ(expected.substr(47,14), results[6]);
-    EXPECT_EQ("0", results[11]);
-    EXPECT_EQ(expected.substr(94,14), results[13]);
-    EXPECT_EQ("0", results[18]);
+    EXPECT_EQ(expected.substr(0,53), result.out.substr(0,53));
+    EXPECT_EQ(expected.substr(52,9), results[5]);
+    EXPECT_EQ("0", results[9]);
+    EXPECT_EQ(expected.substr(99,14), results[11]);
+    EXPECT_EQ("0", results[16]);
+    EXPECT_EQ(expected.substr(146,14), results[18]);
+    EXPECT_EQ("0", results[23]);
     EXPECT_EQ(result.err, std::string{});
 }

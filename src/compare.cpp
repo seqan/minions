@@ -6,9 +6,11 @@
  *  \param sequence_files A vector of sequence files.
  *  \param input_view View that should be tested.
  *  \param method_name Name of the tested method.
+ *  \param first True, if this is the first method tested.
  */
 template <typename urng_t>
-void compare(std::vector<std::filesystem::path> sequence_files, urng_t input_view, std::string method_name)
+void compare(std::vector<std::filesystem::path> sequence_files, urng_t input_view, std::string method_name,
+             bool const first = false)
 {
     std::vector<int> speed_results{};
 
@@ -16,6 +18,7 @@ void compare(std::vector<std::filesystem::path> sequence_files, urng_t input_vie
     {
         seqan3::sequence_file_input<my_traits, seqan3::fields<seqan3::field::seq>> fin{sequence_files[i]};
         robin_hood::unordered_set<uint64_t> hashes{};
+        // Measure time for speed analysis
         auto start = std::chrono::high_resolution_clock::now();
         for (auto & [seq] : fin)
         {
@@ -33,12 +36,14 @@ void compare(std::vector<std::filesystem::path> sequence_files, urng_t input_vie
     std::transform(speed_results.begin(), speed_results.end(), diff.begin(), [mean](double x) { return x - mean; });
     double sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
     double stdev = std::sqrt(sq_sum / speed_results.size());
+    if (first)
+        std::cout << "SPEED                  \tMinimum\tMean\tStdDev\tMaximum\n";
     std::cout << method_name << "\t" << *std::min_element(speed_results.begin(), speed_results.end()) << "\t" << mean << "\t" << stdev << "\t" << *std::max_element(speed_results.begin(), speed_results.end()) << "\n";
 }
 
 void do_comparison(std::vector<std::filesystem::path> sequence_files)
 {
-    compare(sequence_files, seqan3::views::kmer_hash(seqan3::shape{seqan3::ungapped{19}}), "kmer_hash (19)         ");
+    compare(sequence_files, seqan3::views::kmer_hash(seqan3::shape{seqan3::ungapped{19}}), "kmer_hash (19)         ", true);
     compare(sequence_files, seqan3::views::minimiser_hash(seqan3::shape{seqan3::ungapped{19}},
                                                           seqan3::window_size{19}), "minimiser_hash (19, 19)");
     compare(sequence_files, seqan3::views::minimiser_hash(seqan3::shape{seqan3::ungapped{19}},
