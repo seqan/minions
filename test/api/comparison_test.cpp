@@ -5,7 +5,7 @@
 
 #include "compare.h"
 
-TEST(comparison, small_example)
+TEST(minions, small_example)
 {
     std::string expected
     {

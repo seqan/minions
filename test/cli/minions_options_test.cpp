@@ -2,7 +2,7 @@
 
 TEST_F(cli_test, no_options)
 {
-    cli_test_result result = execute_app("Comparison");
+    cli_test_result result = execute_app("minions");
     std::string expected
     {
         "comparison\n"
@@ -16,7 +16,7 @@ TEST_F(cli_test, no_options)
 
 TEST_F(cli_test, fail_no_argument)
 {
-    cli_test_result result = execute_app("Comparison", "-v");
+    cli_test_result result = execute_app("minions", "-v");
     std::string expected
     {
         "Parsing error. Unknown option -v. In case this is meant to be a non-option/argument/parameter, please "
@@ -29,7 +29,7 @@ TEST_F(cli_test, fail_no_argument)
 
 TEST_F(cli_test, with_argument)
 {
-    cli_test_result result = execute_app("Comparison", data("example1.fasta"));
+    cli_test_result result = execute_app("minions", data("example1.fasta"));
     std::string expected
     {
         "kmer_hash (19)         	159493	159493	0	159493\n"
