@@ -2,15 +2,17 @@
 
 #include "compare.h"
 
+struct output{
+    std::string speed{""};
+};
+
 /*! \brief Function, comparing the methods.
  *  \param sequence_files A vector of sequence files.
  *  \param input_view View that should be tested.
  *  \param method_name Name of the tested method.
- *  \param first True, if this is the first method tested.
  */
 template <typename urng_t>
-void compare(std::vector<std::filesystem::path> sequence_files, urng_t input_view, std::string method_name,
-             bool const first = false)
+void compare(std::vector<std::filesystem::path> sequence_files, urng_t input_view, std::string method_name, output & out)
 {
     std::vector<int> speed_results{};
 
@@ -31,21 +33,25 @@ void compare(std::vector<std::filesystem::path> sequence_files, urng_t input_vie
     }
 
     double sum = std::accumulate(speed_results.begin(), speed_results.end(), 0.0);
-    double mean = sum / speed_results.size();
+    int mean = sum / speed_results.size();
     std::vector<double> diff(speed_results.size());
     std::transform(speed_results.begin(), speed_results.end(), diff.begin(), [mean](double x) { return x - mean; });
-    double sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
-    double stdev = std::sqrt(sq_sum / speed_results.size());
-    if (first)
-        std::cout << "SPEED                  \tMinimum\tMean\tStdDev\tMaximum\n";
-    std::cout << method_name << "\t" << *std::min_element(speed_results.begin(), speed_results.end()) << "\t" << mean << "\t" << stdev << "\t" << *std::max_element(speed_results.begin(), speed_results.end()) << "\n";
+    int sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
+    int stdev = std::sqrt(sq_sum / speed_results.size());
+
+    out.speed = method_name + "\t" + std::to_string(*std::min_element(speed_results.begin(), speed_results.end())) + "\t" + std::to_string(mean) + "\t" + std::to_string(stdev) + "\t" + std::to_string(*std::max_element(speed_results.begin(), speed_results.end())) + "\n";
 }
 
 void do_comparison(std::vector<std::filesystem::path> sequence_files)
 {
-    compare(sequence_files, seqan3::views::kmer_hash(seqan3::shape{seqan3::ungapped{19}}), "kmer_hash (19)         ", true);
+    output kmer{};
+    output minimiser_19{};
+    output minimiser_23{};
+    compare(sequence_files, seqan3::views::kmer_hash(seqan3::shape{seqan3::ungapped{19}}), "kmer_hash (19)         ", kmer);
     compare(sequence_files, seqan3::views::minimiser_hash(seqan3::shape{seqan3::ungapped{19}},
-                                                          seqan3::window_size{19}), "minimiser_hash (19, 19)");
+                                                          seqan3::window_size{19}), "minimiser_hash (19, 19)", minimiser_19);
     compare(sequence_files, seqan3::views::minimiser_hash(seqan3::shape{seqan3::ungapped{19}},
-                                                          seqan3::window_size{23}), "minimiser_hash (19, 23)");
+                                                          seqan3::window_size{23}), "minimiser_hash (19, 23)", minimiser_23);
+    std::cout << "SPEED                  \tMinimum\tMean\tStdDev\tMaximum\n";
+    std::cout << kmer.speed << minimiser_19.speed << minimiser_23.speed;
 }
