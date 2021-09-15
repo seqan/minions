@@ -13,6 +13,23 @@
 #include <seqan3/search/views/kmer_hash.hpp>
 #include <seqan3/search/views/minimiser_hash.hpp>
 
+inline constexpr static uint64_t adjust_seed(uint8_t const kmer_size, uint64_t const seed = 0x8F3F73B5CF1C9ADEULL) noexcept
+{
+    return seed >> (64u - 2u * kmer_size);
+}
+
+
+struct range_arguments
+{
+   // possible methods
+   bool kmers;
+   bool minimiser;
+
+   uint8_t k_size;
+   seqan3::seed seed_se{0x8F3F73B5CF1C9ADEULL};
+   seqan3::shape shape;
+   seqan3::window_size w_size;
+};
 
 //!\brief Use dna4 instead of default dna5
 struct my_traits : seqan3::sequence_file_input_default_traits_dna
@@ -23,4 +40,5 @@ struct my_traits : seqan3::sequence_file_input_default_traits_dna
 /*! \brief Function, comparing the methods.
  *  \param sequence_files A vector of sequence files.
  */
-void do_comparison(std::vector<std::filesystem::path> sequence_files);
+void do_comparison(std::vector<std::filesystem::path> sequence_files, range_arguments & args,
+                   std::filesystem::path path_out);
