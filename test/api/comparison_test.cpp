@@ -7,24 +7,19 @@
 
 TEST(minions, small_example)
 {
-    std::string expected
-    {
-        "kmer_hash (19)         	159493	159493	0	159493\n"
-        "minimiser_hash (19, 19)	241282	241282	0	241282\n"
-        "minimiser_hash (19, 23)	157535	157535	0	157535\n"
-
-    };
+    range_arguments args{};
+    args.kmers = true;
+    args.k_size = 19;
+    std::string expected{"kmer_hash_19         	159493	159493	0	159493\n"};
     testing::internal::CaptureStdout();
-    do_comparison({DATADIR"example1.fasta"});
+    std::filesystem::path path_out = std::filesystem::temp_directory_path();
+    do_comparison({DATADIR"example1.fasta"}, args, path_out);
     std::string std_cout = testing::internal::GetCapturedStdout();
     std::istringstream iss(std_cout);
     std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                      std::istream_iterator<std::string>());
 
-    EXPECT_EQ(expected.substr(0,9), results[0]);
-    EXPECT_EQ("0", results[4]);
-    EXPECT_EQ(expected.substr(47,14), results[6]);
-    EXPECT_EQ("0", results[11]);
-    EXPECT_EQ(expected.substr(94,14), results[13]);
-    EXPECT_EQ("0", results[18]);
+
+    EXPECT_EQ(expected.substr(0,12), results[0]);
+    EXPECT_EQ("0", results[3]);
 }
