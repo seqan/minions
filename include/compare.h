@@ -39,6 +39,8 @@ struct my_traits : seqan3::sequence_file_input_default_traits_dna
 
 /*! \brief Function, comparing the methods.
  *  \param sequence_files A vector of sequence files.
+ *  \param args The arguments about the view to be used.
+ *  \param path_out The output path.
  */
 void do_comparison(std::vector<std::filesystem::path> sequence_files, range_arguments & args,
                    std::filesystem::path path_out);
