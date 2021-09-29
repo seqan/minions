@@ -6,6 +6,7 @@
  *  \param sequence_files A vector of sequence files.
  *  \param input_view View that should be tested.
  *  \param method_name Name of the tested method.
+ *  \param path_out The output path.
  */
 template <typename urng_t>
 void compare(std::vector<std::filesystem::path> sequence_files, urng_t input_view, std::string method_name, std::filesystem::path path_out)
