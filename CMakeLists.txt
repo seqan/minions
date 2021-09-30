@@ -27,6 +27,11 @@ set (FontReset "${Esc}[m")
 # Dependency: SeqAn3.
 find_package (SeqAn3 QUIET REQUIRED HINTS lib/seqan3/build_system)
 
+# Dependency: strobemers.
+add_library(strobemer_lib lib/strobemers/strobemers_cpp/index.cpp lib/strobemers/strobemers_cpp/index.hpp)
+target_include_directories(strobemer_lib PUBLIC lib/strobemers/strobemers_cpp)
+
+
 # Dependency: robin_hood.
 add_subdirectory(lib/robin-hood-hashing)
 

@@ -18,17 +18,33 @@ inline constexpr static uint64_t adjust_seed(uint8_t const kmer_size, uint64_t c
     return seed >> (64u - 2u * kmer_size);
 }
 
+enum methods {kmer = 0, minimiser, strobemer};
 
-struct range_arguments
+struct minimiser_arguments
 {
-   // possible methods
-   bool kmers;
-   bool minimiser;
+    // Needed for minimisers
+    seqan3::seed seed_se{0x8F3F73B5CF1C9ADEULL};
+    seqan3::shape shape;
+    seqan3::window_size w_size;
+};
 
+struct strobemer_arguments
+{
+    // Needed for strobemers
+    unsigned int w_min;
+    unsigned int w_max;
+    bool rand;
+    bool hybrid;
+    bool minstrobers;
+    unsigned int order;
+};
+
+struct range_arguments : minimiser_arguments, strobemer_arguments
+{
+   std::filesystem::path path_out{"./"};
+
+   methods name;
    uint8_t k_size;
-   seqan3::seed seed_se{0x8F3F73B5CF1C9ADEULL};
-   seqan3::shape shape;
-   seqan3::window_size w_size;
 };
 
 //!\brief Use dna4 instead of default dna5
@@ -40,7 +56,5 @@ struct my_traits : seqan3::sequence_file_input_default_traits_dna
 /*! \brief Function, comparing the methods.
  *  \param sequence_files A vector of sequence files.
  *  \param args The arguments about the view to be used.
- *  \param path_out The output path.
  */
-void do_comparison(std::vector<std::filesystem::path> sequence_files, range_arguments & args,
-                   std::filesystem::path path_out);
+void do_comparison(std::vector<std::filesystem::path> sequence_files, range_arguments & args);
