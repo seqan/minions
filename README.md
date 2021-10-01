@@ -10,6 +10,7 @@ Currently, the following methods are supported:
 
 - k-mers
 - minimizers
+- strobemers (integrated as submodule from [here](https://github.com/ksahlin/strobemers))
 
 See Issue #1 for a list of methods that will be added in the future.
 

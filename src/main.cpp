@@ -9,9 +9,28 @@ uint32_t w_size;
 uint64_t shape{};
 uint64_t se;
 
-void read_range_arguments(seqan3::argument_parser & parser, range_arguments & args)
+void string_to_methods(std::string name, methods & m)
 {
-    parser.add_option(args.k_size, 'k', "kmer-size", "Define kmer size.");
+    if (name == "kmer")
+        m = kmer;
+    else if (name == "minimiser")
+        m = minimiser;
+    else if (name == "strobemer")
+        m = strobemer;
+};
+
+void read_range_arguments_minimiser(seqan3::argument_parser & parser, range_arguments & args)
+{
+    parser.add_option(args.w_min, '\0', "w-min", "Define w-min for strobemers.");
+    parser.add_option(args.w_max, '\0', "w-max", "Define w-ax for strobemers.");
+    parser.add_option(args.order, '\0', "order", "Define order for strobemers.", seqan3::option_spec::standard, seqan3::arithmetic_range_validator{2,3});
+    parser.add_flag(args.rand, '\0', "randstrobemers", "If randstrobemers should be calculated.");
+    parser.add_flag(args.hybrid, '\0', "hybrid", "If hybridstrobemers should be calculated.");
+    parser.add_flag(args.minstrobers, '\0', "minstrobers", "If minstrobemers should be calculated.");
+}
+
+void read_range_arguments_strobemers(seqan3::argument_parser & parser, range_arguments & args)
+{
     parser.add_option(w_size, 'w', "window", "Define window size. Default: 60.");
     parser.add_option(shape, '\0', "shape", "Define a shape by the decimal of a bitvector, where 0 symbolizes a "
                                            "position to be ignored, 1 a position considered. Default: ungapped.");
@@ -32,12 +51,14 @@ int speed(seqan3::argument_parser & parser)
 {
     range_arguments args{};
     std::vector<std::filesystem::path> sequence_files{};
-    std::filesystem::path path_out{"./"};
     parser.add_positional_option(sequence_files, "Please provide at least one sequence file.");
-    parser.add_option(path_out, 'o', "out", "Directory, where output files should be saved.");
-    parser.add_flag(args.kmers, '\0', "kmers", "If k-mers should be calculated.");
-    parser.add_flag(args.minimiser, '\0', "minimiser", "If minimisers should be calculated.");
-    read_range_arguments(parser, args);
+    parser.add_option(args.path_out, 'o', "out", "Directory, where output files should be saved.");
+    parser.add_option(args.k_size, 'k', "kmer-size", "Define kmer size.");
+    std::string method{};
+    parser.add_option(method, '\0', "method", "Pick your method.", seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "strobemer"});
+
+    read_range_arguments_minimiser(parser, args);
+    read_range_arguments_strobemers(parser, args);
 
     try
     {
@@ -52,7 +73,8 @@ int speed(seqan3::argument_parser & parser)
 
     try
     {
-        do_comparison(sequence_files, args, path_out);
+        string_to_methods(method, args.name);
+        do_comparison(sequence_files, args);
     }
     catch (const std::invalid_argument & e)
     {
