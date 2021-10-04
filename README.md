@@ -1,6 +1,6 @@
 # Comparison between different methods to simplify sequence data
 
-[![Build Status](https://github.com/seqan/app-template/workflows/App%20CI/badge.svg)](https://github.com/seqan/app-template/actions?query=branch%3Amaster+workflow%3A%22App+CI%22)
+[![Build Status](https://github.com/seqan/app-template/workflows/App%20CI/badge.svg)](https://github.com/seqan/app-template/actions?query=branch%3Amaster+workflow%3A%22App+CI%22) [![codecov](https://codecov.io/gh/seqan/minions/branch/master/graph/badge.svg?token=SJVMYRUKW2)](https://codecov.io/gh/seqan/minions)
 
 The aim of this repository is to compare different methods to simplify sequence data in a way that new methods can
 easily be added and therefore included in the comparison. Furthermore, this repository is designed in such a way that
