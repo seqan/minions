@@ -7,6 +7,17 @@
 
 #include "compare.h"
 
+void get_mean_and_var(std::vector<int> & results, double & mean, double & stdev)
+{
+    double sum = std::accumulate(results.begin(), results.end(), 0.0);
+    mean = sum / results.size();
+    std::vector<double> diff(results.size());
+    std::transform(results.begin(),results.end(), diff.begin(), [mean](double x) { return x - mean; });
+    double sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
+    stdev = std::sqrt(sq_sum / results.size());
+}
+
+
 /*! \brief Function, comparing the methods.
  *  \param sequence_files A vector of sequence files.
  *  \param input_view View that should be tested.
@@ -17,6 +28,7 @@ template <typename urng_t, int strobemers = 0>
 void compare(std::vector<std::filesystem::path> sequence_files, urng_t input_view, std::string method_name, range_arguments & args)
 {
     std::vector<int> speed_results{};
+    std::vector<int> compression_results{};
     std::ofstream outfile;
     for (int i = 0; i < sequence_files.size(); ++i)
     {
@@ -77,6 +89,7 @@ void compare(std::vector<std::filesystem::path> sequence_files, urng_t input_vie
         }
         auto end = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+        compression_results.push_back(hash_table.size());
         speed_results.push_back(duration.count());
 
         // Store representative k-mers
@@ -89,13 +102,15 @@ void compare(std::vector<std::filesystem::path> sequence_files, urng_t input_vie
         outfile.close();
     }
 
-    double sum = std::accumulate(speed_results.begin(), speed_results.end(), 0.0);
-    double mean = sum / speed_results.size();
-    std::vector<double> diff(speed_results.size());
-    std::transform(speed_results.begin(), speed_results.end(), diff.begin(), [mean](double x) { return x - mean; });
-    double sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
-    double stdev = std::sqrt(sq_sum / speed_results.size());
-    std::cout << method_name << "\t" << *std::min_element(speed_results.begin(), speed_results.end()) << "\t" << mean << "\t" << stdev << "\t" << *std::max_element(speed_results.begin(), speed_results.end()) << "\n";
+    double mean_compression, mean_speed, stdev_compression, stdev_speed;
+    get_mean_and_var(compression_results, mean_compression, stdev_compression);
+    get_mean_and_var(speed_results, mean_speed, stdev_speed);
+
+    // Store speed and compression
+    outfile.open(std::string{args.path_out} + method_name + "_speed_compression.out");
+    outfile << "Compression\t"<< method_name << "\t" << *std::min_element(compression_results.begin(), compression_results.end()) << "\t" << mean_compression << "\t" << stdev_compression << "\t" << *std::max_element(compression_results.begin(), compression_results.end()) << "\n";
+    outfile << "SPEED\t"<< method_name << "\t" << *std::min_element(speed_results.begin(), speed_results.end()) << "\t" << mean_speed << "\t" << stdev_speed << "\t" << *std::max_element(speed_results.begin(), speed_results.end()) << "\n";
+    outfile.close();
 }
 
 void do_comparison(std::vector<std::filesystem::path> sequence_files, range_arguments & args)
