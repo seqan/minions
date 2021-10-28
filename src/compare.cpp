@@ -7,6 +7,11 @@
 
 #include "compare.h"
 
+/*! \brief Calculate mean and variance of given list.
+ *  \param results The vector from which mean and varaince should be calculated of.
+ *  \param mean Variable to store the mean.
+ *  \param stdev Variable to store the variance.
+ */
 void get_mean_and_var(std::vector<int> & results, double & mean, double & stdev)
 {
     double sum = std::accumulate(results.begin(), results.end(), 0.0);
@@ -17,6 +22,12 @@ void get_mean_and_var(std::vector<int> & results, double & mean, double & stdev)
     stdev = std::sqrt(sq_sum / results.size());
 }
 
+
+/*! \brief Function, that decides which strobemer to use.
+ *  \param seq A std::string sequence.
+ *  \param args The range_arguments.
+ *  \param strobes_vector The vector for the strobemers.
+ */
 template <int strobemers_func>
 void get_strobemers(std::string & seq, range_arguments const & args,
 std::vector<std::tuple<uint64_t, unsigned int, unsigned int, unsigned int, unsigned int>> & strobes_vector)
