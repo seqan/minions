@@ -7,6 +7,11 @@
 
 #include "compare.h"
 
+/*! \brief Calculate mean and variance of given list.
+ *  \param results The vector from which mean and varaince should be calculated of.
+ *  \param mean Variable to store the mean.
+ *  \param stdev Variable to store the variance.
+ */
 void get_mean_and_var(std::vector<int> & results, double & mean, double & stdev)
 {
     double sum = std::accumulate(results.begin(), results.end(), 0.0);
@@ -17,6 +22,25 @@ void get_mean_and_var(std::vector<int> & results, double & mean, double & stdev)
     stdev = std::sqrt(sq_sum / results.size());
 }
 
+
+/*! \brief Function, that decides which strobemer to use.
+ *  \param seq A std::string sequence.
+ *  \param args The range_arguments.
+ *  \param strobes_vector The vector for the strobemers.
+ */
+template <int strobemers_func>
+void get_strobemers(std::string & seq, range_arguments const & args,
+std::vector<std::tuple<uint64_t, unsigned int, unsigned int, unsigned int, unsigned int>> & strobes_vector)
+{
+    if constexpr (strobemers_func == 1)
+        strobes_vector = seq_to_randstrobes2(args.order, args.k_size, args.w_min, args.w_max, seq, 0);
+    else if constexpr (strobemers_func == 2)
+        strobes_vector = seq_to_randstrobes3(args.order, args.k_size, args.w_min, args.w_max, seq, 0);
+    else if constexpr (strobemers_func == 3)
+        strobes_vector = seq_to_hybridstrobes2(args.order, args.k_size, args.w_min, args.w_max, seq, 0);
+    else if constexpr (strobemers_func == 4)
+        strobes_vector = seq_to_minstrobes2(args.order, args.k_size, args.w_min, args.w_max, seq, 0);
+}
 
 /*! \brief Function, comparing the methods.
  *  \param sequence_files A vector of sequence files.
@@ -32,55 +56,23 @@ void compare(std::vector<std::filesystem::path> sequence_files, urng_t input_vie
     std::ofstream outfile;
     for (int i = 0; i < sequence_files.size(); ++i)
     {
-        seqan3::sequence_file_input<my_traits, seqan3::fields<seqan3::field::seq>> fin{sequence_files[i]};
+
         robin_hood::unordered_node_map<uint64_t, uint16_t> hash_table{};
         auto start = std::chrono::high_resolution_clock::now();
-        if constexpr (strobemers == 1)
+        if constexpr (strobemers > 0)
         {
+            seqan3::sequence_file_input<my_traits2, seqan3::fields<seqan3::field::seq>> fin{sequence_files[i]};
             for (auto & [seq] : fin)
             {
-                std::string seq2 = seq | std::views::transform([](seqan3::dna4 chr){ return chr.to_char(); }) | seqan3::views::to<std::string>;
-                typedef std::vector< std::tuple<uint64_t, unsigned int, unsigned int, unsigned int, unsigned int>> strobes_vector;
-                strobes_vector randstrobes3 = seq_to_randstrobes2(args.order, args.k_size, args.w_min, args.w_max, seq2, 0);
-                for (auto & t : randstrobes3) // iterate over the strobemer tuples
-                    hash_table[std::get<0>(t)] = std::min<uint16_t>(65534u, hash_table[std::get<0>(t)] + 1);
-            }
-        }
-        else if constexpr (strobemers == 2)
-        {
-            for (auto & [seq] : fin)
-            {
-                std::string seq2 = seq | std::views::transform([](seqan3::dna4 chr){ return chr.to_char(); }) | seqan3::views::to<std::string>;
-                typedef std::vector< std::tuple<uint64_t, unsigned int, unsigned int, unsigned int, unsigned int>> strobes_vector;
-                strobes_vector randstrobes3 = seq_to_randstrobes3(args.order, args.k_size, args.w_min, args.w_max, seq2, 0);
-                for (auto & t : randstrobes3) // iterate over the strobemer tuples
-                    hash_table[std::get<0>(t)] = std::min<uint16_t>(65534u, hash_table[std::get<0>(t)] + 1);
-            }
-        }
-        else if constexpr (strobemers == 3)
-        {
-            for (auto & [seq] : fin)
-            {
-                std::string seq2 = seq | std::views::transform([](seqan3::dna4 chr){ return chr.to_char(); }) | seqan3::views::to<std::string>;
-                typedef std::vector< std::tuple<uint64_t, unsigned int, unsigned int, unsigned int, unsigned int>> strobes_vector;
-                strobes_vector randstrobes3 = seq_to_hybridstrobes2(args.order, args.k_size, args.w_min, args.w_max, seq2, 0);
-                for (auto & t : randstrobes3) // iterate over the strobemer tuples
-                    hash_table[std::get<0>(t)] = std::min<uint16_t>(65534u, hash_table[std::get<0>(t)] + 1);
-            }
-        }
-        else if constexpr (strobemers == 4)
-        {
-            for (auto & [seq] : fin)
-            {
-                std::string seq2 = seq | std::views::transform([](seqan3::dna4 chr){ return chr.to_char(); }) | seqan3::views::to<std::string>;
-                typedef std::vector< std::tuple<uint64_t, unsigned int, unsigned int, unsigned int, unsigned int>> strobes_vector;
-                strobes_vector randstrobes3 = seq_to_minstrobes2(args.order, args.k_size, args.w_min, args.w_max, seq2, 0);
-                for (auto & t : randstrobes3) // iterate over the strobemer tuples
+                std::vector<std::tuple<uint64_t, unsigned int, unsigned int, unsigned int, unsigned int>> strobes_vector;
+                get_strobemers<strobemers>(seq, args, strobes_vector);
+                for (auto & t : strobes_vector) // iterate over the strobemer tuples
                     hash_table[std::get<0>(t)] = std::min<uint16_t>(65534u, hash_table[std::get<0>(t)] + 1);
             }
         }
         else
         {
+            seqan3::sequence_file_input<my_traits, seqan3::fields<seqan3::field::seq>> fin{sequence_files[i]};
             for (auto & [seq] : fin)
             {
                 for (auto && hash : seq | input_view)

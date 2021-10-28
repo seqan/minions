@@ -53,6 +53,15 @@ struct my_traits : seqan3::sequence_file_input_default_traits_dna
     using sequence_alphabet = seqan3::dna4;
 };
 
+//!\brief Use char and strings for strobemers
+struct my_traits2 : seqan3::sequence_file_input_default_traits_dna
+{
+    using 	sequence_legal_alphabet = char;
+    using sequence_alphabet = char;
+    template <typename alph>
+    using sequence_container = std::string;
+};
+
 /*! \brief Function, comparing the methods.
  *  \param sequence_files A vector of sequence files.
  *  \param args The arguments about the view to be used.
