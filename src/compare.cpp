@@ -109,29 +109,32 @@ void compare(std::vector<std::filesystem::path> sequence_files, urng_t input_vie
 /*! \brief Function, that increases how often a position is covered by one.
  *  \param covs A vector, where every entry represents a position in the sequence and how often it is covered.
  *  \param position Starting position.
- *  \param k_size The number of covered positions.
+ *  \param shape The positions of covered positions.
  */
-void positions_covered(std::vector<uint32_t> & covs, int position, int k_size)
+void positions_covered(std::vector<uint32_t> & covs, int position, seqan3::shape shape)
 {
-    for(int pos = 0; pos < k_size; pos++)
-        covs[position+pos]++;
+    for(int pos = 0; pos < shape.size(); pos++)
+    {
+        if (shape[pos] == 1)
+            covs[position+pos]++;
+    }
 }
 
 /*! \brief Function, get the actual coverage of some submers.
  *  \param kmers A view that contains all possible k-mers (minimisers with window length = kmer length, if reverse strand should be considered).
  *  \param submers The submers, which coverage should be obtained.
  *  \param covs A vector, where every entry represents a position in the sequence and how often it is covered.
- *  \param k_size Length of a submer.
+ *  \param shape Shape of a submer.
  */
 template <typename urng_t>
-void coverage(urng_t kmers, std::deque<uint64_t> & submers, std::vector<uint32_t> & covs, int k_size)
+void coverage(urng_t kmers, std::deque<uint64_t> & submers, std::vector<uint32_t> & covs, seqan3::shape shape)
 {
     int i{};
     for (auto && elem : kmers)
     {
         if (elem == submers[0])
         {
-            positions_covered(covs, i, k_size);
+            positions_covered(covs, i, shape);
             submers.pop_front();
         }
 
@@ -173,7 +176,7 @@ void compare_cov(std::filesystem::path sequence_file, urng_t kmer_view, urng_t2 
         std::deque<uint64_t> submers2{};
         for(auto && sub: submers)
             submers2.push_back(sub);
-        coverage(kmers, submers2, covs, args.k_size);
+        coverage(kmers, submers2, covs, args.shape);
 
         for(auto & elem : covs)
         {
@@ -240,7 +243,7 @@ void do_comparison(std::vector<std::filesystem::path> sequence_files, range_argu
 {
     switch(args.name)
     {
-        case kmer: compare(sequence_files, seqan3::views::kmer_hash(seqan3::ungapped{args.k_size}), "kmer_hash_"+std::to_string(args.k_size), args);
+        case kmer: compare(sequence_files, seqan3::views::kmer_hash(args.shape), "kmer_hash_"+std::to_string(args.k_size), args);
                    break;
         case minimiser: compare(sequence_files, seqan3::views::minimiser_hash(args.shape,
                                 args.w_size), "minimiser_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
@@ -265,7 +268,7 @@ void do_coverage(std::filesystem::path sequence_file, range_arguments & args)
 {
     switch(args.name)
     {
-        case kmer: compare_cov(sequence_file, seqan3::views::kmer_hash(seqan3::ungapped{args.k_size}), seqan3::views::kmer_hash(seqan3::ungapped{args.k_size}), "kmer_hash_"+std::to_string(args.k_size), args);
+        case kmer: compare_cov(sequence_file, seqan3::views::kmer_hash(args.shape), seqan3::views::kmer_hash(seqan3::ungapped{args.k_size}), "kmer_hash_"+std::to_string(args.k_size), args);
                    break;
         case minimiser: compare_cov(sequence_file, seqan3::views::minimiser_hash(args.shape,
                                 seqan3::window_size{args.shape.size()}), seqan3::views::minimiser_hash(args.shape,
