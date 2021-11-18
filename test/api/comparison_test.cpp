@@ -10,6 +10,7 @@ TEST(minions, small_example)
     range_arguments args{};
     args.name = kmer;
     args.k_size = 19;
+    args.shape = seqan3::ungapped{19};
     std::string expected{"kmer_hash_19         	159493	159493	0	159493\n"};
     args.path_out = std::filesystem::temp_directory_path();
     do_comparison({DATADIR"example1.fasta"}, args);
