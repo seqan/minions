@@ -174,6 +174,7 @@ void compare_cov(std::filesystem::path sequence_file, urng_t kmer_view, urng_t2 
         std::vector<uint32_t> covs{};
         covs.assign(seq.size(), 0);
         std::deque<uint64_t> submers2{};
+
         for(auto && sub: submers)
             submers2.push_back(sub);
         coverage(kmers, submers2, covs, args.shape);
@@ -221,7 +222,6 @@ void compare_cov(std::filesystem::path sequence_file, urng_t kmer_view, urng_t2 
         covered = 0;
     }
 
-
     double mean_covered, mean_largest_island, mean_avg_island, stdev_covered, stdev_largest_island, stdev_avg_island;
     get_mean_and_var(covered_percentage, mean_covered, stdev_covered);
     get_mean_and_var(largest_islands, mean_largest_island, stdev_largest_island);
@@ -268,7 +268,7 @@ void do_coverage(std::filesystem::path sequence_file, range_arguments & args)
 {
     switch(args.name)
     {
-        case kmer: compare_cov(sequence_file, seqan3::views::kmer_hash(args.shape), seqan3::views::kmer_hash(seqan3::ungapped{args.k_size}), "kmer_hash_"+std::to_string(args.k_size), args);
+        case kmer: compare_cov(sequence_file, seqan3::views::kmer_hash(args.shape), seqan3::views::kmer_hash(args.shape), "kmer_hash_"+std::to_string(args.k_size), args);
                    break;
         case minimiser: compare_cov(sequence_file, seqan3::views::minimiser_hash(args.shape,
                                 seqan3::window_size{args.shape.size()}), seqan3::views::minimiser_hash(args.shape,
