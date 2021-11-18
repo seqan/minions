@@ -19,7 +19,7 @@ void string_to_methods(std::string name, methods & m)
         m = strobemer;
 };
 
-void read_range_arguments_minimiser(seqan3::argument_parser & parser, range_arguments & args)
+void read_range_arguments_strobemers(seqan3::argument_parser & parser, range_arguments & args)
 {
     parser.add_option(args.w_min, '\0', "w-min", "Define w-min for strobemers.");
     parser.add_option(args.w_max, '\0', "w-max", "Define w-ax for strobemers.");
@@ -29,7 +29,7 @@ void read_range_arguments_minimiser(seqan3::argument_parser & parser, range_argu
     parser.add_flag(args.minstrobers, '\0', "minstrobers", "If minstrobemers should be calculated.");
 }
 
-void read_range_arguments_strobemers(seqan3::argument_parser & parser, range_arguments & args)
+void read_range_arguments_minimiser(seqan3::argument_parser & parser, range_arguments & args)
 {
     parser.add_option(w_size, 'w', "window", "Define window size. Default: 60.");
     parser.add_option(shape, '\0', "shape", "Define a shape by the decimal of a bitvector, where 0 symbolizes a "
@@ -45,6 +45,43 @@ void parsing(range_arguments & args)
     else
         args.shape = seqan3::bin_literal{shape};
     args.seed_se = seqan3::seed{adjust_seed(args.k_size, se)};
+}
+
+int coverage(seqan3::argument_parser & parser)
+{
+    range_arguments args{};
+    std::filesystem::path sequence_file{};
+    parser.add_positional_option(sequence_file, "Please provide at least one sequence file.");
+    parser.add_option(args.path_out, 'o', "out", "Directory, where output files should be saved.");
+    parser.add_option(args.k_size, 'k', "kmer-size", "Define kmer size.");
+    std::string method{};
+    parser.add_option(method, '\0', "method", "Pick your method.", seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser"});
+
+    read_range_arguments_minimiser(parser, args);
+
+    try
+    {
+        parser.parse();
+        parsing(args);
+    }
+    catch (seqan3::argument_parser_error const & ext)                     // catch user errors
+    {
+        seqan3::debug_stream << "Error. Incorrect command line input for coverage. " << ext.what() << "\n";
+        return -1;
+    }
+
+    try
+    {
+        string_to_methods(method, args.name);
+        do_coverage(sequence_file, args);
+    }
+    catch (const std::invalid_argument & e)
+    {
+        std::cerr << e.what() << std::endl;
+        return -1;
+    }
+
+    return 0;
 }
 
 int speed(seqan3::argument_parser & parser)
@@ -88,7 +125,7 @@ int speed(seqan3::argument_parser & parser)
 int main(int argc, char ** argv)
 {
     seqan3::argument_parser top_level_parser{"minions", argc, argv, seqan3::update_notifications::on,
-                                            {"speed"}};
+                                            {"coverage", "speed"}};
 
     // Parser
     top_level_parser.info.author = "Mitra Darvish"; // give parser some infos
@@ -106,7 +143,9 @@ int main(int argc, char ** argv)
 
     seqan3::argument_parser & sub_parser = top_level_parser.get_sub_parser(); // hold a reference to the sub_parser
 
-    if (sub_parser.info.app_name == std::string_view{"minions-speed"})
+    if (sub_parser.info.app_name == std::string_view{"minions-coverage"})
+        coverage(sub_parser);
+    else if (sub_parser.info.app_name == std::string_view{"minions-speed"})
         speed(sub_parser);
 
     return 0;

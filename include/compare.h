@@ -67,3 +67,9 @@ struct my_traits2 : seqan3::sequence_file_input_default_traits_dna
  *  \param args The arguments about the view to be used.
  */
 void do_comparison(std::vector<std::filesystem::path> sequence_files, range_arguments & args);
+
+/*! \brief Function, comparing the methods in regard of their coverage.
+ *  \param sequence_file A sequence file.
+ *  \param args The arguments about the view to be used.
+ */
+void do_coverage(std::filesystem::path sequence_file, range_arguments & args);
