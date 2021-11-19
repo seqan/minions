@@ -228,7 +228,7 @@ void compare_cov(std::filesystem::path sequence_file, urng_t kmer_view, urng_t2 
     get_mean_and_var(avg_islands, mean_avg_island, stdev_avg_island);
 
     std::nth_element(covereage_avg.begin(), covereage_avg.begin() + covereage_avg.size()/2, covereage_avg.end());
-    int median{};
+    int median = covereage_avg[covereage_avg.size()/2];
 
     // Store speed and compression
     outfile.open(std::string{args.path_out} + method_name + "_coverage.out");
