@@ -40,7 +40,7 @@ struct modmer_hash_fn
     * \throws std::invalid_argument if the size of the shape is greater than the `mod_used`.
     * \returns               A range of converted elements.
     */
-    constexpr auto operator()(shape const & shape, mod_used const mod_used) const
+    constexpr auto operator()(shape const & shape, window_size const mod_used) const
     {
         return seqan3::detail::adaptor_from_functor{*this, shape, mod_used};
     }
@@ -52,7 +52,7 @@ struct modmer_hash_fn
     * \throws std::invalid_argument if the size of the shape is greater than the `mod_used`.
     * \returns               A range of converted elements.
     */
-    constexpr auto operator()(shape const & shape, mod_used const mod_used, seed const seed) const
+    constexpr auto operator()(shape const & shape, window_size const mod_used, seed const seed) const
     {
         return seqan3::detail::adaptor_from_functor{*this, shape, mod_used, seed};
     }
@@ -69,7 +69,7 @@ struct modmer_hash_fn
     template <std::ranges::range urng_t>
     constexpr auto operator()(urng_t && urange,
                               shape const & shape,
-                              mod_used const mod_used,
+                              window_size const mod_used,
                               seed const seed = seqan3::seed{0x8F3F73B5CF1C9ADE}) const
     {
         static_assert(std::ranges::viewable_range<urng_t>,

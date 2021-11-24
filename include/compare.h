@@ -18,7 +18,7 @@ inline constexpr static uint64_t adjust_seed(uint8_t const kmer_size, uint64_t c
     return seed >> (64u - 2u * kmer_size);
 }
 
-enum methods {kmer = 0, minimiser, strobemer};
+enum methods {kmer = 0, minimiser, modmers, strobemer};
 
 struct minimiser_arguments
 {
