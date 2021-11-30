@@ -166,8 +166,8 @@ void compare_cov(std::filesystem::path sequence_file, urng_t kmer_view, urng_t2 
     std::vector<int> covereage_avg{};
     std::ofstream outfile;
 
-    seqan3::sequence_file_input<my_traits, seqan3::fields<seqan3::field::seq>> fin{sequence_file};
-    for (auto & [seq] : fin)
+    seqan3::sequence_file_input<my_traits, seqan3::fields<seqan3::field::id,seqan3::field::seq>> fin{sequence_file};
+    for (auto & [id, seq] : fin)
     {
         auto kmers = seq | kmer_view;
         auto submers = seq | input_view;
@@ -180,6 +180,7 @@ void compare_cov(std::filesystem::path sequence_file, urng_t kmer_view, urng_t2 
             submers2.push_back(sub);
         coverage(kmers, submers2, covs, args.shape);
 
+        int i{0};
         for(auto & elem : covs)
         {
             if (elem == 0)
@@ -190,11 +191,22 @@ void compare_cov(std::filesystem::path sequence_file, urng_t kmer_view, urng_t2 
             {
                 if (island > 0)
                 {
+                    if (island >23)
+                        std::cout << i << " " << island << ", " << id<< "\n";
                     islands.push_back(island);
                     island = 0;
                 }
                 covered++;
             }
+            i++;
+        }
+
+        if (island > 0)
+        {
+            if (island >23)
+                std::cout << i << " " << island << ", " << id<< "\n";
+            islands.push_back(island);
+            island = 0;
         }
 
         covered_percentage.push_back(covered);
@@ -247,10 +259,10 @@ void do_comparison(std::vector<std::filesystem::path> sequence_files, range_argu
         case kmer: compare(sequence_files, seqan3::views::kmer_hash(args.shape), "kmer_hash_"+std::to_string(args.k_size), args);
                    break;
         case minimiser: compare(sequence_files, seqan3::views::minimiser_hash(args.shape,
-                                args.w_size), "minimiser_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                                args.w_size, args.seed_se), "minimiser_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
                         break;
         case modmers: compare(sequence_files, modmer_hash(args.shape,
-                                args.w_size), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                                args.mod1, args.mod2, args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.mod1) + "_" + std::to_string(args.mod2), args);
                         break;
         case strobemer: std::ranges::empty_view<seqan3::detail::empty_type> empty{};
                         if (args.rand & (args.order == 2))
@@ -275,12 +287,12 @@ void do_coverage(std::filesystem::path sequence_file, range_arguments & args)
         case kmer: compare_cov(sequence_file, seqan3::views::kmer_hash(args.shape), seqan3::views::kmer_hash(args.shape), "kmer_hash_"+std::to_string(args.k_size), args);
                    break;
         case minimiser: compare_cov(sequence_file, seqan3::views::minimiser_hash(args.shape,
-                                seqan3::window_size{args.shape.size()}), seqan3::views::minimiser_hash(args.shape,
-                                args.w_size), "minimiser_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                                seqan3::window_size{args.shape.size()}, args.seed_se), seqan3::views::minimiser_hash(args.shape,
+                                args.w_size, args.seed_se), "minimiser_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
                         break;
         case modmers: compare_cov(sequence_file, seqan3::views::minimiser_hash(args.shape,
-                                seqan3::window_size{args.shape.size()}), modmer_hash(args.shape,
-                                args.w_size), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                                seqan3::window_size{args.shape.size()}, args.seed_se), modmer_hash(args.shape,
+                                args.mod1, args.mod2, args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.mod1) + "_" + std::to_string(args.mod2), args);
                         break;
     }
 }

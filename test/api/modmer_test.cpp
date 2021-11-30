@@ -29,7 +29,7 @@ inline static constexpr auto gapped_kmer_view = seqan3::views::kmer_hash(0b1001_
 inline static constexpr auto rev_gapped_kmer_view = seqan3::views::complement | std::views::reverse
                                                                               | seqan3::views::kmer_hash(0b1001_shape)
                                                                               | std::views::reverse;
-inline static constexpr auto modmer_no_rev_view = modmer(2);
+inline static constexpr auto modmer_no_rev_view = modmer(4, 2);
 
 using iterator_type = std::ranges::iterator_t< decltype(std::declval<seqan3::dna4_vector&>()
                                                | kmer_view
@@ -39,7 +39,7 @@ using two_ranges_iterator_type = std::ranges::iterator_t< decltype(seqan3::detai
                                                           | kmer_view,
                                                           std::declval<seqan3::dna4_vector&>()
                                                           | rev_kmer_view,
-                                                          2})>;
+                                                          4, 2})>;
 
 template <>
 struct iterator_fixture<iterator_type> : public ::testing::Test
@@ -51,8 +51,8 @@ struct iterator_fixture<iterator_type> : public ::testing::Test
     decltype(seqan3::views::kmer_hash(text, seqan3::ungapped{4})) vec = text | kmer_view;
     result_t expected_range{26, 166, 152, 134, 252, 242};
 
-    decltype(modmer(seqan3::views::kmer_hash(text, seqan3::ungapped{4}), 2)) test_range =
-    modmer(vec, 2);
+    decltype(modmer(seqan3::views::kmer_hash(text, seqan3::ungapped{4}), 4, 2)) test_range =
+    modmer(vec, 4, 2);
 };
 
 template <>
@@ -69,8 +69,8 @@ struct iterator_fixture<two_ranges_iterator_type> : public ::testing::Test
 
     using reverse_kmer_hash_view_t = decltype(rev_kmer_view(text));
 
-    using test_range_t = decltype(seqan3::detail::modmer_view{kmer_hash_view_t{}, reverse_kmer_hash_view_t{}, 2});
-    test_range_t test_range = seqan3::detail::modmer_view{vec, rev_kmer_view(text), 2};
+    using test_range_t = decltype(seqan3::detail::modmer_view{kmer_hash_view_t{}, reverse_kmer_hash_view_t{}, 4, 2});
+    test_range_t test_range = seqan3::detail::modmer_view{vec, rev_kmer_view(text), 4, 2};
 };
 
 using test_types = ::testing::Types<iterator_type, two_ranges_iterator_type>;
@@ -135,11 +135,11 @@ TYPED_TEST(modmer_view_properties_test, concepts)
 
     auto v = text | kmer_view | modmer_no_rev_view;
     compare_types(v);
-    auto v2 = seqan3::detail::modmer_view{text | kmer_view, text | kmer_view, 2};
+    auto v2 = seqan3::detail::modmer_view{text | kmer_view, text | kmer_view, 4, 2};
 
     if constexpr (std::ranges::bidirectional_range<TypeParam>) // excludes forward_list
     {
-        auto v3 = seqan3::detail::modmer_view{text | kmer_view, text | rev_kmer_view, 2};
+        auto v3 = seqan3::detail::modmer_view{text | kmer_view, text | rev_kmer_view, 4, 2};
         compare_types(v3);
     }
 }
@@ -157,20 +157,20 @@ TYPED_TEST(modmer_view_properties_test, different_inputs_kmer_hash)
 
     if constexpr (std::ranges::bidirectional_range<TypeParam>) // excludes forward_list
     {
-        EXPECT_RANGE_EQ(ungapped, (seqan3::detail::modmer_view{text | kmer_view, text | rev_kmer_view, 2})) ;
-        EXPECT_RANGE_EQ(gapped, (seqan3::detail::modmer_view{text | gapped_kmer_view, text | rev_gapped_kmer_view, 2}));
+        EXPECT_RANGE_EQ(ungapped, (seqan3::detail::modmer_view{text | kmer_view, text | rev_kmer_view, 4, 2})) ;
+        EXPECT_RANGE_EQ(gapped, (seqan3::detail::modmer_view{text | gapped_kmer_view, text | rev_gapped_kmer_view, 4, 2}));
     }
 }
 
 TEST_F(modmer_test, ungapped_kmer_hash)
 {
-    EXPECT_RANGE_EQ(result1, (seqan3::detail::modmer_view{text1 | kmer_view, text1 | rev_kmer_view, 2}));
+    EXPECT_RANGE_EQ(result1, (seqan3::detail::modmer_view{text1 | kmer_view, text1 | rev_kmer_view, 4, 2}));
     EXPECT_RANGE_EQ(result1, text1 | kmer_view | modmer_no_rev_view);
-    auto empty_view = seqan3::detail::modmer_view{too_short_text | kmer_view, too_short_text | rev_kmer_view, 2};
+    auto empty_view = seqan3::detail::modmer_view{too_short_text | kmer_view, too_short_text | rev_kmer_view, 4, 2};
     EXPECT_TRUE(std::ranges::empty(empty_view));
     auto empty_view2 = too_short_text | kmer_view | modmer_no_rev_view;
     EXPECT_TRUE(std::ranges::empty(empty_view2));
-    EXPECT_RANGE_EQ(result3_ungapped, (seqan3::detail::modmer_view{text3 | kmer_view, text3 | rev_kmer_view, 2}));
+    EXPECT_RANGE_EQ(result3_ungapped, (seqan3::detail::modmer_view{text3 | kmer_view, text3 | rev_kmer_view, 4, 2}));
     EXPECT_RANGE_EQ(result3_ungapped_no_rev, text3 | kmer_view | modmer_no_rev_view);
 
 }
@@ -179,17 +179,17 @@ TEST_F(modmer_test, gapped_kmer_hash)
 {
     EXPECT_RANGE_EQ(result1, (seqan3::detail::modmer_view{text1 | gapped_kmer_view,
                                                              text1 | rev_gapped_kmer_view,
-                                                             2}));
+                                                             4, 2}));
     EXPECT_RANGE_EQ(result1, text1 | gapped_kmer_view | modmer_no_rev_view);
     auto empty_view = seqan3::detail::modmer_view{too_short_text | gapped_kmer_view,
                                                      too_short_text | rev_gapped_kmer_view,
-                                                     2};
+                                                     4, 2};
     EXPECT_TRUE(std::ranges::empty(empty_view));
     auto empty_view2 = too_short_text | gapped_kmer_view | modmer_no_rev_view;
     EXPECT_TRUE(std::ranges::empty(empty_view2));
     EXPECT_RANGE_EQ(result3_gapped, (seqan3::detail::modmer_view{text3 | gapped_kmer_view,
                                                                     text3 | rev_gapped_kmer_view,
-                                                                    2}));
+                                                                    4, 2}));
     EXPECT_RANGE_EQ(result3_gapped_no_rev, text3 | gapped_kmer_view | modmer_no_rev_view);
 }
 
@@ -201,21 +201,21 @@ TEST_F(modmer_test, combinability)
 
     EXPECT_RANGE_EQ(result3_ungapped_stop, (seqan3::detail::modmer_view{text3 | stop_at_t | kmer_view,
                                                                            text3 | stop_at_t | rev_kmer_view,
-                                                                           2}));
+                                                                           4, 2}));
     EXPECT_RANGE_EQ(result3_gapped_stop, (seqan3::detail::modmer_view{text3 | stop_at_t | gapped_kmer_view,
                                                                          text3 | stop_at_t | rev_gapped_kmer_view,
-                                                                         2}));
+                                                                         4, 2}));
 
     auto start_at_a = std::views::drop(6);
     EXPECT_RANGE_EQ(result3_ungapped_start, (seqan3::detail::modmer_view{text3 | start_at_a | kmer_view,
                                                                    text3 | start_at_a | rev_kmer_view,
-                                                                   2}));
+                                                                   4, 2}));
     EXPECT_RANGE_EQ(result3_gapped_start, (seqan3::detail::modmer_view{text3 | start_at_a | gapped_kmer_view,
                                                                    text3 | start_at_a | rev_gapped_kmer_view,
-                                                                   2}));
+                                                                   4, 2}));
 }
 
 TEST_F(modmer_test, two_ranges_unequal_size)
 {
-    EXPECT_THROW((seqan3::detail::modmer_view{text1 | kmer_view, text3 | rev_kmer_view, 2}), std::invalid_argument);
+    EXPECT_THROW((seqan3::detail::modmer_view{text1 | kmer_view, text3 | rev_kmer_view, 4, 2}), std::invalid_argument);
 }

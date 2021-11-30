@@ -40,7 +40,7 @@ TEST_F(cli_test, minimiser)
 
 TEST_F(cli_test, modmer)
 {
-    cli_test_result result = execute_app("minions coverage --method modmer -k 19 -w 19 ", data("example1.fasta"));
+    cli_test_result result = execute_app("minions coverage --method modmer -k 19 --mod1 17 --mod2 2 ", data("example1.fasta"));
     EXPECT_EQ(result.exit_code, 0);
     EXPECT_EQ(result.out, std::string{});
     EXPECT_EQ(result.err, std::string{});

@@ -39,6 +39,12 @@ void read_range_arguments_minimiser(seqan3::argument_parser & parser, range_argu
     parser.add_option(se, '\0', "seed", "Define seed.");
 }
 
+void read_range_arguments_modmer(seqan3::argument_parser & parser, range_arguments & args)
+{
+    parser.add_option(args.mod1, '\0', "mod1", "Define mod1. Default: 17.");
+    parser.add_option(args.mod2, '\0', "mod2", "Define mod2. Default: 2.");
+}
+
 void parsing(range_arguments & args)
 {
     args.w_size = seqan3::window_size{w_size};
@@ -60,6 +66,7 @@ int coverage(seqan3::argument_parser & parser)
     parser.add_option(method, '\0', "method", "Pick your method.", seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer"});
 
     read_range_arguments_minimiser(parser, args);
+    read_range_arguments_modmer(parser, args);
 
     try
     {
@@ -97,6 +104,7 @@ int speed(seqan3::argument_parser & parser)
     parser.add_option(method, '\0', "method", "Pick your method.", seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer"});
 
     read_range_arguments_minimiser(parser, args);
+    read_range_arguments_modmer(parser, args);
     read_range_arguments_strobemers(parser, args);
 
     try
