@@ -71,7 +71,7 @@ private:
     urng2_t urange2{};
 
     //!\brief The number of values in one window.
-    size_t mod_used_1{};
+    size_t mod_used{};
 
     template <bool const_range>
     class basic_iterator;
@@ -95,10 +95,10 @@ public:
     /*!\brief Construct from a view and a given number of values in one window.
     * \param[in] urange1     The input range to process. Must model std::ranges::viewable_range and
     *                        std::ranges::forward_range.
-    * \param[in] mod_used_1 The number of values in one window.
+    * \param[in] mod_used The number of values in one window.
     */
-    modmer_view(urng1_t urange1, size_t const mod_used_1) :
-        modmer_view{std::move(urange1), default_urng2_t{}, mod_used_1}
+    modmer_view(urng1_t urange1, size_t const mod_used) :
+        modmer_view{std::move(urange1), default_urng2_t{}, mod_used}
     {}
 
     /*!\brief Construct from a non-view that can be view-wrapped and a given number of values in one window.
@@ -106,17 +106,17 @@ public:
                              from urng1_t.
     * \param[in] urange1     The input range to process. Must model std::ranges::viewable_range and
     *                        std::ranges::forward_range.
-    * \param[in] mod_used_1 The number of values in one window.
+    * \param[in] mod_used The number of values in one window.
     */
     template <typename other_urng1_t>
     //!\cond
         requires (std::ranges::viewable_range<other_urng1_t> &&
                   std::constructible_from<urng1_t, ranges::ref_view<std::remove_reference_t<other_urng1_t>>>)
     //!\endcond
-    modmer_view(other_urng1_t && urange1, size_t const mod_used_1) :
+    modmer_view(other_urng1_t && urange1, size_t const mod_used) :
         urange1{std::views::all(std::forward<other_urng1_t>(urange1))},
         urange2{default_urng2_t{}},
-        mod_used_1{mod_used_1}
+        mod_used{mod_used}
     {}
 
     /*!\brief Construct from two views and a given number of values in one window.
@@ -124,12 +124,12 @@ public:
     *                        std::ranges::forward_range.
     * \param[in] urange2     The second input range to process. Must model std::ranges::viewable_range and
     *                        std::ranges::forward_range.
-    * \param[in] mod_used_1 The number of values in one window.
+    * \param[in] mod_used The number of values in one window.
     */
-    modmer_view(urng1_t urange1, urng2_t urange2, size_t const mod_used_1) :
+    modmer_view(urng1_t urange1, urng2_t urange2, size_t const mod_used) :
         urange1{std::move(urange1)},
         urange2{std::move(urange2)},
-        mod_used_1{mod_used_1}
+        mod_used{mod_used}
     {
         if constexpr (second_range_is_given)
         {
@@ -147,7 +147,7 @@ public:
     *                        std::ranges::forward_range.
     * \param[in] urange2     The second input range to process. Must model std::ranges::viewable_range and
     *                        std::ranges::forward_range.
-    * \param[in] mod_used_1 The number of values in one window.
+    * \param[in] mod_used The number of values in one window.
     */
     template <typename other_urng1_t, typename other_urng2_t>
     //!\cond
@@ -156,10 +156,10 @@ public:
                   std::ranges::viewable_range<other_urng2_t> &&
                   std::constructible_from<urng2_t, std::views::all_t<other_urng2_t>>)
     //!\endcond
-    modmer_view(other_urng1_t && urange1, other_urng2_t && urange2, size_t const mod_used_1) :
+    modmer_view(other_urng1_t && urange1, other_urng2_t && urange2, size_t const mod_used) :
         urange1{std::views::all(std::forward<other_urng1_t>(urange1))},
         urange2{std::views::all(std::forward<other_urng2_t>(urange2))},
-        mod_used_1{mod_used_1}
+        mod_used{mod_used}
     {
         if constexpr (second_range_is_given)
         {
@@ -190,7 +190,7 @@ public:
         return {std::ranges::begin(urange1),
                 std::ranges::end(urange1),
                 std::ranges::begin(urange2),
-                mod_used_1};
+                mod_used};
     }
 
     //!\copydoc begin()
@@ -202,7 +202,7 @@ public:
         return {std::ranges::cbegin(urange1),
                 std::ranges::cend(urange1),
                 std::ranges::cbegin(urange2),
-                mod_used_1};
+                mod_used};
     }
 
     /*!\brief Returns an iterator to the element following the last element of the range.
@@ -287,7 +287,7 @@ public:
     * \param[in] urng1_iterator Iterator pointing to the first position of the first std::totally_ordered range.
     * \param[in] urng1_sentinel Iterator pointing to the last position of the first std::totally_ordered range.
     * \param[in] urng2_iterator Iterator pointing to the first position of the second std::totally_ordered range.
-    * \param[in] mod_used_1 The number of values in one window.
+    * \param[in] mod_used The number of values in one window.
     *
     * \details
     *
@@ -298,14 +298,14 @@ public:
     basic_iterator(urng1_iterator_t urng1_iterator,
                    urng1_sentinel_t urng1_sentinel,
                    urng2_iterator_t urng2_iterator,
-                   size_t mod_used_1) :
+                   size_t mod_used) :
         urng1_iterator{std::move(urng1_iterator)},
         urng1_sentinel{std::move(urng1_sentinel)},
         urng2_iterator{std::move(urng2_iterator)},
-        mod_1{mod_used_1}
+        mod{mod_used}
     {
         size_t size = std::ranges::distance(urng1_iterator, urng1_sentinel);
-        mod_used_1 = std::min<size_t>(mod_used_1, size);
+        mod_used = std::min<size_t>(mod_used, size);
 
         first_modmer();
     }
@@ -385,7 +385,7 @@ private:
     //!\brief Iterator to the rightmost value of one window of the second range.
     urng2_iterator_t urng2_iterator{};
 
-    size_t mod_1{};
+    size_t mod{};
 
     //!\brief Advances the window to the next position.
     void advance()
@@ -422,7 +422,7 @@ private:
 
         if constexpr (!second_range_is_given)
         {
-            if (*urng1_iterator % mod_1 == 0)
+            if (*urng1_iterator % mod == 0)
             {
                 modmer_value = *urng1_iterator;
                 return true;
@@ -430,10 +430,10 @@ private:
         }
         else
         {
-            value_type mod = std::min(*urng1_iterator, *urng2_iterator);
-            if (mod % mod_1 == 0)
+            value_type value = std::min(*urng1_iterator, *urng2_iterator);
+            if (value % mod == 0)
             {
-                modmer_value = mod;
+                modmer_value = value;
                 return true;
             }
         }
@@ -444,11 +444,11 @@ private:
 
 //!\brief A deduction guide for the view class template.
 template <std::ranges::viewable_range rng1_t>
-modmer_view(rng1_t &&, size_t const mod_used_1) -> modmer_view<std::views::all_t<rng1_t>>;
+modmer_view(rng1_t &&, size_t const mod_used) -> modmer_view<std::views::all_t<rng1_t>>;
 
 //!\brief A deduction guide for the view class template.
 template <std::ranges::viewable_range rng1_t, std::ranges::viewable_range rng2_t>
-modmer_view(rng1_t &&, rng2_t &&, size_t const mod_used_1) -> modmer_view<std::views::all_t<rng1_t>,
+modmer_view(rng1_t &&, rng2_t &&, size_t const mod_used) -> modmer_view<std::views::all_t<rng1_t>,
                                                                           std::views::all_t<rng2_t>>;
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -461,9 +461,9 @@ modmer_view(rng1_t &&, rng2_t &&, size_t const mod_used_1) -> modmer_view<std::v
 struct modmer_fn
 {
     //!\brief Store the number of values in one window and return a range adaptor closure object.
-    constexpr auto operator()(size_t const mod_used_1) const
+    constexpr auto operator()(size_t const mod_used) const
     {
-        return adaptor_from_functor{*this, mod_used_1};
+        return adaptor_from_functor{*this, mod_used};
     }
 
     /*!\brief Call the view's constructor with two arguments: the underlying view and an integer indicating how many
@@ -471,22 +471,22 @@ struct modmer_fn
      * \tparam urng1_t        The type of the input range to process. Must model std::ranges::viewable_range.
      * \param[in] urange1     The input range to process. Must model std::ranges::viewable_range and
      *                        std::ranges::forward_range.
-     * \param[in] mod_used_1 The number of values in one window.
+     * \param[in] mod_used The number of values in one window.
      * \returns  A range of converted values.
      */
     template <std::ranges::range urng1_t>
-    constexpr auto operator()(urng1_t && urange1, size_t const mod_used_1) const
+    constexpr auto operator()(urng1_t && urange1, size_t const mod_used) const
     {
         static_assert(std::ranges::viewable_range<urng1_t>,
                       "The range parameter to views::modmer cannot be a temporary of a non-view range.");
         static_assert(std::ranges::forward_range<urng1_t>,
                       "The range parameter to views::modmer must model std::ranges::forward_range.");
 
-        if (mod_used_1 == 1) // Would just return urange1 without any changes
-            throw std::invalid_argument{"The chosen mod_used_1 is not valid. "
+        if (mod_used == 1) // Would just return urange1 without any changes
+            throw std::invalid_argument{"The chosen mod_used is not valid. "
                                         "Please choose a value greater than 1 or use two ranges."};
 
-        return modmer_view{urange1, mod_used_1};
+        return modmer_view{urange1, mod_used};
     }
 };
 //![adaptor_def]
@@ -497,7 +497,7 @@ struct modmer_fn
  * \tparam urng_t The type of the first range being processed. See below for requirements. [template
  *                 parameter is omitted in pipe notation]
  * \param[in] urange1 The range being processed. [parameter is omitted in pipe notation]
- * \param[in] mod_used_1 The number of values in one window.
+ * \param[in] mod_used The number of values in one window.
  * \returns A range of std::totally_ordered where each value is ... See below for the
  *          properties of the returned range.
  * \ingroup search_views
