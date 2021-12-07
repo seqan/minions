@@ -31,10 +31,10 @@ struct modmer_hash_fn
     * \throws std::invalid_argument if the size of the shape is greater than the `mod_used_1`.
     * \returns               A range of converted elements.
     */
-    /*constexpr auto operator()(shape const & shape, uint32_t const mod_used_1, uint32_t const mod_used_2) const
+    constexpr auto operator()(shape const & shape, uint32_t const mod_used_1) const
     {
-        return seqan3::detail::adaptor_from_functor{*this, shape, mod_used_1, mod_used_2};
-    }*/
+        return seqan3::detail::adaptor_from_functor{*this, shape, mod_used_1};
+    }
 
     /*!\brief Store the shape, the window size and the seed and return a range adaptor closure object.
     * \param[in] shape       The seqan3::shape to use for hashing.
@@ -43,9 +43,9 @@ struct modmer_hash_fn
     * \throws std::invalid_argument if the size of the shape is greater than the `mod_used_1`.
     * \returns               A range of converted elements.
     */
-    constexpr auto operator()(shape const & shape, uint32_t const mod_used_1, uint32_t const mod_used_2, seed const seed) const
+    constexpr auto operator()(shape const & shape, uint32_t const mod_used_1, seed const seed) const
     {
-        return seqan3::detail::adaptor_from_functor{*this, shape, mod_used_1, mod_used_2, seed};
+        return seqan3::detail::adaptor_from_functor{*this, shape, mod_used_1, seed};
     }
 
     /*!\brief Call the view's constructor with the underlying view, a seqan3::shape and a window size as argument.
@@ -61,7 +61,6 @@ struct modmer_hash_fn
     constexpr auto operator()(urng_t && urange,
                               shape const & shape,
                               uint32_t const mod_used_1,
-                              uint32_t const mod_used_2,
                               seed const seed = seqan3::seed{0x8F3F73B5CF1C9ADE}) const
     {
         static_assert(std::ranges::viewable_range<urng_t>,
@@ -82,7 +81,7 @@ struct modmer_hash_fn
                                                                                   {return i ^ seed.get();})
                                                            | std::views::reverse;
 
-        return seqan3::detail::modmer_view(forward_strand, reverse_strand, mod_used_1, mod_used_2);
+        return seqan3::detail::modmer_view(forward_strand, reverse_strand, mod_used_1);
     }
 };
 

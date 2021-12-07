@@ -23,18 +23,15 @@ using result_t = std::vector<size_t>;
 
 using iterator_type = std::ranges::iterator_t<decltype(std::declval<seqan3::dna4_vector&>()
                                                        | modmer_hash(seqan3::ungapped{4},
-                                                                     4,
                                                                      2,
                                                                      seqan3::seed{0}))>;
 
 static constexpr seqan3::shape ungapped_shape = seqan3::ungapped{4};
 static constexpr seqan3::shape gapped_shape = 0b1001_shape;
 static constexpr auto ungapped_view = modmer_hash(ungapped_shape,
-                                                  4,
                                                   2,
                                                   seqan3::seed{0});
 static constexpr auto gapped_view = modmer_hash(gapped_shape,
-                                                4,
                                                 2,
                                                 seqan3::seed{0});
 

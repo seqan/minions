@@ -28,13 +28,6 @@ struct minimiser_arguments
     seqan3::window_size w_size;
 };
 
-struct modmer_arguments
-{
-    // Needed for modmers
-    uint32_t mod1{17};
-    uint32_t mod2{2};
-};
-
 struct strobemer_arguments
 {
     // Needed for strobemers
@@ -46,7 +39,7 @@ struct strobemer_arguments
     unsigned int order;
 };
 
-struct range_arguments : minimiser_arguments, modmer_arguments, strobemer_arguments
+struct range_arguments : minimiser_arguments, strobemer_arguments
 {
    std::filesystem::path path_out{"./"};
 

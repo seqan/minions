@@ -262,7 +262,7 @@ void do_comparison(std::vector<std::filesystem::path> sequence_files, range_argu
                                 args.w_size, args.seed_se), "minimiser_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
                         break;
         case modmers: compare(sequence_files, modmer_hash(args.shape,
-                                args.mod1, args.mod2, args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.mod1) + "_" + std::to_string(args.mod2), args);
+                                args.w_size.get(), args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
                         break;
         case strobemer: std::ranges::empty_view<seqan3::detail::empty_type> empty{};
                         if (args.rand & (args.order == 2))
@@ -292,7 +292,7 @@ void do_coverage(std::filesystem::path sequence_file, range_arguments & args)
                         break;
         case modmers: compare_cov(sequence_file, seqan3::views::minimiser_hash(args.shape,
                                 seqan3::window_size{args.shape.size()}, args.seed_se), modmer_hash(args.shape,
-                                args.mod1, args.mod2, args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.mod1) + "_" + std::to_string(args.mod2), args);
+                                args.w_size.get(), args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
                         break;
     }
 }
