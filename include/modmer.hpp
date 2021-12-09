@@ -312,7 +312,7 @@ private:
 
     size_t mod{};
 
-    size_t distance{};
+    size_t distance{1};
 
     //!\brief Advances the window to the next position.
     void advance()
@@ -350,7 +350,7 @@ private:
         {
             if constexpr (measure_distance)
             {
-                modmer_value = distance;
+                modmer_value = distance - 1;
                 distance = 0;
             }
             else
