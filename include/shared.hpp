@@ -1,8 +1,13 @@
 #pragma once
 
-// https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
-uint64_t fnv_hash(uint64_t hash_value, uint64_t seed)
+//
+/*! \brief Function that ensures random hashes, based on https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
+ *  \param hash_value The hash_value that should be transformed.
+ *  \param seed       The seed.
+ */
+uint64_t fnv_hash(uint64_t hash_value)
 {
+    // If seed is 0, then the hash value is just returned.
     if (seed == 0)
         return hash_value;
 

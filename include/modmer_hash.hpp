@@ -29,40 +29,40 @@ struct modmer_hash_fn
 {
     /*!\brief Store the shape and the window size and return a range adaptor closure object.
     * \param[in] shape       The seqan3::shape to use for hashing.
-    * \param[in] mod_used_1 The windows size to use.
-    * \throws std::invalid_argument if the size of the shape is greater than the `mod_used_1`.
+    * \param[in] mod_used    The mod value to use.
+    * \throws std::invalid_argument if the size of the shape is greater than the `mod_used`.
     * \returns               A range of converted elements.
     */
-    constexpr auto operator()(shape const & shape, uint32_t const mod_used_1) const
+    constexpr auto operator()(shape const & shape, uint32_t const mod_used) const
     {
-        return seqan3::detail::adaptor_from_functor{*this, shape, mod_used_1};
+        return seqan3::detail::adaptor_from_functor{*this, shape, mod_used};
     }
 
     /*!\brief Store the shape, the window size and the seed and return a range adaptor closure object.
     * \param[in] shape       The seqan3::shape to use for hashing.
-    * \param[in] mod_used_1 The size of the window.
+    * \param[in] mod_used    The mod value to use.
     * \param[in] seed        The seed to use.
-    * \throws std::invalid_argument if the size of the shape is greater than the `mod_used_1`.
+    * \throws std::invalid_argument if the size of the shape is greater than the `mod_used`.
     * \returns               A range of converted elements.
     */
-    constexpr auto operator()(shape const & shape, uint32_t const mod_used_1, seed const seed) const
+    constexpr auto operator()(shape const & shape, uint32_t const mod_used, seed const seed) const
     {
-        return seqan3::detail::adaptor_from_functor{*this, shape, mod_used_1, seed};
+        return seqan3::detail::adaptor_from_functor{*this, shape, mod_used, seed};
     }
 
     /*!\brief Call the view's constructor with the underlying view, a seqan3::shape and a window size as argument.
      * \param[in] urange      The input range to process. Must model std::ranges::viewable_range and the reference type
      *                        of the range must model seqan3::semialphabet.
      * \param[in] shape       The seqan3::shape to use for hashing.
-     * \param[in] mod_used_1 The size of the window.
+     * \param[in] mod_used    The mod value to use.
      * \param[in] seed        The seed to use.
-     * \throws std::invalid_argument if the size of the shape is greater than the `mod_used_1`.
+     * \throws std::invalid_argument if the size of the shape is greater than the `mod_used`.
      * \returns               A range of converted elements.
      */
     template <std::ranges::range urng_t>
     constexpr auto operator()(urng_t && urange,
                               shape const & shape,
-                              uint32_t const mod_used_1,
+                              uint32_t const mod_used,
                               seed const seed = seqan3::seed{0x8F3F73B5CF1C9ADE}) const
     {
         static_assert(std::ranges::viewable_range<urng_t>,
@@ -82,9 +82,9 @@ struct modmer_hash_fn
                                                            | std::views::transform([seed] (uint64_t i)
                                                                                   {return i ^ seed.get();})
                                                            | std::views::reverse;
-
+        // fnv_hash ensures actual randomness.
         auto combined_strand = seqan3::views::zip(forward_strand, reverse_strand) | std::views::transform([seed](std::tuple<uint64_t, uint64_t> i){return fnv_hash(std::get<0>(i) + std::get<1>(i), seed.get());});
-        return seqan3::detail::modmer_view(combined_strand, mod_used_1);
+        return seqan3::detail::modmer_view(combined_strand, mod_used);
     }
 };
 
@@ -94,12 +94,12 @@ struct modmer_hash_fn
  * \{
  */
 
-/*!\brief                    Computes modmers for a range with a given shape, mod_used_1 and seed.
+/*!\brief                    Computes modmers for a range with a given shape, mod_used and seed.
  * \tparam urng_t            The type of the range being processed. See below for requirements. [template parameter is
  *                           omitted in pipe notation]
  * \param[in] urange         The range being processed. [parameter is omitted in pipe notation]
  * \param[in] shape          The seqan3::shape that determines how to compute the hash value.
- * \param[in] mod_used_1       The mod value to use.
+ * \param[in] mod_used       The mod value to use.
  * \param[in] seed           The seed used to skew the hash values. Default: 0x8F3F73B5CF1C9ADE.
  * \returns                  A range of `size_t` where each value is the modmer of the resp. window.
  *                           See below for the properties of the returned range.

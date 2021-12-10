@@ -522,8 +522,8 @@ struct minimiser_distance_fn
 
 } // namespace seqan3::detail
 
-/*!\brief Computes minimiser_distances for a range of comparable values. A minimiser_distance is the smallest value in a window.
- * \tparam urng_t The type of the first range being processed. See below for requirements. [template
+/*!\brief Computes the distance of minimiser for a range of comparable values. A minimiser_distance is the smallest value in a window.
+ * \tparam urng_t The type of the first range being processed. [template
  *                 parameter is omitted in pipe notation]
  * \param[in] urange1 The range being processed. [parameter is omitted in pipe notation]
  * \param[in] window_size The number of values in one window.
@@ -533,51 +533,6 @@ struct minimiser_distance_fn
  *
  * \details
  *
- * A minimiser_distance is the smallest value in a window. For example for the following list of hash values
- * `[28, 100, 9, 23, 4, 1, 72, 37, 8]` and 4 as `window_size`, the minimiser_distance values are `[9, 4, 1]`.
- *
- * The minimiser_distance can be calculated for one given range or for two given ranges, where the minimizer is the smallest
- * value in both windows. For example for the following list of hash values `[28, 100, 9, 23, 4, 1, 72, 37, 8]` and
- * `[30, 2, 11, 101, 199, 73, 34, 900]` and 4 as `window_size`, the minimiser_distance values are `[2, 4, 1]`.
- *
- * Note that in the interface with the second underlying range the const-iterable property will only be preserved if
- * both underlying ranges are const-iterable.
- *
- * ### Robust Winnowing
- *
- * In case there are multiple minimal values within one window, the minimum and therefore the minimiser_distance is ambiguous.
- * We choose the rightmost value as the minimiser_distance of the window, and when shifting the window, the minimiser_distance is only
- * changed if there appears a value that is strictly smaller than the current minimum. This approach is termed
- * *robust winnowing* by [Chirag et al.](https://www.biorxiv.org/content/10.1101/2020.02.11.943241v1.full.pdf)
- * and is proven to work especially well on repeat regions.
- *
- * ### Example
- *
- * \include test/snippet/search/views/minimiser_distance.cpp
- *
- * ### View properties
- *
- * | Concepts and traits              | `urng_t` (underlying range type)   | `rrng_t` (returned range type)   |
- * |----------------------------------|:----------------------------------:|:--------------------------------:|
- * | std::ranges::input_range         | *required*                         | *preserved*                      |
- * | std::ranges::forward_range       | *required*                         | *preserved*                      |
- * | std::ranges::bidirectional_range |                                    | *lost*                           |
- * | std::ranges::random_access_range |                                    | *lost*                           |
- * | std::ranges::contiguous_range    |                                    | *lost*                           |
- * |                                  |                                    |                                  |
- * | std::ranges::viewable_range      | *required*                         | *guaranteed*                     |
- * | std::ranges::view                |                                    | *guaranteed*                     |
- * | std::ranges::sized_range         |                                    | *lost*                           |
- * | std::ranges::common_range        |                                    | *lost*                           |
- * | std::ranges::output_range        |                                    | *lost*                           |
- * | seqan3::const_iterable_range     |                                    | *preserved*                      |
- * |                                  |                                    |                                  |
- * | std::ranges::range_reference_t   | std::totally_ordered               | std::totally_ordered             |
- *
- * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
- *
- * \hideinitializer
- *
- * \stableapi{Since version 3.1.}
+ * For more information look into seqan3::views::minimiser.
  */
 inline constexpr auto minimiser_distance = seqan3::detail::minimiser_distance_fn{};

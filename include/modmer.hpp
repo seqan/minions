@@ -31,6 +31,7 @@ namespace seqan3::detail
  * \tparam urng1_t The type of the underlying range, must model std::ranges::forward_range, the reference type must
  *                 model std::totally_ordered. The typical use case is that the reference type is the result of
  *                 seqan3::kmer_hash.
+ * \tparam measure_distance If true, then not the actual modmers are returned, but the distances of the modmers.
  * \implements std::ranges::view
  * \ingroup search_views
  *
@@ -306,8 +307,9 @@ private:
     //!brief Iterator to last element in range.
     urng1_sentinel_t urng1_sentinel{};
 
+    //!brief The mod value used.
     size_t mod{};
-
+    //!brief The distance stored. Only relevant, if measure_distance is true.
     size_t distance{1};
 
     //!\brief Advances the window to the next position.
@@ -410,11 +412,12 @@ struct modmer_fn
 
 } // namespace seqan3::detail
 
-/*!\brief Computes modmers for a range of comparable values. A modmer is ...
+/*!\brief Computes modmers for a range of comparable values. A modmer is a value that fullfills the
+          condition value % mod_used.
  * \tparam urng_t The type of the first range being processed. See below for requirements. [template
  *                 parameter is omitted in pipe notation]
  * \param[in] urange1 The range being processed. [parameter is omitted in pipe notation]
- * \param[in] mod_used The number of values in one window.
+ * \param[in] mod_used The mod value used.
  * \returns A range of std::totally_ordered where each value is ... See below for the
  *          properties of the returned range.
  * \ingroup search_views
