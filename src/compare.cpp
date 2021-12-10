@@ -7,7 +7,9 @@
 #include <seqan3/core/detail/empty_type.hpp>
 
 #include "compare.h"
+#include "minimiser_hash_distance.hpp"
 #include "modmer_hash.hpp"
+#include "modmer_hash_distance.hpp"
 
 /*! \brief Calculate mean and variance of given list.
  *  \param results The vector from which mean and varaince should be calculated of.
@@ -252,6 +254,28 @@ void compare_cov(std::filesystem::path sequence_file, urng_t kmer_view, urng_t2 
     outfile.close();
 }
 
+template <typename urng_t>
+void compare_cov2(std::filesystem::path sequence_file, urng_t distance_view, std::string method_name, range_arguments & args)
+{
+    std::vector<double> coverage{};
+    std::vector<double> stdev{};
+    std::ofstream outfile;
+
+    seqan3::sequence_file_input<my_traits, seqan3::fields<seqan3::field::seq>> fin{sequence_file};
+    for (auto & [seq] : fin)
+    {
+        for (auto && hash : seq | distance_view)
+            coverage.push_back(hash);
+    }
+    double mean_coverage, stdev_coverage;
+    get_mean_and_var(coverage, mean_coverage, stdev_coverage);
+
+    // Store speed and compression
+    outfile.open(std::string{args.path_out} + method_name + "_coverage.out");
+    outfile << "COV\t"<< method_name << "\t" << *std::min_element(coverage.begin(), coverage.end()) << "\t" << mean_coverage << "\t" << stdev_coverage << "\t" << *std::max_element(coverage.begin(), coverage.end()) << "\n";
+    outfile.close();
+}
+
 void do_comparison(std::vector<std::filesystem::path> sequence_files, range_arguments & args)
 {
     switch(args.name)
@@ -284,14 +308,10 @@ void do_coverage(std::filesystem::path sequence_file, range_arguments & args)
 {
     switch(args.name)
     {
-        case kmer: compare_cov(sequence_file, seqan3::views::kmer_hash(args.shape), seqan3::views::kmer_hash(args.shape), "kmer_hash_"+std::to_string(args.k_size), args);
-                   break;
-        case minimiser: compare_cov(sequence_file, seqan3::views::minimiser_hash(args.shape,
-                                seqan3::window_size{args.shape.size()}, args.seed_se), seqan3::views::minimiser_hash(args.shape,
+        case minimiser: compare_cov2(sequence_file, minimiser_hash_distance(args.shape,
                                 args.w_size, args.seed_se), "minimiser_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
                         break;
-        case modmers: compare_cov(sequence_file, seqan3::views::minimiser_hash(args.shape,
-                                seqan3::window_size{args.shape.size()}, args.seed_se), modmer_hash(args.shape,
+        case modmers: compare_cov2(sequence_file, modmer_hash_distance(args.shape,
                                 args.w_size.get(), args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
                         break;
     }

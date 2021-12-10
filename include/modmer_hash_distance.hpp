@@ -16,7 +16,6 @@
 #include <seqan3/core/detail/strong_type.hpp>
 #include <seqan3/search/views/kmer_hash.hpp>
 #include <seqan3/search/views/minimiser_hash.hpp>
-#include <seqan3/utility/views/zip.hpp>
 
 #include "modmer.hpp"
 #include "shared.hpp"
@@ -25,7 +24,7 @@ namespace seqan3::detail
 {
 //!\brief seqan3::views::modmer_hash's range adaptor object type (non-closure).
 //!\ingroup search_views
-struct modmer_hash_fn
+struct modmer_hash_distance_fn
 {
     /*!\brief Store the shape and the window size and return a range adaptor closure object.
     * \param[in] shape       The seqan3::shape to use for hashing.
@@ -84,7 +83,7 @@ struct modmer_hash_fn
                                                            | std::views::reverse;
 
         auto combined_strand = seqan3::views::zip(forward_strand, reverse_strand) | std::views::transform([seed](std::tuple<uint64_t, uint64_t> i){return fnv_hash(std::get<0>(i) + std::get<1>(i), seed.get());});
-        return seqan3::detail::modmer_view(combined_strand, mod_used_1);
+        return seqan3::detail::modmer_view<decltype(combined_strand), true>(combined_strand, mod_used_1);
     }
 };
 
@@ -135,6 +134,6 @@ struct modmer_hash_fn
  *
  * \experimentalapi{Experimental since version 3.1.}
  */
-inline constexpr auto modmer_hash = seqan3::detail::modmer_hash_fn{};
+inline constexpr auto modmer_hash_distance = seqan3::detail::modmer_hash_distance_fn{};
 
 //!\}

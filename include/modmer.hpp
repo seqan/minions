@@ -31,9 +31,6 @@ namespace seqan3::detail
  * \tparam urng1_t The type of the underlying range, must model std::ranges::forward_range, the reference type must
  *                 model std::totally_ordered. The typical use case is that the reference type is the result of
  *                 seqan3::kmer_hash.
- * \tparam urng2_t The type of the second underlying range, must model std::ranges::forward_range, the reference type
- *                 must model std::totally_ordered. If only one range is provided this defaults to
- *                 std::ranges::empty_view.
  * \implements std::ranges::view
  * \ingroup search_views
  *
@@ -216,7 +213,6 @@ public:
               of values per window.
     * \param[in] urng1_iterator Iterator pointing to the first position of the first std::totally_ordered range.
     * \param[in] urng1_sentinel Iterator pointing to the last position of the first std::totally_ordered range.
-    * \param[in] urng2_iterator Iterator pointing to the first position of the second std::totally_ordered range.
     * \param[in] mod_used The number of values in one window.
     *
     * \details
