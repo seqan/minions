@@ -442,6 +442,6 @@ struct modmer_fn
  * |                                  |                                    |                                  |
  * | std::ranges::range_reference_t   | std::totally_ordered               | std::totally_ordered             |
  *
- * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
+ * See the views views submodule documentation for detailed descriptions of the view properties.
  */
 inline constexpr auto modmer = seqan3::detail::modmer_fn{};

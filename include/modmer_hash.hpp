@@ -108,7 +108,6 @@ struct modmer_hash_fn
  * \attention
  * Be aware of the requirements of the seqan3::views::kmer_hash view.
  *
- * \experimentalapi
  *
  * ### View properties
  *
@@ -129,11 +128,10 @@ struct modmer_hash_fn
  * |                                  |                                    |                                  |
  * | std::ranges::range_reference_t   | seqan3::semialphabet               | std::size_t                      |
  *
- * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
+ * See the views views submodule documentation for detailed descriptions of the view properties.
  *
  * \hideinitializer
  *
- * \experimentalapi{Experimental since version 3.1.}
  */
 inline constexpr auto modmer_hash = seqan3::detail::modmer_hash_fn{};
 
