@@ -66,9 +66,9 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    modmer_view()
-        requires std::default_initializable<urng1_t>
-        = default; //!< Defaulted.
+     /// \cond Workaround_Doxygen
+    modmer_view() requires std::default_initializable<urng1_t> = default; //!< Defaulted.
+    /// \endcond
     modmer_view(modmer_view const & rhs) = default; //!< Defaulted.
     modmer_view(modmer_view && rhs) = default; //!< Defaulted.
     modmer_view & operator=(modmer_view const & rhs) = default; //!< Defaulted.
@@ -236,7 +236,7 @@ public:
     }
     //!\}
 
-    //!\anchor basic_iterator_comparison
+    //!\anchor basic_iterator_comparison_modmer
     //!\name Comparison operators
     //!\{
 
