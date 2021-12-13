@@ -5,7 +5,7 @@
  *  \param hash_value The hash_value that should be transformed.
  *  \param seed       The seed.
  */
-uint64_t fnv_hash(uint64_t hash_value)
+uint64_t fnv_hash(uint64_t hash_value, uint64_t seed)
 {
     // If seed is 0, then the hash value is just returned.
     if (seed == 0)
