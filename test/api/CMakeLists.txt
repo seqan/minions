@@ -7,3 +7,4 @@ add_api_test (minimiser_distance_test.cpp)
 
 add_api_test (modmer_test.cpp)
 add_api_test (modmer_hash_test.cpp)
+add_api_test (modmer_hash_distance_test.cpp)

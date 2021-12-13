@@ -16,6 +16,7 @@
 #include <seqan3/core/detail/strong_type.hpp>
 #include <seqan3/search/views/kmer_hash.hpp>
 #include <seqan3/search/views/minimiser_hash.hpp>
+#include <seqan3/utility/views/zip.hpp>
 
 #include "modmer.hpp"
 #include "shared.hpp"
@@ -93,7 +94,7 @@ struct modmer_hash_distance_fn
  * \{
  */
 
-/*!\brief                    Computes modmers for a range with a given shape, mod_used and seed.
+/*!\brief                    Computes the distance of modmers for a range with a given shape, mod_used and seed.
  * \tparam urng_t            The type of the range being processed. See below for requirements. [template parameter is
  *                           omitted in pipe notation]
  * \param[in] urange         The range being processed. [parameter is omitted in pipe notation]
