@@ -380,6 +380,10 @@ public:
 private:
     //!\brief The minimiser_distance value.
     value_type minimiser_distance_value{};
+    //!\brief The minimiser value.
+    value_type minimiser_value{};
+    //!\brief Helper to track distance.
+    size_t distance{};
 
     //!\brief The offset relative to the beginning of the window where the minimizer value is found.
     size_t minimiser_distance_position_offset{};
@@ -430,8 +434,10 @@ private:
         }
         window_values.push_back(window_value());
         auto minimiser_distance_it = std::ranges::min_element(window_values, std::less_equal<value_type>{});
+        minimiser_value = *minimiser_distance_it;
         minimiser_distance_value = std::distance(std::begin(window_values), minimiser_distance_it);
         minimiser_distance_position_offset = std::distance(std::begin(window_values), minimiser_distance_it);
+        distance = window_values.size() - minimiser_distance_value - 1;
     }
 
     /*!\brief Calculates the next minimiser_distance value.
@@ -454,18 +460,23 @@ private:
         if (minimiser_distance_position_offset == 0)
         {
             auto minimiser_distance_it = std::ranges::min_element(window_values, std::less_equal<value_type>{});
-            minimiser_distance_value = std::distance(std::begin(window_values), minimiser_distance_it) ;
+            minimiser_distance_value = std::distance(std::begin(window_values), minimiser_distance_it);
             minimiser_distance_position_offset = std::distance(std::begin(window_values), minimiser_distance_it);
+            minimiser_value = *minimiser_distance_it;
+            distance = window_values.size() - minimiser_distance_value - 1;
             return true;
         }
 
-        if (new_value < minimiser_distance_value)
+        if (new_value < minimiser_value)
         {
-            minimiser_distance_value = window_values.size() - 1;
+            minimiser_distance_value = distance;
+            distance = 0;
             minimiser_distance_position_offset = window_values.size() - 1;
+            minimiser_value = new_value;
             return true;
         }
 
+        distance++;
         --minimiser_distance_position_offset;
         return false;
     }
