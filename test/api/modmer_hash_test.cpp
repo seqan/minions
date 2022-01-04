@@ -31,6 +31,9 @@ static constexpr seqan3::shape gapped_shape = 0b1001_shape;
 static constexpr auto ungapped_view = modmer_hash(ungapped_shape,
                                                   2,
                                                   seqan3::seed{0});
+static constexpr auto ungapped_3_view = modmer_hash(ungapped_shape,
+                                            3,
+                                            seqan3::seed{0});
 static constexpr auto gapped_view = modmer_hash(gapped_shape,
                                                 2,
                                                 seqan3::seed{0});
@@ -77,6 +80,7 @@ protected:
     std::vector<seqan3::dna4> text3{"ACGGCGACGTTTAG"_dna4};
     result_t result3_ungapped{27+27, 191+1, 252+192, 242+112};  // ACGT/ACGT, GTTT/AAAC, TTTA/TAAA, TTAG/CTAA
     result_t result3_gapped{3+3, 11+1, 12+12, 14+4};       // A--T/A--T, G--T/A--C, T--A/T--A, T--G/C--A - "-" for gap
+    result_t result3_ungapped_3{117, 255, 267, 369, 279, 243, 27+27, 117, 191+1, 252+192, 242+112};
 };
 
 template <typename adaptor_t>
@@ -108,6 +112,9 @@ TEST_F(modmer_hash_test, ungapped)
     EXPECT_RANGE_EQ(result1, text1 | ungapped_view);
     EXPECT_TRUE(std::ranges::empty(too_short_text | ungapped_view));
     EXPECT_RANGE_EQ(result3_ungapped, text3 | ungapped_view);
+    EXPECT_NO_THROW(text1 | modmer_hash(ungapped_shape, 2));
+    EXPECT_RANGE_EQ(result3_ungapped_3, text3 | ungapped_3_view);
+    EXPECT_THROW((text3 | modmer_hash(ungapped_shape, 1)), std::invalid_argument);
 }
 
 TEST_F(modmer_hash_test, gapped)
@@ -115,6 +122,8 @@ TEST_F(modmer_hash_test, gapped)
     EXPECT_RANGE_EQ(result1, text1 | gapped_view);
     EXPECT_TRUE(std::ranges::empty(too_short_text | gapped_view));
     EXPECT_RANGE_EQ(result3_gapped, text3 | gapped_view);
+    EXPECT_NO_THROW(text1 | modmer_hash(gapped_shape, 2));
+    EXPECT_THROW((text3 | modmer_hash(gapped_shape, 1)), std::invalid_argument);
 }
 
 TEST_F(modmer_hash_test, combinability)

@@ -401,10 +401,6 @@ struct modmer_fn
         static_assert(std::ranges::forward_range<urng1_t>,
                       "The range parameter to views::modmer must model std::ranges::forward_range.");
 
-        if (mod_used == 1) // Would just return urange1 without any changes
-            throw std::invalid_argument{"The chosen mod_used is not valid. "
-                                        "Please choose a value greater than 1 or use two ranges."};
-
         return modmer_view{urange1, mod_used};
     }
 };

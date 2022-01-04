@@ -140,7 +140,7 @@ TEST_F(modmer_test, gapped_kmer_hash)
     auto v1 = text1 | gapped_kmer_view;
     EXPECT_RANGE_EQ(result1_distance, (seqan3::detail::modmer_view<decltype(v1), true>(v1, 2)));
     auto v2 = text3 | gapped_kmer_view;
-    EXPECT_RANGE_EQ(result3_distance, (seqan3::detail::modmer_view<decltype(v1), true>(v2, 2)));
+    EXPECT_RANGE_EQ(result3_distance, (seqan3::detail::modmer_view<decltype(v2), true>(v2, 2)));
 }
 
 TEST_F(modmer_test, combinability)

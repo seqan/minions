@@ -21,7 +21,7 @@
 
 #include "../../lib/seqan3/test/unit/range/iterator_test_template.hpp"
 
-#include "minimiser_distance.hpp"
+#include "minimiser_hash_distance.hpp"
 
 using seqan3::operator""_dna4;
 using seqan3::operator""_shape;
@@ -177,6 +177,7 @@ TEST_F(minimiser_test, ungapped_kmer_hash)
     EXPECT_TRUE(std::ranges::empty(empty_view2));
     EXPECT_RANGE_EQ(result3_ungapped, (seqan3::detail::minimiser_distance_view{text3 | kmer_view, text3 | rev_kmer_view, 5}));
     EXPECT_RANGE_EQ(result3_ungapped_no_rev, text3 | kmer_view | minimiser_no_rev_view);
+    EXPECT_THROW((text3 | minimiser_hash_distance(seqan3::ungapped{4}, seqan3::window_size{3})), std::invalid_argument);
 
 }
 
@@ -197,6 +198,7 @@ TEST_F(minimiser_test, gapped_kmer_hash)
                                                                     text3 | rev_gapped_kmer_view,
                                                                     5}));
     EXPECT_RANGE_EQ(result3_gapped_no_rev, text3 | gapped_kmer_view | minimiser_no_rev_view);
+    EXPECT_THROW((text3 | minimiser_hash_distance(0b1001_shape, seqan3::window_size{3})), std::invalid_argument);
 }
 
 TEST_F(minimiser_test, window_too_big)
