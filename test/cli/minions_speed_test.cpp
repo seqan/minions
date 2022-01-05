@@ -32,7 +32,7 @@ TEST_F(cli_test, minimiser)
 
 TEST_F(cli_test, modmer)
 {
-    cli_test_result result = execute_app("minions speed --method modmer -k 19 -w 19 ", data("example1.fasta"));
+    cli_test_result result = execute_app("minions speed --method modmer -k 19 -w 2 ", data("example1.fasta"));
     EXPECT_EQ(result.exit_code, 0);
     EXPECT_EQ(result.out, std::string{});
     EXPECT_EQ(result.err, std::string{});
@@ -41,6 +41,22 @@ TEST_F(cli_test, modmer)
 TEST_F(cli_test, strobemer)
 {
     cli_test_result result = execute_app("minions speed --method strobemer -k 19 --w-min 16 --w-max 30 --order 2 --randstrobemers", data("example1.fasta"));
+    EXPECT_EQ(result.exit_code, 0);
+    EXPECT_EQ(result.out, std::string{});
+    EXPECT_EQ(result.err, std::string{});
+}
+
+TEST_F(cli_test, hybridstrobemer)
+{
+    cli_test_result result = execute_app("minions speed --method strobemer -k 19 --w-min 16 --w-max 30 --order 2 --hybrid", data("example1.fasta"));
+    EXPECT_EQ(result.exit_code, 0);
+    EXPECT_EQ(result.out, std::string{});
+    EXPECT_EQ(result.err, std::string{});
+}
+
+TEST_F(cli_test, minstrobers)
+{
+    cli_test_result result = execute_app("minions speed --method strobemer -k 19 --w-min 16 --w-max 30 --order 2 --minstrobers", data("example1.fasta"));
     EXPECT_EQ(result.exit_code, 0);
     EXPECT_EQ(result.out, std::string{});
     EXPECT_EQ(result.err, std::string{});
