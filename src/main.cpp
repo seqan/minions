@@ -72,16 +72,8 @@ int coverage(seqan3::argument_parser & parser)
         return -1;
     }
 
-    try
-    {
-        string_to_methods(method, args.name);
-        do_coverage(sequence_file, args);
-    }
-    catch (const std::invalid_argument & e)
-    {
-        std::cerr << e.what() << std::endl;
-        return -1;
-    }
+    string_to_methods(method, args.name);
+    do_coverage(sequence_file, args);
 
     return 0;
 }
@@ -110,16 +102,9 @@ int speed(seqan3::argument_parser & parser)
         return -1;
     }
 
-    try
-    {
-        string_to_methods(method, args.name);
-        do_comparison(sequence_files, args);
-    }
-    catch (const std::invalid_argument & e)
-    {
-        std::cerr << e.what() << std::endl;
-        return -1;
-    }
+    string_to_methods(method, args.name);
+    do_comparison(sequence_files, args);
+
 
     return 0;
 }
