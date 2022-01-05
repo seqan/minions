@@ -14,25 +14,25 @@ TEST_F(cli_test, no_options)
     EXPECT_EQ(result.err, std::string{});
 }
 
-TEST_F(cli_test, kmer)
-{
-    cli_test_result result = execute_app("minions coverage --method kmer -k 19", data("example1.fasta"));
-    EXPECT_EQ(result.exit_code, 0);
-    EXPECT_EQ(result.out, std::string{});
-    EXPECT_EQ(result.err, std::string{});
-}
-
-TEST_F(cli_test, gapped_kmer)
-{
-    cli_test_result result = execute_app("minions coverage --method kmer --shape 524223", data("example1.fasta"));
-    EXPECT_EQ(result.exit_code, 0);
-    EXPECT_EQ(result.out, std::string{});
-    EXPECT_EQ(result.err, std::string{});
-}
-
 TEST_F(cli_test, minimiser)
 {
     cli_test_result result = execute_app("minions coverage --method minimiser -k 19 -w 19 ", data("example1.fasta"));
+    EXPECT_EQ(result.exit_code, 0);
+    EXPECT_EQ(result.out, std::string{});
+    EXPECT_EQ(result.err, std::string{});
+}
+
+TEST_F(cli_test, gapped_minimiser)
+{
+    cli_test_result result = execute_app("minions coverage --method minimiser -k 19 -w 19 --shape 524223", data("example1.fasta"));
+    EXPECT_EQ(result.exit_code, 0);
+    EXPECT_EQ(result.out, std::string{});
+    EXPECT_EQ(result.err, std::string{});
+}
+
+TEST_F(cli_test, modmer)
+{
+    cli_test_result result = execute_app("minions coverage --method modmer -k 19 -w 2 ", data("example1.fasta"));
     EXPECT_EQ(result.exit_code, 0);
     EXPECT_EQ(result.out, std::string{});
     EXPECT_EQ(result.err, std::string{});
@@ -44,7 +44,7 @@ TEST_F(cli_test, wrong_method)
     std::string expected
     {
         "Error. Incorrect command line input for coverage. Validation failed "
-        "for option --method: Value submer is not one of [kmer,minimiser].\n"
+        "for option --method: Value submer is not one of [kmer,minimiser,modmer].\n"
     };
 
     EXPECT_EQ(result.exit_code, 0);
