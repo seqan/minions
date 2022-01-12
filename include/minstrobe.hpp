@@ -53,12 +53,12 @@ private:
 
     //!\brief The first underlying range.
     urng1_t urange1{};
+
+    //!\brief minimum, maximum, and order (n) values
     size_t window_min{};
     size_t window_max{};
     size_t n{};
-    //!\brief The number of values in one window.
     
-
     template <bool const_range>
     class basic_iterator;
 
@@ -81,7 +81,9 @@ public:
     /*!\brief Construct from a view and a given number of values in one window.
     * \param[in] urange1     The input range to process. Must model std::ranges::viewable_range and
     *                        std::ranges::forward_range.
-    * \param[in] mod_used The number of values in one window.
+    * \param[in] window_min  The minimum value to start the next window
+    * \param[in] window_max  The maximum value to start the next window
+    * \param[in] n           The order of minstrobes
     */
     minstrobe_view(urng1_t urange1, size_t const window_min, size_t const window_max, size_t const n) :
         urange1{std::move(urange1)},
@@ -95,7 +97,9 @@ public:
                              from urng1_t.
     * \param[in] urange1     The input range to process. Must model std::ranges::viewable_range and
     *                        std::ranges::forward_range.
-    * \param[in] mod_used The number of values in one window.
+    * \param[in] window_min  The minimum value to start the next window
+    * \param[in] window_max  The maximum value to start the next window
+    * \param[in] n           The order of minstrobes
     */
     template <typename other_urng1_t>
     //!\cond
@@ -191,7 +195,7 @@ public:
     using difference_type = std::ranges::range_difference_t<urng1_t>;
     //!\brief Value type of this iterator.
     using value_t = std::ranges::range_value_t<urng1_t>;
-    
+    //!\brief Value type of the output.
     using value_type = std::tuple<value_t, value_t>;
     //!\brief The pointer type.
     using pointer = void;
@@ -227,13 +231,15 @@ public:
               of values per window.
     * \param[in] urng1_iterator Iterator pointing to the first position of the first std::totally_ordered range.
     * \param[in] urng1_sentinel Iterator pointing to the last position of the first std::totally_ordered range.
-    * \param[in] mod_used The number of values in one window.
+    * \param[in] window_min  The minimum value to start the next window
+    * \param[in] window_max  The maximum value to start the next window
+    * \param[in] n           The order of minstrobes
     *
     * \details
     *
-    * Looks at the number of values per window in two ranges, returns the smallest between both as minstrobe and
-    * shifts then by one to repeat this action. If a minstrobe in consecutive windows is the same, it is returned only
-    * once.
+    * Looks at the number of values per window with two iterators. First iterator adds the next value in the tuple as
+    * the first strobe. The second iterator adds the minimum value of the window to the second position of the tuple.
+    * 
     */
     basic_iterator(urng1_iterator_t urng1_iterator,
                    urng1_sentinel_t urng1_sentinel,
@@ -243,9 +249,6 @@ public:
         urng1_iterator{std::move(urng1_iterator)},
         urng1_sentinel{std::move(urng1_sentinel)}
     {
-        size_t size = std::ranges::distance(urng1_iterator, urng1_sentinel);
-        size_t p_req = ((n-1)*window_max) + 1;
-	n = size - p_req + 1;
         window_first(window_min, window_max);
     }
     //!\}
@@ -319,15 +322,14 @@ private:
     //!\brief The offset relative to the beginning of the window where the minimizer value is found.
     size_t minstrobe_position_offset{};
 
-    //!\brief Iterator to the rightmost value of one window.
+    //!\brief Iterator to the first value of minstrobe.
     urng1_iterator_t urng1_iterator{};
-    //!brief Iterator to last element in range.
+    //!\brief Iterator to the right most value of the window.
+    urng1_iterator_t second_iterator{};
+    //!\brief Iterator to last element in range.
     urng1_sentinel_t urng1_sentinel{};
-    //!\brief Iterator to the rightmost value of one window of the second range.
-
 
     //!\brief Stored values per window. It is necessary to store them, because a shift can remove the current minstrobe.
-    urng1_iterator_t second_iterator{};
     std::deque<value_t> window_values{};
     size_t window_size{};
     bool end{};
@@ -337,23 +339,25 @@ private:
         while (!next_minstrobe()) {}
     }
 
-    //!\brief Returns new window value.
+    //!\brief Returns new window value of the first iterator.
     auto window_value() const
     {
         return *urng1_iterator;
     }
     
+    //!\brief Returns new window value of the second iterator.
     auto second_window_value() const
     {
         return *second_iterator;
     }
 
-    //!\brief Advances the window to the next position.
+    //!\brief Advances the window of the first iterator to the next position.
     void advance_window()
     {
         ++urng1_iterator;
     }
     
+    //!\brief Advances the window of the second iterator to the next position.
     void advance_second_window()
     {
         ++second_iterator;
@@ -464,8 +468,10 @@ struct minstrobe_fn
      * \tparam urng1_t        The type of the input range to process. Must model std::ranges::viewable_range.
      * \param[in] urange1     The input range to process. Must model std::ranges::viewable_range and
      *                        std::ranges::forward_range.
-     * \param[in] mod_used The number of values in one window.
-     * \returns  A range of converted values.
+     * \param[in] window_min  The minimum value to start the next window
+     * \param[in] window_max  The maximum value to start the next window
+     * \param[in] n           The order of minstrobes
+     * \returns  A range of converted values in tuples.
      */
     template <std::ranges::range urng1_t>
     constexpr auto operator()(urng1_t && urange1, size_t const window_min, size_t const window_max, size_t const n) const
