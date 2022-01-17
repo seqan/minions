@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hossein Eizadi Moghadam <hosseinem AT fu-berlin.de>
- * \brief Provides syncmer.
+ * \brief Provides opensyncmer.
  */
 
 #pragma once
@@ -25,14 +25,14 @@
 namespace seqan3::detail
 {
 // ---------------------------------------------------------------------------------------------------------------------
-// syncmer_view class
+// opensyncmer_view class
 // ---------------------------------------------------------------------------------------------------------------------
 
-/*!\brief The type returned by syncmer.
+/*!\brief The type returned by opensyncmer.
  * \tparam urng1_t The type of the underlying range, must model std::ranges::forward_range, the reference type must
  *                 model std::totally_ordered. The typical use case is that the reference type is the result of
  *                 seqan3::kmer_hash.
- * \tparam measure_distance If true, then not the actual syncmers are returned, but the distances of the syncmers.
+ * \tparam measure_distance If true, then not the actual opensyncmers are returned, but the distances of the opensyncmers.
  * \implements std::ranges::view
  * \ingroup search_views
  *
@@ -41,11 +41,11 @@ namespace seqan3::detail
 
  */
 template <std::ranges::view urng1_t, std::ranges::view urng2_t>
-class syncmer_view : public std::ranges::view_interface<syncmer_view<urng1_t, urng2_t>>
+class opensyncmer_view : public std::ranges::view_interface<opensyncmer_view<urng1_t, urng2_t>>
 {
 private:
-    static_assert(std::ranges::forward_range<urng1_t>, "The syncmer_view only works on forward_ranges.");
-    static_assert(std::ranges::forward_range<urng2_t>, "The syncmer_view only works on forward_ranges.");
+    static_assert(std::ranges::forward_range<urng1_t>, "The opensyncmer_view only works on forward_ranges.");
+    static_assert(std::ranges::forward_range<urng2_t>, "The opensyncmer_view only works on forward_ranges.");
     static_assert(std::totally_ordered<std::ranges::range_reference_t<urng1_t>>,
                   "The reference type of the underlying range must model std::totally_ordered.");
     static_assert(std::totally_ordered<std::ranges::range_reference_t<urng2_t>>,
@@ -66,7 +66,7 @@ private:
     template <bool const_range>
     class basic_iterator;
 
-    //!\brief The sentinel type of the syncmer_view.
+    //!\brief The sentinel type of the opensyncmer_view.
     using sentinel = std::default_sentinel_t;
 
 public:
@@ -74,20 +74,20 @@ public:
      * \{
      */
      /// \cond Workaround_Doxygen
-    syncmer_view() requires  std::default_initializable<urng1_t> && std::default_initializable<urng2_t> = default; //!< Defaulted.
+    opensyncmer_view() requires  std::default_initializable<urng1_t> && std::default_initializable<urng2_t> = default; //!< Defaulted.
     /// \endcond
-    syncmer_view(syncmer_view const & rhs) = default; //!< Defaulted.
-    syncmer_view(syncmer_view && rhs) = default; //!< Defaulted.
-    syncmer_view & operator=(syncmer_view const & rhs) = default; //!< Defaulted.
-    syncmer_view & operator=(syncmer_view && rhs) = default; //!< Defaulted.
-    ~syncmer_view() = default; //!< Defaulted.
+    opensyncmer_view(opensyncmer_view const & rhs) = default; //!< Defaulted.
+    opensyncmer_view(opensyncmer_view && rhs) = default; //!< Defaulted.
+    opensyncmer_view & operator=(opensyncmer_view const & rhs) = default; //!< Defaulted.
+    opensyncmer_view & operator=(opensyncmer_view && rhs) = default; //!< Defaulted.
+    ~opensyncmer_view() = default; //!< Defaulted.
 
     /*!\brief Construct from a view and a given number of values in one window.
     * \param[in] urange1     The input range to process. Must model std::ranges::viewable_range and
     *                        std::ranges::forward_range.
     * \param[in] mod_used The number of values in one window.
     */
-    syncmer_view(urng1_t urange1, urng2_t urange2, size_t const K, size_t const S) :
+    opensyncmer_view(urng1_t urange1, urng2_t urange2, size_t const K, size_t const S) :
         urange1{std::move(urange1)},
         urange2{std::move(urange2)},
         K{K},
@@ -108,7 +108,7 @@ public:
                   std::ranges::viewable_range<other_urng2_t> &&
                             std::constructible_from<urng2_t, ranges::ref_view<std::remove_reference_t<other_urng2_t>>>)
     //!\endcond
-    syncmer_view(other_urng1_t && urange1, other_urng2_t && urange2, size_t const K, size_t const S) :
+    opensyncmer_view(other_urng1_t && urange1, other_urng2_t && urange2, size_t const K, size_t const S) :
         urange1{std::views::all(std::forward<other_urng1_t>(urange1))},
         urange2{std::views::all(std::forward<other_urng2_t>(urange2))},
         K{K},
@@ -175,10 +175,10 @@ public:
     //!\}
 };
 
-//!\brief Iterator for calculating syncmers.
+//!\brief Iterator for calculating opensyncmers.
 template <std::ranges::view urng1_t, std::ranges::view urng2_t>
 template <bool const_range>
-class syncmer_view<urng1_t, urng2_t>::basic_iterator
+class opensyncmer_view<urng1_t, urng2_t>::basic_iterator
 {
 private:
     //!\brief The sentinel type of the first underlying range.
@@ -223,7 +223,7 @@ public:
     //!\cond
         requires const_range
     //!\endcond
-        : syncmer_value{std::move(it.syncmer_value)},
+        : opensyncmer_value{std::move(it.opensyncmer_value)},
           urng1_iterator{std::move(it.urng1_iterator)},
           urng2_iterator{std::move(it.urng2_iterator)},
           urng1_sentinel{std::move(it.urng1_sentinel)}
@@ -237,8 +237,8 @@ public:
     *
     * \details
     *
-    * Looks at the number of values per window in two ranges, returns the smallest between both as syncmer and
-    * shifts then by one to repeat this action. If a syncmer in consecutive windows is the same, it is returned only
+    * Looks at the number of values per window in two ranges, returns the smallest between both as opensyncmer and
+    * shifts then by one to repeat this action. If a opensyncmer in consecutive windows is the same, it is returned only
     * once.
     */
     basic_iterator(urng1_iterator_t urng1_iterator,
@@ -254,7 +254,7 @@ public:
     }
     //!\}
 
-    //!\anchor basic_iterator_comparison_syncmer
+    //!\anchor basic_iterator_comparison_opensyncmer
     //!\name Comparison operators
     //!\{
 
@@ -270,25 +270,25 @@ public:
         return !(lhs == rhs);
     }
 
-    //!\brief Compare to the sentinel of the syncmer_view.
+    //!\brief Compare to the sentinel of the opensyncmer_view.
     friend bool operator==(basic_iterator const & lhs, sentinel const &)
     {
         return lhs.urng1_iterator == lhs.urng1_sentinel;
     }
 
-    //!\brief Compare to the sentinel of the syncmer_view.
+    //!\brief Compare to the sentinel of the opensyncmer_view.
     friend bool operator==(sentinel const & lhs, basic_iterator const & rhs)
     {
         return rhs == lhs;
     }
 
-    //!\brief Compare to the sentinel of the syncmer_view.
+    //!\brief Compare to the sentinel of the opensyncmer_view.
     friend bool operator!=(sentinel const & lhs, basic_iterator const & rhs)
     {
         return !(lhs == rhs);
     }
 
-    //!\brief Compare to the sentinel of the syncmer_view.
+    //!\brief Compare to the sentinel of the opensyncmer_view.
     friend bool operator!=(basic_iterator const & lhs, sentinel const & rhs)
     {
         return !(lhs == rhs);
@@ -298,7 +298,7 @@ public:
     //!\brief Pre-increment.
     basic_iterator & operator++() noexcept
     {
-        next_unique_syncmer();
+        next_unique_opensyncmer();
         return *this;
     }
 
@@ -306,22 +306,22 @@ public:
     basic_iterator operator++(int) noexcept
     {
         basic_iterator tmp{*this};
-        next_unique_syncmer();
+        next_unique_opensyncmer();
         return tmp;
     }
 
-    //!\brief Return the syncmer.
+    //!\brief Return the opensyncmer.
     value_type operator*() const noexcept
     {
-        return syncmer_value;
+        return opensyncmer_value;
     }
 
 private:
-    //!\brief The syncmer value.
-    value_type syncmer_value{};
+    //!\brief The opensyncmer value.
+    value_type opensyncmer_value{};
 
     //!\brief The offset relative to the beginning of the window where the minimizer value is found.
-    size_t syncmer_position_offset{};
+    size_t opensyncmer_position_offset{};
 
     //!\brief Iterator to the rightmost value of one window.
     urng1_iterator_t urng1_iterator{};
@@ -332,13 +332,13 @@ private:
     //!\brief Iterator to the rightmost value of one window of the second range.
     size_t w_size{};
 
-    //!\brief Stored values per window. It is necessary to store them, because a shift can remove the current syncmer.
+    //!\brief Stored values per window. It is necessary to store them, because a shift can remove the current opensyncmer.
     std::deque<value_type> window_values{};
 
     //!\brief Increments iterator by 1.
-    void next_unique_syncmer()
+    void next_unique_opensyncmer()
     {
-        while (!next_syncmer()) {}
+        while (!next_opensyncmer()) {}
     }
 
     //!\brief Returns new window value.
@@ -361,7 +361,7 @@ private:
     }
 
 
-    //!\brief Calculates syncmers for the first window.
+    //!\brief Calculates opensyncmers for the first window.
     void window_first(const size_t K, const size_t S)
     {
 	w_size = K - S + 1;
@@ -378,31 +378,24 @@ private:
 
 
         auto smallest_s_it = std::ranges::min_element(window_values, std::less<value_type>{});
-	    syncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
+	    opensyncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
 
-	if (syncmer_position_offset == 0) {
-		auto syncmer_it = urng2_iterator;
-		syncmer_value = *syncmer_it;
+	if (opensyncmer_position_offset == 0) {
+		auto opensyncmer_it = urng2_iterator;
+		opensyncmer_value = *opensyncmer_it;
 	}
-
-	else if ( syncmer_position_offset == w_size - 1 ) {
-		auto syncmer_it = urng2_iterator;
-		syncmer_value = *syncmer_it;
-	};
-
-
 
     }
 
-    /*!\brief Calculates the next syncmer value.
-     * \returns True, if new syncmer is found or end is reached. Otherwise returns false.
+    /*!\brief Calculates the next opensyncmer value.
+     * \returns True, if new opensyncmer is found or end is reached. Otherwise returns false.
      * \details
      * For the following windows, we remove the first window value (is now not in window_values) and add the new
      * value that results from the window shifting.
      */
-    bool next_syncmer()
+    bool next_opensyncmer()
     {
-    	//for (std::vector<value_type> vec : syncmers){
+    	//for (std::vector<value_type> vec : opensyncmers){
     	//	for (value_type i : vec){ std::cout << i << std::endl;};
     	//};
     	advance_window();
@@ -416,45 +409,36 @@ private:
         window_values.pop_front();
         window_values.push_back(new_value);
 
-	if (syncmer_position_offset == 0)
+	if (opensyncmer_position_offset == 0)
 	{
 
 		auto smallest_s_it = std::ranges::min_element(window_values, std::less<value_type>{});
 		
-		syncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
+		opensyncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
 		
-		if (syncmer_position_offset == 0) {
+		if (opensyncmer_position_offset == 0) {
 
-			auto syncmer_it = urng2_iterator;
-			syncmer_value = *syncmer_it;
+			auto opensyncmer_it = urng2_iterator;
+			opensyncmer_value = *opensyncmer_it;
 			return true;
 		};
-
-		if ( syncmer_position_offset == w_size - 1 ) {
-			auto syncmer_it = urng2_iterator;
-			syncmer_value = *syncmer_it;
-			return true;
-		};
-
 	}
 
-	else if (new_value < *(window_values.begin()+(syncmer_position_offset-1)))
+	else if (new_value < *(window_values.begin()+(opensyncmer_position_offset-1)))
 	     {
-	          syncmer_position_offset = w_size - 1;
-		  auto syncmer_it = urng2_iterator;
-		  syncmer_value = *syncmer_it;
-	          return true;
+	          opensyncmer_position_offset = w_size - 1;
+	          return false;
 	     }
-	 else if (syncmer_position_offset == 1){
-		  auto syncmer_it = urng2_iterator;
-		  syncmer_value = *syncmer_it;
-		  --syncmer_position_offset;
+	 else if (opensyncmer_position_offset == 1){
+		  auto opensyncmer_it = urng2_iterator;
+		  opensyncmer_value = *opensyncmer_it;
+		  --opensyncmer_position_offset;
 		  return true;
 	 };
 
 
 
-	--syncmer_position_offset;
+	--opensyncmer_position_offset;
 	return false;
     }
 };
@@ -463,18 +447,18 @@ private:
 
 //!\brief A deduction guide for the view class template.
 template <std::ranges::viewable_range rng1_t, std::ranges::viewable_range rng2_t>
-syncmer_view(rng1_t &&, rng2_t &&, size_t const K, size_t const S) -> syncmer_view<std::views::all_t<rng1_t>, std::views::all_t<rng2_t>>;
+opensyncmer_view(rng1_t &&, rng2_t &&, size_t const K, size_t const S) -> opensyncmer_view<std::views::all_t<rng1_t>, std::views::all_t<rng2_t>>;
 
 
 
 // ---------------------------------------------------------------------------------------------------------------------
-// syncmer_fn (adaptor definition)
+// opensyncmer_fn (adaptor definition)
 // ---------------------------------------------------------------------------------------------------------------------
 
 //![adaptor_def]
-//!\brief syncmer's range adaptor object type (non-closure).
+//!\brief opensyncmer's range adaptor object type (non-closure).
 //!\ingroup search_views
-struct syncmer_fn
+struct opensyncmer_fn
 {
     //!\brief Store the number of values in one window and return a range adaptor closure object.
     template <std::ranges::range urng2_t>
@@ -495,15 +479,15 @@ struct syncmer_fn
     constexpr auto operator()(urng1_t && urange1, urng2_t && urange2, size_t const K, size_t const S) const
     {
         static_assert(std::ranges::viewable_range<urng1_t>,
-                      "The range parameter to views::syncmer cannot be a temporary of a non-view range.");
+                      "The range parameter to views::opensyncmer cannot be a temporary of a non-view range.");
         static_assert(std::ranges::forward_range<urng1_t>,
-                      "The range parameter to views::syncmer must model std::ranges::forward_range.");
+                      "The range parameter to views::opensyncmer must model std::ranges::forward_range.");
 
         if (K == 1) // Would just return urange1 without any changes
             throw std::invalid_argument{"The chosen K-mer and window size are not valid. "
                                         "Please choose a value that satisfize the given condition."};
 
-        return syncmer_view{urange1, urange2, K, S};
+        return opensyncmer_view{urange1, urange2, K, S};
     }
 };
 //![adaptor_def]
@@ -512,7 +496,7 @@ struct syncmer_fn
 
 namespace seqan3::views
 {
-/*!\brief Computes syncmers for a range of comparable values. A syncmer is a value that fullfills the
+/*!\brief Computes opensyncmers for a range of comparable values. A opensyncmer is a value that fullfills the
           condition value % mod_used.
  * \tparam urng_t The type of the first range being processed. See below for requirements. [template
  *                 parameter is omitted in pipe notation]
@@ -544,6 +528,6 @@ namespace seqan3::views
  *
  * See the views views submodule documentation for detailed descriptions of the view properties.
  */
-inline constexpr auto syncmer = detail::syncmer_fn{};
+inline constexpr auto opensyncmer = detail::opensyncmer_fn{};
 
 } // namespace seqan3::views
