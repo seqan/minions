@@ -49,6 +49,39 @@ void parsing(range_arguments & args)
     args.seed_se = seqan3::seed{adjust_seed(args.k_size, se)};
 }
 
+int accuracy(seqan3::argument_parser & parser)
+{
+    range_arguments args{};
+    std::filesystem::path input_file{};
+    parser.add_option(input_file, 'i', "in", "Input file, either an ibf ending "
+                                             "with '.ibf' or a file ending with "
+                                             "a '.lst' with paths to the "
+                                             "preprocessed files.",
+                                             seqan3::option_spec::required);
+    parser.add_option(args.path_out, 'o', "out", "Directory, where output files should be saved.");
+    parser.add_option(args.k_size, 'k', "kmer-size", "Define kmer size.");
+    std::string method{};
+    parser.add_option(method, '\0', "method", "Pick your method.", seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer"});
+
+    read_range_arguments_minimiser(parser, args);
+
+    try
+    {
+        parser.parse();
+        parsing(args);
+    }
+    catch (seqan3::argument_parser_error const & ext)                     // catch user errors
+    {
+        seqan3::debug_stream << "Error. Incorrect command line input for accuracy. " << ext.what() << "\n";
+        return -1;
+    }
+
+    string_to_methods(method, args.name);
+    //(input_file, args);
+
+    return 0;
+}
+
 int coverage(seqan3::argument_parser & parser)
 {
     range_arguments args{};
@@ -112,7 +145,7 @@ int speed(seqan3::argument_parser & parser)
 int main(int argc, char ** argv)
 {
     seqan3::argument_parser top_level_parser{"minions", argc, argv, seqan3::update_notifications::on,
-                                            {"coverage", "speed"}};
+                                            {"accuracy", "coverage", "speed"}};
 
     // Parser
     top_level_parser.info.author = "Mitra Darvish"; // give parser some infos
@@ -130,7 +163,9 @@ int main(int argc, char ** argv)
 
     seqan3::argument_parser & sub_parser = top_level_parser.get_sub_parser(); // hold a reference to the sub_parser
 
-    if (sub_parser.info.app_name == std::string_view{"minions-coverage"})
+    if (sub_parser.info.app_name == std::string_view{"minions-accuracy"})
+        accuracy(sub_parser);
+    else if (sub_parser.info.app_name == std::string_view{"minions-coverage"})
         coverage(sub_parser);
     else if (sub_parser.info.app_name == std::string_view{"minions-speed"})
         speed(sub_parser);
