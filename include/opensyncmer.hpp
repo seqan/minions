@@ -45,9 +45,9 @@ private:
     static_assert(std::ranges::forward_range<urng1_t>, "The opensyncmer_view only works on forward_ranges.");
     static_assert(std::ranges::forward_range<urng2_t>, "The opensyncmer_view only works on forward_ranges.");
     static_assert(std::totally_ordered<std::ranges::range_reference_t<urng1_t>>,
-                  "The reference type of the underlying range must model std::totally_ordered.");
+                  "The reference type of the first underlying range must model std::totally_ordered.");
     static_assert(std::totally_ordered<std::ranges::range_reference_t<urng2_t>>,
-                  "The reference type of the underlying range must model std::totally_ordered.");
+                  "The reference type of the second underlying range must model std::totally_ordered.");
 
     //!\brief Whether the given ranges are const_iterable.
     static constexpr bool const_iterable = seqan3::const_iterable_range<urng1_t>;
@@ -58,9 +58,9 @@ private:
     //!\brief The second underlying range.
     urng2_t urange2{};
     //!\brief The size of k-mer.
-    size_t K{};
+    size_t kmer_size{};
     //!\brief The size of s-mer.
-    size_t S{};
+    size_t smer_size{};
 
     template <bool const_range>
     class basic_iterator;
@@ -84,23 +84,23 @@ public:
     /*!\brief Construct from a view and a given number of values in one window.
     * \param[in] urange1     The input range to process. Must model std::ranges::viewable_range and
     *                        std::ranges::forward_range.
-    * \param[in] urange2     The input range to process. Must model std::ranges::viewable_range and
+    * \param[in] urange2     The second input range to process. Must model std::ranges::viewable_range and
     *                        std::ranges::forward_range.
-    * \param[in] K The k-mer size used.
-    * \param[in] S The s-mer size used.
+    * \param[in] kmer_size The k-mer size used.
+    * \param[in] smer_size The s-mer size used.
     */
-    opensyncmer_view(urng1_t urange1, urng2_t urange2, size_t const K, size_t const S) :
+    opensyncmer_view(urng1_t urange1, urng2_t urange2, size_t const kmer_size, size_t const smer_size) :
         urange1{std::move(urange1)},
         urange2{std::move(urange2)},
-        K{K},
-        S{S}
+        kmer_size{kmer_size},
+        smer_size{smer_size}
     {}
 
     /*!\brief Construct from a non-view that can be view-wrapped and a given number of values in one window.
     * \tparam other_urng1_t  The type of another urange. Must model std::ranges::viewable_range and be constructible from urng1_t.
     * \tparam other_urng2_t  The type of another urange. Must model std::ranges::viewable_range and be constructible from urng2_t.
-    * \param[in] K The k-mer size used.
-    * \param[in] S The s-mer size used.
+    * \param[in] kmer_size The k-mer size used.
+    * \param[in] smer_size The s-mer size used.
     */
     template <typename other_urng1_t, typename other_urng2_t>
     //!\cond
@@ -109,11 +109,11 @@ public:
                   std::ranges::viewable_range<other_urng2_t> &&
                             std::constructible_from<urng2_t, ranges::ref_view<std::remove_reference_t<other_urng2_t>>>)
     //!\endcond
-    opensyncmer_view(other_urng1_t && urange1, other_urng2_t && urange2, size_t const K, size_t const S) :
+    opensyncmer_view(other_urng1_t && urange1, other_urng2_t && urange2, size_t const kmer_size, size_t const smer_size) :
         urange1{std::views::all(std::forward<other_urng1_t>(urange1))},
         urange2{std::views::all(std::forward<other_urng2_t>(urange2))},
-        K{K},
-        S{S}
+        kmer_size{kmer_size},
+        smer_size{smer_size}
     {}
 
     /*!\name Iterators
@@ -137,8 +137,8 @@ public:
         return {std::ranges::begin(urange1),
                 std::ranges::begin(urange2),
                 std::ranges::end(urange1),
-                K,
-                S};
+                kmer_size,
+                smer_size};
     }
 
     //!\copydoc begin()
@@ -150,8 +150,8 @@ public:
         return {std::ranges::cbegin(urange1),
                 std::ranges::cbegin(urange2),
                 std::ranges::cend(urange1),
-                K,
-                S};
+                kmer_size,
+                smer_size};
     }
 
     /*!\brief Returns an iterator to the element following the last element of the range.
@@ -234,10 +234,10 @@ public:
     /*!\brief Construct from begin and end iterators of a given range over std::totally_ordered values, and the number
               of values per window.
     * \param[in] urng1_iterator Iterator pointing to the first position of the first std::totally_ordered range.
-    * \param[in] urng2_iterator Iterator pointing to the first position of the first std::totally_ordered range.
+    * \param[in] urng2_iterator Iterator pointing to the first position of the second std::totally_ordered range.
     * \param[in] urng1_sentinel Iterator pointing to the last position of the first std::totally_ordered range.
-    * \param[in] K The k-mer size used.
-    * \param[in] S The s-mer size used.
+    * \param[in] kmer_size The k-mer size used.
+    * \param[in] smer_size The s-mer size used.
     *
     * \details
     *
@@ -248,13 +248,13 @@ public:
     basic_iterator(urng1_iterator_t urng1_iterator,
                    urng2_iterator_t urng2_iterator,
                    urng1_sentinel_t urng1_sentinel,
-                   size_t K,
-                   size_t S) :
+                   size_t kmer_size,
+                   size_t smer_size) :
         urng1_iterator{std::move(urng1_iterator)},
         urng2_iterator{std::move(urng2_iterator)},
         urng1_sentinel{std::move(urng1_sentinel)}
     {
-        window_first(K, S);
+        window_first(kmer_size, smer_size);
     }
     //!\}
 
@@ -370,14 +370,14 @@ private:
 
 
     //!\brief Calculates opensyncmers for the first window.
-    void window_first(const size_t K, const size_t S)
+    void window_first(const size_t kmer_size, const size_t smer_size)
     {
-	w_size = K - S + 1;
+        w_size = kmer_size - smer_size + 1;
 
-	if (w_size == 0u)
+        if (w_size == 0u)
             return;
 
-        for (int i = 1u; i < K - 1 ; ++i)
+        for (int i = 1u; i < kmer_size - 1 ; ++i)
         {
             window_values.push_back(window_value());
             advance_first_window();
@@ -386,12 +386,12 @@ private:
 
 
         auto smallest_s_it = std::ranges::min_element(window_values, std::less<value_type>{});
-	    opensyncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
+        opensyncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
 
-	if (opensyncmer_position_offset == 0) {
-		auto opensyncmer_it = urng2_iterator;
-		opensyncmer_value = *opensyncmer_it;
-	}
+        if (opensyncmer_position_offset == 0) {
+                auto opensyncmer_it = urng2_iterator;
+                opensyncmer_value = *opensyncmer_it;
+        }
 
     }
 
@@ -403,7 +403,7 @@ private:
      */
     bool next_opensyncmer()
     {
-    	advance_window();
+        advance_window();
 
 
         if (urng1_iterator == urng1_sentinel)
@@ -414,37 +414,37 @@ private:
         window_values.pop_front();
         window_values.push_back(new_value);
 
-	if (opensyncmer_position_offset == 0)
-	{
+        if (opensyncmer_position_offset == 0)
+        {
 
-		auto smallest_s_it = std::ranges::min_element(window_values, std::less<value_type>{});
+                auto smallest_s_it = std::ranges::min_element(window_values, std::less<value_type>{});
 
-		opensyncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
+                opensyncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
 
-		if (opensyncmer_position_offset == 0) {
+                if (opensyncmer_position_offset == 0) {
 
-			auto opensyncmer_it = urng2_iterator;
-			opensyncmer_value = *opensyncmer_it;
-			return true;
-		};
-	}
+                        auto opensyncmer_it = urng2_iterator;
+                        opensyncmer_value = *opensyncmer_it;
+                        return true;
+                };
+        }
 
-	else if (new_value < *(window_values.begin()+(opensyncmer_position_offset-1)))
-	     {
-	          opensyncmer_position_offset = w_size - 1;
-	          return false;
-	     }
-	 else if (opensyncmer_position_offset == 1){
-		  auto opensyncmer_it = urng2_iterator;
-		  opensyncmer_value = *opensyncmer_it;
-		  --opensyncmer_position_offset;
-		  return true;
-	 };
+        else if (new_value < *(window_values.begin()+(opensyncmer_position_offset-1)))
+             {
+                  opensyncmer_position_offset = w_size - 1;
+                  return false;
+             }
+         else if (opensyncmer_position_offset == 1){
+                  auto opensyncmer_it = urng2_iterator;
+                  opensyncmer_value = *opensyncmer_it;
+                  --opensyncmer_position_offset;
+                  return true;
+         };
 
 
 
-	--opensyncmer_position_offset;
-	return false;
+        --opensyncmer_position_offset;
+        return false;
     }
 };
 
@@ -452,7 +452,7 @@ private:
 
 //!\brief A deduction guide for the view class template.
 template <std::ranges::viewable_range rng1_t, std::ranges::viewable_range rng2_t>
-opensyncmer_view(rng1_t &&, rng2_t &&, size_t const K, size_t const S) -> opensyncmer_view<std::views::all_t<rng1_t>, std::views::all_t<rng2_t>>;
+opensyncmer_view(rng1_t &&, rng2_t &&, size_t const kmer_size, size_t const smer_size) -> opensyncmer_view<std::views::all_t<rng1_t>, std::views::all_t<rng2_t>>;
 
 
 
@@ -467,36 +467,36 @@ struct opensyncmer_fn
 {
     //!\brief Store the number of values in one window and return a range adaptor closure object.
     template <std::ranges::range urng2_t>
-    constexpr auto operator()(urng2_t urange2, const size_t K, const size_t S) const
+    constexpr auto operator()(urng2_t urange2, const size_t kmer_size, const size_t smer_size) const
     {
-        return adaptor_from_functor{*this, urange2, K, S};
+        return adaptor_from_functor{*this, urange2, kmer_size, smer_size};
     }
 
     /*!\brief Call the view's constructor with two arguments: the underlying view and an integer indicating how many
      *        values one window contains.
-     * \tparam urng1_t        The type of the input range to process. Must model std::ranges::viewable_range.
-     * \tparam urng2_t        The type of the input range to process. Must model std::ranges::viewable_range.
+     * \tparam urng1_t        The type of the first input range to process. Must model std::ranges::viewable_range.
+     * \tparam urng2_t        The type of the second input range to process. Must model std::ranges::viewable_range.
      * \param[in] urange1     The input range to process. Must model std::ranges::viewable_range and
      *                        std::ranges::forward_range.
-     * \param[in] urange2     The input range to process. Must model std::ranges::viewable_range and
+     * \param[in] urange2     The second input range to process. Must model std::ranges::viewable_range and
      *                        std::ranges::forward_range.
-     * \param[in] K The k-mer size used.
-     * \param[in] S The s-mer size used.
+     * \param[in] kmer_size The k-mer size used.
+     * \param[in] smer_size The s-mer size used.
      * \returns  A range of converted values.
      */
     template <std::ranges::range urng1_t, std::ranges::range urng2_t>
-    constexpr auto operator()(urng1_t && urange1, urng2_t && urange2, size_t const K, size_t const S) const
+    constexpr auto operator()(urng1_t && urange1, urng2_t && urange2, size_t const kmer_size, size_t const smer_size) const
     {
         static_assert(std::ranges::viewable_range<urng1_t>,
                       "The range parameter to views::opensyncmer cannot be a temporary of a non-view range.");
         static_assert(std::ranges::forward_range<urng1_t>,
                       "The range parameter to views::opensyncmer must model std::ranges::forward_range.");
 
-        if (K < 1 || S < 0)  // Would just return urange1 without any changes
+        if (kmer_size < 1 || smer_size < 0)  // Would just return urange1 without any changes
             throw std::invalid_argument{"The chosen K-mer or S-mer are not valid. "
                                         "Please choose a value that satisfize the given condition."};
 
-        return opensyncmer_view{urange1, urange2, K, S};
+        return opensyncmer_view{urange1, urange2, kmer_size, smer_size};
     }
 };
 //![adaptor_def]
@@ -510,10 +510,10 @@ namespace seqan3::views
  *                 parameter is omitted in pipe notation]
  * \param[in] urange1     The input range to process. Must model std::ranges::viewable_range and
  *                        std::ranges::forward_range.
- * \param[in] urange2     The input range to process. Must model std::ranges::viewable_range and
+ * \param[in] urange2     The second input range to process. Must model std::ranges::viewable_range and
  *                        std::ranges::forward_range.
- * \param[in] K The k-mer size used.
- * \param[in] S The s-mer size used.
+ * \param[in] kmer_size The k-mer size used.
+ * \param[in] smer_size The s-mer size used.
  * \returns A range of std::totally_ordered where each value is ... See below for the
  *          properties of the returned range.
  * \ingroup search_views
