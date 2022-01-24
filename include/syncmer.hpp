@@ -535,6 +535,11 @@ namespace seqan3::views
  *          properties of the returned range.
  * \ingroup search_views
  *
+ * A Syncmer as defined by [Edgar R.](https://peerj.com/articles/10805.pdf) is a kmer that has its smallest smer 
+ * (s < k) at its start or end. An open-syncmer has its smer at its start. For example for the following sequence
+ * `ACGGCGACGTT` and 5 as `kmer_size`, 2 as `smer_size`, the closed-syncmer values are `ACGGC,CGGCG,GCGAC,ACGTT`
+ * and the open-syncmer values are `ACGGC,CGGCG,ACGTT`.
+ *
  *
  * ### View properties
  *

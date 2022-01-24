@@ -290,7 +290,7 @@ public:
     //!\brief Pre-increment.
     basic_iterator & operator++() noexcept
     {
-        next_unique_minstrobe();
+        next_minstrobe();
         return *this;
     }
 
@@ -298,7 +298,7 @@ public:
     basic_iterator operator++(int) noexcept
     {
         basic_iterator tmp{*this};
-        next_unique_minstrobe();
+        next_minstrobe();
         return tmp;
     }
 
@@ -327,12 +327,6 @@ private:
 
     //!\brief The number of values in one window.
     size_t window_size{};
-
-    //!\brief Increments iterator by 1.
-    void next_unique_minstrobe()
-    {
-        while (!next_minstrobe()) {}
-    }
 
     //!\brief Returns new window value of the first iterator.
     auto window_value() const
@@ -383,12 +377,10 @@ private:
      * For the following windows, we remove the first window value (is now not in window_values) and add the new
      * value that results from the window shifting.
      */
-    bool next_minstrobe()
+    void next_minstrobe()
     {
         advance_windows();
 
-        if (urng1_iterator == urng1_sentinel)
-            return true;
 
         value_t const new_value = first_window_value();
         value_t const sw_new_value = window_value();
@@ -403,18 +395,17 @@ private:
             auto minstrobe_it = std::ranges::min_element(window_values, std::less_equal<value_t>{});
             std::get<1>(minstrobe_value) = *minstrobe_it;
             minstrobe_position_offset = std::distance(std::begin(window_values), minstrobe_it);
-            return true;
+            return;
         }
 
         if (sw_new_value < std::get<1>(minstrobe_value))
         {
             std::get<1>(minstrobe_value) = sw_new_value;
             minstrobe_position_offset = window_values.size() - 1;
-            return true;
+            return;
         }
 
         --minstrobe_position_offset;
-        return true;
     }
 };
 
