@@ -47,16 +47,16 @@ private:
     static_assert(std::totally_ordered<std::ranges::range_reference_t<urng1_t>>,
                   "The reference type of the underlying range must model std::totally_ordered.");
 
-    //!\brief Whether the given ranges are const_iterable
+    //!\brief Whether the given ranges are const_iterable.
     static constexpr bool const_iterable = seqan3::const_iterable_range<urng1_t>;
 
     //!\brief The first underlying range.
     urng1_t urange1{};
 
-    //!\brief lower offset for the position of the next window
+    //!\brief lower offset for the position of the next window.
     size_t window_min{};
 
-    //!\brief upper offset for the position of the next window
+    //!\brief upper offset for the position of the next window.
     size_t window_max{};
 
     template <bool const_range>
@@ -353,9 +353,10 @@ private:
     }
 
     //!\brief Advances the window of the first iterator to the next position.
-    void advance_first_window()
+    void advance_all_windows()
     {
         ++first_iterator;
+	++urng1_iterator;
     }
 
     //!\brief Calculates minstrobes for the first window.
@@ -390,8 +391,7 @@ private:
      */
     bool next_minstrobe()
     {
-    	advance_first_window();
-    	advance_window();
+    	advance_all_windows();
 
         if (urng1_iterator == urng1_sentinel)
             return true;
@@ -443,7 +443,7 @@ minstrobe_view(rng1_t &&, size_t const window_min, size_t const window_max) -> m
 //!\ingroup search_views
 struct minstrobe_fn
 {
-    //!\brief Store the number of values in one window and return a range adaptor closure object.
+    //!\brief Store the number of values in two windows and return a range adaptor closure object.
     constexpr auto operator()(const size_t window_min, const size_t window_max) const
     {
         return adaptor_from_functor{*this, window_min, window_max};
@@ -467,7 +467,7 @@ struct minstrobe_fn
                       "The range parameter to views::minstrobe must model std::ranges::forward_range.");
 
         if (window_max - window_min == 0) // Would just return urange1 without any changes
-            throw std::invalid_argument{"The chosen min and max window are not valid. "
+            throw std::invalid_argument{"The chosen min and max windows are not valid. "
                                         "Please choose a value greater than 1 or use two ranges."};
 
         return minstrobe_view{urange1, window_min, window_max};
@@ -479,8 +479,7 @@ struct minstrobe_fn
 
 namespace seqan3::views
 {
-/*!\brief Computes minstrobes for a range of comparable values. A minstrobe is a value that fullfills the
-          condition value % mod_used.
+/*!\brief Computes minstrobes for a range of comparable values. A minstrobe is a value that is composed of a few single strobes concatenated together, chosen window_min elements apart based on their minimum value in a window.
  * \tparam urng_t The type of the first range being processed. See below for requirements. [template
  *                 parameter is omitted in pipe notation]
  * \param[in] urange1 The range being processed. [parameter is omitted in pipe notation]

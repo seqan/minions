@@ -49,7 +49,7 @@ private:
     static_assert(std::totally_ordered<std::ranges::range_reference_t<urng2_t>>,
                   "The reference type of the underlying range must model std::totally_ordered.");
 
-    //!\brief Whether the given ranges are const_iterable
+    //!\brief Whether the given ranges are const_iterable.
     static constexpr bool const_iterable = seqan3::const_iterable_range<urng1_t>;
     static constexpr bool const_iterable2 = seqan3::const_iterable_range<urng2_t>;
 
@@ -505,7 +505,7 @@ struct opensyncmer_fn
 
 namespace seqan3::views
 {
-/*!\brief Computes opensyncmers for a range of comparable values. A opensyncmer is a kmer that has the its smallest smer at its start or end.
+/*!\brief Computes opensyncmers for a range of comparable values. A opensyncmer is a kmer that has the its smallest smer at its start.
  * \tparam urng_t The type of the first range being processed. See below for requirements. [template
  *                 parameter is omitted in pipe notation]
  * \param[in] urange1     The input range to process. Must model std::ranges::viewable_range and

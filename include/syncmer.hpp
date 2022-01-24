@@ -49,7 +49,7 @@ private:
     static_assert(std::totally_ordered<std::ranges::range_reference_t<urng2_t>>,
                   "The reference type of the underlying range must model std::totally_ordered.");
 
-    //!\brief Whether the given ranges are const_iterable
+    //!\brief Whether the given ranges are const_iterable.
     static constexpr bool const_iterable = seqan3::const_iterable_range<urng1_t>;
     static constexpr bool const_iterable2 = seqan3::const_iterable_range<urng2_t>;
 
