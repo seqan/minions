@@ -390,18 +390,22 @@ private:
         syncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
 
 
-        if (opensyncmer && syncmer_position_offset == 0)
+        if constexpr (opensyncmer)
         {
-            auto syncmer_it = urng2_iterator;
-            syncmer_value = *syncmer_it;
+            if (syncmer_position_offset == 0)
+            {
+                auto syncmer_it = urng2_iterator;
+                syncmer_value = *syncmer_it;
+            };
         }
-
-        else if (!opensyncmer && syncmer_position_offset == 0 || syncmer_position_offset == w_size - 1 ) 
+        else
         {
-            auto syncmer_it = urng2_iterator;
-            syncmer_value = *syncmer_it;
+            if (syncmer_position_offset == 0 || syncmer_position_offset == w_size - 1 )
+            {
+                auto syncmer_it = urng2_iterator;
+                syncmer_value = *syncmer_it;
+            };
         }
-
     }
 
     /*!\brief Calculates the next syncmer value.
@@ -428,30 +432,38 @@ private:
             auto smallest_s_it = std::ranges::min_element(window_values, std::less<value_type>{});
             syncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
 
-            if (opensyncmer && syncmer_position_offset == 0)
+            if constexpr (opensyncmer)
             {
-                auto syncmer_it = urng2_iterator;
-                syncmer_value = *syncmer_it;
-                return true;
+                if (syncmer_position_offset == 0)
+                {
+                    auto syncmer_it = urng2_iterator;
+                    syncmer_value = *syncmer_it;
+                    return true;
+                };
             }
-
-            else if (!opensyncmer && syncmer_position_offset == 0 || syncmer_position_offset == w_size - 1 ) 
+            else
             {
-                auto syncmer_it = urng2_iterator;
-                syncmer_value = *syncmer_it;
-                return true;
-            }            
+                if (syncmer_position_offset == 0 || syncmer_position_offset == w_size - 1 )
+                {
+                    auto syncmer_it = urng2_iterator;
+                    syncmer_value = *syncmer_it;
+                    return true;
+                };
+            };
         }
 
-        else if (!opensyncmer && new_value < *(window_values.begin()+(syncmer_position_offset-1)))
+        else if (new_value < *(window_values.begin()+(syncmer_position_offset-1)))
         {
             syncmer_position_offset = w_size - 1;
+            if constexpr (!opensyncmer)
+            {
             auto syncmer_it = urng2_iterator;
             syncmer_value = *syncmer_it;
             return true;
+            };
         }
         else if (syncmer_position_offset == 1)
-        {            
+        {
             auto syncmer_it = urng2_iterator;
             syncmer_value = *syncmer_it;
             --syncmer_position_offset;
@@ -469,8 +481,8 @@ private:
 template <std::ranges::viewable_range rng1_t, std::ranges::viewable_range rng2_t>
 syncmer_view(rng1_t &&, rng2_t &&, size_t const kmer_size, size_t const smer_size) -> syncmer_view<std::views::all_t<rng1_t>, std::views::all_t<rng2_t>>;
 
-template <std::ranges::viewable_range rng1_t, std::ranges::viewable_range rng2_t, bool opensyncmer>
-syncmer_view(rng1_t &&, rng2_t &&, size_t const kmer_size, size_t const smer_size) -> syncmer_view<std::views::all_t<rng1_t>, std::views::all_t<rng2_t>, opensyncmer>;
+template <std::ranges::viewable_range rng1_t, std::ranges::viewable_range rng2_t, bool opn>
+syncmer_view(rng1_t &&, rng2_t &&, size_t const kmer_size, size_t const smer_size) -> syncmer_view<std::views::all_t<rng1_t>, std::views::all_t<rng2_t>, opn>;
 
 // ---------------------------------------------------------------------------------------------------------------------
 // syncmer_fn (adaptor definition)
@@ -508,7 +520,7 @@ struct syncmer_fn
         static_assert(std::ranges::forward_range<urng1_t>,
                       "The range parameter to views::syncmer must model std::ranges::forward_range.");
 
-        if (kmer_size < 1 || smer_size < 0 || kmer_size < smer_size) // 
+        if (kmer_size < 1 || smer_size < 0 || kmer_size < smer_size)
             throw std::invalid_argument{"The chosen K-mer or S-mer are not valid. "
                                         "Please choose a K-mer size greater than 1 and an S-mer size greater than 0 and smaller than k-mer size."};
 
@@ -521,7 +533,7 @@ struct syncmer_fn
 
 namespace seqan3::views
 {
-/*!\brief Computes syncmers for a range of comparable values. A syncmer is a kmer that has its smallest smer 
+/*!\brief Computes syncmers for a range of comparable values. A syncmer is a kmer that has its smallest smer
  * (s < k) at its start or end. An open-syncmer has its smer at its start.
  * \tparam urng_t The type of the first range being processed. See below for requirements. [template
  *                 parameter is omitted in pipe notation]
@@ -535,7 +547,7 @@ namespace seqan3::views
  *          properties of the returned range.
  * \ingroup search_views
  *
- * A Syncmer as defined by [Edgar R.](https://peerj.com/articles/10805.pdf) is a kmer that has its smallest smer 
+ * A Syncmer as defined by [Edgar R.](https://peerj.com/articles/10805.pdf) is a kmer that has its smallest smer
  * (s < k) at its start or end. An open-syncmer has its smer at its start. For example for the following sequence
  * `ACGGCGACGTT` and 5 as `kmer_size`, 2 as `smer_size`, the closed-syncmer values are `ACGGC,CGGCG,GCGAC,ACGTT`
  * and the open-syncmer values are `ACGGC,CGGCG,ACGTT`.
