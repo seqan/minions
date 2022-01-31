@@ -28,9 +28,13 @@ namespace seqan3::detail
 // ---------------------------------------------------------------------------------------------------------------------
 
 /*!\brief The type returned by syncmer.
- * \tparam urng1_t The type of the underlying range, must model std::ranges::forward_range, the reference type must
- *                 model std::totally_ordered. The typical use case is that the reference type is the result of
+ * \tparam urng1_t The type of the first underlying range, must model std::ranges::forward_range, the reference type 
+ *                 must model std::totally_ordered. The typical use case is that the reference type is the result of
  *                 seqan3::kmer_hash.
+ * \tparam urng2_t The type of the second underlying range, must model std::ranges::forward_range, the reference 
+ *                 type must model std::totally_ordered. The typical use case is that the reference type is the 
+ *                 result of seqan3::kmer_hash.
+ * 
  * \tparam opensyncmer If false, syncmers are used but if ture, open-syncmers are used.
  * \implements std::ranges::view
  * \ingroup search_views
@@ -521,7 +525,7 @@ struct syncmer_fn
                       "The range parameter to views::syncmer must model std::ranges::forward_range.");
 
         if (kmer_size < 1 || smer_size < 0 || kmer_size < smer_size)
-            throw std::invalid_argument{"The chosen K-mer or S-mer are not valid. "
+            throw std::invalid_argument{"The chosen K-mer or S-mer are not valid."
                                         "Please choose a K-mer size greater than 1 and an S-mer size greater than 0 and smaller than k-mer size."};
 
         return syncmer_view{urange1, urange2, kmer_size, smer_size};
