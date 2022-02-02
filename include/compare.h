@@ -10,6 +10,7 @@
 #include <seqan3/alphabet/nucleotide/dna5.hpp>
 #include <seqan3/core/debug_stream.hpp>
 #include <seqan3/io/sequence_file/all.hpp>
+#include <seqan3/search/dream_index/interleaved_bloom_filter.hpp>
 #include <seqan3/search/views/kmer_hash.hpp>
 #include <seqan3/search/views/minimiser_hash.hpp>
 
@@ -61,6 +62,45 @@ struct my_traits2 : seqan3::sequence_file_input_default_traits_dna
     template <typename alph>
     using sequence_container = std::string;
 };
+
+/*! \brief Function, loading compressed and uncompressed ibfs
+ *  \param ibf   ibf to load
+ *  \param ipath Path, where the ibf can be found.
+ */
+template <class IBFType>
+void load_ibf(IBFType & ibf, std::filesystem::path ipath)
+{
+    std::ifstream is{ipath, std::ios::binary};
+    cereal::BinaryInputArchive iarchive{is};
+    iarchive(ibf);
+}
+
+/*! \brief Function, which stored compressed and uncompressed ibfs
+ *  \param ibf   The IBF to store.
+ *  \param opath Path, where the IBF should be stored.
+ */
+template <class IBFType>
+void store_ibf(IBFType const & ibf,
+               std::filesystem::path opath)
+{
+    std::ofstream os{opath, std::ios::binary};
+    cereal::BinaryOutputArchive oarchive{os};
+    oarchive(seqan3::interleaved_bloom_filter(ibf));
+}
+
+/*! \brief Function, comparing the methods in regard of their coverage.
+ *  \param input_file Either one file containing an ibf or multiple preprocessed
+ *                    binary files containing the submers.
+ *  \param args The arguments about the view to be used.
+ *  \param ibfsize  The size of one bin in the ibf, should be given when
+ *                  preprocessed files are the input.
+ *  \param number_hashes The number of hash functions that should be used.
+ *                       Default: 1.
+ */
+void do_accuracy(std::vector<std::filesystem::path> input_file,
+                 range_arguments & args,
+                 uint64_t ibfsize,
+                 size_t number_hashes);
 
 /*! \brief Function, comparing the methods.
  *  \param sequence_files A vector of sequence files.

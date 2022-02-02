@@ -38,9 +38,17 @@ TEST_F(cli_test, modmer)
     EXPECT_EQ(result.err, std::string{});
 }
 
+TEST_F(cli_test, no_ibf_yet)
+{
+    cli_test_result result = execute_app("minions accuracy --method minimiser -k 19 -w 19 --ibfsize 10000 ", data("minimiser_hash_19_19_example1.out"));
+    EXPECT_EQ(result.exit_code, 0);
+    EXPECT_EQ(result.out, std::string{});
+    EXPECT_EQ(result.err, std::string{});
+}
+
 TEST_F(cli_test, wrong_method)
 {
-    cli_test_result result = execute_app("minions accuracy --method submer -k 19 ", data("eexample.ibf"));
+    cli_test_result result = execute_app("minions accuracy --method submer -k 19 ", data("example.ibf"));
     std::string expected
     {
         "Error. Incorrect command line input for accuracy. Validation failed "

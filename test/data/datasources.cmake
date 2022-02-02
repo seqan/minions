@@ -1,11 +1,14 @@
-cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.9)
 
 include (cmake/app_datasources.cmake)
 
 # copies file to <build>/data/*
-declare_datasource (FILE example1.fasta
-                    URL ${CMAKE_SOURCE_DIR}/test/data/example1.fasta
-                    URL_HASH SHA256=e7236e7b86303d84a86a4454044125005433857416183cdaac0f4cdf7ac34e06)
 declare_datasource (FILE example.ibf
                     URL ${CMAKE_SOURCE_DIR}/test/data/example.ibf
+                    URL_HASH SHA256=8d18ce55fdbb78acbd4f44d5414de1b55ac9964e00e391a5fd12bcc1622b1c6c)
+declare_datasource (FILE minimiser_hash_19_19_example1.out
+                    URL ${CMAKE_SOURCE_DIR}/test/data/minimiser_hash_19_19_example1.out
+                    URL_HASH SHA256=8086779dc7fb37a81f20a3d202d2f9c5a39c4611f67f2c3881e4ba394deef9e6)
+declare_datasource (FILE example1.fasta
+                    URL ${CMAKE_SOURCE_DIR}/test/data/example1.fasta
                     URL_HASH SHA256=e7236e7b86303d84a86a4454044125005433857416183cdaac0f4cdf7ac34e06)

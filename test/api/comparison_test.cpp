@@ -30,3 +30,41 @@ TEST(minions, small_example)
     }
     infile.close();
 }
+
+TEST(minions, accuracy_binary_file)
+{
+    range_arguments args{};
+    args.name = minimiser;
+    args.k_size = 19;
+    args.w_size = seqan3::window_size{19};
+    args.shape = seqan3::ungapped{19};
+    args.path_out = std::filesystem::path{std::string{std::filesystem::temp_directory_path()} + "/"};
+    do_accuracy({DATADIR"minimiser_hash_19_19_example1.out"}, args, 1000000, 1);
+
+    seqan3::interleaved_bloom_filter ibf{};
+    load_ibf(ibf, std::string{args.path_out} + "minimiser_hash_19_19.ibf");
+    auto agent = ibf.membership_agent();
+
+    std::vector<bool> expected_result(1, 1);
+    auto & res = agent.bulk_contains(39030638997);
+    EXPECT_RANGE_EQ(expected_result,  res);
+}
+
+TEST(minions, accuracy_existing_ibf)
+{
+    range_arguments args{};
+    args.name = minimiser;
+    args.k_size = 19;
+    args.w_size = seqan3::window_size{19};
+    args.shape = seqan3::ungapped{19};
+    args.path_out = std::filesystem::path{std::string{std::filesystem::temp_directory_path()} + "/"};
+    do_accuracy({DATADIR"example.ibf"}, args, 1000000, 1);
+
+    seqan3::interleaved_bloom_filter ibf{};
+    load_ibf(ibf, DATADIR"example.ibf");
+    auto agent = ibf.membership_agent();
+
+    std::vector<bool> expected_result(1, 1);
+    auto & res = agent.bulk_contains(39030638997);
+    EXPECT_RANGE_EQ(expected_result,  res);
+}

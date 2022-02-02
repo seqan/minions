@@ -47,6 +47,41 @@ std::vector<std::tuple<uint64_t, unsigned int, unsigned int, unsigned int, unsig
         strobes_vector = seq_to_minstrobes2(args.order, args.k_size, args.w_min, args.w_max, seq, 0);
 }
 
+template <typename urng_t>
+void accuracy(std::vector<std::filesystem::path> input_file,
+              uint64_t ibfsize,
+              size_t number_hashes,
+              urng_t input_view,
+              std::string method_name,
+              range_arguments & args)
+{
+    if ((std::filesystem::path{input_file[0]}.extension() == ".ibf") & (input_file.size() == 1))
+    {
+        seqan3::interleaved_bloom_filter<seqan3::data_layout::uncompressed> ibf;
+        load_ibf(ibf, input_file[0]);
+    }
+    else if (std::filesystem::path{input_file[0]}.extension() == ".out")
+    {
+        seqan3::interleaved_bloom_filter ibf{seqan3::bin_count{input_file.size()},
+                                     seqan3::bin_size{ibfsize},
+                                     seqan3::hash_function_count{number_hashes}};
+
+        uint64_t minimiser;
+        uint16_t minimiser_count;
+        for(size_t i = 0; i < input_file.size(); i++)
+        {
+            std::ifstream infile{input_file[i], std::ios::binary};
+            while(infile.read((char*)&minimiser, sizeof(minimiser)))
+            {
+                infile.read((char*)&minimiser_count, sizeof(minimiser_count));
+                ibf.emplace(minimiser, seqan3::bin_index{i});
+            }
+        }
+
+        store_ibf(ibf, std::string{args.path_out} + method_name + ".ibf");
+    }
+}
+
 /*! \brief Function, comparing the methods.
  *  \param sequence_files A vector of sequence files.
  *  \param input_view View that should be tested.
@@ -274,6 +309,22 @@ void compare_cov2(std::filesystem::path sequence_file, urng_t distance_view, std
     outfile.open(std::string{args.path_out} + method_name + "_coverage.out");
     outfile << "COV\t"<< method_name << "\t" << *std::min_element(coverage.begin(), coverage.end()) << "\t" << mean_coverage << "\t" << stdev_coverage << "\t" << *std::max_element(coverage.begin(), coverage.end()) << "\n";
     outfile.close();
+}
+
+void do_accuracy(std::vector<std::filesystem::path> input_file,
+                 range_arguments & args,
+                 uint64_t ibfsize,
+                 size_t number_hashes = 1)
+{
+    switch(args.name)
+    {
+        case minimiser: accuracy(input_file, ibfsize, number_hashes, minimiser_hash_distance(args.shape,
+                                args.w_size, args.seed_se), "minimiser_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                        break;
+        case modmers: accuracy(input_file, ibfsize, number_hashes, modmer_hash_distance(args.shape,
+                                args.w_size.get(), args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                        break;
+    }
 }
 
 void do_comparison(std::vector<std::filesystem::path> sequence_files, range_arguments & args)
