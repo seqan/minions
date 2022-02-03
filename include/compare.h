@@ -98,13 +98,7 @@ void store_ibf(IBFType const & ibf,
 }
 
 /*! \brief Function, comparing the methods in regard of their coverage.
- *  \param input_file Either one file containing an ibf or multiple preprocessed
- *                    binary files containing the submers.
  *  \param args The arguments about the view to be used.
- *  \param ibfsize  The size of one bin in the ibf, should be given when
- *                  preprocessed files are the input.
- *  \param number_hashes The number of hash functions that should be used.
- *                       Default: 1.
  */
 void do_accuracy(accuracy_arguments & args);
 
