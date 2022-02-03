@@ -12,3 +12,6 @@ declare_datasource (FILE minimiser_hash_19_19_example1.out
 declare_datasource (FILE example1.fasta
                     URL ${CMAKE_SOURCE_DIR}/test/data/example1.fasta
                     URL_HASH SHA256=e7236e7b86303d84a86a4454044125005433857416183cdaac0f4cdf7ac34e06)
+declare_datasource (FILE search.fasta
+                    URL ${CMAKE_SOURCE_DIR}/test/data/search.fasta
+                    URL_HASH SHA256=abed0af7e29a07f5964239be77b46c427369f88cbd2e3c677f763cd7d94f9e4a)

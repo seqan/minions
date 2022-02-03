@@ -48,6 +48,15 @@ struct range_arguments : minimiser_arguments, strobemer_arguments
    uint8_t k_size;
 };
 
+struct accuracy_arguments : range_arguments
+{
+   std::vector<std::filesystem::path> input_file{};
+   uint64_t ibfsize{};
+   size_t number_hashes{1};
+   std::filesystem::path search_file{};
+   float threshold{0.5};
+};
+
 //!\brief Use dna4 instead of default dna5
 struct my_traits : seqan3::sequence_file_input_default_traits_dna
 {
@@ -97,10 +106,7 @@ void store_ibf(IBFType const & ibf,
  *  \param number_hashes The number of hash functions that should be used.
  *                       Default: 1.
  */
-void do_accuracy(std::vector<std::filesystem::path> input_file,
-                 range_arguments & args,
-                 uint64_t ibfsize,
-                 size_t number_hashes);
+void do_accuracy(accuracy_arguments & args);
 
 /*! \brief Function, comparing the methods.
  *  \param sequence_files A vector of sequence files.

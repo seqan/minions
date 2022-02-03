@@ -51,11 +51,8 @@ void parsing(range_arguments & args)
 
 int accuracy(seqan3::argument_parser & parser)
 {
-    range_arguments args{};
-    uint64_t ibfsize{};
-    size_t number_hashes{1};
-    std::vector<std::filesystem::path> input_file{};
-    parser.add_positional_option(input_file, "Either one input file containg the"
+    accuracy_arguments args{};
+    parser.add_positional_option(args.input_file, "Either one input file containg the"
                                              " ibf with the file extension"
                                              "'.ibf' or multiple preprocessed "
                                              "binary files ending with '.out'.");
@@ -66,10 +63,15 @@ int accuracy(seqan3::argument_parser & parser)
     parser.add_option(method, '\0', "method", "Pick your method.",
                       seqan3::option_spec::required,
                       seqan3::value_list_validator{"kmer", "minimiser", "modmer"});
-    parser.add_option(ibfsize, '\0', "ibfsize", "The size of the ibf.",
+    parser.add_option(args.search_file, '\0', "searchfile", "A sequence files with sequences to search for.",
+                      seqan3::option_spec::required);
+    parser.add_option(args.ibfsize, '\0', "ibfsize", "The size of the ibf.",
                       seqan3::option_spec::advanced);
-    parser.add_option(number_hashes, '\0', "number_hashes",
+    parser.add_option(args.number_hashes, '\0', "number_hashes",
                       "The number of hashes to use.",
+                      seqan3::option_spec::advanced);
+    parser.add_option(args.threshold, '\0', "threshold",
+                      "The threshold to use for the search.",
                       seqan3::option_spec::advanced);
 
     read_range_arguments_minimiser(parser, args);
@@ -86,7 +88,7 @@ int accuracy(seqan3::argument_parser & parser)
     }
 
     string_to_methods(method, args.name);
-    do_accuracy(input_file, args, ibfsize, number_hashes);
+    do_accuracy(args);
 
     return 0;
 }
