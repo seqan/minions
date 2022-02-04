@@ -171,7 +171,7 @@ void counts(std::vector<std::filesystem::path> sequence_files, urng_t input_view
 
     // Store speed and counts
     outfile.open(std::string{args.path_out} + method_name + "_counts.out");
-    outfile << "counts\t"<< method_name << "\t" << *std::min_element(counts_results.begin(), counts_results.end()) << "\t" << mean_counts << "\t" << stdev_counts << "\t" << *std::max_element(counts_results.begin(), counts_results.end()) << "\n";
+    outfile << method_name << "\t" << *std::min_element(counts_results.begin(), counts_results.end()) << "\t" << mean_counts << "\t" << stdev_counts << "\t" << *std::max_element(counts_results.begin(), counts_results.end()) << "\n";
     outfile.close();
 }
 
@@ -342,6 +342,56 @@ void compare_cov2(std::filesystem::path sequence_file, urng_t distance_view, std
     outfile.close();
 }
 
+/*! \brief Function, that measures the speed of a method.
+ *  \param sequence_files A vector of sequence files.
+ *  \param input_view View that should be tested.
+ *  \param method_name Name of the tested method.
+ *  \param args The arguments about the view to be used, needed for strobemers.
+ */
+template <typename urng_t, int strobemers = 0>
+void speed(std::vector<std::filesystem::path> sequence_files, urng_t input_view, std::string method_name, range_arguments & args)
+{
+   std::vector<int> speed_results{};
+   std::ofstream outfile;
+   int count{};
+   for (int i = 0; i < sequence_files.size(); ++i)
+   {
+       robin_hood::unordered_node_map<uint64_t, uint16_t> hash_table{};
+       auto start = std::chrono::high_resolution_clock::now();
+       if constexpr (strobemers > 0)
+       {
+           seqan3::sequence_file_input<my_traits2, seqan3::fields<seqan3::field::seq>> fin{sequence_files[i]};
+           for (auto & [seq] : fin)
+           {
+               std::vector<std::tuple<uint64_t, unsigned int, unsigned int, unsigned int, unsigned int>> strobes_vector;
+               get_strobemers<strobemers>(seq, args, strobes_vector);
+               for (auto & t : strobes_vector) // iterate over the strobemer tuples
+                   count++;
+           }
+       }
+       else
+       {
+           seqan3::sequence_file_input<my_traits, seqan3::fields<seqan3::field::seq>> fin{sequence_files[i]};
+           for (auto & [seq] : fin)
+           {
+               for (auto && hash : seq | input_view)
+                   count++;
+           }
+       }
+       auto end = std::chrono::high_resolution_clock::now();
+       auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+       speed_results.push_back(duration.count());
+   }
+
+   double mean_speed, stdev_speed;
+   get_mean_and_var(speed_results, mean_speed, stdev_speed);
+
+   // Store speed
+   outfile.open(std::string{args.path_out} + method_name + "_speed.out");
+   outfile << method_name << "\t" << *std::min_element(speed_results.begin(), speed_results.end()) << "\t" << mean_speed << "\t" << stdev_speed << "\t" << *std::max_element(speed_results.begin(), speed_results.end()) << "\n";
+   outfile.close();
+}
+
 void do_accuracy(accuracy_arguments & args)
 {
     switch(args.name)
@@ -395,5 +445,33 @@ void do_coverage(std::filesystem::path sequence_file, range_arguments & args)
         case modmers: compare_cov2(sequence_file, modmer_hash_distance(args.shape,
                                 args.w_size.get(), args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
                         break;
+    }
+}
+
+void do_speed(std::vector<std::filesystem::path> sequence_files, range_arguments & args)
+{
+    switch(args.name)
+    {
+        case kmer: speed(sequence_files, seqan3::views::kmer_hash(args.shape), "kmer_hash_"+std::to_string(args.k_size), args);
+                   break;
+        case minimiser: speed(sequence_files, seqan3::views::minimiser_hash(args.shape,
+                                args.w_size, args.seed_se), "minimiser_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                        break;
+        case modmers: speed(sequence_files, modmer_hash(args.shape,
+                                args.w_size.get(), args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                        break;
+        case strobemer: std::ranges::empty_view<seqan3::detail::empty_type> empty{};
+                        if (args.rand & (args.order == 2))
+                            speed<std::ranges::empty_view<seqan3::detail::empty_type>, 1>(sequence_files, empty,
+                                "randstrobemers_" + std::to_string(args.k_size) + "_" + std::to_string(args.order) + "_" +  std::to_string(args.w_min) + "_" +  std::to_string(args.w_max), args);
+                        else if (args.rand & (args.order == 3))
+                            speed<std::ranges::empty_view<seqan3::detail::empty_type>, 2>(sequence_files, empty,
+                                "randstrobemers_" + std::to_string(args.k_size) + "_" + std::to_string(args.order) + "_" +  std::to_string(args.w_min) + "_" +  std::to_string(args.w_max), args);
+                        else if (args.hybrid)
+                            speed<std::ranges::empty_view<seqan3::detail::empty_type>, 3>(sequence_files, empty,
+                                "hybridstrobemers_" + std::to_string(args.k_size) + "_" + std::to_string(args.order) + "_" +  std::to_string(args.w_min) + "_" +  std::to_string(args.w_max), args);
+                        else if (args.minstrobers)
+                            speed<std::ranges::empty_view<seqan3::detail::empty_type>, 4>(sequence_files, empty,
+                                "minstrobemers_" + std::to_string(args.k_size) + "_" + std::to_string(args.order) + "_" +  std::to_string(args.w_min) + "_" +  std::to_string(args.w_max), args);
     }
 }

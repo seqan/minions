@@ -102,7 +102,7 @@ void store_ibf(IBFType const & ibf,
  */
 void do_accuracy(accuracy_arguments & args);
 
-/*! \brief Function, comparing the methods.
+/*! \brief Function, comparing the number of submers.
  *  \param sequence_files A vector of sequence files.
  *  \param args The arguments about the view to be used.
  */
@@ -113,3 +113,9 @@ void do_counts(std::vector<std::filesystem::path> sequence_files, range_argument
  *  \param args The arguments about the view to be used.
  */
 void do_coverage(std::filesystem::path sequence_file, range_arguments & args);
+
+/*! \brief Function, comparing the speed.
+ *  \param sequence_files A vector of sequence files.
+ *  \param args The arguments about the view to be used.
+ */
+void do_speed(std::vector<std::filesystem::path> sequence_files, range_arguments & args);
