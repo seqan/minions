@@ -10,6 +10,7 @@
 #include <seqan3/alphabet/nucleotide/dna5.hpp>
 #include <seqan3/core/debug_stream.hpp>
 #include <seqan3/io/sequence_file/all.hpp>
+#include <seqan3/search/dream_index/interleaved_bloom_filter.hpp>
 #include <seqan3/search/views/kmer_hash.hpp>
 #include <seqan3/search/views/minimiser_hash.hpp>
 
@@ -47,6 +48,15 @@ struct range_arguments : minimiser_arguments, strobemer_arguments
    uint8_t k_size;
 };
 
+struct accuracy_arguments : range_arguments
+{
+   std::vector<std::filesystem::path> input_file{};
+   uint64_t ibfsize{};
+   size_t number_hashes{1};
+   std::filesystem::path search_file{};
+   float threshold{0.5};
+};
+
 //!\brief Use dna4 instead of default dna5
 struct my_traits : seqan3::sequence_file_input_default_traits_dna
 {
@@ -61,6 +71,36 @@ struct my_traits2 : seqan3::sequence_file_input_default_traits_dna
     template <typename alph>
     using sequence_container = std::string;
 };
+
+/*! \brief Function, loading compressed and uncompressed ibfs
+ *  \param ibf   ibf to load
+ *  \param ipath Path, where the ibf can be found.
+ */
+template <class IBFType>
+void load_ibf(IBFType & ibf, std::filesystem::path ipath)
+{
+    std::ifstream is{ipath, std::ios::binary};
+    cereal::BinaryInputArchive iarchive{is};
+    iarchive(ibf);
+}
+
+/*! \brief Function, which stored compressed and uncompressed ibfs
+ *  \param ibf   The IBF to store.
+ *  \param opath Path, where the IBF should be stored.
+ */
+template <class IBFType>
+void store_ibf(IBFType const & ibf,
+               std::filesystem::path opath)
+{
+    std::ofstream os{opath, std::ios::binary};
+    cereal::BinaryOutputArchive oarchive{os};
+    oarchive(seqan3::interleaved_bloom_filter(ibf));
+}
+
+/*! \brief Function, comparing the methods in regard of their coverage.
+ *  \param args The arguments about the view to be used.
+ */
+void do_accuracy(accuracy_arguments & args);
 
 /*! \brief Function, comparing the methods.
  *  \param sequence_files A vector of sequence files.

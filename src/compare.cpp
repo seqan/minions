@@ -47,6 +47,79 @@ std::vector<std::tuple<uint64_t, unsigned int, unsigned int, unsigned int, unsig
         strobes_vector = seq_to_minstrobes2(args.order, args.k_size, args.w_min, args.w_max, seq, 0);
 }
 
+template <typename urng_t>
+void accuracy(urng_t input_view,
+              std::string method_name,
+              accuracy_arguments & args)
+{
+    // Loading/Creating the ibf.
+    seqan3::interleaved_bloom_filter<seqan3::data_layout::uncompressed> ibf;
+    if ((std::filesystem::path{args.input_file[0]}.extension() == ".ibf") & (args.input_file.size() == 1))
+    {
+        load_ibf(ibf, args.input_file[0]);
+    }
+    else if (std::filesystem::path{args.input_file[0]}.extension() == ".out")
+    {
+        seqan3::interleaved_bloom_filter ibf_create{seqan3::bin_count{args.input_file.size()},
+                                     seqan3::bin_size{args.ibfsize},
+                                     seqan3::hash_function_count{args.number_hashes}};
+
+        uint64_t minimiser;
+        uint16_t minimiser_count;
+        for(size_t i = 0; i < args.input_file.size(); i++)
+        {
+            std::ifstream infile{args.input_file[i], std::ios::binary};
+            while(infile.read((char*)&minimiser, sizeof(minimiser)))
+            {
+                infile.read((char*)&minimiser_count, sizeof(minimiser_count));
+                ibf_create.emplace(minimiser, seqan3::bin_index{i});
+            }
+        }
+        store_ibf(ibf_create, std::string{args.path_out} + method_name + ".ibf");
+        load_ibf(ibf, std::string{args.path_out} + method_name + ".ibf");
+    }
+
+    // Search through the ibf with a given threshold.
+
+    // Load search sequence file.
+    seqan3::sequence_file_input<my_traits, seqan3::fields<seqan3::field::id, seqan3::field::seq>> fin{args.search_file};
+    std::vector<std::string> ids;
+    std::vector<seqan3::dna4_vector> seqs;
+    for (auto & [id, seq] : fin)
+    {
+        ids.push_back(id);
+        seqs.push_back(seq);
+    }
+
+    std::ofstream outfile;
+    outfile.open(std::string{args.path_out} + method_name + "_" + std::string{args.search_file.stem()} + ".search_out");
+    // Go over the sequences in the search file.
+    for (int i = 0; i < seqs.size(); ++i)
+    {
+        std::vector<uint32_t> counter;
+        counter.assign(ibf.bin_count(), 0);
+        uint64_t length = 0;
+        for (auto && hash : seqs[i] | input_view)
+        {
+            auto agent = ibf.membership_agent();
+            std::transform (counter.begin(), counter.end(), agent.bulk_contains(hash).begin(), counter.begin(),
+                            std::plus<int>());
+            ++length;
+        }
+
+        outfile << ids[i] << "\t";
+        for (int j = 0; j < ibf.bin_count(); ++j)
+        {
+            if (counter[j] >= (length * args.threshold))
+                outfile << j << ",";
+            outfile << "\n";
+        }
+    }
+
+    outfile.close();
+
+}
+
 /*! \brief Function, comparing the methods.
  *  \param sequence_files A vector of sequence files.
  *  \param input_view View that should be tested.
@@ -274,6 +347,21 @@ void compare_cov2(std::filesystem::path sequence_file, urng_t distance_view, std
     outfile.open(std::string{args.path_out} + method_name + "_coverage.out");
     outfile << "COV\t"<< method_name << "\t" << *std::min_element(coverage.begin(), coverage.end()) << "\t" << mean_coverage << "\t" << stdev_coverage << "\t" << *std::max_element(coverage.begin(), coverage.end()) << "\n";
     outfile.close();
+}
+
+void do_accuracy(accuracy_arguments & args)
+{
+    switch(args.name)
+    {
+        case kmer: accuracy(seqan3::views::kmer_hash(args.shape), "kmer_hash_" + std::to_string(args.k_size), args);
+                        break;
+        case minimiser: accuracy(seqan3::views::minimiser_hash(args.shape,
+                                args.w_size, args.seed_se), "minimiser_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                        break;
+        case modmers: accuracy(modmer_hash(args.shape,
+                                args.w_size.get(), args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                        break;
+    }
 }
 
 void do_comparison(std::vector<std::filesystem::path> sequence_files, range_arguments & args)

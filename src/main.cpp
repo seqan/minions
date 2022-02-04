@@ -49,15 +49,62 @@ void parsing(range_arguments & args)
     args.seed_se = seqan3::seed{adjust_seed(args.k_size, se)};
 }
 
+int accuracy(seqan3::argument_parser & parser)
+{
+    accuracy_arguments args{};
+    parser.add_positional_option(args.input_file, "Either one input file containg the"
+                                             " ibf with the file extension"
+                                             "'.ibf' or multiple preprocessed "
+                                             "binary files ending with '.out'.");
+    parser.add_option(args.path_out, 'o', "out",
+                      "Directory, where output files should be saved.");
+    parser.add_option(args.k_size, 'k', "kmer-size", "Define kmer size.");
+    std::string method{};
+    parser.add_option(method, '\0', "method", "Pick your method.",
+                      seqan3::option_spec::required,
+                      seqan3::value_list_validator{"kmer", "minimiser", "modmer"});
+    parser.add_option(args.search_file, '\0', "searchfile", "A sequence files with sequences to search for.",
+                      seqan3::option_spec::required);
+    parser.add_option(args.ibfsize, '\0', "ibfsize", "The size of the ibf.",
+                      seqan3::option_spec::advanced);
+    parser.add_option(args.number_hashes, '\0', "number_hashes",
+                      "The number of hashes to use.",
+                      seqan3::option_spec::advanced);
+    parser.add_option(args.threshold, '\0', "threshold",
+                      "The threshold to use for the search.",
+                      seqan3::option_spec::advanced);
+
+    read_range_arguments_minimiser(parser, args);
+
+    try
+    {
+        parser.parse();
+        parsing(args);
+    }
+    catch (seqan3::argument_parser_error const & ext)                     // catch user errors
+    {
+        seqan3::debug_stream << "Error. Incorrect command line input for accuracy. " << ext.what() << "\n";
+        return -1;
+    }
+
+    string_to_methods(method, args.name);
+    do_accuracy(args);
+
+    return 0;
+}
+
 int coverage(seqan3::argument_parser & parser)
 {
     range_arguments args{};
     std::filesystem::path sequence_file{};
-    parser.add_positional_option(sequence_file, "Please provide at least one sequence file.");
-    parser.add_option(args.path_out, 'o', "out", "Directory, where output files should be saved.");
+    parser.add_positional_option(sequence_file, "Please provide one sequence file.");
+    parser.add_option(args.path_out, 'o', "out",
+                      "Directory, where output files should be saved.");
     parser.add_option(args.k_size, 'k', "kmer-size", "Define kmer size.");
     std::string method{};
-    parser.add_option(method, '\0', "method", "Pick your method.", seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer"});
+    parser.add_option(method, '\0', "method", "Pick your method.",
+                      seqan3::option_spec::required,
+                      seqan3::value_list_validator{"kmer", "minimiser", "modmer"});
 
     read_range_arguments_minimiser(parser, args);
 
@@ -82,11 +129,14 @@ int speed(seqan3::argument_parser & parser)
 {
     range_arguments args{};
     std::vector<std::filesystem::path> sequence_files{};
-    parser.add_positional_option(sequence_files, "Please provide at least one sequence file.");
-    parser.add_option(args.path_out, 'o', "out", "Directory, where output files should be saved.");
+    parser.add_positional_option(sequence_files,
+                                 "Please provide at least one sequence file.");
+    parser.add_option(args.path_out, 'o', "out",
+                      "Directory, where output files should be saved.");
     parser.add_option(args.k_size, 'k', "kmer-size", "Define kmer size.");
     std::string method{};
-    parser.add_option(method, '\0', "method", "Pick your method.", seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer"});
+    parser.add_option(method, '\0', "method", "Pick your method.",
+                      seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer"});
 
     read_range_arguments_minimiser(parser, args);
     read_range_arguments_strobemers(parser, args);
@@ -111,8 +161,9 @@ int speed(seqan3::argument_parser & parser)
 
 int main(int argc, char ** argv)
 {
-    seqan3::argument_parser top_level_parser{"minions", argc, argv, seqan3::update_notifications::on,
-                                            {"coverage", "speed"}};
+    seqan3::argument_parser top_level_parser{"minions", argc, argv,
+                                             seqan3::update_notifications::on,
+                                             {"accuracy", "coverage", "speed"}};
 
     // Parser
     top_level_parser.info.author = "Mitra Darvish"; // give parser some infos
@@ -120,9 +171,9 @@ int main(int argc, char ** argv)
 
     try
     {
-         top_level_parser.parse();                                                  // trigger command line parsing
+         top_level_parser.parse();  // trigger command line parsing
     }
-    catch (seqan3::argument_parser_error const & ext)                     // catch user errors
+    catch (seqan3::argument_parser_error const & ext) // catch user errors
     {
         seqan3::debug_stream << "Parsing error. " << ext.what() << "\n"; // give error message
         return -1;
@@ -130,7 +181,9 @@ int main(int argc, char ** argv)
 
     seqan3::argument_parser & sub_parser = top_level_parser.get_sub_parser(); // hold a reference to the sub_parser
 
-    if (sub_parser.info.app_name == std::string_view{"minions-coverage"})
+    if (sub_parser.info.app_name == std::string_view{"minions-accuracy"})
+        accuracy(sub_parser);
+    else if (sub_parser.info.app_name == std::string_view{"minions-coverage"})
         coverage(sub_parser);
     else if (sub_parser.info.app_name == std::string_view{"minions-speed"})
         speed(sub_parser);
