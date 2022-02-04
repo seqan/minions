@@ -336,9 +336,9 @@ void compare_cov2(std::filesystem::path sequence_file, urng_t distance_view, std
     double mean_coverage, stdev_coverage;
     get_mean_and_var(coverage, mean_coverage, stdev_coverage);
 
-    // Store speed and counts
+    // Store coverage
     outfile.open(std::string{args.path_out} + method_name + "_coverage.out");
-    outfile << "COV\t"<< method_name << "\t" << *std::min_element(coverage.begin(), coverage.end()) << "\t" << mean_coverage << "\t" << stdev_coverage << "\t" << *std::max_element(coverage.begin(), coverage.end()) << "\n";
+    outfile << method_name << "\t" << *std::min_element(coverage.begin(), coverage.end()) << "\t" << mean_coverage << "\t" << stdev_coverage << "\t" << *std::max_element(coverage.begin(), coverage.end()) << "\n";
     outfile.close();
 }
 
