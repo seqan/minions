@@ -25,7 +25,7 @@ TEST(minions, small_example)
             std::vector<std::string> results((std::istream_iterator<std::string>(iss)),
                                      std::istream_iterator<std::string>());
             EXPECT_EQ(expected.substr(0,12), results[0]);
-            EXPECT_EQ("0", results[3]);
+            EXPECT_EQ(expected, line);
         }
     }
     infile.close();
