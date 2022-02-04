@@ -93,6 +93,39 @@ int accuracy(seqan3::argument_parser & parser)
     return 0;
 }
 
+int counts(seqan3::argument_parser & parser)
+{
+    range_arguments args{};
+    std::vector<std::filesystem::path> sequence_files{};
+    parser.add_positional_option(sequence_files,
+                                 "Please provide at least one sequence file.");
+    parser.add_option(args.path_out, 'o', "out",
+                      "Directory, where output files should be saved.");
+    parser.add_option(args.k_size, 'k', "kmer-size", "Define kmer size.");
+    std::string method{};
+    parser.add_option(method, '\0', "method", "Pick your method.",
+                      seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer"});
+
+    read_range_arguments_minimiser(parser, args);
+    read_range_arguments_strobemers(parser, args);
+
+    try
+    {
+        parser.parse();
+        parsing(args);
+    }
+    catch (seqan3::argument_parser_error const & ext)                     // catch user errors
+    {
+        seqan3::debug_stream << "Error. Incorrect command line input for speed. " << ext.what() << "\n";
+        return -1;
+    }
+
+    string_to_methods(method, args.name);
+    do_counts(sequence_files, args);
+
+    return 0;
+}
+
 int coverage(seqan3::argument_parser & parser)
 {
     range_arguments args{};
@@ -153,8 +186,7 @@ int speed(seqan3::argument_parser & parser)
     }
 
     string_to_methods(method, args.name);
-    do_comparison(sequence_files, args);
-
+    //do_comparison(sequence_files, args);
 
     return 0;
 }
@@ -163,7 +195,7 @@ int main(int argc, char ** argv)
 {
     seqan3::argument_parser top_level_parser{"minions", argc, argv,
                                              seqan3::update_notifications::on,
-                                             {"accuracy", "coverage", "speed"}};
+                                             {"accuracy", "counts", "coverage", "speed"}};
 
     // Parser
     top_level_parser.info.author = "Mitra Darvish"; // give parser some infos
@@ -183,6 +215,8 @@ int main(int argc, char ** argv)
 
     if (sub_parser.info.app_name == std::string_view{"minions-accuracy"})
         accuracy(sub_parser);
+    else if (sub_parser.info.app_name == std::string_view{"minions-counts"})
+        counts(sub_parser);
     else if (sub_parser.info.app_name == std::string_view{"minions-coverage"})
         coverage(sub_parser);
     else if (sub_parser.info.app_name == std::string_view{"minions-speed"})

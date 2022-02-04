@@ -11,12 +11,12 @@ TEST(minions, small_example)
     args.k_size = 19;
     args.shape = seqan3::ungapped{19};
     std::string expected{"kmer_hash_19         	159493	159493	0	159493\n"};
-    args.path_out = std::filesystem::temp_directory_path();
-    do_comparison({DATADIR"example1.fasta"}, args);
+    args.path_out =  std::filesystem::path{std::string{std::filesystem::temp_directory_path()} + "/"};
+    do_counts({DATADIR"example1.fasta"}, args);
 
     std::ifstream infile;
     std::string line;
-    infile.open(std::string{args.path_out} + std::string{args.path_out}  + "kmer_hash_19_speed_compression.out");
+    infile.open(std::string{args.path_out} + "kmer_hash_19_compression.out");
     if(infile.is_open())
     {
         while(std::getline(infile, line))
@@ -29,6 +29,8 @@ TEST(minions, small_example)
         }
     }
     infile.close();
+    std::filesystem::remove(std::string{args.path_out} + "kmer_hash_19_compression.out");
+    std::filesystem::remove(std::string{args.path_out} + "kmer_hash_19_example1.out");
 }
 
 TEST(minions, accuracy_binary_file)
