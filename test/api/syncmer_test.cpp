@@ -65,18 +65,14 @@ protected:
     result_t result1{0, 0};
     result_t result1_open{0, 0};
 
-    std::vector<seqan3::dna4> too_short_text{"AC"_dna4};
-
-    // ACGG CGGC, GGCG, GCGA, CGAC, GACG, ACGT, CGTT, GTTT, TTTA, TTAG
-    // CCGT GCCG  CGCC  TCGC  GTCG  CGTC  ACGT  AACG  AAAC  TAAA  CTAA
-    // ACGG CGGC cgcc GCGA CGAC cgtc ACGT aacg aaac taaa ctaa
-    std::vector<seqan3::dna4> text3{"ACGGCGACGTTTAG"_dna4};
-    result_t result3_ungapped{105,422,609,111,447,764,1010}; // ACGG, GGCG, GCGA, GACG, TTTA, TTAG
-    result_t result3_open{105,422,111,447,764};
-    result_t result3_ungapped_stop{105,422,609}; // ACGG, GGCG, GCGA, GACG
-    result_t result3_open_stop{105,422};
-    result_t result3_ungapped_start{111,447,764,1010};        // For start at second A, TTTA, TTAG
-    result_t result3_open_start{111,447,764};
+    std::vector<seqan3::dna4> text3{"ACGGCGACGTTTAG"_dna4}; //  Kmers:    ACGGC CGGCG GGCGA GCGAC CGACG GACGT ACGTT CGTTT GTTTA TTTAG
+                                                            //  Hashed:    105,  422,  664,  609,  390,  539,  111,  447,  764,  1010
+    result_t result3_ungapped{105,422,609,111,447,764,1010}; // Syncmers: ACGGC CGGCG       GCGAC             ACGTT CGTTT GTTTA TTTAG
+    result_t result3_open{105,422,111,447,764};  //          Openyncmers: ACGGC CGGCG                         ACGTT CGTTT GTTTA
+    result_t result3_ungapped_stop{105,422,609}; //         Syncmer stop: ACGGC CGGCG       GCGAC
+    result_t result3_open_stop{105,422}; //             Opensyncmer stop: ACGGC CGGCG
+    result_t result3_ungapped_start{111,447,764,1010}; //  Syncmer start:                                     ACGTT CGTTT GTTTA TTTAG
+    result_t result3_open_start{111,447,764};  //      Opensyncmer start:                                     ACGTT CGTTT GTTTA
 };
 
 template <typename adaptor_t>
@@ -106,15 +102,13 @@ TYPED_TEST(syncmer_view_properties_test, different_inputs_kmer_hash)
 {
     TypeParam text{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4, 'C'_dna4, 'G'_dna4, 'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4,
                 'T'_dna4, 'T'_dna4, 'A'_dna4, 'G'_dna4}; // ACGTCGACGTTTAG
-    result_t ungapped{109,438,865,111,447,764,1010};      // GTCG, TCGA, GACG, TTTA, TTAG
+    result_t ungapped{109,438,865,111,447,764,1010};
     EXPECT_RANGE_EQ(ungapped, seqan3::detail::syncmer_view(text | smer_view, text | kmer_view, 2, 5));
 }
 
 TEST_F(syncmer_test, ungapped_kmer_hash)
 {
     EXPECT_RANGE_EQ(result1, seqan3::detail::syncmer_view(text1 | smer_view, text1 | kmer_view, 2, 5));
-    auto empty_view = seqan3::detail::syncmer_view(too_short_text | smer_view, too_short_text | kmer_view, 2, 5);
-    EXPECT_TRUE(std::ranges::empty(empty_view));
     EXPECT_RANGE_EQ(result3_ungapped, seqan3::detail::syncmer_view(text3 | smer_view, text3 | kmer_view, 2, 5));
 
     auto v1 = text1 | smer_view;

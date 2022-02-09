@@ -265,7 +265,11 @@ public:
         urng1_sentinel{std::move(urng1_sentinel)}
     {
         size_t size = std::ranges::distance(urng1_iterator, urng1_sentinel);
-        window_first(smer_size, kmer_size, size);
+        w_size = kmer_size - smer_size + 1;
+        if (w_size > size)
+            throw std::invalid_argument{"The given sequence is too short to satisfy the given parameters.\n"
+                                        "Please choose smaller parameters."};
+        window_first(kmer_size, w_size);
     }
     //!\}
 
@@ -374,11 +378,9 @@ private:
     }
 
     //!\brief Calculates syncmers for the first window.
-    void window_first(const size_t smer_size, const size_t kmer_size, const size_t size)
+    void window_first(const size_t kmer_size, const size_t w_size)
     {
-        w_size = kmer_size - smer_size + 1;
-
-        if (w_size == 0u || w_size > size)
+        if (w_size == 0u)
             return;
 
         for (int i = 1u; i < kmer_size - 1 ; ++i)
