@@ -59,6 +59,10 @@ void parsing(range_arguments & args)
 int accuracy(seqan3::argument_parser & parser)
 {
     accuracy_arguments args{};
+    parser.info.short_description = "Counts the true positive, false positive, "
+                                    "true negatives and false negatives of a "
+                                    "sequence file given the ground truth by a "
+                                    "solution file.";
     parser.add_positional_option(args.input_file, "Either one input file containg the"
                                              " ibf with the file extension"
                                              "'.ibf' or multiple preprocessed "
@@ -68,11 +72,13 @@ int accuracy(seqan3::argument_parser & parser)
     parser.add_option(method, '\0', "method", "Pick your method.",
                       seqan3::option_spec::required,
                       seqan3::value_list_validator{"kmer", "minimiser", "modmer"});
-    parser.add_option(args.search_file, '\0', "searchfile", "A sequence files with sequences to search for.",
+    parser.add_option(args.search_file, '\0', "search-file", "A sequence files with sequences to search for.",
+                      seqan3::option_spec::required);
+    parser.add_option(args.solution_file, '\0', "solution-file", "A file giving the correct files a sequence should be find in.",
                       seqan3::option_spec::required);
     parser.add_option(args.ibfsize, '\0', "ibfsize", "The size of the ibf.",
                       seqan3::option_spec::advanced);
-    parser.add_option(args.number_hashes, '\0', "number_hashes",
+    parser.add_option(args.number_hashes, '\0', "number-hashes",
                       "The number of hashes to use.",
                       seqan3::option_spec::advanced);
     parser.add_option(args.threshold, '\0', "threshold",
@@ -102,6 +108,8 @@ int counts(seqan3::argument_parser & parser)
 {
     range_arguments args{};
     std::vector<std::filesystem::path> sequence_files{};
+    parser.info.short_description = "Counts the number of submers in the given "
+                                    "sequence files.";
     parser.add_positional_option(sequence_files,
                                  "Please provide at least one sequence file.");
     all_arguments(parser, args);
@@ -133,6 +141,7 @@ int coverage(seqan3::argument_parser & parser)
 {
     range_arguments args{};
     std::filesystem::path sequence_file{};
+    parser.info.short_description = "Estimates the coverage of the different methods.";
     parser.add_positional_option(sequence_file, "Please provide one sequence file.");
     all_arguments(parser, args);
     std::string method{};
@@ -163,6 +172,7 @@ int speed(seqan3::argument_parser & parser)
 {
     range_arguments args{};
     std::vector<std::filesystem::path> sequence_files{};
+    parser.info.short_description = "Estimates the speed of a method for the given sequence files.";
     parser.add_positional_option(sequence_files,
                                  "Please provide at least one sequence file.");
     all_arguments(parser, args);

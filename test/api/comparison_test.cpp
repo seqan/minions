@@ -45,6 +45,7 @@ TEST(minions, accuracy_binary_file)
     args.ibfsize = 1000000;
     args.path_out = std::filesystem::path{std::string{std::filesystem::temp_directory_path()} + "/bin_"};
     args.search_file = DATADIR"search.fasta";
+    args.solution_file = DATADIR"expected_search_result.out";
     do_accuracy(args);
 
     seqan3::interleaved_bloom_filter ibf{};
@@ -56,6 +57,7 @@ TEST(minions, accuracy_binary_file)
     auto & res = agent.bulk_contains(39030638997);
     EXPECT_RANGE_EQ(expected_result,  res);
 
+    // Check search file
     std::vector<std::string> expected{"test	0,", "test2	0,"};
     int i{0};
     std::ifstream infile{std::string{args.path_out} + "minimiser_hash_19_19_" + std::string{args.search_file.stem()} + ".search_out"};
@@ -66,8 +68,22 @@ TEST(minions, accuracy_binary_file)
         EXPECT_EQ(expected[i], line);
         i++;
     }
+
+    // Check result file
+    std::string expected2{"minimiser_hash_19_19\t2\t0\t0\t0"};
+    std::ifstream infile2{std::string{args.path_out} + "minimiser_hash_19_19_" + std::string{args.search_file.stem()} + "_accuracy.out"};
+    if(infile2.is_open())
+    {
+        while(std::getline(infile2, line))
+        {
+            EXPECT_EQ(expected2, line);
+            i++;
+        }
+    }
+    infile2.close();
     std::filesystem::remove(std::string{args.path_out} + "minimiser_hash_19_19.ibf");
     std::filesystem::remove(std::string{args.path_out} + "minimiser_hash_19_19_" + std::string{args.search_file.stem()} + ".search_out");
+    std::filesystem::remove(std::string{args.path_out} + "minimiser_hash_19_19_" + std::string{args.search_file.stem()} + "_accuracy.out");
 }
 
 TEST(minions, accuracy_existing_ibf)
@@ -81,9 +97,11 @@ TEST(minions, accuracy_existing_ibf)
     args.input_file = {DATADIR"example.ibf"};
     args.path_out = std::filesystem::path{std::string{std::filesystem::temp_directory_path()} + "/"};
     args.search_file = DATADIR"search.fasta";
+    args.solution_file = DATADIR"expected_search_result.out";
     args.threshold = 0.5;
     do_accuracy(args);
 
+    // Check search file
     std::vector<std::string> expected{"test	0,", "test2	0,"};
     int i{0};
     std::ifstream infile{std::string{args.path_out} + "minimiser_hash_19_19_" + std::string{args.search_file.stem()} + ".search_out"};
@@ -94,6 +112,21 @@ TEST(minions, accuracy_existing_ibf)
         EXPECT_EQ(expected[i], line);
         i++;
     }
+
+    // Check result file
+    std::string expected2{"minimiser_hash_19_19\t2\t0\t0\t0"};
+    std::ifstream infile2{std::string{args.path_out} + "minimiser_hash_19_19_" + std::string{args.search_file.stem()} + "_accuracy.out"};
+    if(infile2.is_open())
+    {
+        while(std::getline(infile2, line))
+        {
+            EXPECT_EQ(expected2, line);
+            i++;
+        }
+    }
+    infile2.close();
+
     std::filesystem::remove(std::string{args.path_out} + "minimiser_hash_19_19.ibf");
     std::filesystem::remove(std::string{args.path_out} + "minimiser_hash_19_19_" + std::string{args.search_file.stem()} + ".search_out");
+    std::filesystem::remove(std::string{args.path_out} + "minimiser_hash_19_19_" + std::string{args.search_file.stem()} + "_accuracy.out");
 }

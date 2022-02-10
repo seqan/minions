@@ -5,8 +5,8 @@ TEST_F(cli_test, no_options)
     cli_test_result result = execute_app("minions coverage");
     std::string expected
     {
-        "minions-coverage\n"
-        "================\n"
+        "minions-coverage - Estimates the coverage of the different methods.\n"
+        "===================================================================\n"
         "    Try -h or --help for more information.\n"
     };
     EXPECT_EQ(result.exit_code, 0);

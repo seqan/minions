@@ -5,8 +5,8 @@ TEST_F(cli_test, no_options)
     cli_test_result result = execute_app("minions speed");
     std::string expected
     {
-        "minions-speed\n"
-        "=============\n"
+        "minions-speed - Estimates the speed of a method for the given sequence files.\n"
+        "=============================================================================\n"
         "    Try -h or --help for more information.\n"
     };
     EXPECT_EQ(result.exit_code, 0);

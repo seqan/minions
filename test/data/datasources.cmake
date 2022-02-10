@@ -15,3 +15,6 @@ declare_datasource (FILE example1.fasta
 declare_datasource (FILE search.fasta
                     URL ${CMAKE_SOURCE_DIR}/test/data/search.fasta
                     URL_HASH SHA256=abed0af7e29a07f5964239be77b46c427369f88cbd2e3c677f763cd7d94f9e4a)
+declare_datasource (FILE expected_search_result.out
+                    URL ${CMAKE_SOURCE_DIR}/test/data/expected_search_result.out
+                    URL_HASH SHA256=7d51b8ac01dd8020bcb88353a5e93b9583bd352d10d38e229d669bbc196af898)
