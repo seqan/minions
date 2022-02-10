@@ -127,6 +127,6 @@ TEST(minions, accuracy_existing_ibf)
     infile2.close();
 
     std::filesystem::remove(std::string{args.path_out} + "minimiser_hash_19_19.ibf");
-    //std::filesystem::remove(std::string{args.path_out} + "minimiser_hash_19_19_" + std::string{args.search_file.stem()} + ".search_out");
-    //std::filesystem::remove(std::string{args.path_out} + "minimiser_hash_19_19_" + std::string{args.search_file.stem()} + "_accuracy.out");
+    std::filesystem::remove(std::string{args.path_out} + "minimiser_hash_19_19_" + std::string{args.search_file.stem()} + ".search_out");
+    std::filesystem::remove(std::string{args.path_out} + "minimiser_hash_19_19_" + std::string{args.search_file.stem()} + "_accuracy.out");
 }
