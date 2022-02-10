@@ -54,6 +54,7 @@ struct accuracy_arguments : range_arguments
    uint64_t ibfsize{};
    size_t number_hashes{1};
    std::filesystem::path search_file{};
+   std::filesystem::path solution_file{};
    float threshold{0.5};
 };
 

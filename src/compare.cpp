@@ -5,6 +5,7 @@
 #include <seqan3/alphabet/adaptation/char.hpp>
 #include <seqan3/alphabet/nucleotide/dna5.hpp>
 #include <seqan3/core/detail/empty_type.hpp>
+#include <seqan3/io/views/detail/take_until_view.hpp>
 
 #include "compare.h"
 #include "minimiser_hash_distance.hpp"
@@ -91,6 +92,24 @@ void accuracy(urng_t input_view,
         seqs.push_back(seq);
     }
 
+    // Read in "solution", in which files the sequences should be present.
+    robin_hood::unordered_node_map<std::string, std::vector<uint32_t>> solutions{};
+    std::ifstream infile;
+    std::string line;
+    infile.open(args.solution_file);
+    std::string name;
+    int exp;
+    while (std::getline(infile, line))
+    {
+        std::istringstream iss(line);
+        iss >> name;
+        solutions[name] = {};
+        while (iss >> exp)
+            solutions[name].push_back(exp);
+    }
+    infile.close();
+
+    int tp = 0, tn = 0, fp = 0, fn = 0;
     std::ofstream outfile;
     outfile.open(std::string{args.path_out} + method_name + "_" + std::string{args.search_file.stem()} + ".search_out");
     // Go over the sequences in the search file.
@@ -99,9 +118,9 @@ void accuracy(urng_t input_view,
         std::vector<uint32_t> counter;
         counter.assign(ibf.bin_count(), 0);
         uint64_t length = 0;
+        auto agent = ibf.membership_agent();
         for (auto && hash : seqs[i] | input_view)
         {
-            auto agent = ibf.membership_agent();
             std::transform (counter.begin(), counter.end(), agent.bulk_contains(hash).begin(), counter.begin(),
                             std::plus<int>());
             ++length;
@@ -110,14 +129,29 @@ void accuracy(urng_t input_view,
         outfile << ids[i] << "\t";
         for (int j = 0; j < ibf.bin_count(); ++j)
         {
+            bool found = (counter[j] >= (length * args.threshold));
+            bool true_positive = std::binary_search(solutions[ids[i]].begin(), solutions[ids[i]].end(), j);
             if (counter[j] >= (length * args.threshold))
                 outfile << j << ",";
             outfile << "\n";
+
+            if (found & true_positive)
+                tp++;
+            else if(found)
+                fp++;
+            else if (true_positive)
+                fn++;
+            else
+                tn++;
         }
     }
-
     outfile.close();
 
+    // Store tp, tn, fp, fn
+    std::ofstream outfile2;
+    outfile2.open(std::string{args.path_out} + method_name +  "_" + std::string{args.search_file.stem()} + "_accuracy.out");
+    outfile2 << method_name << "\t" << tp << "\t" << tn << "\t" << fp << "\t" << fn << "\n";
+    outfile2.close();
 }
 
 /*! \brief Function, counting the number of submers.
