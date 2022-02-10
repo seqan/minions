@@ -5,8 +5,8 @@ TEST_F(cli_test, no_options)
     cli_test_result result = execute_app("minions counts");
     std::string expected
     {
-        "minions-counts\n"
-        "==============\n"
+        "minions-counts - Counts the number of submers in the given sequence files.\n"
+        "==========================================================================\n"
         "    Try -h or --help for more information.\n"
     };
     EXPECT_EQ(result.exit_code, 0);

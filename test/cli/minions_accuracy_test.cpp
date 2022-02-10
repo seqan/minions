@@ -5,8 +5,8 @@ TEST_F(cli_test, no_options)
     cli_test_result result = execute_app("minions accuracy");
     std::string expected
     {
-        "minions-accuracy\n"
-        "================\n"
+        "minions-accuracy - Counts the true positive, false positive, true negatives and false negatives of a sequence file given the ground truth by a solution file.\n"
+        "=============================================================================================================================================================\n"
         "    Try -h or --help for more information.\n"
     };
     EXPECT_EQ(result.exit_code, 0);
