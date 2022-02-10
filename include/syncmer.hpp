@@ -62,7 +62,7 @@ private:
     urng1_t urange1{};
     //!\brief The second underlying range.
     urng2_t urange2{};
-    //!\brief The window size used (should be window size - subwindow size + 1).
+    //!\brief The number of elements in one window (should be window size - subwindow size + 1).
     size_t window_size{};
 
     template <bool const_range>
@@ -89,7 +89,7 @@ public:
     *                        std::ranges::forward_range.
     * \param[in] urange2     The second input range to process. Must model std::ranges::viewable_range and
     *                        std::ranges::forward_range.
-    * \param[in] window_size The window size used (should be window size - subwindow size + 1).
+    * \param[in] window_size The number of elements in one window (should be window size - subwindow size + 1).
     */
     syncmer_view(urng1_t urange1, urng2_t urange2, size_t const window_size) :
         urange1{std::move(urange1)},
@@ -106,7 +106,7 @@ public:
     *                        std::ranges::forward_range.
     * \param[in] urange2     The second input range to process. Must model std::ranges::viewable_range and
     *                        std::ranges::forward_range.
-    * \param[in] window_size The window size used (should be window size - subwindow size + 1).
+    * \param[in] window_size The number of elements in one window (should be window size - subwindow size + 1).
     */
     template <typename other_urng1_t, typename other_urng2_t>
     //!\cond
@@ -231,7 +231,8 @@ public:
         : syncmer_value{std::move(it.syncmer_value)},
           urng1_iterator{std::move(it.urng1_iterator)},
           urng2_iterator{std::move(it.urng2_iterator)},
-          urng1_sentinel{std::move(it.urng1_sentinel)}
+          urng1_sentinel{std::move(it.urng1_sentinel)},
+          w_size{std::move(it.w_size)}
     {}
 
     /*!\brief Construct from begin and end iterators of a given range over std::totally_ordered values, and the number
@@ -239,12 +240,12 @@ public:
     * \param[in] urng1_iterator Iterator pointing to the first position of the first std::totally_ordered range.
     * \param[in] urng2_iterator Iterator pointing to the first position of the second std::totally_ordered range.
     * \param[in] urng1_sentinel Iterator pointing to the last position of the first std::totally_ordered range.
-    * \param[in] window_size The window size used (should be window size - subwindow size + 1).
+    * \param[in] window_size The number of elements in one window (should be window size - subwindow size + 1).
     *
     * \details
     *
-    * Looks at the number of values per window in two ranges, if the smallest subwindow in a window is at its beginning 
-    * or its end, it returns the window as a syncmer and shifts then by one to repeat this action.
+    * Looks at the number of values per window in two ranges, if the smallest subwindow in a window is at its start
+    * or end, it returns the window as a syncmer and shifts then by one to repeat this action.
     */
     basic_iterator(urng1_iterator_t urng1_iterator,
                    urng2_iterator_t urng2_iterator,
@@ -272,7 +273,7 @@ public:
     {
         return (lhs.urng1_iterator == rhs.urng1_iterator) &&
                (rhs.urng2_iterator == rhs.urng2_iterator) &&
-               (lhs.window_size() == rhs.window_size());
+               (lhs.w_size == rhs.w_size);
     }
 
     //!\brief Compare to another basic_iterator.
@@ -496,7 +497,7 @@ struct syncmer_fn
      *                        std::ranges::forward_range.
      * \param[in] urange2     The second input range to process. Must model std::ranges::viewable_range and
      *                        std::ranges::forward_range.
-     * \param[in] window_size The window size used (should be window size - subwindow size + 1).
+     * \param[in] window_size The number of elements in one window (should be window size - subwindow size + 1).
      * \returns  A range of converted values.
      */
     template <std::ranges::range urng1_t, std::ranges::range urng2_t>
@@ -508,8 +509,8 @@ struct syncmer_fn
                       "The range parameter to views::syncmer must model std::ranges::forward_range.");
 
         if (window_size < 1)
-            throw std::invalid_argument{"The chosen K-mer or S-mer are not valid."
-                                        "Please choose an S-mer size greater than 0 and a K-mer size greater than the S-mer size."};
+            throw std::invalid_argument{"The chosen window_size is not valid."
+                                        "Please choose a subwindow size greater than 0 and a window size greater than the subwindow size."};
 
         return syncmer_view{urange1, urange2, window_size};
     }
@@ -528,7 +529,7 @@ namespace seqan3::views
  *                        std::ranges::forward_range.
  * \param[in] urange2     The second input range to process. Must model std::ranges::viewable_range and
  *                        std::ranges::forward_range.
- * \param[in] window_size The window size used (should be window size - subwindow size + 1).
+ * \param[in] window_size The number of elements in one window (should be window size - subwindow size + 1).
  * \returns A range of std::totally_ordered where each value is ... See below for the
  *          properties of the returned range.
  * \ingroup search_views
