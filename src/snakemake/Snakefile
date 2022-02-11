@@ -1,3 +1,10 @@
+rule setup:
+    output:
+        directory('analysis/'),
+        directory('data/')
+    shell:
+        "mkdir -p analysis && mkdir -p data"
+
 rule download:
     output:
         ["data/example_data/1024/bins/bin_{}.fasta".format(str(x).zfill(4)) for x in range(1024)],

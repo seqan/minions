@@ -32,3 +32,5 @@
 
 example_data*
 src/snakemake/.snakemake/
+src/snakemake/analysis/*
+src/snakemake/data/*
