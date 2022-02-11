@@ -1,0 +1,12 @@
+rule download:
+    output:
+        ["data/example_data/1024/bins/bin_{}.fasta".format(str(x).zfill(4)) for x in range(1024)],
+        ["data/example_data/1024/reads/bin_{}.fastq".format(str(x).zfill(4)) for x in range(1024)],
+        "data/example_data/1024/reads/all.fastq",
+        "data/example_data/1024/reads/mini.fastq",
+        ["data/example_data/64/bins/bin_{}.fasta".format(str(x).zfill(2)) for x in range(64)],
+        ["data/example_data/64/reads/bin_{}.fastq".format(str(x).zfill(2)) for x in range(64)],
+        "data/example_data/64/reads/all.fastq",
+        "data/example_data/64/reads/mini.fastq"
+    shell:
+        "cd data && wget https://ftp.imp.fu-berlin.de/pub/seiler/raptor/example_data.tar.gz && tar xfz example_data.tar.gz"

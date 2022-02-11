@@ -31,3 +31,4 @@
 *.app
 
 example_data*
+src/snakemake/.snakemake/
