@@ -5,6 +5,7 @@
 #include <seqan3/alphabet/adaptation/char.hpp>
 #include <seqan3/alphabet/nucleotide/dna5.hpp>
 #include <seqan3/core/detail/empty_type.hpp>
+#include <seqan3/io/views/detail/take_until_view.hpp>
 
 #include "compare.h"
 #include "minimiser_hash_distance.hpp"
@@ -47,22 +48,126 @@ std::vector<std::tuple<uint64_t, unsigned int, unsigned int, unsigned int, unsig
         strobes_vector = seq_to_minstrobes2(args.order, args.k_size, args.w_min, args.w_max, seq, 0);
 }
 
-/*! \brief Function, comparing the methods.
+template <typename urng_t>
+void accuracy(urng_t input_view,
+              std::string method_name,
+              accuracy_arguments & args)
+{
+    // Loading/Creating the ibf.
+    seqan3::interleaved_bloom_filter<seqan3::data_layout::uncompressed> ibf;
+    if ((std::filesystem::path{args.input_file[0]}.extension() == ".ibf") & (args.input_file.size() == 1))
+    {
+        load_ibf(ibf, args.input_file[0]);
+    }
+    else if (std::filesystem::path{args.input_file[0]}.extension() == ".out")
+    {
+        seqan3::interleaved_bloom_filter ibf_create{seqan3::bin_count{args.input_file.size()},
+                                     seqan3::bin_size{args.ibfsize},
+                                     seqan3::hash_function_count{args.number_hashes}};
+
+        uint64_t minimiser;
+        uint16_t minimiser_count;
+        for(size_t i = 0; i < args.input_file.size(); i++)
+        {
+            std::ifstream infile{args.input_file[i], std::ios::binary};
+            while(infile.read((char*)&minimiser, sizeof(minimiser)))
+            {
+                infile.read((char*)&minimiser_count, sizeof(minimiser_count));
+                ibf_create.emplace(minimiser, seqan3::bin_index{i});
+            }
+        }
+        store_ibf(ibf_create, std::string{args.path_out} + method_name + ".ibf");
+        load_ibf(ibf, std::string{args.path_out} + method_name + ".ibf");
+    }
+
+    // Search through the ibf with a given threshold.
+
+    // Load search sequence file.
+    seqan3::sequence_file_input<my_traits, seqan3::fields<seqan3::field::id, seqan3::field::seq>> fin{args.search_file};
+    std::vector<std::string> ids;
+    std::vector<seqan3::dna4_vector> seqs;
+    for (auto & [id, seq] : fin)
+    {
+        ids.push_back(id);
+        seqs.push_back(seq);
+    }
+
+    // Read in "solution", in which files the sequences should be present.
+    robin_hood::unordered_node_map<std::string, std::vector<uint32_t>> solutions{};
+    std::ifstream infile;
+    std::string line;
+    infile.open(args.solution_file);
+    std::string name;
+    int exp;
+    while (std::getline(infile, line))
+    {
+        std::istringstream iss(line);
+        iss >> name;
+        solutions[name] = {};
+        while (iss >> exp)
+            solutions[name].push_back(exp);
+    }
+    infile.close();
+
+    int tp = 0, tn = 0, fp = 0, fn = 0;
+    std::ofstream outfile;
+    outfile.open(std::string{args.path_out} + method_name + "_" + std::string{args.search_file.stem()} + ".search_out");
+    // Go over the sequences in the search file.
+    for (int i = 0; i < seqs.size(); ++i)
+    {
+        std::vector<uint32_t> counter;
+        counter.assign(ibf.bin_count(), 0);
+        uint64_t length = 0;
+        auto agent = ibf.membership_agent();
+        for (auto && hash : seqs[i] | input_view)
+        {
+            std::transform (counter.begin(), counter.end(), agent.bulk_contains(hash).begin(), counter.begin(),
+                            std::plus<int>());
+            ++length;
+        }
+
+        outfile << ids[i] << "\t";
+        for (int j = 0; j < ibf.bin_count(); ++j)
+        {
+            bool found = (counter[j] >= (length * args.threshold));
+            bool true_positive = std::binary_search(solutions[ids[i]].begin(), solutions[ids[i]].end(), j);
+            if (counter[j] >= (length * args.threshold))
+                outfile << j << ",";
+            outfile << "\n";
+
+            if (found & true_positive)
+                tp++;
+            else if(found)
+                fp++;
+            else if (true_positive)
+                fn++;
+            else
+                tn++;
+        }
+    }
+    outfile.close();
+
+    // Store tp, tn, fp, fn
+    std::ofstream outfile2;
+    outfile2.open(std::string{args.path_out} + method_name +  "_" + std::string{args.search_file.stem()} + "_accuracy.out");
+    outfile2 << method_name << "\t" << tp << "\t" << tn << "\t" << fp << "\t" << fn << "\n";
+    outfile2.close();
+}
+
+/*! \brief Function, counting the number of submers.
  *  \param sequence_files A vector of sequence files.
  *  \param input_view View that should be tested.
  *  \param method_name Name of the tested method.
  *  \param args The arguments about the view to be used, needed for strobemers.
  */
 template <typename urng_t, int strobemers = 0>
-void compare(std::vector<std::filesystem::path> sequence_files, urng_t input_view, std::string method_name, range_arguments & args)
+void counts(std::vector<std::filesystem::path> sequence_files, urng_t input_view, std::string method_name, range_arguments & args)
 {
-    std::vector<int> speed_results{};
-    std::vector<int> compression_results{};
+    std::vector<int> counts_results{};
     std::ofstream outfile;
     for (int i = 0; i < sequence_files.size(); ++i)
     {
         robin_hood::unordered_node_map<uint64_t, uint16_t> hash_table{};
-        auto start = std::chrono::high_resolution_clock::now();
         if constexpr (strobemers > 0)
         {
             seqan3::sequence_file_input<my_traits2, seqan3::fields<seqan3::field::seq>> fin{sequence_files[i]};
@@ -83,10 +188,7 @@ void compare(std::vector<std::filesystem::path> sequence_files, urng_t input_vie
                     hash_table[hash] = std::min<uint16_t>(65534u, hash_table[hash] + 1);
             }
         }
-        auto end = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-        compression_results.push_back(hash_table.size());
-        speed_results.push_back(duration.count());
+        counts_results.push_back(hash_table.size());
 
         // Store representative k-mers
         outfile.open(std::string{args.path_out} + method_name + "_"+ std::string{sequence_files[i].stem()} + ".out", std::ios::binary);
@@ -98,14 +200,12 @@ void compare(std::vector<std::filesystem::path> sequence_files, urng_t input_vie
         outfile.close();
     }
 
-    double mean_compression, mean_speed, stdev_compression, stdev_speed;
-    get_mean_and_var(compression_results, mean_compression, stdev_compression);
-    get_mean_and_var(speed_results, mean_speed, stdev_speed);
+    double mean_counts, stdev_counts;
+    get_mean_and_var(counts_results, mean_counts, stdev_counts);
 
-    // Store speed and compression
-    outfile.open(std::string{args.path_out} + method_name + "_speed_compression.out");
-    outfile << "Compression\t"<< method_name << "\t" << *std::min_element(compression_results.begin(), compression_results.end()) << "\t" << mean_compression << "\t" << stdev_compression << "\t" << *std::max_element(compression_results.begin(), compression_results.end()) << "\n";
-    outfile << "SPEED\t"<< method_name << "\t" << *std::min_element(speed_results.begin(), speed_results.end()) << "\t" << mean_speed << "\t" << stdev_speed << "\t" << *std::max_element(speed_results.begin(), speed_results.end()) << "\n";
+    // Store speed and counts
+    outfile.open(std::string{args.path_out} + method_name + "_counts.out");
+    outfile << method_name << "\t" << *std::min_element(counts_results.begin(), counts_results.end()) << "\t" << mean_counts << "\t" << stdev_counts << "\t" << *std::max_element(counts_results.begin(), counts_results.end()) << "\n";
     outfile.close();
 }
 
@@ -245,7 +345,7 @@ void compare_cov(std::filesystem::path sequence_file, urng_t kmer_view, urng_t2 
     std::nth_element(covereage_avg.begin(), covereage_avg.begin() + covereage_avg.size()/2, covereage_avg.end());
     int median = covereage_avg[covereage_avg.size()/2];
 
-    // Store speed and compression
+    // Store speed and counts
     outfile.open(std::string{args.path_out} + method_name + "_coverage.out");
     outfile << "Covered\t"<< method_name << "\t" << *std::min_element(covered_percentage.begin(), covered_percentage.end()) << "\t" << mean_covered << "\t" << stdev_covered << "\t" << *std::max_element(covered_percentage.begin(), covered_percentage.end()) << "\n";
     outfile << "Covered Median\t"<< method_name << "\t" << *std::min_element(covereage_avg.begin(), covereage_avg.end()) << "\t" << median << "\t" << *std::max_element(covereage_avg.begin(), covereage_avg.end()) << "\n";
@@ -270,36 +370,101 @@ void compare_cov2(std::filesystem::path sequence_file, urng_t distance_view, std
     double mean_coverage, stdev_coverage;
     get_mean_and_var(coverage, mean_coverage, stdev_coverage);
 
-    // Store speed and compression
+    // Store coverage
     outfile.open(std::string{args.path_out} + method_name + "_coverage.out");
-    outfile << "COV\t"<< method_name << "\t" << *std::min_element(coverage.begin(), coverage.end()) << "\t" << mean_coverage << "\t" << stdev_coverage << "\t" << *std::max_element(coverage.begin(), coverage.end()) << "\n";
+    outfile << method_name << "\t" << *std::min_element(coverage.begin(), coverage.end()) << "\t" << mean_coverage << "\t" << stdev_coverage << "\t" << *std::max_element(coverage.begin(), coverage.end()) << "\n";
     outfile.close();
 }
 
-void do_comparison(std::vector<std::filesystem::path> sequence_files, range_arguments & args)
+/*! \brief Function, that measures the speed of a method.
+ *  \param sequence_files A vector of sequence files.
+ *  \param input_view View that should be tested.
+ *  \param method_name Name of the tested method.
+ *  \param args The arguments about the view to be used, needed for strobemers.
+ */
+template <typename urng_t, int strobemers = 0>
+void speed(std::vector<std::filesystem::path> sequence_files, urng_t input_view, std::string method_name, range_arguments & args)
+{
+   std::vector<int> speed_results{};
+   std::ofstream outfile;
+   int count{};
+   for (int i = 0; i < sequence_files.size(); ++i)
+   {
+       robin_hood::unordered_node_map<uint64_t, uint16_t> hash_table{};
+       auto start = std::chrono::high_resolution_clock::now();
+       if constexpr (strobemers > 0)
+       {
+           seqan3::sequence_file_input<my_traits2, seqan3::fields<seqan3::field::seq>> fin{sequence_files[i]};
+           for (auto & [seq] : fin)
+           {
+               std::vector<std::tuple<uint64_t, unsigned int, unsigned int, unsigned int, unsigned int>> strobes_vector;
+               get_strobemers<strobemers>(seq, args, strobes_vector);
+               for (auto & t : strobes_vector) // iterate over the strobemer tuples
+                   count++;
+           }
+       }
+       else
+       {
+           seqan3::sequence_file_input<my_traits, seqan3::fields<seqan3::field::seq>> fin{sequence_files[i]};
+           for (auto & [seq] : fin)
+           {
+               for (auto && hash : seq | input_view)
+                   count++;
+           }
+       }
+       auto end = std::chrono::high_resolution_clock::now();
+       auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+       speed_results.push_back(duration.count());
+   }
+
+   double mean_speed, stdev_speed;
+   get_mean_and_var(speed_results, mean_speed, stdev_speed);
+
+   // Store speed
+   outfile.open(std::string{args.path_out} + method_name + "_speed.out");
+   outfile << method_name << "\t" << *std::min_element(speed_results.begin(), speed_results.end()) << "\t" << mean_speed << "\t" << stdev_speed << "\t" << *std::max_element(speed_results.begin(), speed_results.end()) << "\n";
+   outfile.close();
+}
+
+void do_accuracy(accuracy_arguments & args)
 {
     switch(args.name)
     {
-        case kmer: compare(sequence_files, seqan3::views::kmer_hash(args.shape), "kmer_hash_"+std::to_string(args.k_size), args);
-                   break;
-        case minimiser: compare(sequence_files, seqan3::views::minimiser_hash(args.shape,
+        case kmer: accuracy(seqan3::views::kmer_hash(args.shape), "kmer_hash_" + std::to_string(args.k_size), args);
+                        break;
+        case minimiser: accuracy(seqan3::views::minimiser_hash(args.shape,
                                 args.w_size, args.seed_se), "minimiser_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
                         break;
-        case modmers: compare(sequence_files, modmer_hash(args.shape,
+        case modmers: accuracy(modmer_hash(args.shape,
+                                args.w_size.get(), args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                        break;
+    }
+}
+
+void do_counts(std::vector<std::filesystem::path> sequence_files, range_arguments & args)
+{
+    switch(args.name)
+    {
+        case kmer: counts(sequence_files, seqan3::views::kmer_hash(args.shape), "kmer_hash_"+std::to_string(args.k_size), args);
+                   break;
+        case minimiser: counts(sequence_files, seqan3::views::minimiser_hash(args.shape,
+                                args.w_size, args.seed_se), "minimiser_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                        break;
+        case modmers: counts(sequence_files, modmer_hash(args.shape,
                                 args.w_size.get(), args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
                         break;
         case strobemer: std::ranges::empty_view<seqan3::detail::empty_type> empty{};
                         if (args.rand & (args.order == 2))
-                            compare<std::ranges::empty_view<seqan3::detail::empty_type>, 1>(sequence_files, empty,
+                            counts<std::ranges::empty_view<seqan3::detail::empty_type>, 1>(sequence_files, empty,
                                 "randstrobemers_" + std::to_string(args.k_size) + "_" + std::to_string(args.order) + "_" +  std::to_string(args.w_min) + "_" +  std::to_string(args.w_max), args);
                         else if (args.rand & (args.order == 3))
-                            compare<std::ranges::empty_view<seqan3::detail::empty_type>, 2>(sequence_files, empty,
+                            counts<std::ranges::empty_view<seqan3::detail::empty_type>, 2>(sequence_files, empty,
                                 "randstrobemers_" + std::to_string(args.k_size) + "_" + std::to_string(args.order) + "_" +  std::to_string(args.w_min) + "_" +  std::to_string(args.w_max), args);
                         else if (args.hybrid)
-                            compare<std::ranges::empty_view<seqan3::detail::empty_type>, 3>(sequence_files, empty,
+                            counts<std::ranges::empty_view<seqan3::detail::empty_type>, 3>(sequence_files, empty,
                                 "hybridstrobemers_" + std::to_string(args.k_size) + "_" + std::to_string(args.order) + "_" +  std::to_string(args.w_min) + "_" +  std::to_string(args.w_max), args);
                         else if (args.minstrobers)
-                            compare<std::ranges::empty_view<seqan3::detail::empty_type>, 4>(sequence_files, empty,
+                            counts<std::ranges::empty_view<seqan3::detail::empty_type>, 4>(sequence_files, empty,
                                 "minstrobemers_" + std::to_string(args.k_size) + "_" + std::to_string(args.order) + "_" +  std::to_string(args.w_min) + "_" +  std::to_string(args.w_max), args);
     }
 }
@@ -314,5 +479,33 @@ void do_coverage(std::filesystem::path sequence_file, range_arguments & args)
         case modmers: compare_cov2(sequence_file, modmer_hash_distance(args.shape,
                                 args.w_size.get(), args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
                         break;
+    }
+}
+
+void do_speed(std::vector<std::filesystem::path> sequence_files, range_arguments & args)
+{
+    switch(args.name)
+    {
+        case kmer: speed(sequence_files, seqan3::views::kmer_hash(args.shape), "kmer_hash_"+std::to_string(args.k_size), args);
+                   break;
+        case minimiser: speed(sequence_files, seqan3::views::minimiser_hash(args.shape,
+                                args.w_size, args.seed_se), "minimiser_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                        break;
+        case modmers: speed(sequence_files, modmer_hash(args.shape,
+                                args.w_size.get(), args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                        break;
+        case strobemer: std::ranges::empty_view<seqan3::detail::empty_type> empty{};
+                        if (args.rand & (args.order == 2))
+                            speed<std::ranges::empty_view<seqan3::detail::empty_type>, 1>(sequence_files, empty,
+                                "randstrobemers_" + std::to_string(args.k_size) + "_" + std::to_string(args.order) + "_" +  std::to_string(args.w_min) + "_" +  std::to_string(args.w_max), args);
+                        else if (args.rand & (args.order == 3))
+                            speed<std::ranges::empty_view<seqan3::detail::empty_type>, 2>(sequence_files, empty,
+                                "randstrobemers_" + std::to_string(args.k_size) + "_" + std::to_string(args.order) + "_" +  std::to_string(args.w_min) + "_" +  std::to_string(args.w_max), args);
+                        else if (args.hybrid)
+                            speed<std::ranges::empty_view<seqan3::detail::empty_type>, 3>(sequence_files, empty,
+                                "hybridstrobemers_" + std::to_string(args.k_size) + "_" + std::to_string(args.order) + "_" +  std::to_string(args.w_min) + "_" +  std::to_string(args.w_max), args);
+                        else if (args.minstrobers)
+                            speed<std::ranges::empty_view<seqan3::detail::empty_type>, 4>(sequence_files, empty,
+                                "minstrobemers_" + std::to_string(args.k_size) + "_" + std::to_string(args.order) + "_" +  std::to_string(args.w_min) + "_" +  std::to_string(args.w_max), args);
     }
 }

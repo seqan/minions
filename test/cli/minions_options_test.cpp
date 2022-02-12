@@ -19,8 +19,9 @@ TEST_F(cli_test, fail_no_argument)
     cli_test_result result = execute_app("minions", "-v");
     std::string expected
     {
-        "Parsing error. You either forgot or misspelled the subcommand! Please specify which sub-program you want to "
-        "use: one of [coverage,speed]. Use -h/--help for more information.\n"
+        "Parsing error. You either forgot or misspelled the subcommand! Please "
+        "specify which sub-program you want to use: one of [accuracy,counts,"
+        "coverage,speed]. Use -h/--help for more information.\n"
 
     };
     EXPECT_NE(result.exit_code, 0);
