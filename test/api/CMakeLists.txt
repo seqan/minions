@@ -10,3 +10,4 @@ add_api_test (modmer_hash_test.cpp)
 add_api_test (modmer_hash_distance_test.cpp)
 
 add_api_test (syncmer_test.cpp)
+add_api_test (opensyncmer_hash_test.cpp)
