@@ -373,6 +373,8 @@ private:
     {
         advance_windows();
 
+        if (second_iterator == urng_sentinel)
+            return;
         value_t const new_value = *first_iterator;
         value_t const sw_new_value = *second_iterator;
 
