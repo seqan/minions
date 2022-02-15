@@ -1,9 +1,31 @@
-rule setup:
+rule all:
+    input:
+        "kmer_output/solution_example_data_64_accuracy.png"
+
+rule accuracy_kmer_example_data:
+    input:
+        ["data/example_data/1024/bins/bin_{}.fasta".format(str(x).zfill(4)) for x in range(1024)],
+        ["data/example_data/1024/reads/bin_{}.fastq".format(str(x).zfill(4)) for x in range(1024)],
+        "data/example_data/1024/reads/all.fastq",
+        "data/example_data/1024/reads/mini.fastq",
+        ["data/example_data/64/bins/bin_{}.fasta".format(str(x).zfill(2)) for x in range(64)],
+        ["data/example_data/64/reads/bin_{}.fastq".format(str(x).zfill(2)) for x in range(64)],
+        "data/example_data/64/reads/all.fastq",
+        "data/example_data/64/reads/mini.fastq"
     output:
-        directory('analysis/'),
-        directory('data/')
+        "kmer_output/solution_example_data_64_accuracy.png"
     shell:
-        "mkdir -p analysis && mkdir -p data"
+        """mkdir -p kmer_output/
+        /home/mitradarvish/develop/build-minions/bin/minions counts -o kmer_output/ --method kmer -k 16 data/example_data/64/reads/bin_*.fastq
+        /home/mitradarvish/develop/build-minions/bin/minions counts -o kmer_output/ --method kmer -k 19 data/example_data/64/reads/bin_*.fastq
+        /home/mitradarvish/develop/build-minions/bin/minions counts -o kmer_output/ --method kmer -k 22 data/example_data/64/reads/bin_*.fastq
+        /home/mitradarvish/develop/build-minions/bin/minions counts -o kmer_output/ --method kmer -k 25 data/example_data/64/reads/bin_*.fastq
+        /home/mitradarvish/develop/build-minions/bin/minions accuracy -o kmer_output/ --method kmer -k 16  --ibfsize 10000 kmer_output/kmer_hash_16_bin_*.out --search-file data/example_data/64/reads/all.fastq --solution-file ../../test/data/solution_example_data_64.out
+        /home/mitradarvish/develop/build-minions/bin/minions accuracy -o kmer_output/ --method kmer -k 19  --ibfsize 10000 kmer_output/kmer_hash_19_bin_*.out --search-file data/example_data/64/reads/all.fastq --solution-file ../../test/data/solution_example_data_64.out
+        /home/mitradarvish/develop/build-minions/bin/minions accuracy -o kmer_output/ --method kmer -k 22  --ibfsize 10000 kmer_output/kmer_hash_22_bin_*.out --search-file data/example_data/64/reads/all.fastq --solution-file ../../test/data/solution_example_data_64.out
+        /home/mitradarvish/develop/build-minions/bin/minions accuracy -o kmer_output/ --method kmer -k 25  --ibfsize 10000 kmer_output/kmer_hash_25_bin_*.out --search-file data/example_data/64/reads/all.fastq --solution-file ../../test/data/solution_example_data_64.out
+        python3 ../../src/visualize/plot_accuracy.py kmer accuracy kmer_output/kmer_hash_16_all_accuracy.out kmer_output/kmer_hash_19_all_accuracy.out kmer_output/kmer_hash_22_all_accuracy.out kmer_output/kmer_hash_25_all_accuracy.out
+        mv /home/mitradarvish/develop/minions/src/snakemake/Plot_kmer_accuracy.png kmer_output/solution_example_data_64_accuracy.png"""
 
 rule download:
     output:
@@ -16,4 +38,4 @@ rule download:
         "data/example_data/64/reads/all.fastq",
         "data/example_data/64/reads/mini.fastq"
     shell:
-        "cd data && wget https://ftp.imp.fu-berlin.de/pub/seiler/raptor/example_data.tar.gz && tar xfz example_data.tar.gz"
+        "mkdir -p data && cd data && wget https://ftp.imp.fu-berlin.de/pub/seiler/raptor/example_data.tar.gz && tar xfz example_data.tar.gz"
