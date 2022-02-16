@@ -32,5 +32,11 @@
 
 example_data*
 src/snakemake/.snakemake/
-src/snakemake/analysis/*
 src/snakemake/data/*
+!src/snakemake/data/README
+src/snakemake/Plot_*
+src/snakemake/*.out
+src/snakemake/output/*
+!src/snakemake/output/README
+src/snakemake/results/*
+!src/snakemake/results/README

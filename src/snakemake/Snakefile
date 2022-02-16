@@ -1,31 +1,103 @@
 rule all:
     input:
-        "kmer_output/solution_example_data_64_accuracy.png"
+        "results/kmer_example_data_64_accuracy.png",
+        "results/minimiser_example_data_64_accuracy.png"
 
-rule accuracy_kmer_example_data:
+rule kmer_example_data_64_count:
     input:
-        ["data/example_data/1024/bins/bin_{}.fasta".format(str(x).zfill(4)) for x in range(1024)],
-        ["data/example_data/1024/reads/bin_{}.fastq".format(str(x).zfill(4)) for x in range(1024)],
-        "data/example_data/1024/reads/all.fastq",
-        "data/example_data/1024/reads/mini.fastq",
         ["data/example_data/64/bins/bin_{}.fasta".format(str(x).zfill(2)) for x in range(64)],
         ["data/example_data/64/reads/bin_{}.fastq".format(str(x).zfill(2)) for x in range(64)],
         "data/example_data/64/reads/all.fastq",
         "data/example_data/64/reads/mini.fastq"
     output:
-        "kmer_output/solution_example_data_64_accuracy.png"
+        ["output/kmer_count_output/kmer_hash_16_bin_{}.out".format(str(x).zfill(2)) for x in range(64)],
+        ["output/kmer_count_output/kmer_hash_19_bin_{}.out".format(str(x).zfill(2)) for x in range(64)],
+        ["output/kmer_count_output/kmer_hash_22_bin_{}.out".format(str(x).zfill(2)) for x in range(64)],
+        ["output/kmer_count_output/kmer_hash_25_bin_{}.out".format(str(x).zfill(2)) for x in range(64)]
     shell:
-        """mkdir -p kmer_output/
-        /home/mitradarvish/develop/build-minions/bin/minions counts -o kmer_output/ --method kmer -k 16 data/example_data/64/reads/bin_*.fastq
-        /home/mitradarvish/develop/build-minions/bin/minions counts -o kmer_output/ --method kmer -k 19 data/example_data/64/reads/bin_*.fastq
-        /home/mitradarvish/develop/build-minions/bin/minions counts -o kmer_output/ --method kmer -k 22 data/example_data/64/reads/bin_*.fastq
-        /home/mitradarvish/develop/build-minions/bin/minions counts -o kmer_output/ --method kmer -k 25 data/example_data/64/reads/bin_*.fastq
-        /home/mitradarvish/develop/build-minions/bin/minions accuracy -o kmer_output/ --method kmer -k 16  --ibfsize 10000 kmer_output/kmer_hash_16_bin_*.out --search-file data/example_data/64/reads/all.fastq --solution-file ../../test/data/solution_example_data_64.out
-        /home/mitradarvish/develop/build-minions/bin/minions accuracy -o kmer_output/ --method kmer -k 19  --ibfsize 10000 kmer_output/kmer_hash_19_bin_*.out --search-file data/example_data/64/reads/all.fastq --solution-file ../../test/data/solution_example_data_64.out
-        /home/mitradarvish/develop/build-minions/bin/minions accuracy -o kmer_output/ --method kmer -k 22  --ibfsize 10000 kmer_output/kmer_hash_22_bin_*.out --search-file data/example_data/64/reads/all.fastq --solution-file ../../test/data/solution_example_data_64.out
-        /home/mitradarvish/develop/build-minions/bin/minions accuracy -o kmer_output/ --method kmer -k 25  --ibfsize 10000 kmer_output/kmer_hash_25_bin_*.out --search-file data/example_data/64/reads/all.fastq --solution-file ../../test/data/solution_example_data_64.out
-        python3 ../../src/visualize/plot_accuracy.py kmer accuracy kmer_output/kmer_hash_16_all_accuracy.out kmer_output/kmer_hash_19_all_accuracy.out kmer_output/kmer_hash_22_all_accuracy.out kmer_output/kmer_hash_25_all_accuracy.out
-        mv /home/mitradarvish/develop/minions/src/snakemake/Plot_kmer_accuracy.png kmer_output/solution_example_data_64_accuracy.png"""
+        """
+        cd output
+        mkdir -p kmer_count_output/
+        minions counts -o kmer_count_output/ --method kmer -k 16 ../data/example_data/64/reads/bin_*.fastq
+        minions counts -o kmer_count_output/ --method kmer -k 19 ../data/example_data/64/reads/bin_*.fastq
+        minions counts -o kmer_count_output/ --method kmer -k 22 ../data/example_data/64/reads/bin_*.fastq
+        minions counts -o kmer_count_output/ --method kmer -k 25 ../data/example_data/64/reads/bin_*.fastq
+        """
+
+rule kmer_example_data_64_accuracy:
+    input:
+        rules.kmer_example_data_64_count.output
+    output:
+        "results/kmer_example_data_64_accuracy.png"
+    shell:
+        """
+        cd output
+        mkdir -p kmer_accuracy_output/
+        minions accuracy -o kmer_accuracy_output/ --method kmer -k 16  --ibfsize 10000000 kmer_count_output/kmer_hash_16_bin_*.out --search-file ../data/example_data/64/reads/all.fastq --solution-file ../../../test/data/solution_example_data_64.out
+        minions accuracy -o kmer_accuracy_output/ --method kmer -k 19  --ibfsize 10000000 kmer_count_output/kmer_hash_19_bin_*.out --search-file ../data/example_data/64/reads/all.fastq --solution-file ../../../test/data/solution_example_data_64.out
+        minions accuracy -o kmer_accuracy_output/ --method kmer -k 22  --ibfsize 10000000 kmer_count_output/kmer_hash_22_bin_*.out --search-file ../data/example_data/64/reads/all.fastq --solution-file ../../../test/data/solution_example_data_64.out
+        minions accuracy -o kmer_accuracy_output/ --method kmer -k 25  --ibfsize 10000000 kmer_count_output/kmer_hash_25_bin_*.out --search-file ../data/example_data/64/reads/all.fastq --solution-file ../../../test/data/solution_example_data_64.out
+        python3 ../../../src/visualize/plot_accuracy.py kmer accuracy kmer_accuracy_output/kmer_hash_16_all_accuracy.out kmer_accuracy_output/kmer_hash_19_all_accuracy.out kmer_accuracy_output/kmer_hash_22_all_accuracy.out kmer_accuracy_output/kmer_hash_25_all_accuracy.out
+        mv Plot_kmer_accuracy.png ../results/kmer_example_data_64_accuracy.png"""
+
+rule minimiser_example_data_64_count:
+    input:
+        ["data/example_data/64/bins/bin_{}.fasta".format(str(x).zfill(2)) for x in range(64)],
+        ["data/example_data/64/reads/bin_{}.fastq".format(str(x).zfill(2)) for x in range(64)],
+        "data/example_data/64/reads/all.fastq",
+        "data/example_data/64/reads/mini.fastq"
+    output:
+        ["output/minimiser_count_output/minimiser_hash_19_19_bin_{}.out".format(str(x).zfill(2)) for x in range(64)],
+        ["output/minimiser_count_output/minimiser_hash_19_23_bin_{}.out".format(str(x).zfill(2)) for x in range(64)],
+        ["output/minimiser_count_output/minimiser_hash_19_27_bin_{}.out".format(str(x).zfill(2)) for x in range(64)],
+        ["output/minimiser_count_output/minimiser_hash_19_31_bin_{}.out".format(str(x).zfill(2)) for x in range(64)],
+        ["output/minimiser_count_output/minimiser_hash_19_35_bin_{}.out".format(str(x).zfill(2)) for x in range(64)],
+        ["output/minimiser_count_output/minimiser_hash_19_39_bin_{}.out".format(str(x).zfill(2)) for x in range(64)]
+    shell:
+        """
+        cd output
+        mkdir -p minimiser_count_output/
+        minions counts -o minimiser_count_output/ --method minimiser -k 19 -w 19 ../data/example_data/64/reads/bin_*.fastq
+        minions counts -o minimiser_count_output/ --method minimiser -k 19 -w 23 ../data/example_data/64/reads/bin_*.fastq
+        minions counts -o minimiser_count_output/ --method minimiser -k 19 -w 27 ../data/example_data/64/reads/bin_*.fastq
+        minions counts -o minimiser_count_output/ --method minimiser -k 19 -w 31 ../data/example_data/64/reads/bin_*.fastq
+        minions counts -o minimiser_count_output/ --method minimiser -k 19 -w 35 ../data/example_data/64/reads/bin_*.fastq
+        minions counts -o minimiser_count_output/ --method minimiser -k 19 -w 39 ../data/example_data/64/reads/bin_*.fastq
+        """
+
+rule minimiser_example_data_64_search:
+    input:
+        rules.minimiser_example_data_64_count.output
+    output:
+        "output/minimiser_search_output/minimiser_hash_19_19_all.search_out",
+        "output/minimiser_search_output/minimiser_hash_19_23_all.search_out",
+        "output/minimiser_search_output/minimiser_hash_19_27_all.search_out",
+        "output/minimiser_search_output/minimiser_hash_19_31_all.search_out",
+        "output/minimiser_search_output/minimiser_hash_19_35_all.search_out",
+        "output/minimiser_search_output/minimiser_hash_19_39_all.search_out"
+    shell:
+        """
+        cd output
+        mkdir -p minimiser_search_output/
+        minions accuracy -o  minimiser_search_output/ --method minimiser -k 19 -w 19  --ibfsize 10000000 minimiser_count_output/minimiser_hash_19_19_bin_*.out --search-file ../data/example_data/64/reads/all.fastq --solution-file ../../../test/data/solution_example_data_64.out
+        minions accuracy -o  minimiser_search_output/ --method minimiser -k 19 -w 23  --ibfsize 10000000 minimiser_count_output/minimiser_hash_19_23_bin_*.out --search-file ../data/example_data/64/reads/all.fastq --solution-file ../../../test/data/solution_example_data_64.out
+        minions accuracy -o  minimiser_search_output/ --method minimiser -k 19 -w 27  --ibfsize 10000000 minimiser_count_output/minimiser_hash_19_27_bin_*.out --search-file ../data/example_data/64/reads/all.fastq --solution-file ../../../test/data/solution_example_data_64.out
+        minions accuracy -o  minimiser_search_output/ --method minimiser -k 19 -w 31  --ibfsize 10000000 minimiser_count_output/minimiser_hash_19_31_bin_*.out --search-file ../data/example_data/64/reads/all.fastq --solution-file ../../../test/data/solution_example_data_64.out
+        minions accuracy -o  minimiser_search_output/ --method minimiser -k 19 -w 35  --ibfsize 10000000 minimiser_count_output/minimiser_hash_19_31_bin_*.out --search-file ../data/example_data/64/reads/all.fastq --solution-file ../../../test/data/solution_example_data_64.out
+        minions accuracy -o  minimiser_search_output/ --method minimiser -k 19 -w 39  --ibfsize 10000000 minimiser_count_output/minimiser_hash_19_31_bin_*.out --search-file ../data/example_data/64/reads/all.fastq --solution-file ../../../test/data/solution_example_data_64.out
+        """
+
+rule minimiser_example_data_64_accuracy:
+    input:
+        rules.minimiser_example_data_64_search.output
+    output:
+        "results/minimiser_example_data_64_accuracy.png"
+    shell:
+        """
+        cd output
+        mkdir -p minimiser_accuracy_output/
+        python3 ../../../src/visualize/plot_accuracy.py minimiser accuracy  minimiser_search_output/minimiser_hash_19_19_all_accuracy.out  minimiser_search_output/minimiser_hash_19_23_all_accuracy.out  minimiser_search_output/minimiser_hash_19_27_all_accuracy.out  minimiser_search_output/minimiser_hash_19_31_all_accuracy.out  minimiser_search_output/minimiser_hash_19_35_all_accuracy.out  minimiser_search_output/minimiser_hash_19_39_all_accuracy.out
+        mv Plot_minimiser_accuracy.png ../results/minimiser_example_data_64_accuracy.png"""
 
 rule download:
     output:
