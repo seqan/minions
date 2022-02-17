@@ -133,7 +133,6 @@ void accuracy(urng_t input_view,
             bool true_positive = std::binary_search(solutions[ids[i]].begin(), solutions[ids[i]].end(), j);
             if (counter[j] >= (length * args.threshold))
                 outfile << j << ",";
-            outfile << "\n";
 
             if (found & true_positive)
                 tp++;
@@ -144,6 +143,7 @@ void accuracy(urng_t input_view,
             else
                 tn++;
         }
+        outfile << "\n";
     }
     outfile.close();
 
