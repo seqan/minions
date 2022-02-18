@@ -26,42 +26,42 @@ namespace seqan3::detail
 //!\ingroup search_views
 struct opensyncmer_hash_fn
 {
-    /*!\brief Store the window_size and the subwindow_size and return a range adaptor closure object.
-    * \param[in] window_size       The number of values in one window
-    * \param[in] subwindow_size    The number of values to be checked as subwindow.
+    /*!\brief Store the kmers and the smers and return a range adaptor closure object.
+    * \param[in] kmers       The K-mer size to be used.
+    * \param[in] smers       The S-mer size (s<k) to be used.
     * \throws std::invalid_argument if the window size is smaller than 1.
-    * \returns                     A range of converted elements.
+    * \returns               A range of converted elements.
     */
-    constexpr auto operator()(size_t const subwindow_size, size_t const window_size) const
+    constexpr auto operator()(size_t const smers, size_t const kmers) const
     {
-        return seqan3::detail::adaptor_from_functor{*this, subwindow_size, window_size};
+        return seqan3::detail::adaptor_from_functor{*this, smers, kmers};
     }
 
     /*!\brief Store the window size, the subwindow size and the seed and return a range adaptor closure object.
-    * \param[in] window_size       The number of values in one window
-    * \param[in] subwindow_size    The number of values to be checked as subwindow.
-    * \param[in] seed              The seed to use.
+    * \param[in] kmers       The K-mer size to be used.
+    * \param[in] smers       The S-mer size (s<k) to be used.
+    * \param[in] seed        The seed to use.
     * \throws std::invalid_argument if the window size is smaller than 1.
-    * \returns                     A range of converted elements.
+    * \returns               A range of converted elements.
     */
-    constexpr auto operator()(size_t const subwindow_size, size_t const window_size, seed const seed) const
+    constexpr auto operator()(size_t const smers, size_t const kmers, seed const seed) const
     {
-        return seqan3::detail::adaptor_from_functor{*this, subwindow_size, window_size, seed};
+        return seqan3::detail::adaptor_from_functor{*this, smers, kmers, seed};
     }
 
     /*!\brief Call the view's constructor with the underlying view, a window size and a subwindow size as argument.
-     * \param[in] urange            The input range to process. Must model std::ranges::viewable_range and
-     *                              the reference type of the range must model seqan3::semialphabet.
-     * \param[in] window_size       The number of values in one window
-     * \param[in] subwindow_size    The number of values to be checked as subwindow.
-     * \param[in] seed              The seed to use.
-     * \throws std::invalid_argument if the subwindow size is smaller than 1 or window_size is smaller than subwindow_size.
-     * \returns                     A range of converted elements.
+     * \param[in] urange     The input range to process. Must model std::ranges::viewable_range and
+     *                       the reference type of the range must model seqan3::semialphabet.
+     * \param[in] kmers      The K-mer size to be used.
+     * \param[in] smers      The S-mer size (s<k) to be used.
+     * \param[in] seed       The seed to use.
+     * \throws std::invalid_argument if the subwindow size is smaller than 1 or kmers is smaller than smers.
+     * \returns              A range of converted elements.
      */
     template <std::ranges::range urng_t>
     constexpr auto operator()(urng_t && urange,
-                              size_t const subwindow_size,
-			       size_t const window_size,
+                              size_t const smers,
+			      size_t const kmers,
                               seed const seed = seqan3::seed{0x8F3F73B5CF1C9ADE}) const
     {
         static_assert(std::ranges::viewable_range<urng_t>,
@@ -71,17 +71,22 @@ struct opensyncmer_hash_fn
         static_assert(semialphabet<std::ranges::range_reference_t<urng_t>>,
             "The range parameter to views::opensyncmer_hash must be over elements of seqan3::semialphabet.");
 
-        if (subwindow_size < 1 || window_size < subwindow_size)
-            throw std::invalid_argument{"The chosen window_size and subwindow_size are not valid."
-                                        "Please choose values greater than 1 and a subwindow_size smaller than the window_size."};
+        if (smers < 1 || kmers <= smers)
+            throw std::invalid_argument{"The chosen kmers and smers are not valid."
+                                        "Please choose values greater than 1 and a smer size smaller than the kmer size."};
 
-        auto window_hash = std::forward<urng_t>(urange) | seqan3::views::kmer_hash(seqan3::shape(seqan3::ungapped(window_size))) 
-                                                        | std::views::transform([seed](uint64_t i){return i ^ seed.get();});
+        auto kmers_hashes = std::forward<urng_t>(urange)
+                                                 | seqan3::views::kmer_hash(seqan3::shape(seqan3::ungapped(kmers)))
+                                                 | std::views::transform([seed] (uint64_t i)
+                                                          {return i ^ seed.get();});
 
-        auto subwindow_hash = std::forward<urng_t>(urange) | seqan3::views::kmer_hash(seqan3::shape(seqan3::ungapped(subwindow_size)))
-                                                       | std::views::transform([seed](uint64_t i){return i ^ seed.get();});
+        auto smers_hashes = std::forward<urng_t>(urange)
+                                                 | seqan3::views::kmer_hash(seqan3::shape(seqan3::ungapped(smers)))
+                                                 | std::views::transform([seed] (uint64_t i)
+                                                          {return i ^ seed.get();});
 
-        return seqan3::detail::syncmer_view<decltype(subwindow_hash), decltype(window_hash), true>(subwindow_hash, window_hash, window_size - subwindow_size + 1);
+        return seqan3::detail::syncmer_view<decltype(smers_hashes), decltype(kmers_hashes), true>
+                                                 (smers_hashes, kmers_hashes, kmers - smers + 1);
     }
 };
 
@@ -91,15 +96,15 @@ struct opensyncmer_hash_fn
  * \{
  */
 
-/*!\brief                     Computes opensyncmers for a range with given window and subwindow sizes, and seed.
- * \tparam urng_t             The type of the range being processed. See below for requirements. [template parameter is
- *                            omitted in pipe notation]
- * \param[in] urange          The range being processed. [parameter is omitted in pipe notation]
- * \param[in] window_size     The number of values in one window
- * \param[in] subwindow_size  The number of values to be checked as subwindow.
- * \param[in] seed            The seed used to skew the hash values. Default: 0x8F3F73B5CF1C9ADE.
- * \returns                   A range of `size_t` where each value is the opensyncmer of the resp. window.
- *                            See below for the properties of the returned range.
+/*!\brief                    Computes opensyncmers for a range with given window and subwindow sizes, and seed.
+ * \tparam urng_t            The type of the range being processed. See below for requirements.
+ *                           [template parameter is omitted in pipe notation]
+ * \param[in] urange         The range being processed. [parameter is omitted in pipe notation]
+ * \param[in] kmers          The K-mer size to be used.
+ * \param[in] smers          The S-mer size (s<k) to be used.
+ * \param[in] seed           The seed used to skew the hash values. Default: 0x8F3F73B5CF1C9ADE.
+ * \returns                  A range of `size_t` where each value is the opensyncmer of the resp. window.
+ *                           See below for the properties of the returned range.
  * \ingroup search_views
  *
  * \attention
