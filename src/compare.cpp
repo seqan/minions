@@ -134,13 +134,13 @@ void accuracy(urng_t input_view,
             if (counter[j] >= (length * args.threshold))
                 outfile << j << ",";
 
-            if (found & true_positive)
+            if (found && true_positive)
                 tp++;
-            else if(found)
+            else if(found && !true_positive)
                 fp++;
-            else if (true_positive)
+            else if (!found &&true_positive)
                 fn++;
-            else
+            else if (!found && !true_positive)
                 tn++;
         }
         outfile << "\n";
