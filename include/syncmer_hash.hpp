@@ -27,8 +27,8 @@ namespace seqan3::detail
 struct syncmer_hash_fn
 {
     /*!\brief Store the kmers and the smers and return a range adaptor closure object.
-    * \param[in] kmers       The K-mer size to be used.
-    * \param[in] smers       The S-mer size (s<k) to be used.
+    * \param[in] kmers       The k-mer size to be used.
+    * \param[in] smers       The s-mer size (s<k) to be used.
     * \throws std::invalid_argument if the window size is smaller than 1.
     * \returns               A range of converted elements.
     */
@@ -38,8 +38,8 @@ struct syncmer_hash_fn
     }
 
     /*!\brief Store the window size, the subwindow size and the seed and return a range adaptor closure object.
-    * \param[in] kmers       The K-mer size to be used.
-    * \param[in] smers       The S-mer size (s<k) to be used.
+    * \param[in] kmers       The k-mer size to be used.
+    * \param[in] smers       The s-mer size (s<k) to be used.
     * \param[in] seed        The seed to use.
     * \throws std::invalid_argument if the window size is smaller than 1.
     * \returns               A range of converted elements.
@@ -52,8 +52,8 @@ struct syncmer_hash_fn
     /*!\brief Call the view's constructor with the underlying view, a window size and a subwindow size as argument.
      * \param[in] urange      The input range to process. Must model std::ranges::viewable_range and
      *                        the reference type of the range must model seqan3::semialphabet.
-     * \param[in] kmers       The K-mer size to be used.
-     * \param[in] smers       The S-mer size (s<k) to be used.
+     * \param[in] kmers       The k-mer size to be used.
+     * \param[in] smers       The s-mer size (s<k) to be used.
      * \param[in] seed        The seed to use.
      * \throws std::invalid_argument if the subwindow size is smaller than 1 or kmers is smaller than smers.
      * \returns               A range of converted elements.
@@ -95,7 +95,7 @@ struct syncmer_hash_fn
  * \{
  */
 
-/*!\brief                     Computes syncmers for a range with given K-mer and S-mer sizes, and seed.
+/*!\brief                     Computes syncmers for a range with given k-mer and s-mer sizes, and seed.
  * \tparam urng_t             The type of the range being processed. See below for requirements.
  *                            [template parameter isomitted in pipe notation]
  * \param[in] urange          The range being processed. [parameter is omitted in pipe notation]
