@@ -96,7 +96,7 @@ struct opensyncmer_hash_fn
  * \{
  */
 
-/*!\brief                    Computes opensyncmers for a range with given window and subwindow sizes, and seed.
+/*!\brief                    Computes opensyncmers for a range with given K-mer and S-mer sizes, and seed.
  * \tparam urng_t            The type of the range being processed. See below for requirements.
  *                           [template parameter is omitted in pipe notation]
  * \param[in] urange         The range being processed. [parameter is omitted in pipe notation]
