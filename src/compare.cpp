@@ -8,6 +8,7 @@
 #include <seqan3/io/views/detail/take_until_view.hpp>
 
 #include "compare.h"
+#include "opensyncmer_hash.hpp"
 #include "minimiser_hash_distance.hpp"
 #include "modmer_hash.hpp"
 #include "modmer_hash_distance.hpp"
@@ -437,6 +438,9 @@ void do_accuracy(accuracy_arguments & args)
                         break;
         case modmers: accuracy(modmer_hash(args.shape,
                                 args.w_size.get(), args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                        break;
+        case syncmer: accuracy(opensyncmer_hash(args.w_size.get(), args.k_size, args.seed_se),
+                               "opensyncmer_hash_" + std::to_string(args.w_size.get()) + "_" + std::to_string(args.k_size), args);
                         break;
     }
 }
