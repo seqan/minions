@@ -33,7 +33,6 @@
 example_data*
 src/snakemake/
 !src/snakemake/Snakefile
-!src/snakemake/plot_accuracy.py
 !src/snakemake/data/README
 !src/snakemake/output/README
 !src/snakemake/results/README
