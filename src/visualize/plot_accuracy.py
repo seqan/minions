@@ -5,7 +5,7 @@ import sys
 def get_labels(name, method):
     if (name == "kmer"):
         return method.split("_")[2]
-    elif ((name == "minimiser") | (name == "modmer")):
+    elif ((name == "minimiser") | (name == "modmer") | (name == "syncmer")):
         return "("+method.split("_")[2]+","+method.split("_")[3]+")"
 
 name = sys.argv[1]

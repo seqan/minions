@@ -2,12 +2,9 @@ rule all:
     input:
         #"results/kmer_example_data_64_accuracy.png",
         "results/minimiser_example_data_64_accuracy.png",
-        "results/minimiser_example_data_1024_accuracy.png",
-        "results/modmer_example_data_64_accuracy.png"
-        #["output/64/kmer_hash_16_bin_{}.out".format(str(x).zfill(2)) for x in range(64)],
-        #["output/64/minimiser_hash_19_23_bin_{}.out".format(str(x).zfill(2)) for x in range(64)],
-        #["output/1024/kmer_hash_19_bin_{}.out".format(str(x).zfill(4)) for x in range(1024)],
-        #["output/1024/minimiser_hash_19_23_bin_{}.out".format(str(x).zfill(4)) for x in range(1024)]
+        #"results/minimiser_example_data_1024_accuracy.png",
+        "results/modmer_example_data_64_accuracy.png",
+        "results/opensyncmer_example_data_64_accuracy.png"
 
 rule kmer_count_64:
     input:
@@ -119,6 +116,18 @@ rule accuracy_modmer:
     shell:
         """python3 ../../src/visualize/plot_accuracy.py modmer accuracy  {input}
         mv Plot_modmer_accuracy.png results/modmer_example_data_{wildcards.dataset}_accuracy.png"""
+
+rule accuracy_opensyncmer:
+    input:
+        "output/{dataset}/accuracy/0.5_opensyncmer_hash_19_2_all_accuracy.out",
+        "output/{dataset}/accuracy/0.5_opensyncmer_hash_19_3_all_accuracy.out",
+        "output/{dataset}/accuracy/0.5_opensyncmer_hash_19_5_all_accuracy.out",
+        "output/{dataset}/accuracy/0.5_opensyncmer_hash_19_7_all_accuracy.out",
+    output:
+        "results/opensyncmer_example_data_{dataset}_accuracy.png"
+    shell:
+        """python3 ../../src/visualize/plot_accuracy.py opensyncmer accuracy  {input}
+        mv Plot_opensyncmer_accuracy.png results/opensyncmer_example_data_{wildcards.dataset}_accuracy.png"""
 
 rule download:
     output:

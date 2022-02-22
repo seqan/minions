@@ -439,8 +439,8 @@ void do_accuracy(accuracy_arguments & args)
         case modmers: accuracy(modmer_hash(args.shape,
                                 args.w_size.get(), args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
                         break;
-        case syncmer: accuracy(opensyncmer_hash(args.w_size.get(), args.k_size, args.seed_se),
-                               "opensyncmer_hash_" + std::to_string(args.w_size.get()) + "_" + std::to_string(args.k_size), args);
+        case opensyncmer: accuracy(opensyncmer_hash(args.w_size.get(), args.k_size, args.seed_se),
+                               "opensyncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
                         break;
     }
 }
@@ -457,6 +457,9 @@ void do_counts(std::vector<std::filesystem::path> sequence_files, range_argument
         case modmers: counts(sequence_files, modmer_hash(args.shape,
                                 args.w_size.get(), args.seed_se), "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
                         break;
+        case opensyncmer: counts(sequence_files, opensyncmer_hash(args.w_size.get(), args.k_size, args.seed_se),
+                            "opensyncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                        break;
         case strobemer: std::ranges::empty_view<seqan3::detail::empty_type> empty{};
                         if (args.rand & (args.order == 2))
                             counts<std::ranges::empty_view<seqan3::detail::empty_type>, 1>(sequence_files, empty,
@@ -470,6 +473,7 @@ void do_counts(std::vector<std::filesystem::path> sequence_files, range_argument
                         else if (args.minstrobers)
                             counts<std::ranges::empty_view<seqan3::detail::empty_type>, 4>(sequence_files, empty,
                                 "minstrobemers_" + std::to_string(args.k_size) + "_" + std::to_string(args.order) + "_" +  std::to_string(args.w_min) + "_" +  std::to_string(args.w_max), args);
+                        break;
     }
 }
 
