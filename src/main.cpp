@@ -15,10 +15,12 @@ void string_to_methods(std::string name, methods & m)
         m = kmer;
     else if (name == "minimiser")
         m = minimiser;
-    else if (name == "strobemer")
-        m = strobemer;
     else if (name == "modmer")
         m = modmers;
+    else if (name == "strobemer")
+        m = strobemer;
+    else if (name == "opensyncmer")
+        m = opensyncmer;
 };
 
 void all_arguments(seqan3::argument_parser & parser, range_arguments & args)
@@ -71,7 +73,7 @@ int accuracy(seqan3::argument_parser & parser)
     std::string method{};
     parser.add_option(method, '\0', "method", "Pick your method.",
                       seqan3::option_spec::required,
-                      seqan3::value_list_validator{"kmer", "minimiser", "modmer"});
+                      seqan3::value_list_validator{"kmer", "minimiser", "modmer", "opensyncmer"});
     parser.add_option(args.search_file, '\0', "search-file", "A sequence files with sequences to search for.",
                       seqan3::option_spec::required);
     parser.add_option(args.solution_file, '\0', "solution-file", "A file giving the correct files a sequence should be find in.",
@@ -115,7 +117,7 @@ int counts(seqan3::argument_parser & parser)
     all_arguments(parser, args);
     std::string method{};
     parser.add_option(method, '\0', "method", "Pick your method.",
-                      seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer"});
+                      seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer", "opensyncmer"});
 
     read_range_arguments_minimiser(parser, args);
     read_range_arguments_strobemers(parser, args);

@@ -61,7 +61,7 @@ struct opensyncmer_hash_fn
     template <std::ranges::range urng_t>
     constexpr auto operator()(urng_t && urange,
                               size_t const smers,
-			      size_t const kmers,
+			                  size_t const kmers,
                               seed const seed = seqan3::seed{0x8F3F73B5CF1C9ADE}) const
     {
         static_assert(std::ranges::viewable_range<urng_t>,

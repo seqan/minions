@@ -62,13 +62,21 @@ TEST_F(cli_test, minstrobers)
     EXPECT_EQ(result.err, std::string{});
 }
 
+TEST_F(cli_test, opensyncmer)
+{
+    cli_test_result result = execute_app("minions counts --method opensyncmer -k 19 -w 3", data("example1.fasta"));
+    EXPECT_EQ(result.exit_code, 0);
+    EXPECT_EQ(result.out, std::string{});
+    EXPECT_EQ(result.err, std::string{});
+}
+
 TEST_F(cli_test, wrong_method)
 {
     cli_test_result result = execute_app("minions counts --method submer -k 19", data("example1.fasta"));
     std::string expected
     {
         "Error. Incorrect command line input for counts. Validation failed "
-        "for option --method: Value submer is not one of [kmer,minimiser,modmer,strobemer].\n"
+        "for option --method: Value submer is not one of [kmer,minimiser,modmer,strobemer,opensyncmer].\n"
     };
     EXPECT_EQ(result.exit_code, 0);
     EXPECT_EQ(result.out, std::string{});
