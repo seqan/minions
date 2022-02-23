@@ -1,0 +1,143 @@
+rule all:
+    input:
+        #"results/kmer_example_data_64_accuracy.png",
+        "results/minimiser_example_data_64_accuracy.png",
+        #"results/minimiser_example_data_1024_accuracy.png",
+        "results/modmer_example_data_64_accuracy.png",
+        "results/opensyncmer_example_data_64_accuracy.png"
+
+rule kmer_count_64:
+    input:
+        ["data/example_data/64/bins/bin_"+str(x).zfill(2)+".fasta" for x in range(64)]
+    output:
+        ["output/64/kmer_hash_{kmer_size}_bin_"+str(x).zfill(2)+".out" for x in range(64)]
+    shell:
+        """
+        mkdir -p output/64/
+        minions counts -o output/64/ --method kmer -k {wildcards.kmer_size} {input}"""
+
+rule kmer_count_1024:
+    input:
+        ["data/example_data/1024/bins/bin_"+str(x).zfill(4)+".fasta" for x in range(1024)]
+    output:
+        ["output/1024/kmer_hash_{kmer_size}_bin_"+str(x).zfill(4)+".out" for x in range(1024)]
+    shell:
+        """
+        mkdir -p output/1024/
+        minions counts -o output/1024/ --method kmer -k {wildcards.kmer_size} {input}"""
+
+rule minimiser_count_64:
+    input:
+        ["data/example_data/64/bins/bin_"+str(x).zfill(2)+".fasta" for x in range(64)]
+    output:
+        ["output/64/{method}_hash_{kmer_size}_{window_size}_bin_"+str(x).zfill(2)+".out" for x in range(64)]
+    shell:
+        """
+        mkdir -p output/64/
+        minions counts -o output/64/ --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.window_size} {input}"""
+
+rule minimiser_count_1024:
+    input:
+        ["data/example_data/1024/bins/bin_"+str(x).zfill(4)+".fasta" for x in range(1024)]
+    output:
+        ["output/1024/{method}_hash_{kmer_size}_{window_size}_bin_"+str(x).zfill(4)+".out" for x in range(1024)]
+    shell:
+        """
+        mkdir -p output/1024/
+        minions counts -o output/1024/ --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.window_size} {input}"""
+
+rule minimiser_ibf_64:
+    input:
+        ["output/64/{method}_hash_{kmer_size}_{window_size}_bin_"+str(x).zfill(2)+".out" for x in range(64)]
+    output:
+        "output/64/accuracy/{threshold}_{method}_hash_{kmer_size}_{window_size}.ibf"
+    shell:
+        """
+        mkdir -p output/64/accuracy
+        minions accuracy -o  output/64/accuracy/{wildcards.threshold}_ --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.window_size} --threshold {wildcards.threshold} --ibfsize 300000000 {input} --search-file data/example_data/64/reads/all.fastq --solution-file ../../test/data/solution_example_data_64.out"""
+
+rule minimiser_ibf_1024:
+    input:
+        ["output/1024/{method}_hash_{kmer_size}_{window_size}_bin_"+str(x).zfill(4)+".out" for x in range(1024)]
+    output:
+        "output/1024/accuracy/{threshold}_{method}_hash_{kmer_size}_{window_size}.ibf"
+    shell:
+        """
+        mkdir -p output/64/accuracy
+        minions accuracy -o  output/1024/accuracy/{wildcards.threshold}_ --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.window_size} --threshold {wildcards.threshold} --ibfsize 20000000 {input} --search-file data/example_data/1024/reads/all.fastq --solution-file ../../test/data/solution_example_data_1024.out"""
+
+rule accuracy:
+    input:
+        "output/{dataset}/accuracy/{threshold}_{method}_hash_{kmer_size}_{window_size}.ibf"
+    output:
+        "output/{dataset}/accuracy/{threshold}_{method}_hash_{kmer_size}_{window_size}_all_accuracy.out"
+    shell:
+        """
+        mkdir -p output/{wildcards.dataset}/accuracy
+        minions accuracy -o  output/{wildcards.dataset}/accuracy/{wildcards.threshold}_ --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.window_size} --threshold {wildcards.threshold} {input} --search-file data/example_data/{wildcards.dataset}/reads/all.fastq --solution-file ../../test/data/solution_example_data_{wildcards.dataset}.out"""
+
+rule accuracy_kmer:
+    input:
+        "output/64/accuracy/kmer_hash_15_all_accuracy.out",
+        "output/64/accuracy/kmer_hash_19_all_accuracy.out",
+        "output/64/accuracy/kmer_hash_23_all_accuracy.out",
+        "output/64/accuracy/kmer_hash_27_all_accuracy.out",
+        "output/64/accuracy/kmer_hash_31_all_accuracy.out",
+        "output/64/accuracy/kmer_hash_35_all_accuracy.out",
+        "output/64/accuracy/kmer_hash_39_all_accuracy.out"
+    output:
+        "results/kmer_example_data_64_accuracy.png"
+    shell:
+        """python3 ../../src/visualize/plot_accuracy.py kmer accuracy  {input}
+        mv Plot_kmer_accuracy.png results/kmer_example_data_64_accuracy.png"""
+
+rule accuracy_minimiser:
+    input:
+        "output/{dataset}/accuracy/0.5_minimiser_hash_19_19_all_accuracy.out",
+        "output/{dataset}/accuracy/0.5_minimiser_hash_19_23_all_accuracy.out",
+        "output/{dataset}/accuracy/0.5_minimiser_hash_19_27_all_accuracy.out",
+        "output/{dataset}/accuracy/0.5_minimiser_hash_19_31_all_accuracy.out",
+        "output/{dataset}/accuracy/0.5_minimiser_hash_19_35_all_accuracy.out",
+        "output/{dataset}/accuracy/0.5_minimiser_hash_19_39_all_accuracy.out"
+    output:
+        "results/minimiser_example_data_{dataset}_accuracy.png"
+    shell:
+        """python3 ../../src/visualize/plot_accuracy.py minimiser accuracy  {input}
+        mv Plot_minimiser_accuracy.png results/minimiser_example_data_{wildcards.dataset}_accuracy.png"""
+
+rule accuracy_modmer:
+    input:
+        "output/{dataset}/accuracy/0.5_modmer_hash_19_2_all_accuracy.out",
+        "output/{dataset}/accuracy/0.5_modmer_hash_19_3_all_accuracy.out",
+        "output/{dataset}/accuracy/0.5_modmer_hash_19_5_all_accuracy.out",
+        "output/{dataset}/accuracy/0.5_modmer_hash_19_7_all_accuracy.out",
+    output:
+        "results/modmer_example_data_{dataset}_accuracy.png"
+    shell:
+        """python3 ../../src/visualize/plot_accuracy.py modmer accuracy  {input}
+        mv Plot_modmer_accuracy.png results/modmer_example_data_{wildcards.dataset}_accuracy.png"""
+
+rule accuracy_opensyncmer:
+    input:
+        "output/{dataset}/accuracy/0.5_opensyncmer_hash_19_2_all_accuracy.out",
+        "output/{dataset}/accuracy/0.5_opensyncmer_hash_19_3_all_accuracy.out",
+        "output/{dataset}/accuracy/0.5_opensyncmer_hash_19_5_all_accuracy.out",
+        "output/{dataset}/accuracy/0.5_opensyncmer_hash_19_7_all_accuracy.out",
+    output:
+        "results/opensyncmer_example_data_{dataset}_accuracy.png"
+    shell:
+        """python3 ../../src/visualize/plot_accuracy.py opensyncmer accuracy  {input}
+        mv Plot_opensyncmer_accuracy.png results/opensyncmer_example_data_{wildcards.dataset}_accuracy.png"""
+
+rule download:
+    output:
+        ["data/example_data/1024/bins/bin_{}.fasta".format(str(x).zfill(4)) for x in range(1024)],
+        ["data/example_data/1024/reads/bin_{}.fastq".format(str(x).zfill(4)) for x in range(1024)],
+        "data/example_data/1024/reads/all.fastq",
+        "data/example_data/1024/reads/mini.fastq",
+        ["data/example_data/64/bins/bin_{}.fasta".format(str(x).zfill(2)) for x in range(64)],
+        ["data/example_data/64/reads/bin_{}.fastq".format(str(x).zfill(2)) for x in range(64)],
+        "data/example_data/64/reads/all.fastq",
+        "data/example_data/64/reads/mini.fastq"
+    shell:
+        "mkdir -p data && cd data && wget https://ftp.imp.fu-berlin.de/pub/seiler/raptor/example_data.tar.gz && tar xfz example_data.tar.gz"
