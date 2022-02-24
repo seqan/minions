@@ -62,6 +62,14 @@ TEST_F(cli_test, no_ibf_yet)
     EXPECT_EQ(result.err, std::string{});
 }
 
+TEST_F(cli_test, sequence_file)
+{
+    cli_test_result result = execute_app("minions accuracy --method minimiser -k 19 -w 19 --ibfsize 10000 ", data("example1.fasta"), "--search-file", data("search.fasta"), "--solution-file", data("expected_search_result.out"));
+    EXPECT_EQ(result.exit_code, 0);
+    EXPECT_EQ(result.out, std::string{});
+    EXPECT_EQ(result.err, std::string{});
+}
+
 TEST_F(cli_test, wrong_method)
 {
     cli_test_result result = execute_app("minions accuracy --method submer -k 19 --search-file ", data("search.fasta"), data("example.ibf"));

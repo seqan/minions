@@ -80,6 +80,21 @@ void accuracy(urng_t input_view,
         store_ibf(ibf_create, std::string{args.path_out} + method_name + ".ibf");
         load_ibf(ibf, std::string{args.path_out} + method_name + ".ibf");
     }
+    else // Sequence files
+    {
+        seqan3::interleaved_bloom_filter ibf_create{seqan3::bin_count{args.input_file.size()},
+                                     seqan3::bin_size{args.ibfsize},
+                                     seqan3::hash_function_count{args.number_hashes}};
+
+        for(size_t i = 0; i < args.input_file.size(); i++)
+        {
+            for (auto && [seq] : seqan3::sequence_file_input<my_traits, seqan3::fields<seqan3::field::seq>>{args.input_file[i]})
+                for (auto && value : seq | input_view)
+                    ibf_create.emplace(value, seqan3::bin_index{i});
+        }
+        store_ibf(ibf_create, std::string{args.path_out} + method_name + ".ibf");
+        load_ibf(ibf, std::string{args.path_out} + method_name + ".ibf");
+    }
 
     // Search through the ibf with a given threshold.
 
