@@ -20,6 +20,12 @@
 #include "minstrobe.hpp"
 #include "shared.hpp"
 
+
+uint64_t combine_strobes(uint64_t first_strobe, uint64_t second_strobe)
+{
+    return first_strobe*4 + second_strobe;
+}
+
 namespace seqan3::detail
 {
 //!\brief seqan3::views::minstrobe_hash's range adaptor object type (non-closure).
@@ -80,10 +86,12 @@ struct minstrobe_hash_fn
                                         "Please choose values greater than 1 and a window_max greater than window_min."};
 
         auto hashed_values = std::forward<urng_t>(urange) | seqan3::views::kmer_hash(shape)
-                                                           | std::views::transform([seed] (uint64_t i)
+                                                          | std::views::transform([seed] (uint64_t i)
                                                                                   {return i ^ seed.get();});
 
-        return seqan3::detail::minstrobe_view(hashed_values, window_min, window_max);
+        auto minstrobes = seqan3::detail::minstrobe_view(hashed_values, window_min, window_max);
+        return std::views::transform(minstrobes, [] (std::vector<uint64_t> i)
+                               {return combine_strobes(i[0], i[1]);});
     }
 };
 
@@ -98,8 +106,8 @@ struct minstrobe_hash_fn
  *                           omitted in pipe notation]
  * \param[in] urange         The range being processed. [parameter is omitted in pipe notation]
  * \param[in] shape          The seqan3::shape that determines how to compute the hash value.
- * \param[in] window_min  The lower offset for the position of the next window from the previous one.
- * \param[in] window_max  The upper offset for the position of the next window from the previous one.
+ * \param[in] window_min     The lower offset for the position of the next window from the previous one.
+ * \param[in] window_max     The upper offset for the position of the next window from the previous one.
  * \param[in] seed           The seed used to skew the hash values. Default: 0x8F3F73B5CF1C9ADE.
  * \returns                  A range of `size_t` where each value is a vector composed of two minstrobes.
  *                           See below for the properties of the returned range.

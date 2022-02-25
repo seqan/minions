@@ -13,43 +13,43 @@
 
 #include <gtest/gtest.h>
 
-#include "../../lib/seqan3/test/unit/range/iterator_test_template.hpp"
+//#include "../../lib/seqan3/test/unit/range/iterator_test_template.hpp"
 
 #include "minstrobe_hash.hpp"
 
 using seqan3::operator""_dna4;
 using seqan3::operator""_shape;
-using result_t = std::vector<std::vector<size_t>>;
+using result_t = std::vector<uint64_t>;
 
 using iterator_type = std::ranges::iterator_t<decltype(std::declval<seqan3::dna4_vector&>()
                                                        | minstrobe_hash(seqan3::ungapped{4},
-                                                                     2,5,
-                                                                     seqan3::seed{0}))>;
+                                                                        2,5,
+                                                                        seqan3::seed{0}))>;
 
 static constexpr seqan3::shape ungapped_shape = seqan3::ungapped{4};
 static constexpr seqan3::shape gapped_shape = 0b1001_shape;
 static constexpr auto ungapped_view = minstrobe_hash(ungapped_shape,
-                                                  2,5,
-                                                  seqan3::seed{0});
+                                                     2,5,
+                                                     seqan3::seed{0});
 static constexpr auto gapped_view = minstrobe_hash(gapped_shape,
-                                                2,5,
-                                                seqan3::seed{0});
+                                                   2,5,
+                                                   seqan3::seed{0});
 
-template <>
+/*template <>
 struct iterator_fixture<iterator_type> : public ::testing::Test
 {
     using iterator_tag = std::forward_iterator_tag;
     static constexpr bool const_iterable = false;
 
     seqan3::dna4_vector text{"ACGGCGACGTTTAG"_dna4};
-    result_t expected_range{{26,97},{105,27},{166,27},{152,27},{97,27},{134,111}};
+    result_t expected_range{201, 447, 691, 635, 415, 647};
 
     using test_range_t = decltype(text | ungapped_view);
-    test_range_t test_range = text | ungapped_view;
+    test_range_t test_range = (text | ungapped_view);
 };
 
 using test_type = ::testing::Types<iterator_type>;
-INSTANTIATE_TYPED_TEST_SUITE_P(iterator_fixture, iterator_fixture, test_type, );
+INSTANTIATE_TYPED_TEST_SUITE_P(iterator_fixture, iterator_fixture, test_type, );*/
 
 template <typename T>
 class minstrobe_hash_view_properties_test: public ::testing::Test { };
@@ -67,7 +67,7 @@ class minstrobe_hash_test : public ::testing::Test
 {
 protected:
     std::vector<seqan3::dna4> text1{"AAAAAAAAAAAA"_dna4};
-    result_t result1{{0,0},{0,0},{0,0},{0,0}}; // Same result for ungapped and gapped
+    result_t result1{0,0,0,0}; // Same result for ungapped and gapped
 
     std::vector<seqan3::dna4> text3{"ACGGCGACGTTTAG"_dna4};
     //                          kmers: ACGG,     CGGC,     GGCG,     GCGA,     CGAC,     GACG,     ACGT, CGTT, GTTT, TTTA, TTAG
@@ -78,12 +78,12 @@ protected:
     //  stop at T ungapped minstrobes: ACGGCGAC
     //    stop at T gapped minstrobes: A--GC--C
     // start at A ungapped minstrobes:                               GCGAACGT, CGACACGT, GACGCGTT
-    result_t result3_ungapped{{26,97},{105,27},{166,27},{152,27},{97,27},{134,111}};
-    result_t result3_gapped{{2,5},{5,3},{10,3},{8,3},{5,3},{10,7}};
-    result_t result3_ungapped_stop{{26,97}};
-    result_t result3_gapped_stop{{2,5}};
-    result_t result3_ungapped_start{{152,27},{97,27},{134,111}};
-    result_t result3_gapped_start{{8,3},{5,3},{10,7}};
+    result_t result3_ungapped{201, 447, 691, 635, 415, 647};
+    result_t result3_gapped{13, 23, 43, 35, 23, 47};
+    result_t result3_ungapped_stop{201};
+    result_t result3_gapped_stop{13};
+    result_t result3_ungapped_start{635, 415, 647};
+    result_t result3_gapped_start{35, 23, 47};
 };
 
 template <typename adaptor_t>
@@ -104,8 +104,8 @@ TYPED_TEST(minstrobe_hash_view_properties_test, different_input_ranges)
 {
     TypeParam text{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4, 'C'_dna4, 'G'_dna4, 'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4,
                 'T'_dna4, 'T'_dna4, 'A'_dna4, 'G'_dna4}; // ACGTCGACGTTTAG
-    result_t ungapped{{27,97},{109,27},{182,27},{216,27},{97,27},{134,111}};
-    result_t gapped{{3,5},{5,3},{10,3},{12,3},{5,3},{10,7}};
+    result_t ungapped{205, 463, 755, 891, 415, 647};
+    result_t gapped{17, 23, 43, 51, 23, 47};
     EXPECT_RANGE_EQ(ungapped, text | ungapped_view);
     EXPECT_RANGE_EQ(gapped, text | gapped_view);
 }
