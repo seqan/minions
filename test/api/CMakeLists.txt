@@ -14,4 +14,5 @@ add_api_test (syncmer_hash_test.cpp)
 add_api_test (opensyncmer_hash_test.cpp)
 
 add_api_test (minstrobe_test.cpp)
+add_api_test (minstrobe_hash_test.cpp)
 
