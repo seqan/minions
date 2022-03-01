@@ -21,9 +21,9 @@
 #include "shared.hpp"
 
 
-uint64_t combine_strobes(uint64_t first_strobe, uint64_t second_strobe)
+uint64_t combine_strobes(uint64_t multiplicator, uint64_t first_strobe, uint64_t second_strobe)
 {
-    return first_strobe*4 + second_strobe;
+    return first_strobe*multiplicator + second_strobe;
 }
 
 namespace seqan3::detail
@@ -90,8 +90,9 @@ struct minstrobe_hash_fn
                                                                                   {return i ^ seed.get();});
 
         auto minstrobes = seqan3::detail::minstrobe_view(hashed_values, window_min, window_max);
-        return std::views::transform(minstrobes, [] (std::vector<uint64_t> i)
-                               {return combine_strobes(i[0], i[1]);});
+        uint64_t multiplicator = std::pow(4,shape.size());
+        return std::views::transform(minstrobes, [multiplicator] (std::vector<uint64_t> i)
+                               {return combine_strobes(multiplicator, i[0], i[1]);});
     }
 };
 

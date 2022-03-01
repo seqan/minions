@@ -42,7 +42,7 @@ struct iterator_fixture<iterator_type> : public ::testing::Test
     static constexpr bool const_iterable = false;
 
     seqan3::dna4_vector text{"ACGGCGACGTTTAG"_dna4};
-    result_t expected_range{201, 447, 691, 635, 415, 647};
+    result_t expected_range{6753, 26907, 42523, 38939, 24859, 34415};
 
     using test_range_t = decltype(text | ungapped_view);
     test_range_t test_range = (text | ungapped_view);
@@ -78,12 +78,12 @@ protected:
     //  stop at T ungapped minstrobes: ACGGCGAC
     //    stop at T gapped minstrobes: A--GC--C
     // start at A ungapped minstrobes:                               GCGAACGT, CGACACGT, GACGCGTT
-    result_t result3_ungapped{201, 447, 691, 635, 415, 647};
-    result_t result3_gapped{13, 23, 43, 35, 23, 47};
-    result_t result3_ungapped_stop{201};
-    result_t result3_gapped_stop{13};
-    result_t result3_ungapped_start{635, 415, 647};
-    result_t result3_gapped_start{35, 23, 47};
+    result_t result3_ungapped{6753, 26907, 42523, 38939, 24859, 34415};
+    result_t result3_gapped{517, 1283, 2563, 2051, 1283, 2567};
+    result_t result3_ungapped_stop{6753};
+    result_t result3_gapped_stop{517};
+    result_t result3_ungapped_start{38939, 24859, 34415};
+    result_t result3_gapped_start{2051, 1283, 2567};
 };
 
 template <typename adaptor_t>
@@ -104,8 +104,8 @@ TYPED_TEST(minstrobe_hash_view_properties_test, different_input_ranges)
 {
     TypeParam text{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4, 'C'_dna4, 'G'_dna4, 'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4,
                 'T'_dna4, 'T'_dna4, 'A'_dna4, 'G'_dna4}; // ACGTCGACGTTTAG
-    result_t ungapped{205, 463, 755, 891, 415, 647};
-    result_t gapped{17, 23, 43, 51, 23, 47};
+    result_t ungapped{7009, 27931, 46619, 55323, 24859, 34415};
+    result_t gapped{773, 1283, 2563, 3075, 1283, 2567};
     EXPECT_RANGE_EQ(ungapped, text | ungapped_view);
     EXPECT_RANGE_EQ(gapped, text | gapped_view);
 }
