@@ -46,9 +46,17 @@ TEST_F(cli_test, modmer)
     EXPECT_EQ(result.err, std::string{});
 }
 
+TEST_F(cli_test, closedsyncmer)
+{
+    cli_test_result result = execute_app("minions accuracy --method syncmer --closed -k 19 -w 2 ", data("example.ibf"), "--search-file", data("search.fasta"), "--solution-file", data("expected_search_result.out"));
+    EXPECT_EQ(result.exit_code, 0);
+    EXPECT_EQ(result.out, std::string{});
+    EXPECT_EQ(result.err, std::string{});
+}
+
 TEST_F(cli_test, opensyncmer)
 {
-    cli_test_result result = execute_app("minions accuracy --method opensyncmer -k 19 -w 2 ", data("example.ibf"), "--search-file", data("search.fasta"), "--solution-file", data("expected_search_result.out"));
+    cli_test_result result = execute_app("minions accuracy --method syncmer -k 19 -w 2 ", data("example.ibf"), "--search-file", data("search.fasta"), "--solution-file", data("expected_search_result.out"));
     EXPECT_EQ(result.exit_code, 0);
     EXPECT_EQ(result.out, std::string{});
     EXPECT_EQ(result.err, std::string{});
@@ -76,7 +84,7 @@ TEST_F(cli_test, wrong_method)
     std::string expected
     {
         "Error. Incorrect command line input for accuracy. Validation failed "
-        "for option --method: Value submer is not one of [kmer,minimiser,modmer,opensyncmer].\n"
+        "for option --method: Value submer is not one of [kmer,minimiser,modmer,syncmer].\n"
     };
 
     EXPECT_EQ(result.exit_code, 0);
