@@ -30,7 +30,7 @@ struct syncmer_hash_fn
     /*!\brief Store the kmers and the smers and return a range adaptor closure object.
     * \param[in] kmers       The k-mer size to be used.
     * \param[in] smers       The s-mer size (s<k) to be used.
-    * \throws std::invalid_argument if the window size is smaller than 1.
+    * \throws std::invalid_argument if the k-mer size is smaller than 1.
     * \returns               A range of converted elements.
     */
     constexpr auto operator()(size_t const smers, size_t const kmers) const
@@ -38,11 +38,11 @@ struct syncmer_hash_fn
         return seqan3::detail::adaptor_from_functor{*this, smers, kmers};
     }
 
-    /*!\brief Store the window size, the subwindow size and the seed and return a range adaptor closure object.
+    /*!\brief Store the k-mer size, the s-mer size and the seed and return a range adaptor closure object.
     * \param[in] kmers       The k-mer size to be used.
     * \param[in] smers       The s-mer size (s<k) to be used.
     * \param[in] seed        The seed to use.
-    * \throws std::invalid_argument if the window size is smaller than 1.
+    * \throws std::invalid_argument if the k-mer size is smaller than 1.
     * \returns               A range of converted elements.
     */
     constexpr auto operator()(size_t const smers, size_t const kmers, seed const seed) const
@@ -50,13 +50,13 @@ struct syncmer_hash_fn
         return seqan3::detail::adaptor_from_functor{*this, smers, kmers, seed};
     }
 
-    /*!\brief Call the view's constructor with the underlying view, a window size and a subwindow size as argument.
+    /*!\brief Call the view's constructor with the underlying view, a k-mer size and a s-mer size as argument.
      * \param[in] urange     The input range to process. Must model std::ranges::viewable_range and
      *                       the reference type of the range must model seqan3::semialphabet.
      * \param[in] kmers      The k-mer size to be used.
      * \param[in] smers      The s-mer size (s<k) to be used.
      * \param[in] seed       The seed to use.
-     * \throws std::invalid_argument if the subwindow size is smaller than 1 or kmers is smaller than smers.
+     * \throws std::invalid_argument if the s-mer size is smaller than 1 or kmers is smaller than smers.
      * \returns              A range of converted elements.
      */
     template <std::ranges::range urng_t>
@@ -98,14 +98,14 @@ struct syncmer_hash_fn
  */
 
 /*!\brief                    Computes syncmers for a range with given k-mer and s-mer sizes, and seed.
- * \tparam open              Flag, if true open syncmers are used, otherwise closed syncmers are used. 
+ * \tparam open              Flag, if true open syncmers are used, otherwise closed syncmers are used.
  * \tparam urng_t            The type of the range being processed. See below for requirements.
  *                           [template parameter is omitted in pipe notation]
  * \param[in] urange         The range being processed. [parameter is omitted in pipe notation]
  * \param[in] kmers          The k-mer size to be used.
  * \param[in] smers          The s-mer size (s<k) to be used.
  * \param[in] seed           The seed used to skew the hash values. Default: 0x8F3F73B5CF1C9ADE.
- * \returns                  A range of `size_t` where each value is the syncmer of the resp. window.
+ * \returns                  A range of `size_t` where each value is the syncmer of the underlying range.
  *                           See below for the properties of the returned range.
  * \ingroup search_views
  *

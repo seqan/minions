@@ -96,9 +96,12 @@ protected:
     result_t result3_start_closed{111,447,764,1010};
 //             Kmers(1,4):    ACGG  CGGC  GGCG  GCGA  CGAC  GACG  ACGT  CGTT  GTTT  TTTA  TTAG
 //            Hashed(1,4):    26,   105,  166,  152,  97,   134,  27,   111,  191,  252,  242
-//          Syncmers(1,4):    ACGG  CGGC  cgcc              cgtc  ACGT  aagc  aaac  aaat
+//          Syncmers(1,4):    ACGG  CGGC                          ACGT  CGTT  GTTT
 //     Syncmers stop(1,4):    ACGG  CGGC
-//    Syncmers start(1,4):                                  cgtc  ACGT  aagc  aaac  aaat
+//    Syncmers start(1,4):                                        ACGT  CGTT  GTTT
+//        c-Syncmers(1,4):    ACGG  CGGC        GCGA              ACGT  CGTT  GTTT TTTA
+//   c-Syncmers stop(1,4):    ACGG  CGGC        GCGA
+//  c-Syncmers start(1,4):                                        ACGT  CGTT  GTTT TTTA
     result_t result3_14_open{26,105,27,111,191};
     result_t result3_14_stop_open{26,105};
     result_t result3_14_start_open{27,111,191};
