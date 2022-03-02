@@ -98,6 +98,7 @@ struct syncmer_hash_fn
  */
 
 /*!\brief                    Computes syncmers for a range with given k-mer and s-mer sizes, and seed.
+ * \tparam open              Flag, if true open syncmers are used, otherwise closed syncmers are used. 
  * \tparam urng_t            The type of the range being processed. See below for requirements.
  *                           [template parameter is omitted in pipe notation]
  * \param[in] urange         The range being processed. [parameter is omitted in pipe notation]
