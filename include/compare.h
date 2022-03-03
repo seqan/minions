@@ -19,7 +19,7 @@ inline constexpr static uint64_t adjust_seed(uint8_t const kmer_size, uint64_t c
     return seed >> (64u - 2u * kmer_size);
 }
 
-enum methods {kmer = 0, minimiser, modmers, strobemer, opensyncmer};
+enum methods {kmer = 0, minimiser, modmers, strobemer, syncmer};
 
 struct minimiser_arguments
 {
@@ -40,7 +40,13 @@ struct strobemer_arguments
     unsigned int order;
 };
 
-struct range_arguments : minimiser_arguments, strobemer_arguments
+struct syncmer_arguments
+{
+    // Needed for syncmers
+    bool closed;
+};
+
+struct range_arguments : minimiser_arguments, strobemer_arguments, syncmer_arguments
 {
    std::filesystem::path path_out{"./"};
 
