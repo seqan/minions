@@ -30,7 +30,7 @@ struct syncmer_hash_fn
     /*!\brief Store the kmers and the smers and return a range adaptor closure object.
     * \param[in] kmers       The k-mer size to be used.
     * \param[in] smers       The s-mer size (s<k) to be used.
-    * \throws std::invalid_argument if the k-mer size is smaller than 1.
+    * \throws std::invalid_argumentif the s-mer size is smaller than 1 or the k-mer size is smaller than the s-mers.
     * \returns               A range of converted elements.
     */
     constexpr auto operator()(size_t const smers, size_t const kmers) const
@@ -42,7 +42,7 @@ struct syncmer_hash_fn
     * \param[in] kmers       The k-mer size to be used.
     * \param[in] smers       The s-mer size (s<k) to be used.
     * \param[in] seed        The seed to use.
-    * \throws std::invalid_argument if the k-mer size is smaller than 1.
+    * \throws std::invalid_argument if the s-mer size is smaller than 1 or the k-mer size is smaller than the s-mers.
     * \returns               A range of converted elements.
     */
     constexpr auto operator()(size_t const smers, size_t const kmers, seed const seed) const
@@ -56,7 +56,7 @@ struct syncmer_hash_fn
      * \param[in] kmers      The k-mer size to be used.
      * \param[in] smers      The s-mer size (s<k) to be used.
      * \param[in] seed       The seed to use.
-     * \throws std::invalid_argument if the s-mer size is smaller than 1 or kmers is smaller than smers.
+     * \throws std::invalid_argument if the s-mer size is smaller than 1 or the k-mer size is smaller than the s-mers.
      * \returns              A range of converted elements.
      */
     template <std::ranges::range urng_t>
