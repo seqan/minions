@@ -24,7 +24,7 @@ namespace seqan3::detail
 {
 //!\brief seqan3::views::syncmer_hash's range adaptor object type (non-closure).
 //!\ingroup search_views
-template <bool open>
+template <bool open, size_t t>
 struct syncmer_hash_fn
 {
     /*!\brief Store the kmers and the smers and return a range adaptor closure object.
@@ -86,7 +86,7 @@ struct syncmer_hash_fn
                                                  | std::views::transform([seed] (uint64_t i)
                                                           {return i ^ seed.get();});
 
-        return seqan3::detail::syncmer_view<decltype(forward_strand_smer), decltype(forward_strand), open>
+        return seqan3::detail::syncmer_view<decltype(forward_strand_smer), decltype(forward_strand), open, t>
                                             (forward_strand_smer, forward_strand, kmers - smers + 1);
     }
 };
@@ -99,6 +99,7 @@ struct syncmer_hash_fn
 
 /*!\brief                    Computes syncmers for a range with given k-mer and s-mer sizes, and seed.
  * \tparam open              Flag, if true open syncmers are used, otherwise closed syncmers are used.
+ * \tparam t                 The offset for the position of the smallest s-mer.
  * \tparam urng_t            The type of the range being processed. See below for requirements.
  *                           [template parameter is omitted in pipe notation]
  * \param[in] urange         The range being processed. [parameter is omitted in pipe notation]
@@ -137,7 +138,7 @@ struct syncmer_hash_fn
  * \hideinitializer
  *
  */
-template <bool open>
-inline constexpr auto syncmer_hash = seqan3::detail::syncmer_hash_fn<open>{};
+template <bool open, size_t t>
+inline constexpr auto syncmer_hash = seqan3::detail::syncmer_hash_fn<open, t>{};
 
 //!\}
