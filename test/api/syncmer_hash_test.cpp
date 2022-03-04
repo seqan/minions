@@ -22,19 +22,19 @@ using seqan3::operator""_shape;
 using result_t = std::vector<size_t>;
 
 using iterator_type = std::ranges::iterator_t<decltype(std::declval<seqan3::dna4_vector&>()
-                                                       | syncmer_hash<true, 0>(2, 5, seqan3::seed{0}))>;
+                                                       | syncmer_hash<true>(2, 5, 0, seqan3::seed{0}))>;
 
 using closed_iterator_type = std::ranges::iterator_t<decltype(std::declval<seqan3::dna4_vector&>()
-                                                      | syncmer_hash<false, 0>(2, 5, seqan3::seed{0}))>;
+                                                      | syncmer_hash<false>(2, 5, 0, seqan3::seed{0}))>;
 
-static constexpr auto open_view = syncmer_hash<true, 0>(2, 5, seqan3::seed{0});
-static constexpr auto open_view_t1 = syncmer_hash<true, 1>(2, 5, seqan3::seed{0});
-static constexpr auto open_view_t2 = syncmer_hash<true, 2>(2, 5, seqan3::seed{0});
-static constexpr auto closed_view = syncmer_hash<false, 0>(2, 5, seqan3::seed{0});
-static constexpr auto open_view_14 = syncmer_hash<true, 0>(1, 4, seqan3::seed{0});
-static constexpr auto open_view_14_t1 = syncmer_hash<true, 1>(1, 4, seqan3::seed{0});
-static constexpr auto open_view_14_t2 = syncmer_hash<true, 2>(1, 4, seqan3::seed{0});
-static constexpr auto closed_view_14 = syncmer_hash<false, 0>(1, 4, seqan3::seed{0});
+static constexpr auto open_view = syncmer_hash<true>(2, 5, 0, seqan3::seed{0});
+static constexpr auto open_view_t1 = syncmer_hash<true>(2, 5, 1, seqan3::seed{0});
+static constexpr auto open_view_t2 = syncmer_hash<true>(2, 5, 2, seqan3::seed{0});
+static constexpr auto closed_view = syncmer_hash<false>(2, 5, 0, seqan3::seed{0});
+static constexpr auto open_view_14 = syncmer_hash<true>(1, 4, 0, seqan3::seed{0});
+static constexpr auto open_view_14_t1 = syncmer_hash<true>(1, 4, 1, seqan3::seed{0});
+static constexpr auto open_view_14_t2 = syncmer_hash<true>(1, 4, 2, seqan3::seed{0});
+static constexpr auto closed_view_14 = syncmer_hash<false>(1, 4, 0, seqan3::seed{0});
 
 template <>
 struct iterator_fixture<iterator_type> : public ::testing::Test
@@ -93,8 +93,8 @@ protected:
 //    c-syncmer stop(2,5):    ACGGC CGGCG       GCGAC
 //   c-syncmer start(2,5):                                        ACGTT CGTTT GTTTA TTTAG
     result_t result3_open{105,422,111,447,764};
-    result_t result3_open_t1{105,422,111,447,764};
-    result_t result3_open_t2{105,422,111,447,764};
+    result_t result3_open_t1{0,539};
+    result_t result3_open_t2{0,664};
     result_t result3_stop_open{105,422};
     result_t result3_start_open{111,447,764};
     result_t result3_closed{105,422,609,111,447,764,1010};
@@ -109,8 +109,8 @@ protected:
 //   c-Syncmers stop(1,4):    ACGG  CGGC        GCGA
 //  c-Syncmers start(1,4):                                        ACGT  CGTT  GTTT TTTA
     result_t result3_14_open{26,105,27,111,191};
-    result_t result3_14_open_t1{26,105,27,111,191};
-    result_t result3_14_open_t2{26,105,27,111,191};
+    result_t result3_14_open_t1{0,134};
+    result_t result3_14_open_t2{0,166,242};
     result_t result3_14_stop_open{26,105};
     result_t result3_14_start_open{27,111,191};
     result_t result3_14_closed{26,105,152,27,111,191,252};
@@ -151,7 +151,7 @@ TEST_F(syncmer_hash_test, open)
     EXPECT_RANGE_EQ(result3_14_open, text3 | open_view_14);
     EXPECT_RANGE_EQ(result3_14_open_t1, text3 | open_view_14_t1);
     EXPECT_RANGE_EQ(result3_14_open_t2, text3 | open_view_14_t2);
-    EXPECT_THROW((text3 | syncmer_hash<true, 0>(6, 5, seqan3::seed{0})), std::invalid_argument);
+    EXPECT_THROW((text3 | syncmer_hash<true>(6, 5, 0, seqan3::seed{0})), std::invalid_argument);
 }
 
 TEST_F(syncmer_hash_test, closed)
@@ -159,7 +159,7 @@ TEST_F(syncmer_hash_test, closed)
     EXPECT_RANGE_EQ(result1_open, text1 | closed_view);
     EXPECT_RANGE_EQ(result3_closed, text3 | closed_view);
     EXPECT_RANGE_EQ(result3_14_closed, text3 | closed_view_14);
-    EXPECT_THROW((text3 | syncmer_hash<false, 0>(6, 5, seqan3::seed{0})), std::invalid_argument);
+    EXPECT_THROW((text3 | syncmer_hash<false>(6, 5, 0, seqan3::seed{0})), std::invalid_argument);
 }
 
 TEST_F(syncmer_hash_test, combinability_open)

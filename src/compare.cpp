@@ -456,11 +456,11 @@ void do_accuracy(accuracy_arguments & args)
                         break;
         case syncmer: {
                         if (args.closed)
-                            accuracy(syncmer_hash<false, args.t>(args.w_size.get(), args.k_size, args.seed_se),
-                                     "closedsyncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                            accuracy(syncmer_hash<false>(args.w_size.get(), args.k_size, args.t, args.seed_se),
+                                     "closedsyncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get())+ "_" + std::to_string(args.t), args);
                         else
-                            accuracy(syncmer_hash<true, args.t>(args.w_size.get(), args.k_size, args.seed_se),
-                                     "opensyncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                            accuracy(syncmer_hash<true>(args.w_size.get(), args.k_size, args.t, args.seed_se),
+                                     "opensyncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get())+ "_" + std::to_string(args.t), args);
                         break;
                     }
     }
@@ -480,11 +480,11 @@ void do_counts(std::vector<std::filesystem::path> sequence_files, range_argument
                         break;
         case syncmer:  {
                             if (args.closed)
-                                counts(sequence_files, syncmer_hash<false, args.t>(args.w_size.get(), args.k_size, args.seed_se),
-                                "closedsyncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                                counts(sequence_files, syncmer_hash<false>(args.w_size.get(), args.k_size, args.t, args.seed_se),
+                                "closedsyncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get())+ "_" + std::to_string(args.t), args);
                             else
-                                counts(sequence_files, syncmer_hash<true, args.t>(args.w_size.get(), args.k_size, args.seed_se),
-                                "opensyncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get()), args);
+                                counts(sequence_files, syncmer_hash<true>(args.w_size.get(), args.k_size, args.t, args.seed_se),
+                                "opensyncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get())+ "_" + std::to_string(args.t), args);
                             break;
                         }
         case strobemer: {

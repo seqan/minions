@@ -56,7 +56,7 @@ TEST_F(cli_test, closedsyncmer)
 
 TEST_F(cli_test, opensyncmer)
 {
-    cli_test_result result = execute_app("minions accuracy --method syncmer -k 19 -w 2 ", data("example.ibf"), "--search-file", data("search.fasta"), "--solution-file", data("expected_search_result.out"));
+    cli_test_result result = execute_app("minions accuracy --method syncmer -t 0 -k 19 -w 2 ", data("example.ibf"), "--search-file", data("search.fasta"), "--solution-file", data("expected_search_result.out"));
     EXPECT_EQ(result.exit_code, 0);
     EXPECT_EQ(result.out, std::string{});
     EXPECT_EQ(result.err, std::string{});
