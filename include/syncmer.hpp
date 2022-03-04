@@ -21,8 +21,6 @@
 #include <seqan3/utility/range/concept.hpp>
 #include <seqan3/utility/type_traits/lazy_conditional.hpp>
 
-#include <seqan3/core/debug_stream.hpp>
-
 namespace seqan3::detail
 {
 // ---------------------------------------------------------------------------------------------------------------------
@@ -436,14 +434,14 @@ private:
     {
         advance_window();
 
+        if (urng1_iterator == urng1_sentinel)
+            return true;
+
         value_type const new_value = *urng1_iterator;
 
         window_values.pop_front();
         window_values.push_back(new_value);
         syncmer_position_offset--;
-
-        if (urng1_iterator == urng1_sentinel)
-            return true;
 
         if (syncmer_position_offset < 0)
             determine_smallest_s();
