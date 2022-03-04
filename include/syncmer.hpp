@@ -21,6 +21,8 @@
 #include <seqan3/utility/range/concept.hpp>
 #include <seqan3/utility/type_traits/lazy_conditional.hpp>
 
+#include <seqan3/core/debug_stream.hpp>
+
 namespace seqan3::detail
 {
 // ---------------------------------------------------------------------------------------------------------------------
@@ -377,6 +379,13 @@ private:
         ++urng2_iterator;
     }
 
+    //!\brief Determine the smallest s.
+    void determine_smallest_s()
+    {
+        auto smallest_s_it = std::ranges::min_element(window_values, std::less<value_type>{});
+        syncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
+    }
+
     //!\brief Calculates syncmers for the first window.
     void window_first(const size_t window_size, const size_t t)
     {
@@ -392,25 +401,32 @@ private:
         window_values.push_back(*urng1_iterator);
 
         t_value = t;
-        auto smallest_s_it = std::ranges::min_element(window_values, std::less<value_type>{});
-        syncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
+        determine_smallest_s();
 
+        if (check_if_syncmer())
+            syncmer_value = *urng2_iterator;
+        else
+            next_unique_syncmer();
+    }
+
+    //!\brief Check if the current value is a syncmer.
+    bool check_if_syncmer()
+    {
+        bool found_syncmer = false;
         if constexpr (opensyncmer)
         {
             if (syncmer_position_offset == t_value)
-            {
-                auto syncmer_it = urng2_iterator;
-                syncmer_value = *syncmer_it;
-            }
+                found_syncmer = true;
         }
         else
         {
-            if (syncmer_position_offset == t_value || syncmer_position_offset == w_size - 1 )
-            {
-                auto syncmer_it = urng2_iterator;
-                syncmer_value = *syncmer_it;
-            }
+            if (syncmer_position_offset == t_value || syncmer_position_offset == w_size - 1)
+                found_syncmer = true;
         }
+
+        if (syncmer_position_offset > 0)
+            syncmer_position_offset--;
+        return found_syncmer;
     }
 
     /*!\brief Calculates the next syncmer value.
@@ -423,60 +439,29 @@ private:
     {
         advance_window();
 
-        if (urng1_iterator == urng1_sentinel)
-            return true;
-
         value_type const new_value = *urng1_iterator;
 
         window_values.pop_front();
         window_values.push_back(new_value);
 
-        if (syncmer_position_offset == 0)
-        {
-            auto smallest_s_it = std::ranges::min_element(window_values, std::less<value_type>{});
-            syncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
+        if (urng1_iterator == urng1_sentinel)
+            return true;
 
-            if constexpr (opensyncmer)
-            {
-                if (syncmer_position_offset == t_value)
-                {
-                    auto syncmer_it = urng2_iterator;
-                    syncmer_value = *syncmer_it;
-                    return true;
-                }
-            }
-            else
-            {
-                if (syncmer_position_offset == t_value || syncmer_position_offset == w_size - 1 )
-                {
-                    auto syncmer_it = urng2_iterator;
-                    syncmer_value = *syncmer_it;
-                    return true;
-                }
-            }
+        if (syncmer_position_offset == 0)
+            determine_smallest_s();
+        else if (new_value < *(window_values.begin()+(syncmer_position_offset)))
+            syncmer_position_offset = w_size - 1;
+
+        if (check_if_syncmer())
+        {
+            syncmer_value = *urng2_iterator;
+            return true;
+        }
+        else
+        {
             return false;
         }
 
-        else if (new_value < *(window_values.begin()+(syncmer_position_offset-1)))
-        {
-            syncmer_position_offset = w_size - 1;
-            if constexpr (!opensyncmer)
-            {
-                auto syncmer_it = urng2_iterator;
-                syncmer_value = *syncmer_it;
-                return true;
-            }
-        }
-        else if (syncmer_position_offset == (t_value+1))
-        {
-            auto syncmer_it = urng2_iterator;
-            syncmer_value = *syncmer_it;
-            --syncmer_position_offset;
-            return true;
-        }
-
-        --syncmer_position_offset;
-        return false;
     }
 };
 

@@ -69,8 +69,8 @@ protected:
                                                             //  Hashed:    105,  422,  664,  609,  390,  539,  111,  447,  764,  1010
     result_t result3_closed{105,422,609,111,447,764,1010}; // Syncmers: ACGGC CGGCG       GCGAC             ACGTT CGTTT GTTTA TTTAG
     result_t result3_open{105,422,111,447,764};  //          Openyncmers: ACGGC CGGCG                         ACGTT CGTTT GTTTA
-    result_t result3_open_t1{0,539};  //                     Openyncmers:                               GACGT
-    result_t result3_open_t2{0,664};  //                     Openyncmers:             GGCGA
+    result_t result3_open_t1{539};  //                     Openyncmers:                               GACGT
+    result_t result3_open_t2{664,390};  //                     Openyncmers:             GGCGA
     result_t result3_closed_stop{105,422,609}; //         Syncmer stop: ACGGC CGGCG       GCGAC
     result_t result3_open_stop{105,422}; //             Opensyncmer stop: ACGGC CGGCG
     result_t result3_closed_start{111,447,764,1010}; //  Syncmer start:                                     ACGTT CGTTT GTTTA TTTAG

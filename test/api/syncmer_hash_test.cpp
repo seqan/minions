@@ -93,8 +93,8 @@ protected:
 //    c-syncmer stop(2,5):    ACGGC CGGCG       GCGAC
 //   c-syncmer start(2,5):                                        ACGTT CGTTT GTTTA TTTAG
     result_t result3_open{105,422,111,447,764};
-    result_t result3_open_t1{0,539};
-    result_t result3_open_t2{0,664};
+    result_t result3_open_t1{539};
+    result_t result3_open_t2{664,390};
     result_t result3_stop_open{105,422};
     result_t result3_start_open{111,447,764};
     result_t result3_closed{105,422,609,111,447,764,1010};
@@ -109,8 +109,8 @@ protected:
 //   c-Syncmers stop(1,4):    ACGG  CGGC        GCGA
 //  c-Syncmers start(1,4):                                        ACGT  CGTT  GTTT TTTA
     result_t result3_14_open{26,105,27,111,191};
-    result_t result3_14_open_t1{0,134};
-    result_t result3_14_open_t2{0,166,242};
+    result_t result3_14_open_t1{134};
+    result_t result3_14_open_t2{166,97,242};
     result_t result3_14_stop_open{26,105};
     result_t result3_14_start_open{27,111,191};
     result_t result3_14_closed{26,105,152,27,111,191,252};
