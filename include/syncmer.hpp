@@ -346,7 +346,7 @@ private:
     value_type syncmer_value{};
 
     //!\brief The offset relative to the beginning of the window where the syncmer value is found.
-    size_t syncmer_position_offset{};
+    int syncmer_position_offset{};
 
     //!\brief Iterator to the rightmost value of one kmer.
     urng1_iterator_t urng1_iterator{};
@@ -412,21 +412,18 @@ private:
     //!\brief Check if the current value is a syncmer.
     bool check_if_syncmer()
     {
-        bool found_syncmer = false;
         if constexpr (opensyncmer)
         {
             if (syncmer_position_offset == t_value)
-                found_syncmer = true;
+                return true;
         }
         else
         {
             if (syncmer_position_offset == t_value || syncmer_position_offset == w_size - 1)
-                found_syncmer = true;
+                return true;
         }
 
-        if (syncmer_position_offset > 0)
-            syncmer_position_offset--;
-        return found_syncmer;
+        return false;
     }
 
     /*!\brief Calculates the next syncmer value.
@@ -443,11 +440,12 @@ private:
 
         window_values.pop_front();
         window_values.push_back(new_value);
+        syncmer_position_offset--;
 
         if (urng1_iterator == urng1_sentinel)
             return true;
 
-        if (syncmer_position_offset == 0)
+        if (syncmer_position_offset < 0)
             determine_smallest_s();
         else if (new_value < *(window_values.begin()+(syncmer_position_offset)))
             syncmer_position_offset = w_size - 1;
@@ -461,7 +459,6 @@ private:
         {
             return false;
         }
-
     }
 };
 
