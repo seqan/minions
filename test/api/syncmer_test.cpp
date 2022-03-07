@@ -63,7 +63,7 @@ class syncmer_test : public ::testing::Test
 protected:
     std::vector<seqan3::dna4> text1{"AAAAAA"_dna4};
     result_t result1{0, 0};
-    result_t result1_open_t1{}; // When values are equal, the last minimum is considered.
+    result_t result1_open_t1{}; // When values are equal, the first minimum is considered.
 
     std::vector<seqan3::dna4> text3{"ACGGCGACGTTTAG"_dna4}; //  Kmers:    ACGGC CGGCG GGCGA GCGAC CGACG GACGT ACGTT CGTTT GTTTA TTTAG
                                                             //  Hashed:    105,  422,  664,  609,  390,  539,  111,  447,  764,  1010
