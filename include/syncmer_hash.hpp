@@ -30,24 +30,26 @@ struct syncmer_hash_fn
     /*!\brief Store the kmers and the smers and return a range adaptor closure object.
     * \param[in] kmers       The k-mer size to be used.
     * \param[in] smers       The s-mer size (s<k) to be used.
+    * \param[in] t           The offset for the position of the smallest s-mer.
     * \throws std::invalid_argumentif the s-mer size is smaller than 1 or the k-mer size is smaller than the s-mers.
     * \returns               A range of converted elements.
     */
-    constexpr auto operator()(size_t const smers, size_t const kmers) const
+    constexpr auto operator()(size_t const smers, size_t const kmers, size_t const t) const
     {
-        return seqan3::detail::adaptor_from_functor{*this, smers, kmers};
+        return seqan3::detail::adaptor_from_functor{*this, smers, kmers, t};
     }
 
     /*!\brief Store the k-mer size, the s-mer size and the seed and return a range adaptor closure object.
     * \param[in] kmers       The k-mer size to be used.
     * \param[in] smers       The s-mer size (s<k) to be used.
+    * \param[in] t           The offset for the position of the smallest s-mer.
     * \param[in] seed        The seed to use.
     * \throws std::invalid_argument if the s-mer size is smaller than 1 or the k-mer size is smaller than the s-mers.
     * \returns               A range of converted elements.
     */
-    constexpr auto operator()(size_t const smers, size_t const kmers, seed const seed) const
+    constexpr auto operator()(size_t const smers, size_t const kmers, size_t const t, seed const seed) const
     {
-        return seqan3::detail::adaptor_from_functor{*this, smers, kmers, seed};
+        return seqan3::detail::adaptor_from_functor{*this, smers, kmers, t, seed};
     }
 
     /*!\brief Call the view's constructor with the underlying view, a k-mer size and a s-mer size as argument.
@@ -55,6 +57,7 @@ struct syncmer_hash_fn
      *                       the reference type of the range must model seqan3::semialphabet.
      * \param[in] kmers      The k-mer size to be used.
      * \param[in] smers      The s-mer size (s<k) to be used.
+     * \param[in] t          The offset for the position of the smallest s-mer.
      * \param[in] seed       The seed to use.
      * \throws std::invalid_argument if the s-mer size is smaller than 1 or the k-mer size is smaller than the s-mers.
      * \returns              A range of converted elements.
@@ -63,6 +66,7 @@ struct syncmer_hash_fn
     constexpr auto operator()(urng_t && urange,
                               size_t const smers,
 			                  size_t const kmers,
+			                      size_t const t,
                               seed const seed = seqan3::seed{0x8F3F73B5CF1C9ADE}) const
     {
         static_assert(std::ranges::viewable_range<urng_t>,
@@ -87,7 +91,7 @@ struct syncmer_hash_fn
                                                           {return i ^ seed.get();});
 
         return seqan3::detail::syncmer_view<decltype(forward_strand_smer), decltype(forward_strand), open>
-                                            (forward_strand_smer, forward_strand, kmers - smers + 1);
+                                            (forward_strand_smer, forward_strand, kmers - smers + 1, t);
     }
 };
 
@@ -104,6 +108,7 @@ struct syncmer_hash_fn
  * \param[in] urange         The range being processed. [parameter is omitted in pipe notation]
  * \param[in] kmers          The k-mer size to be used.
  * \param[in] smers          The s-mer size (s<k) to be used.
+ * \param[in] t              The offset for the position of the smallest s-mer.
  * \param[in] seed           The seed used to skew the hash values. Default: 0x8F3F73B5CF1C9ADE.
  * \returns                  A range of `size_t` where each value is the syncmer of the underlying range.
  *                           See below for the properties of the returned range.

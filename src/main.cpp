@@ -43,6 +43,7 @@ void read_range_arguments_strobemers(seqan3::argument_parser & parser, range_arg
 void read_range_arguments_syncmers(seqan3::argument_parser & parser, range_arguments & args)
 {
     parser.add_flag(args.closed, '\0', "closed", "If closed syncmers should be calculated.");
+    parser.add_option(args.t, 't', "t_vlue", "The offset for the position of the smallest sub-window.");
 }
 
 void read_range_arguments_minimiser(seqan3::argument_parser & parser, range_arguments & args)

@@ -44,6 +44,7 @@ struct syncmer_arguments
 {
     // Needed for syncmers
     bool closed;
+    unsigned int t;
 };
 
 struct range_arguments : minimiser_arguments, strobemer_arguments, syncmer_arguments
