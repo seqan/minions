@@ -344,7 +344,7 @@ private:
     value_type syncmer_value{};
 
     //!\brief The offset relative to the beginning of the window where the syncmer value is found.
-    size_t syncmer_position_offset{};
+    int syncmer_position_offset{};
 
     //!\brief Iterator to the rightmost value of one kmer.
     urng1_iterator_t urng1_iterator{};
@@ -377,6 +377,13 @@ private:
         ++urng2_iterator;
     }
 
+    //!\brief Determine the smallest s.
+    void determine_smallest_s()
+    {
+        auto smallest_s_it = std::ranges::min_element(window_values, std::less<value_type>{});
+        syncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
+    }
+
     //!\brief Calculates syncmers for the first window.
     void window_first(const size_t window_size, const size_t t)
     {
@@ -392,25 +399,29 @@ private:
         window_values.push_back(*urng1_iterator);
 
         t_value = t;
-        auto smallest_s_it = std::ranges::min_element(window_values, std::less<value_type>{});
-        syncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
+        determine_smallest_s();
 
+        if (check_if_syncmer())
+            syncmer_value = *urng2_iterator;
+        else
+            next_unique_syncmer();
+    }
+
+    //!\brief Check if the current value is a syncmer.
+    bool check_if_syncmer()
+    {
         if constexpr (opensyncmer)
         {
             if (syncmer_position_offset == t_value)
-            {
-                auto syncmer_it = urng2_iterator;
-                syncmer_value = *syncmer_it;
-            }
+                return true;
         }
         else
         {
-            if (syncmer_position_offset == t_value || syncmer_position_offset == w_size - 1 )
-            {
-                auto syncmer_it = urng2_iterator;
-                syncmer_value = *syncmer_it;
-            }
+            if (syncmer_position_offset == t_value || syncmer_position_offset == w_size - 1)
+                return true;
         }
+
+        return false;
     }
 
     /*!\brief Calculates the next syncmer value.
@@ -430,53 +441,22 @@ private:
 
         window_values.pop_front();
         window_values.push_back(new_value);
+        syncmer_position_offset--;
 
-        if (syncmer_position_offset == 0)
-        {
-            auto smallest_s_it = std::ranges::min_element(window_values, std::less<value_type>{});
-            syncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
-
-            if constexpr (opensyncmer)
-            {
-                if (syncmer_position_offset == t_value)
-                {
-                    auto syncmer_it = urng2_iterator;
-                    syncmer_value = *syncmer_it;
-                    return true;
-                }
-            }
-            else
-            {
-                if (syncmer_position_offset == t_value || syncmer_position_offset == w_size - 1 )
-                {
-                    auto syncmer_it = urng2_iterator;
-                    syncmer_value = *syncmer_it;
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        else if (new_value < *(window_values.begin()+(syncmer_position_offset-1)))
-        {
+        if (syncmer_position_offset < 0)
+            determine_smallest_s();
+        else if (new_value < *(window_values.begin()+(syncmer_position_offset)))
             syncmer_position_offset = w_size - 1;
-            if constexpr (!opensyncmer)
-            {
-                auto syncmer_it = urng2_iterator;
-                syncmer_value = *syncmer_it;
-                return true;
-            }
-        }
-        else if (syncmer_position_offset == (t_value+1))
+
+        if (check_if_syncmer())
         {
-            auto syncmer_it = urng2_iterator;
-            syncmer_value = *syncmer_it;
-            --syncmer_position_offset;
+            syncmer_value = *urng2_iterator;
             return true;
         }
-
-        --syncmer_position_offset;
-        return false;
+        else
+        {
+            return false;
+        }
     }
 };
 
