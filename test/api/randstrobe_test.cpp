@@ -68,18 +68,21 @@ protected:
     //                          kmers: ACGG,     CGGC,     GGCG,     GCGA,     CGAC,     GACG,     ACGT, CGTT, GTTT, TTTA, TTAG
     //                ungapped Hashes: 26,       105,      166,      152,      97,       134,      27,   111,  191,  252,  242
     //                  gapped Hashes: 2,        5,        10,       8,        5,        10,       3,    7,    11,   12,   14
+    //  hash function von randstrobes: g(s,t) = (h(s) - h(t)) % 3
     //            ungapped minstrobes: ACGGCGAC, CGGCACGT, GGCGACGT, GCGAACGT, CGACACGT, GACGCGTT
+    //           ungapped randstrobes: ACGGGACG, CGGCACGT, GGCGACGT, GCGAGTTT, CGACGTTT, GACGTTAG
     //              gapped minstrobes: A--GC--C, C--CA--T, G--GA--T, G--AA--T, C--CA--T, G--GC--T
+    //             gapped randstrobes: A--GG--G, C--CA--T, G--GA--T, G--AG--T, C--CG--T, G--GT--G
     //  stop at T ungapped minstrobes: ACGGCGAC
     //    stop at T gapped minstrobes: A--GC--C
     // start at A ungapped minstrobes:                               GCGAACGT, CGACACGT, GACGCGTT
     //   start at A gapped minstrobes:                               G--AA--T, C--CA--T, G--GC--T
-    result_t result3_ungapped{{26,97},{105,27},{166,27},{152,27},{97,27},{134,111}};
-    result_t result3_gapped{{2,5},{5,3},{10,3},{8,3},{5,3},{10,7}};
-    result_t result3_ungapped_stop{{26,97}};
-    result_t result3_gapped_stop{{2,5}};
-    result_t result3_ungapped_start{{152,27},{97,27},{134,111}};
-    result_t result3_gapped_start{{8,3},{5,3},{10,7}};
+    result_t result3_ungapped{{26,134},{105,27},{166,27},{152,191},{97,191},{134,242}};
+    result_t result3_gapped{{2,10},{5,3},{10,3},{8,11},{5,11},{10,14}};
+    result_t result3_ungapped_stop{{26,97}};  //?
+    result_t result3_gapped_stop{{2,5}};      //?
+    result_t result3_ungapped_start{{152,27},{97,27},{134,111}};  //?
+    result_t result3_gapped_start{{8,3},{5,3},{10,7}};    //?
 };
 
 template <typename adaptor_t>
@@ -109,8 +112,12 @@ TYPED_TEST(minstrobe_view_properties_test, different_inputs_kmer_hash)
 {
     TypeParam text{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4, 'C'_dna4, 'G'_dna4, 'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4,
                    'T'_dna4, 'T'_dna4, 'A'_dna4, 'G'_dna4}; // ACGTCGACGTTTAG
-    result_t ungapped{{27,97},{109,27},{182,27},{216,27},{97,27},{134,111}};
-    result_t gapped{{3,5},{5,3},{10,3},{12,3},{5,3},{10,7}};
+    //                k-mers:   ACGT,      CGTC,      GTCG,      TCGA,      CGAC,      GACG,      ACGT,      CGTT,      GTTT,      TTTA,      TTAG
+    //       ungapped Hashes:    27,       109,       182,       216,        97,       134,        27,        111,      191,        252,      242
+    //        gapped  Hashes:    3,         5,         10,        12,         5,       10,         3,          7,        11,        12,        14
+    //  ungapped randstrobes:   ACGTACGT,  CGTCGACG,  GTCGGTTT,  TCGACGTT,  CGACGTTT,  GACGTTAG
+    result_t ungapped{{27,27},{109,134},{182,191},{216,111},{97,191},{134,242}};  //changed according to randstrobes, was also originally till GACG
+    result_t gapped{{3,3},{5,10},{10,11},{12,7},{5,11},{10,14}};                  //changed according to randstrobes
     EXPECT_RANGE_EQ(ungapped, text | kmer_view | minstrobe_view);
     EXPECT_RANGE_EQ(gapped, text | gapped_kmer_view | minstrobe_view);
 }
