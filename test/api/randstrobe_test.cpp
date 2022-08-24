@@ -70,12 +70,15 @@ protected:
     //                  gapped Hashes: 2,        5,        10,       8,        5,        10,       3,    7,    11,   12,   14
     //  old hash function von randstrobes: g(s,t) = (h(s) - h(t)) % 3
     //  new hash function von randstrobes: g(s,t) = h(t) / h(t) - h(s)
+    //final hash function von randstrobes:  Sahlin  (h(k-1) + h(k')) % 5
     //            ungapped minstrobes: ACGGCGAC, CGGCACGT, GGCGACGT, GCGAACGT, CGACACGT, GACGCGTT
     //    old    ungapped randstrobes: ACGGGACG, CGGCACGT, GGCGACGT, GCGAGTTT, CGACGTTT, GACGTTAG
     //    new    ungapped randstrobes: ACGGGGCG, CGGCACGT, GGCGACGT, GCGAACGT, CGACACGT, GACGACGT
+    //   final   ungapped randstrobes: ACGGGACG, CGGCGGCG, GGCGGACG, GCGAGACG, CGACGACG, GACGCGTT
     //              gapped minstrobes: A--GC--C, C--CA--T, G--GA--T, G--AA--T, C--CA--T, G--GC--T
     //    old      gapped randstrobes: A--GG--G, C--CA--T, G--GA--T, G--AG--T, C--CG--T, G--GT--G
     //    new      gapped randstrobes: A--GG--G, C--CA--T, G--GA--T, G--AA--T, C--CA--T, G--GA--T
+    //    final    gapped randstrobes: A--GG--G, C--CG--G, G--GG--G, G--AG--G, C--CG--G, G--GC--T
     //  stop at T ungapped minstrobes: ACGGCGAC
     //  stop at ...       randstrobes: ACGGGACG
     //    stop at T gapped minstrobes: A--GC--C
@@ -83,9 +86,12 @@ protected:
     //   start at A gapped minstrobes:                               G--AA--T, C--CA--T, G--GC--T
    
    //old result_t result3_ungapped{{26,134},{105,27},{166,27},{152,191},{97,191},{134,242}};
-    result_t result3_ungapped{{26,166},{105,27},{166,27},{152,27},{97,27},{134,27}};
+   //old2 result_t result3_ungapped{{26,166},{105,27},{166,27},{152,27},{97,27},{134,27}};
+    result_t result3_ungapped{{26,134},{105,166},{166,134},{152,134},{97,134},{134,111}};
+
    //old result_t result3_gapped{{2,10},{5,3},{10,3},{8,11},{5,11},{10,14}};
-    result_t result3_gapped{{2,10},{5,3},{10,3},{8,3},{5,3},{10,3}};
+   //old2 result_t result3_gapped{{2,10},{5,3},{10,3},{8,3},{5,3},{10,3}};
+    result_t result3_gapped{{2,10},{5,10},{10,10},{8,10},{5,10},{10,7}};
     result_t result3_ungapped_stop{{26,97}};  //?
     result_t result3_gapped_stop{{2,5}};      //?
     result_t result3_ungapped_start{{152,27},{97,27},{134,111}};  //?
@@ -124,10 +130,13 @@ TYPED_TEST(minstrobe_view_properties_test, different_inputs_kmer_hash)
     //        gapped  Hashes:    3,         5,         10,        12,         5,       10,         3,          7,        11,        12,        14
     // old ungapped randstrobes:   ACGTACGT,  CGTCGACG,  GTCGGTTT,  TCGACGTT,  CGACGTTT,  GACGTTAG
     // new ungapped randstrobes:   ACGTTCGA,  CGTCACGT,  GTCGACGT,  TCGAACGT,  CGACACGT,  GACGACGT
+    //finalungapped randstrobes:   ACGTCGTC,  CGTCTCGA,  GTCGGACG,  TCGACGTT,  CGACGACG,  GACGCGTT
     // old result_t ungapped{{27,27},{109,134},{182,191},{216,111},{97,191},{134,242}};  //changed according to randstrobes, was also originally till GACG
-    result_t ungapped{{27,12},{109,27},{182,27},{216,27},{97,27},{134,27}};
+    // old2 result_t ungapped{{27,216},{109,27},{182,27},{216,27},{97,27},{134,27}};
+    result_t ungapped{{27,109},{109,216},{182,134},{216,111},{97,134},{134,111}};
     // old result_t gapped{{3,3},{5,10},{10,11},{12,7},{5,11},{10,14}};                  //changed according to randstrobes
-    result_t gapped{{3,12},{5,3},{10,3},{12,3},{5,3},{10,3}};
+    // old2 result_t gapped{{3,12},{5,3},{10,3},{12,3},{5,3},{10,3}};
+    result_t gapped{{3,5},{5,12},{10,10},{12,7},{5,10},{10,7}};
     EXPECT_RANGE_EQ(ungapped, text | kmer_view | minstrobe_view);
     EXPECT_RANGE_EQ(gapped, text | gapped_kmer_view | minstrobe_view);
 }
