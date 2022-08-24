@@ -30,8 +30,9 @@ using iterator_type = std::ranges::iterator_t< decltype(std::declval<seqan3::dna
                                                | kmer_view
                                                | minstrobe_view)>;
 
-//using order3_iterator_type = std::ranges::iterator_t<decltype(seqan3::detail::minstrobe_view{
-  // std::declval<seqan3::dna4_vector &>() | kmer_view, 3,1,3})>;
+using order3_iterator_type = std::ranges::iterator_t<decltype(seqan3::detail::minstrobe_view<
+                             decltype(std::declval<seqan3::dna4_vector &>() | kmer_view),3>
+                             {std::declval<seqan3::dna4_vector &>() | kmer_view, 1, 3})>;
 
 template <>
 struct iterator_fixture<iterator_type> : public ::testing::Test
@@ -47,7 +48,22 @@ struct iterator_fixture<iterator_type> : public ::testing::Test
     seqan3::views::minstrobe(vec, 2, 4);
 };
 
-using test_types = ::testing::Types<iterator_type>;
+template <>
+struct iterator_fixture<order3_iterator_type> : public ::testing::Test
+{
+    using iterator_tag = std::forward_iterator_tag;
+    static constexpr bool const_iterable = false;
+
+    seqan3::dna4_vector text{"ACGGCGACGTTTAG"_dna4};
+    decltype(seqan3::views::kmer_hash(text, seqan3::ungapped{4})) vec = text | kmer_view;
+    result_t expected_range{{26,105,27},{105,97,27},{166,97,27},{152,27,111},{97,27,191}};
+
+    decltype(seqan3::detail::minstrobe_view<decltype(seqan3::views::kmer_hash(text, seqan3::ungapped{4})),3>
+    (seqan3::views::kmer_hash(text, seqan3::ungapped{4}), 1, 3)) test_range =
+    seqan3::detail::minstrobe_view<decltype(vec),3>(vec, 1, 3);
+};
+
+using test_types = ::testing::Types<iterator_type,order3_iterator_type>;
 INSTANTIATE_TYPED_TEST_SUITE_P(iterator_fixture, iterator_fixture, test_types, );
 
 template <typename T>
