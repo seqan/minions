@@ -564,7 +564,7 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                    | *lost*                           |
  * | std::ranges::common_range        |                                    | *lost*                           |
  * | std::ranges::output_range        |                                    | *lost*                           |
- * | seqan3::const_iterable_range     |                                    | *preserved*                      |
+ * | seqan3::const_iterable_range     |                                    | *lost*                      |
  * |                                  |                                    |                                  |
  * | std::ranges::range_reference_t   | std::totally_ordered               | std::totally_ordered             |
  *
