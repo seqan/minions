@@ -38,7 +38,7 @@ template <>
 struct iterator_fixture<iterator_type> : public ::testing::Test
 {
     using iterator_tag = std::forward_iterator_tag;
-    static constexpr bool const_iterable = false;
+    static constexpr bool const_iterable = true;
 
     seqan3::dna4_vector text{"ACGGCGACGTTTAG"_dna4};
     decltype(seqan3::views::kmer_hash(text, seqan3::ungapped{4})) vec = text | kmer_view;
@@ -52,7 +52,7 @@ template <>
 struct iterator_fixture<order3_iterator_type> : public ::testing::Test
 {
     using iterator_tag = std::forward_iterator_tag;
-    static constexpr bool const_iterable = false;
+    static constexpr bool const_iterable = true;
 
     seqan3::dna4_vector text{"ACGGCGACGTTTAG"_dna4};
     decltype(seqan3::views::kmer_hash(text, seqan3::ungapped{4})) vec = text | kmer_view;

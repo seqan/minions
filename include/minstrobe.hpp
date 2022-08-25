@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \author Mitra Darvish <mitra darvish AT fu-berlin.de>
+ * \author Hossein Eizadi Moghadam <hosseinem AT fu-berlin.de> & Mitra Darvish <mitra darvish AT fu-berlin.de>
  * \brief Provides minstrobe.
  */
 
@@ -222,6 +222,7 @@ public:
         requires const_range
     //!\endcond
         : minstrobe_value{std::move(it.minstrobe_value)},
+          first_iterator{std::move(it.first_iterator)},
           second_iterator{std::move(it.second_iterator)},
           third_iterator{std::move(it.third_iterator)},
           urng_sentinel{std::move(it.urng_sentinel)}
@@ -378,12 +379,15 @@ private:
     //!\brief Calculates minstrobes for the first window.
     void window_first(const size_t window_min, const size_t window_size)
     {
+        if (window_size == 0u)
+            return;
+
         first_iterator = second_iterator;
-        std::advance(second_iterator, window_min);
+        std::ranges::advance(second_iterator, window_min);
         if constexpr(order_3)
         {
             third_iterator = second_iterator;
-            std::advance(third_iterator, window_size);
+            std::ranges::advance(third_iterator, window_size);
         }
 
         for (int i = 1u; i < window_size; ++i)
@@ -544,10 +548,10 @@ namespace seqan3::views
  *
  * \details
  *
- * A minstrobe defined by [Sahlin K.](https://genome.cshlp.org/content/31/11/2080.full.pdf) consists of
+ * A minstrobe defined by [Sahlin](https://genome.cshlp.org/content/31/11/2080.full.pdf) consists of
  * a starting strobe concatenated with n−1 consecutively concatenated minimizers in their respective windows.
  * For example for the following list of hash values `[6, 26, 41, 38, 24, 33, 6, 27, 47]` and 3 as `window_min`,
- * 5 as `window_size`, the minstrobe values are `[(6,24),(26,6),(41,6),(38,6)]`.
+ * 4 as `window_size`, the minstrobe values are `[(6,24),(26,6),(41,6),(38,6)]`.
  *
  * ### View properties
  *
@@ -564,7 +568,7 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                    | *lost*                           |
  * | std::ranges::common_range        |                                    | *lost*                           |
  * | std::ranges::output_range        |                                    | *lost*                           |
- * | seqan3::const_iterable_range     |                                    | *lost*                      |
+ * | seqan3::const_iterable_range     |                                    | *preserved*                      |
  * |                                  |                                    |                                  |
  * | std::ranges::range_reference_t   | std::totally_ordered               | std::totally_ordered             |
  *
