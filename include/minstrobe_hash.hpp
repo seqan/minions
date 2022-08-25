@@ -222,6 +222,8 @@ struct minstrobe3_hash_fn
  */
 inline constexpr auto minstrobe2_hash = seqan3::detail::minstrobe2_hash_fn{};
 
+//!\}
+
 /*!\name Alphabet related views
  * \{
  */

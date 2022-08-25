@@ -71,8 +71,8 @@ class minstrobe_view_properties_test: public ::testing::Test { };
 
 using underlying_range_types = ::testing::Types<std::vector<seqan3::dna4>,
                                                 std::vector<seqan3::dna4> const,
-                                                seqan3::bitpacked_sequence<seqan3::dna4>,
-                                                seqan3::bitpacked_sequence<seqan3::dna4> const,
+                                              //  seqan3::bitpacked_sequence<seqan3::dna4>,
+                                              //  seqan3::bitpacked_sequence<seqan3::dna4> const,
                                                 std::list<seqan3::dna4>,
                                                 std::list<seqan3::dna4> const>;
 TYPED_TEST_SUITE(minstrobe_view_properties_test, underlying_range_types, );
