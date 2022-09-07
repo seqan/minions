@@ -24,7 +24,7 @@ using result_t = std::vector<std::vector<size_t>>;
 inline static constexpr auto kmer_view = seqan3::views::kmer_hash(seqan3::ungapped{4});
 inline static constexpr auto gapped_kmer_view = seqan3::views::kmer_hash(0b1001_shape);
 
-inline static constexpr auto hybridstrobe_view = seqan3::views::hybridstrobe(2,4);
+inline static constexpr auto hybridstrobe_view = seqan3::views::hybridstrobe(1,5);
 
 using iterator_type = std::ranges::iterator_t< decltype(std::declval<seqan3::dna4_vector&>()
                                                | kmer_view
@@ -42,10 +42,10 @@ struct iterator_fixture<iterator_type> : public ::testing::Test
 
     seqan3::dna4_vector text{"ACGGCGACGTTTAG"_dna4};
     decltype(seqan3::views::kmer_hash(text, seqan3::ungapped{4})) vec = text | kmer_view;
-    result_t expected_range{{26,97},{105,27},{166,27},{152,27},{97,27},{134,111}};
+    result_t expected_range{{26,134},{105,152},{166,27},{152,191},{97,111},{134,242}};
 
-    decltype(seqan3::views::hybridstrobe(seqan3::views::kmer_hash(text, seqan3::ungapped{4}), 2, 4)) test_range =
-    seqan3::views::hybridstrobe(vec, 2, 4);
+    decltype(seqan3::views::hybridstrobe(seqan3::views::kmer_hash(text, seqan3::ungapped{4}), 1, 5)) test_range =
+    seqan3::views::hybridstrobe(vec, 1, 5);
 };
 
 template <>
@@ -56,7 +56,7 @@ struct iterator_fixture<order3_iterator_type> : public ::testing::Test
 
     seqan3::dna4_vector text{"ACGGCGACGTTTAG"_dna4};
     decltype(seqan3::views::kmer_hash(text, seqan3::ungapped{4})) vec = text | kmer_view;
-    result_t expected_range{{26,105,27},{105,97,27},{166,97,27},{152,27,111},{97,27,191}};
+    result_t expected_range{{26,152,27},{105,166,134},{166,97,111},{152,27,252},{97,27,252}};
 
     decltype(seqan3::detail::hybridstrobe_view<decltype(seqan3::views::kmer_hash(text, seqan3::ungapped{4})),3>
     (seqan3::views::kmer_hash(text, seqan3::ungapped{4}), 1, 3)) test_range =
@@ -64,7 +64,7 @@ struct iterator_fixture<order3_iterator_type> : public ::testing::Test
 };
 
 using test_types = ::testing::Types<iterator_type,order3_iterator_type>;
-//INSTANTIATE_TYPED_TEST_SUITE_P(iterator_fixture, iterator_fixture, test_types, );
+INSTANTIATE_TYPED_TEST_SUITE_P(iterator_fixture, iterator_fixture, test_types, );
 
 template <typename T>
 class hybridstrobe_view_properties_test: public ::testing::Test { };
@@ -93,12 +93,12 @@ protected:
     //    stop at T gapped hybridstrobes: A--GC--C
     // start at A ungapped hybridstrobes:                               GCGAACGT, CGACACGT, GACGCGTT
     //   start at A gapped hybridstrobes:                               G--AA--T, C--CA--T, G--GC--T
-    result_t result3_ungapped{{26,97},{105,27},{166,27},{152,27},{97,27},{134,111}};
-    result_t result3_gapped{{2,5},{5,3},{10,3},{8,3},{5,3},{10,7}};
-    result_t result3_ungapped_stop{{26,97}};
-    result_t result3_gapped_stop{{2,5}};
-    result_t result3_ungapped_start{{152,27},{97,27},{134,111}};
-    result_t result3_gapped_start{{8,3},{5,3},{10,7}};
+    result_t result3_ungapped{{26,134},{105,152},{166,27},{152,191},{97,111},{134,242}};
+    result_t result3_gapped{{2,10},{5,3},{10,3},{8,11},{5,12},{10,11}};
+    result_t result3_ungapped_stop{{26,134}};
+    result_t result3_gapped_stop{{2,10}};
+    result_t result3_ungapped_start{{152,191},{97,111},{134,242}};
+    result_t result3_gapped_start{{8,11},{5,12},{10,11}};
 
     result_t result3_1{{0,0,0},{0,0,0},{0,0,0}}; // Same result for ungapped and gapped
 
@@ -110,10 +110,10 @@ protected:
     //              gapped hybridstrobes: A--GC--CA--T, C--CC--CA--T, G--GC--CA--T, G--AA--TC--T, C--CA--TG--T
     // start at A ungapped hybridstrobes:                               GGCGCGACACGT, GCGAACGTCGTT, CGACACGTCGTT
     //   start at A gapped hybridstrobes:                               G--GC--CA--T, G--AA--TC--T, C--CA--TG--T
-    result_t result3_3_ungapped{{26,105,27},{105,97,27},{166,97,27},{152,27,111},{97,27,191}};
-    result_t result3_3_gapped{{2,5,3},{5,5,3},{10,5,3},{8,3,7},{5,3,11}};
-    result_t result3_3_ungapped_start{{152,27,111},{97,27,191}};
-    result_t result3_3_gapped_start{{8,3,7},{5,3,11}};
+    result_t result3_3_ungapped{{26,152,27},{105,166,134},{166,97,111},{152,27,252},{97,27,252}};
+    result_t result3_3_gapped{{2,8,3},{5,5,7},{10,5,7},{8,3,12},{5,7,14}};
+    result_t result3_3_ungapped_start{{152,27,252},{97,27,252}};
+    result_t result3_3_gapped_start{{8,3,12},{5,7,14}};
 };
 
 template <typename adaptor_t>
@@ -146,13 +146,13 @@ TYPED_TEST(hybridstrobe_view_properties_test, different_inputs_kmer_hash)
 {
     TypeParam text{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4, 'C'_dna4, 'G'_dna4, 'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4,
                    'T'_dna4, 'T'_dna4, 'A'_dna4, 'G'_dna4}; // ACGTCGACGTTTAG
-    result_t ungapped{{27,97},{109,27},{182,27},{216,27},{97,27},{134,111}};
-    result_t gapped{{3,5},{5,3},{10,3},{12,3},{5,3},{10,7}};
+    result_t ungapped{{27,109},{109,97},{182,111},{216,97},{97,111},{134,242}};
+    result_t gapped{{3,5},{5,3},{10,3},{12,5},{5,12},{10,11}};
     EXPECT_RANGE_EQ(ungapped, text | kmer_view | hybridstrobe_view);
     EXPECT_RANGE_EQ(gapped, text | gapped_kmer_view | hybridstrobe_view);
 
-    result_t ungapped3{{27,109,27},{109,97,27},{182,97,27},{216,27,111},{97,27,191}};
-    result_t gapped3{{3,5,3},{5,5,3},{10,5,3},{12,3,7},{5,3,11}};
+    result_t ungapped3{{27,109,97},{109,216,27},{182,134,191},{216,97,111},{97,27,252}};
+    result_t gapped3{{3,5,5},{5,5,7},{10,5,7},{12,5,7},{5,7,14}};
     EXPECT_RANGE_EQ(ungapped3, (seqan3::detail::hybridstrobe_view<decltype(text | kmer_view),3>(text | kmer_view,1,3)));
     EXPECT_RANGE_EQ(gapped3, (seqan3::detail::hybridstrobe_view<decltype(text | gapped_kmer_view),3>(text | gapped_kmer_view,1,3)));
 }

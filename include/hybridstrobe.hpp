@@ -266,7 +266,11 @@ public:
 
         if (window_size + 1 > size)
             throw std::invalid_argument{"The given sequence is too short to satisfy the given parameters.\n"
-                                        "Please choose a smaller window min and max."};
+                                        "Please choose a smaller window min and size."};
+        // Throws, if the second group is not as big as the first group
+        if (std::ceil((window_size - std::ceil(window_size/3.0))/2.0) != std::ceil(window_size/3.0))
+            throw std::invalid_argument{"The given window size is too short.\n"
+                                        "Please choose a bigger window size."};
         window_first(window_min, window_size);
     }
     //!\}
@@ -385,9 +389,9 @@ private:
         if (window_size == 0u)
             return;
 
-        r_pos = *first_iterator % 3;
-        elem_r = std::ceil(window_size/3);
         first_iterator = second_iterator;
+        r_pos = *first_iterator % 3;
+        elem_r = std::ceil(window_size/3.0);
         std::ranges::advance(second_iterator, window_min);
         if constexpr(order_3)
         {
@@ -407,9 +411,9 @@ private:
             }
         }
         window_values.push_back(*second_iterator);
-        std::cout << 0;
+
         auto hybridstrobe_it = std::ranges::min_element(window_values.begin() + (r_pos*elem_r),std::min(window_values.begin() + ((1+r_pos)*elem_r), window_values.end()), std::less_equal<value_t>{});
-        std::cout << 1;
+
         if constexpr(order_3)
         {
             window_values3.push_back(*third_iterator);
@@ -420,6 +424,7 @@ private:
         {
             hybridstrobe_value = {*first_iterator, *hybridstrobe_it};
         }
+
     }
 
     /*!\brief Calculates the next hybridstrobe value.
@@ -430,6 +435,7 @@ private:
     void next_hybridstrobe()
     {
         advance_windows();
+        r_pos = *first_iterator % 3;
 
         if (second_iterator == urng_sentinel)
             return;
