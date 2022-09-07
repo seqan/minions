@@ -36,3 +36,5 @@ src/snakemake/
 !src/snakemake/data/README
 !src/snakemake/output/README
 !src/snakemake/results/README
+!src/snakemake/genmap/count/Snakefile
+!src/snakemake/genmap/count/plot_count_genomes.py
