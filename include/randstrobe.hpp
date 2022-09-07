@@ -24,10 +24,10 @@
 namespace seqan3::detail
 {
 // ---------------------------------------------------------------------------------------------------------------------
-// minstrobe_view class
+// randstrobe_view class
 // ---------------------------------------------------------------------------------------------------------------------
 
-/*!\brief The type returned by minstrobe.
+/*!\brief The type returned by randstrobe.
  * \tparam urng_t The type of the underlying range, must model std::ranges::forward_range, the reference type must
  *                 model std::totally_ordered. The typical use case is that the reference type is the result of
  *                 seqan3::kmer_hash.
@@ -60,7 +60,7 @@ private:
     template <bool const_range>
     class basic_iterator;
 
-    //!\brief The sentinel type of the minstrobe_view.
+    //!\brief The sentinel type of the randstrobe_view.
     using sentinel = std::default_sentinel_t;
 
 public:
@@ -82,7 +82,7 @@ public:
     * \param[in] window_min  The lower offset for the position of the next window from the previous one.
     * \param[in] window_max  The upper offset for the position of the next window from the previous one.
     */
-    randstrobe_view(urng_t urange, size_t const window_min, size_t const window_max) :
+    randstrobe_view(urng_t urange, size_t const window_min, size_t const window_max) :      //randstrobes werden hier berechnet
         urange{std::move(urange)},
         window_min{window_min},
         window_max{window_max}
@@ -102,7 +102,7 @@ public:
         requires (std::ranges::viewable_range<other_urng_t> &&
                   std::constructible_from<urng_t, ranges::ref_view<std::remove_reference_t<other_urng_t>>>)
     //!\endcond
-    randstrobe_view(other_urng_t && urange, size_t const window_min, size_t const window_max) :
+    randstrobe_view(other_urng_t && urange, size_t const window_min, size_t const window_max) :     //randstrobes werden hier berechnet
         urange{std::views::all(std::forward<other_urng_t>(urange))},
         window_min{window_min},
         window_max{window_max}
@@ -166,7 +166,7 @@ public:
     //!\}
 };
 
-//!\brief Iterator for calculating minstrobes.
+//!\brief Iterator for calculating randstrobes.
 template <std::ranges::view urng_t>
 template <bool const_range>
 class randstrobe_view<urng_t>::basic_iterator
@@ -266,25 +266,25 @@ public:
         return !(lhs == rhs);
     }
 
-    //!\brief Compare to the sentinel of the minstrobe_view.
+    //!\brief Compare to the sentinel of the randstrobe_view.
     friend bool operator==(basic_iterator const & lhs, sentinel const &)
     {
         return lhs.second_iterator == lhs.urng_sentinel;
     }
 
-    //!\brief Compare to the sentinel of the minstrobe_view.
+    //!\brief Compare to the sentinel of the randstrobe_view.
     friend bool operator==(sentinel const & lhs, basic_iterator const & rhs)
     {
         return rhs == lhs;
     }
 
-    //!\brief Compare to the sentinel of the minstrobe_view.
+    //!\brief Compare to the sentinel of the randstrobe_view.
     friend bool operator!=(sentinel const & lhs, basic_iterator const & rhs)
     {
         return !(lhs == rhs);
     }
 
-    //!\brief Compare to the sentinel of the minstrobe_view.
+    //!\brief Compare to the sentinel of the randstrobe_view.
     friend bool operator!=(basic_iterator const & lhs, sentinel const & rhs)
     {
         return !(lhs == rhs);
@@ -306,29 +306,29 @@ public:
         return tmp;
     }
 
-    //!\brief Return the minstrobe.
+    //!\brief Return the randstrobe.
     value_type operator*() const noexcept
     {
         return randstrobe_value;
     }
 
 private:
-    //!\brief The minstrobe value.
+    //!\brief The randstrobe value.
     value_type randstrobe_value{};
 
-    //!\brief The offset relative to the beginning of the window where the minstrobe value is found.
+    //!\brief The offset relative to the beginning of the window where the randstrobe value is found.
     size_t randstrobe_position_offset{};
 
-    //!\brief Iterator to the first strobe of minstrobe.
+    //!\brief Iterator to the first strobe of randstrobe.
     urng_iterator_t first_iterator{};
 
-    //!\brief Iterator to the right most value of the window and hence the second strobe of minstrobe.
+    //!\brief Iterator to the right most value of the window and hence the second strobe of randstrobe.
     urng_iterator_t second_iterator{};
 
     //!\brief Iterator to last element in range.
     urng_sentinel_t urng_sentinel{};
 
-    //!\brief Stored values per window. It is necessary to store them, because a shift can remove the current minstrobe.
+    //!\brief Stored values per window. It is necessary to store them, because a shift can remove the current randstrobe.
     std::deque<value_t> window_values{};
 
     //!\brief The number of values in one window.
@@ -341,8 +341,8 @@ private:
         ++second_iterator;
     }
 
-    //!\brief Calculates minstrobes for the first window.
-    void window_first(const size_t window_min, const size_t window_max)
+    //!\brief Calculates randstrobes for the first window.
+    void window_first(const size_t window_min, const size_t window_max)    //hier werden randstrobes berechnet
     {
         window_size = (window_max - window_min + 1);
 
@@ -364,7 +364,7 @@ private:
         randstrobe_position_offset = std::distance(std::begin(window_values), randstrobe_it);
     }
 
-    /*!\brief Calculates the next minstrobe value.
+    /*!\brief Calculates the next randstrobe value.
      * \details
      * For the following windows, we remove the first window value (is now not in window_values) and add the new
      * value that results from the window shifting.
@@ -406,12 +406,12 @@ private:
 
 //!\brief A deduction guide for the view class template.
 template <std::ranges::viewable_range rng_t>
-randstrobe_view(rng_t &&, size_t const window_min, size_t const window_max) -> randstrobe_view<std::views::all_t<rng_t>>;
+randstrobe_view(rng_t &&, size_t const window_min, size_t const window_max) -> randstrobe_view<std::views::all_t<rng_t>>;  //hier berechnet
 
 
 
 // ---------------------------------------------------------------------------------------------------------------------
-// minstrobe_fn (adaptor definition)
+// randstrobe_fn (adaptor definition)
 // ---------------------------------------------------------------------------------------------------------------------
 
 //![adaptor_def]
