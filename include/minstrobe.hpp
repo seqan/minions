@@ -55,8 +55,8 @@ private:
     //!\brief The underlying range.
     urng_t urange{};
 
-    //!\brief The lower offset for the position of the next window.
-    size_t window_min{};
+    //!\brief The distance of the second strobe to the first one.
+    size_t window_dist{};
 
     //!\brief The number of elements in a window.
     size_t window_size{};
@@ -83,12 +83,12 @@ public:
     /*!\brief Construct from a view and the two (lower and upper) offsets of the second window.
     * \param[in] urange      The input range to process. Must model std::ranges::viewable_range and
     *                        std::ranges::forward_range.
-    * \param[in] window_min  The lower offset for the position of the next window from the previous one.
+    * \param[in] window_dist The distance of the second strobe to the first one.
     * \param[in] window_size The number of elements in a window.
     */
-    minstrobe_view(urng_t urange, size_t const window_min, size_t const window_size) :
+    minstrobe_view(urng_t urange, size_t const window_dist, size_t const window_size) :
         urange{std::move(urange)},
-        window_min{window_min},
+        window_dist{window_dist},
         window_size{window_size}
     {}
 
@@ -98,7 +98,7 @@ public:
                              constructible from urng_t.
     * \param[in] urange      The input range to process. Must model std::ranges::viewable_range and
     *                        std::ranges::forward_range.
-    * \param[in] window_min  The lower offset for the position of the next window from the previous one.
+    * \param[in] window_dist The distance of the second strobe to the first one.
     * \param[in] window_size The number of elements in a window.
     */
     template <typename other_urng_t>
@@ -106,9 +106,9 @@ public:
         requires (std::ranges::viewable_range<other_urng_t> &&
                   std::constructible_from<urng_t, ranges::ref_view<std::remove_reference_t<other_urng_t>>>)
     //!\endcond
-    minstrobe_view(other_urng_t && urange, size_t const window_min, size_t const window_size) :
+    minstrobe_view(other_urng_t && urange, size_t const window_dist, size_t const window_size) :
         urange{std::views::all(std::forward<other_urng_t>(urange))},
-        window_min{window_min},
+        window_dist{window_dist},
         window_size{window_size}
     {}
 
@@ -133,7 +133,7 @@ public:
         return {std::ranges::begin(urange),
                 std::ranges::begin(urange),
                 std::ranges::end(urange),
-                window_min,
+                window_dist,
                 window_size};
     }
 
@@ -146,7 +146,7 @@ public:
         return {std::ranges::cbegin(urange),
                 std::ranges::cbegin(urange),
                 std::ranges::cend(urange),
-                window_min,
+                window_dist,
                 window_size};
     }
 
@@ -234,7 +234,7 @@ public:
     * \param[in] second_iterator Iterator pointing to the first position of the second window of the std::totally_ordered range.
     * \param[in] third_iterator  Iterator pointing to the first position of the third window of the std::totally_ordered range.
     * \param[in] urng_sentinel   Iterator pointing to the last position of the second window of the std::totally_ordered range.
-    * \param[in] window_min      The lower offset for the position of the next window from the previous one.
+    * \param[in] window_dist     The distance of the second strobe to the first one.
     * \param[in] window_size     The number of elements in a window.
     *
     * \details
@@ -247,7 +247,7 @@ public:
     basic_iterator(urng_iterator_t second_iterator,
                    urng_iterator_t third_iterator,
                    urng_sentinel_t urng_sentinel,
-                   size_t window_min,
+                   size_t window_dist,
                    size_t window_size) :
         first_iterator{std::move(first_iterator)},
         second_iterator{std::move(second_iterator)},
@@ -267,7 +267,7 @@ public:
         if (window_size + 1 > size)
             throw std::invalid_argument{"The given sequence is too short to satisfy the given parameters.\n"
                                         "Please choose a smaller window min and max."};
-        window_first(window_min, window_size);
+        window_first(window_dist, window_size);
     }
     //!\}
 
@@ -377,13 +377,13 @@ private:
     }
 
     //!\brief Calculates minstrobes for the first window.
-    void window_first(const size_t window_min, const size_t window_size)
+    void window_first(const size_t window_dist, const size_t window_size)
     {
         if (window_size == 0u)
             return;
 
         first_iterator = second_iterator;
-        std::ranges::advance(second_iterator, window_min);
+        std::ranges::advance(second_iterator, window_dist);
         if constexpr(order_3)
         {
             third_iterator = second_iterator;
@@ -483,11 +483,11 @@ private:
 
 //!\brief A deduction guide for the view class template.
 template <std::ranges::viewable_range rng_t>
-minstrobe_view(rng_t &&, size_t const window_min, size_t const window_size) -> minstrobe_view<std::views::all_t<rng_t>>;
+minstrobe_view(rng_t &&, size_t const window_dist, size_t const window_size) -> minstrobe_view<std::views::all_t<rng_t>>;
 
 //!\brief A deduction guide for the view class template.
 template <std::ranges::viewable_range rng_t, std::uint16_t ord>
-minstrobe_view(rng_t &&, size_t const window_min, size_t const window_size) -> minstrobe_view<std::views::all_t<rng_t>, ord>;
+minstrobe_view(rng_t &&, size_t const window_dist, size_t const window_size) -> minstrobe_view<std::views::all_t<rng_t>, ord>;
 
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -500,9 +500,9 @@ minstrobe_view(rng_t &&, size_t const window_min, size_t const window_size) -> m
 struct minstrobe_fn
 {
     //!\brief Store the number of values in two windows and return a range adaptor closure object.
-    constexpr auto operator()(const size_t window_min, const size_t window_size) const
+    constexpr auto operator()(const size_t window_dist, const size_t window_size) const
     {
-        return adaptor_from_functor{*this, window_min, window_size};
+        return adaptor_from_functor{*this, window_dist, window_size};
     }
 
     /*!\brief Call the view's constructor with three arguments: the underlying view and an integer indicating a lower
@@ -510,23 +510,23 @@ struct minstrobe_fn
      * \tparam urng_t         The type of the input range to process. Must model std::ranges::viewable_range.
      * \param[in] urange      The input range to process. Must model std::ranges::viewable_range and
      *                        std::ranges::forward_range.
-     * \param[in] window_min  The lower offset for the position of the next window from the previous one.
+     * \param[in] window_dist The distance of the second strobe to the first one.
      * \param[in] window_size The number of elements in a window.
      * \returns  A range of the converted values in vectors of size 2.
      */
     template <std::ranges::range urng_t>
-    constexpr auto operator()(urng_t && urange, size_t const window_min, size_t const window_size) const
+    constexpr auto operator()(urng_t && urange, size_t const window_dist, size_t const window_size) const
     {
         static_assert(std::ranges::viewable_range<urng_t>,
                       "The range parameter to views::minstrobe cannot be a temporary of a non-view range.");
         static_assert(std::ranges::forward_range<urng_t>,
                       "The range parameter to views::minstrobe must model std::ranges::forward_range.");
 
-        if (window_size <= window_min)
+        if (window_size <= window_dist)
             throw std::invalid_argument{"The chosen min and max windows are not valid."
-                                        "Please choose a window_size greater than window_min."};
+                                        "Please choose a window_size greater than window_dist."};
 
-        return minstrobe_view{urange, window_min, window_size};
+        return minstrobe_view{urange, window_dist, window_size};
     }
 };
 //![adaptor_def]
@@ -540,7 +540,7 @@ namespace seqan3::views
  * \tparam urng_t         The type of the range being processed. See below for requirements. [template
  *                        parameter is omitted in pipe notation]
  * \param[in] urange      The range being processed. [parameter is omitted in pipe notation]
- * \param[in] window_min  The lower offset for the position of the next window from the previous one.
+ * \param[in] window_dist The distance of the second strobe to the first one.
  * \param[in] window_size The number of elements in a window.
  * \returns A range of std::totally_ordered where each value is a vector of size 2. See below for the
  *          properties of the returned range.
@@ -550,7 +550,7 @@ namespace seqan3::views
  *
  * A minstrobe defined by [Sahlin](https://genome.cshlp.org/content/31/11/2080.full.pdf) consists of
  * a starting strobe concatenated with n−1 consecutively concatenated minimizers in their respective windows.
- * For example for the following list of hash values `[6, 26, 41, 38, 24, 33, 6, 27, 47]` and 3 as `window_min`,
+ * For example for the following list of hash values `[6, 26, 41, 38, 24, 33, 6, 27, 47]` and 3 as `window_dist`,
  * 4 as `window_size`, the minstrobe values are `[(6,24),(26,6),(41,6),(38,6)]`.
  *
  * ### View properties

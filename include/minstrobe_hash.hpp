@@ -87,16 +87,16 @@ struct minstrobe2_hash_fn
         static_assert(semialphabet<std::ranges::range_reference_t<urng_t>>,
             "The range parameter to views::minstrobe_hash must be over elements of seqan3::semialphabet.");
 
-        if (window_min <= 1 || window_len < window_min)
+        if (window_len < window_min)
             throw std::invalid_argument{"The chosen parameters are not valid. "
-                                        "Please choose values greater than 1 and a window_len greater than window_min."};
+                                        "Please choose a window_len greater than window_min."};
 
         auto hashed_values = std::forward<urng_t>(urange) | seqan3::views::kmer_hash(shape)
                                                           | std::views::transform([seed] (uint64_t i)
                                                                                   {return i ^ seed.get();});
 
 
-        auto minstrobes = seqan3::detail::minstrobe_view(hashed_values, window_min, window_len - shape.size() + 1);
+        auto minstrobes = seqan3::detail::minstrobe_view(hashed_values, window_min + shape.size() - 1, window_len - shape.size() + 1);
         uint64_t multiplicator = std::pow(4, shape.count());
         return std::views::transform(minstrobes, [multiplicator] (std::vector<uint64_t> i)
                            {return combine_strobes(multiplicator, i[0], i[1]);});
@@ -166,7 +166,7 @@ struct minstrobe3_hash_fn
                                                                                   {return i ^ seed.get();});
 
 
-        auto minstrobes = seqan3::detail::minstrobe_view<decltype(hashed_values), 3>(hashed_values, window_min, window_len - shape.size() + 1);
+        auto minstrobes = seqan3::detail::minstrobe_view<decltype(hashed_values), 3>(hashed_values, window_min + shape.size() - 1, window_len - shape.size() + 1);
         uint64_t multiplicator = std::pow(4, shape.count()*2);
         uint64_t multiplicator2 = std::pow(4, shape.count());
         return std::views::transform(minstrobes, [multiplicator, multiplicator2] (std::vector<uint64_t> i)
