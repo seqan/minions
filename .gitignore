@@ -38,3 +38,5 @@ src/snakemake/
 !src/snakemake/results/README
 !src/snakemake/genmap/count/Snakefile
 !src/snakemake/genmap/count/plot_count_genomes.py
+!src/snakemake/genmap/Snakefile
+!src/snakemake/genmap/genmap_uniqueness.py

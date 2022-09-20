@@ -1,0 +1,68 @@
+rule all:
+    input:
+        "Uniqueness_Human.png",
+        "Uniqueness_Mouse.png",
+        "Uniqueness_Wheat.png"
+
+rule genmap_index:
+    input:
+        "GRCh38.p13.genome.fa"
+    output:
+        "genmap/Human-index"
+    shell:
+        "genmap index -F GRCh38.p13.genome.fa -I genmap/Human-index"
+
+rule genmap_mouse_index:
+    input:
+        "GRCm39.genome.fa"
+    output:
+        "genmap/Mouse-index"
+    shell:
+        "genmap index -F GRCm39.genome.fa -I genmap/Mouse-index"
+
+rule genmap_wheat_index:
+    input:
+        "Triticum_aestivum.IWGSC.dna.toplevel.fa"
+    output:
+        "genmap/Wheat-index"
+    shell:
+        "genmap index -F Triticum_aestivum.IWGSC.dna.toplevel.fa -I genmap/Wheat-index"
+
+rule genmap_map:
+    input:
+        "genmap/{species}-index"
+    output:
+        "genmap/{species}_K_{kmer_size}_E_{error}.freq16"
+    shell:
+        "genmap map -K {wildcards.kmer_size} -E {wildcards.error} -I genmap/{wildcards.species}-index -O genmap/{wildcards.species}_K_{wildcards.kmer_size}_E_{wildcards.error} -fl -r"
+
+rule download_genome:
+    output:
+        "GRCh38.p13.genome.fa.gz"
+    shell:
+        """wget "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_40/GRCh38.p13.genome.fa.gz"
+        gunzip GRCh38.p13.genome.fa.gz"""
+
+rule download_mouse_genome:
+    output:
+        "GRCm39.genome.fa"
+    shell:
+        """wget "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M30/GRCm39.genome.fa.gz"
+        gunzip GRCm39.genome.fa.gz"""
+
+rule download_wheat_genome:
+    output:
+        "Triticum_aestivum.IWGSC.dna.toplevel.fa.gz"
+    shell:
+        """wget "http://ftp.ensemblgenomes.org/pub/plants/release-53/fasta/triticum_aestivum/dna/Triticum_aestivum.IWGSC.dna.toplevel.fa.gz"
+        gunzip Triticum_aestivum.IWGSC.dna.toplevel.fa.gz"""
+
+rule visualize_uniqueness:
+    input:
+        ["genmap/"+species+"_K_"+k+"_E_"+e+".freq16" for species in ["Human", "Mouse", "Wheat"] for e in [0,1,2] for k in [16,20,24,28,32]]
+    output:
+        "Uniqueness_Human.png",
+        "Uniqueness_Mouse.png",
+        "Uniqueness_Wheat.png"
+    shell:
+        "python3 genmap_uniqueness.py"
