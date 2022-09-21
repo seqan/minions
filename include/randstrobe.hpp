@@ -82,7 +82,7 @@ public:
     * \param[in] window_min  The lower offset for the position of the next window from the previous one.
     * \param[in] window_max  The upper offset for the position of the next window from the previous one.
     */
-    randstrobe_view(urng_t urange, size_t const window_min, size_t const window_max) :      //randstrobes werden hier berechnet
+    randstrobe_view(urng_t urange, size_t const window_min, size_t const window_max) :      
         urange{std::move(urange)},
         window_min{window_min},
         window_max{window_max}
@@ -102,7 +102,7 @@ public:
         requires (std::ranges::viewable_range<other_urng_t> &&
                   std::constructible_from<urng_t, ranges::ref_view<std::remove_reference_t<other_urng_t>>>)
     //!\endcond
-    randstrobe_view(other_urng_t && urange, size_t const window_min, size_t const window_max) :     //randstrobes werden hier berechnet
+    randstrobe_view(other_urng_t && urange, size_t const window_min, size_t const window_max) :     
         urange{std::views::all(std::forward<other_urng_t>(urange))},
         window_min{window_min},
         window_max{window_max}
@@ -354,10 +354,10 @@ private:
 
         for (int i = 1u; i < window_size; ++i)
         {
-            window_values.push_back(*second_iterator);
+            window_values.push_back((*second_iterator + *first_iterator)%5);
             ++second_iterator;
         }
-        window_values.push_back(*second_iterator);
+        window_values.push_back(*second_iterator);   // von window min bis window size
 
         auto randstrobe_it = std::ranges::min_element(window_values, std::less_equal<value_t>{});
         randstrobe_value = {*first_iterator, *randstrobe_it};
@@ -376,12 +376,12 @@ private:
         if (second_iterator == urng_sentinel)
             return;
         value_t const new_value = *first_iterator;
-        value_t const sw_new_value = *second_iterator;
+        value_t const sw_new_value = *second_iterator;      //second window
 
         randstrobe_value[0]= new_value;
 
         window_values.pop_front();
-        window_values.push_back(sw_new_value);
+        window_values.push_back((sw_new_value + new_value)%5);  //???
 
         if (sw_new_value < randstrobe_value[1])
         {
