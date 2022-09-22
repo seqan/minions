@@ -371,7 +371,7 @@ private:
      */
     void next_randstrobe()
     {
-        advance_windows();
+        advance_windows();  // Erklaerung steht unter private Atrributen von class
 
         if (second_iterator == urng_sentinel)
             return;
@@ -385,7 +385,7 @@ private:
         if (randstrobe_value[1] < sw_new_value)      // added this if loop here
         {
             window_values.push_back((*second_iterator + *first_iterator)%5);
-            ++second_iterator;
+            return;
         }
 
         window_values.push_back(sw_new_value);  
