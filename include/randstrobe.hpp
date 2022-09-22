@@ -384,8 +384,8 @@ private:
         
         if (randstrobe_value[1] < sw_new_value)      // added this if loop here
         {
-            window_values.push_back((sw_new_value + new_value)%5);
-            ++sw_new_value;
+            window_values.push_back((*second_iterator + *first_iterator)%5);
+            ++second_iterator;
         }
 
         window_values.push_back(sw_new_value);  
