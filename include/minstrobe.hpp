@@ -152,11 +152,6 @@ public:
 
     /*!\brief Returns an iterator to the element following the last element of the range.
      * \returns Iterator to the end.
-     *
-     * \details
-     *
-     * This element acts as a placeholder; attempting to dereference it results in undefined behaviour.
-     *
      * ### Complexity
      *
      * Constant.
@@ -165,9 +160,9 @@ public:
      *
      * No-throw guarantee.
      */
-    sentinel end() const
+    sentinel end() const noexcept
     {
-        return {};
+        return{};
     }
     //!\}
 };
@@ -264,9 +259,38 @@ public:
             size = std::ranges::distance(second_iterator, urng_sentinel);
         }
 
-        if (window_size + 1 > size)
-            throw std::invalid_argument{"The given sequence is too short to satisfy the given parameters.\n"
-                                        "Please choose a smaller window min and max."};
+        window_first(window_dist, window_size);
+    }
+
+    basic_iterator(urng_iterator_t second_iterator,
+                   urng_iterator_t third_iterator,
+                   urng_sentinel_t urng_sentinel,
+                   size_t window_dist,
+                   size_t window_size,
+                   bool is_end) :
+        first_iterator{std::move(first_iterator)},
+        second_iterator{std::move(second_iterator)},
+        third_iterator{std::move(third_iterator)},
+        urng_sentinel{std::move(urng_sentinel)}
+    {
+        size_t size{};
+        if constexpr(order_3)
+        {
+            size = std::ranges::distance(third_iterator, urng_sentinel);
+        }
+        else
+        {
+            size = std::ranges::distance(second_iterator, urng_sentinel);
+        }
+
+        if (is_end)
+        {
+            auto urange_size = std::ranges::distance(second_iterator, urng_sentinel);
+            if constexpr(order_3)
+                second_iterator = std::ranges::next(second_iterator, urange_size-(window_size*2)-window_dist, urng_sentinel);
+            else
+                second_iterator = std::ranges::next(second_iterator, urange_size-window_size-window_dist, urng_sentinel);
+        }
         window_first(window_dist, window_size);
     }
     //!\}
@@ -332,6 +356,28 @@ public:
         return tmp;
     }
 
+    /*!\brief Pre-decrement.
+    * \attention This function is only available if underlying range is bidirectional.
+    */
+    basic_iterator & operator--() noexcept
+        requires std::ranges::bidirectional_range<urng_t>
+    {
+        prev_minstrobe();
+        return *this;
+    }
+
+    /*!\brief Post-decrement.
+     * \attention This function is only available if underlying range is bidirectional.
+     */
+    basic_iterator operator--(int) noexcept
+        requires std::ranges::bidirectional_range<urng_t>
+    {
+        basic_iterator tmp{*this};
+        prev_minstrobe();
+        return tmp;
+    }
+
+
     //!\brief Return the minstrobe.
     value_type operator*() const noexcept
     {
@@ -366,7 +412,7 @@ private:
     //!\brief Stored values per window. It is necessary to store them, because a shift can remove the current minstrobe.
     std::deque<value_t> window_values3{};
 
-    //!\brief Advances the window of the first iterator to the next position.
+    //!\brief Advances the window of the iterators to their next position.
     void advance_windows()
     {
         ++first_iterator;
@@ -374,6 +420,16 @@ private:
 
         if constexpr(order_3)
             ++third_iterator;
+    }
+
+    //!\brief Retreat the window of the iterators to their previous position.
+    void retreat_windows()
+    {
+        --first_iterator;
+        --second_iterator;
+
+        if constexpr(order_3)
+            --third_iterator;
     }
 
     //!\brief Calculates minstrobes for the first window.
@@ -476,6 +532,66 @@ private:
         }
 
         --minstrobe_position_offset;
+    }
+
+    /*!\brief Calculates the previous minstrobe value.
+     * \details
+     * For the following windows, we remove the first window value (is now not in window_values) and add the new
+     * value that results from the window shifting.
+     */
+    void prev_minstrobe()
+        requires std::ranges::bidirectional_range<urng_t>
+    {
+        retreat_windows();
+
+        //if (first_iterator <)
+        //    return;
+        value_t const new_value = *first_iterator;
+        value_t const sw_new_value = *second_iterator;
+
+        minstrobe_value[0]= new_value;
+
+        window_values.pop_back();
+        window_values.push_front(sw_new_value);
+        if constexpr(order_3)
+        {
+            value_t const sw_new_value3 = *third_iterator;
+            window_values3.pop_back();
+            window_values3.push_front(sw_new_value3);
+
+            if (sw_new_value3 < minstrobe_value[2])
+            {
+                minstrobe_value[2] = sw_new_value3;
+                minstrobe_position_offset3 = 0;
+            }
+            else if (minstrobe_position_offset3 == window_values.size() - 1)
+            {
+                auto minstrobe_it3 = std::ranges::min_element(window_values3, std::less_equal<value_t>{});
+                minstrobe_value[2] = *minstrobe_it3;
+                minstrobe_position_offset3 = std::distance(std::begin(window_values3), minstrobe_it3);
+            }
+            else
+            {
+                ++minstrobe_position_offset3;
+            }
+        }
+
+        if (sw_new_value < minstrobe_value[1])
+        {
+            minstrobe_value[1] = sw_new_value;
+            minstrobe_position_offset = 0;
+            return;
+        }
+
+        else if (minstrobe_position_offset == window_values.size() - 1)
+        {
+            auto minstrobe_it = std::ranges::min_element(window_values, std::less_equal<value_t>{});
+            minstrobe_value[1] = *minstrobe_it;
+            minstrobe_position_offset = std::distance(std::begin(window_values), minstrobe_it);
+            return;
+        }
+
+        ++minstrobe_position_offset;
     }
 };
 
