@@ -196,7 +196,7 @@ public:
     //!\brief Reference to `value_type`.
     using reference = value_type;
     //!\brief Tag this class as a forward iterator.
-    using iterator_category = std::forward_iterator_tag;
+    using iterator_category = std::bidirectional_iterator_tag;
     //!\brief Tag this class as a forward iterator.
     using iterator_concept = iterator_category;
     //!\}
@@ -403,6 +403,12 @@ private:
     //!\brief Iterator to the right most value of the window and hence the third strobe of minstrobe.
     urng_iterator_t third_iterator{};
 
+    //!\brief Iterator to the left most value of the window and hence the second strobe of minstrobe for bidirectionality.
+    urng_iterator_t second_iterator_back{};
+
+    //!\brief Iterator to the left most value of the window and hence the third strobe of minstrobe for bidirectionality.
+    urng_iterator_t third_iterator_back{};
+
     //!\brief Iterator to last element in range.
     urng_sentinel_t urng_sentinel{};
 
@@ -417,9 +423,13 @@ private:
     {
         ++first_iterator;
         ++second_iterator;
+        ++second_iterator_back;
 
         if constexpr(order_3)
+        {
             ++third_iterator;
+            ++third_iterator_back;
+        }
     }
 
     //!\brief Retreat the window of the iterators to their previous position.
@@ -427,9 +437,13 @@ private:
     {
         --first_iterator;
         --second_iterator;
+        --second_iterator_back;
 
         if constexpr(order_3)
+        {
             --third_iterator;
+            --third_iterator_back;
+        }
     }
 
     //!\brief Calculates minstrobes for the first window.
@@ -439,11 +453,15 @@ private:
             return;
 
         first_iterator = second_iterator;
+        second_iterator_back = second_iterator;
         std::ranges::advance(second_iterator, window_dist);
+        std::ranges::advance(second_iterator_back, window_dist);
         if constexpr(order_3)
         {
             third_iterator = second_iterator;
+            third_iterator_back = second_iterator;
             std::ranges::advance(third_iterator, window_size);
+            std::ranges::advance(third_iterator_back, window_size);
         }
 
         for (int i = 1u; i < window_size; ++i)
@@ -544,18 +562,17 @@ private:
     {
         retreat_windows();
 
-        //if (first_iterator <)
-        //    return;
         value_t const new_value = *first_iterator;
-        value_t const sw_new_value = *second_iterator;
+        value_t const sw_new_value = *second_iterator_back;
 
         minstrobe_value[0]= new_value;
 
         window_values.pop_back();
         window_values.push_front(sw_new_value);
+
         if constexpr(order_3)
         {
-            value_t const sw_new_value3 = *third_iterator;
+            value_t const sw_new_value3 = *third_iterator_back;
             window_values3.pop_back();
             window_values3.push_front(sw_new_value3);
 
