@@ -692,7 +692,7 @@ namespace seqan3::views
  * |----------------------------------|:----------------------------------:|:--------------------------------:|
  * | std::ranges::input_range         | *required*                         | *preserved*                      |
  * | std::ranges::forward_range       | *required*                         | *preserved*                      |
- * | std::ranges::bidirectional_range |                                    | *lost*                           |
+ * | std::ranges::bidirectional_range |                                    | *preserved*                      |
  * | std::ranges::random_access_range |                                    | *lost*                           |
  * | std::ranges::contiguous_range    |                                    | *lost*                           |
  * |                                  |                                    |                                  |
