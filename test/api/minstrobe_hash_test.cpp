@@ -45,29 +45,31 @@ protected:
     std::vector<seqan3::dna4> text1{"AAAAAAAAAAAA"_dna4};
     result_t result1{0,0,0}; // Same result for ungapped and gapped
 
-    std::vector<seqan3::dna4> text3{"ACGGCGACGTTTAG"_dna4};
+    std::vector<seqan3::dna4> text3{"ACGGCGACGTTTAG"_dna4}; // rev complement: CTAA ACGTCGCCGT
     //                          kmers: ACGG,     CGGC,     GGCG,     GCGA,     CGAC,     GACG,     ACGT, CGTT, GTTT, TTTA, TTAG
     //                ungapped Hashes: 26,       105,      166,      152,      97,       134,      27,   111,  191,  252,  242
+    //        reverse ungapped Hashes: 91,       150,      101,      217,      182,      109,      27,   6,     1,   192,  176
     //                  gapped Hashes: 2,        5,        10,       8,        5,        10,       3,    7,    11,   12,   14
-    //            ungapped minstrobes: ACGGACGT, CGGCACGT, GGCGACGT, GCGACGTT, CGACGTTT
-    //              gapped minstrobes: A--GA--T, C--CA--T, G--GA--T, G--AC--T, C--CG--T
+    //          reverse gapped Hashes: 7,        10,        5,       13,       10,       5,        3,    2,     1,   12,    4
+    //            ungapped minstrobes: ACGGACGT, aacgcgcc, aaaccgcc, GCGACGTT, CGACGTTT
+    //              gapped minstrobes: A--GA--T, a--gc--c, a--cc--c, G--AC--T, c--aa--t
     // start at A ungapped minstrobes:                               GCGACGTT, CGACGTTT
-    result_t result3_ungapped{6683, 26907, 42523, 39023, 25023};
-    result_t result3_gapped{35, 83, 163, 135, 91};
+    result_t result3_ungapped{6683, 1637, 357, 39023, 25023};
+    result_t result3_gapped{35, 37, 21, 135, 67};
     result_t result3_ungapped_start{39023, 25023};
-    result_t result3_gapped_start{135, 91};
+    result_t result3_gapped_start{135, 67};
 
-    std::vector<seqan3::dna4> text1_3{"AAAAAAAAAAAAAAA"_dna4};
-    result_t result3_1{0,0,0}; // Same result for ungapped and gapped
-
+    std::vector<seqan3::dna4> text1_3{"AAAAAAAAAAAAAAAA"_dna4};
+    result_t result3_1{0}; // Same result for ungapped and gapped
+    std::vector<seqan3::dna4> text3_3{"ACGGCGACGTTTAGGC"_dna4};
     // ACGGCGACGTTTAG
-    //                          kmers: ACGG,     CGGC,     GGCG,     GCGA,     CGAC,     GACG,     ACGT, CGTT, GTTT, TTTA, TTAG
-    //                ungapped Hashes: 26,       105,      166,      152,      97,       134,      27,   111,  191,  252,  242
-    //                  gapped Hashes: 2,        5,        10,       8,        5,        10,       3,    7,    11,   12,   14
-    //            ungapped minstrobes: ACGGACGTCGTT, CGGCACGTGTTT
-    //              gapped minstrobes: A--GA--TC--T, C--CA--TG--T
-    result_t result3_3_ungapped{1710959, 6888383};
-    result_t result3_3_gapped{567, 1339};
+    //                          kmers: ACGG,     CGGC,     GGCG,     GCGA,     CGAC,     GACG,     ACGT, CGTT, GTTT, TTTA, TTAG, TAGG, AGGC
+    //                ungapped Hashes: 26,       105,      166,      152,      97,       134,      27,   111,  191,  252,  242,  202,    41
+    //                  gapped Hashes: 2,        5,        10,       8,        5,        10,       3,    7,    11,   12,   14,   16,      1
+    //            ungapped minstrobes: ACGGACGTAGGC
+    //              gapped minstrobes: A--GA--TA--C
+    result_t result3_3_ungapped{1710889};
+    result_t result3_3_gapped{561};
 };
 
 template <typename adaptor_t>
@@ -88,15 +90,10 @@ TYPED_TEST(minstrobe_hash_view_properties_test, different_input_ranges)
 {
     TypeParam text{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4, 'C'_dna4, 'G'_dna4, 'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4,
                 'T'_dna4, 'T'_dna4, 'A'_dna4, 'G'_dna4}; // ACGTCGACGTTTAG
-    result_t ungapped{6939,27931,46619,55407,25023};
-    result_t gapped{51, 83, 163, 199, 91};
+    result_t ungapped{6939,1633,353,49261,25023};
+    result_t gapped{51, 37, 21, 197, 67};
     EXPECT_RANGE_EQ(ungapped, text | ungapped_view);
     EXPECT_RANGE_EQ(gapped, text | gapped_view);
-
-    result_t ungapped3{1710959, 6888383};
-    result_t gapped3{567, 1339};
-    //EXPECT_RANGE_EQ(ungapped3, text | ungapped3_view);
-    //EXPECT_RANGE_EQ(gapped3, text | gapped3_view);
 }
 
 TEST_F(minstrobe_hash_test, ungapped)
@@ -107,7 +104,7 @@ TEST_F(minstrobe_hash_test, ungapped)
     EXPECT_THROW((text3 | minstrobe2_hash(ungapped_shape,3,2)), std::invalid_argument);
 
     EXPECT_RANGE_EQ(result3_1, text1_3 | ungapped3_view);
-    EXPECT_RANGE_EQ(result3_3_ungapped, text3 | ungapped3_view);
+    EXPECT_RANGE_EQ(result3_3_ungapped, text3_3 | ungapped3_view);
     EXPECT_NO_THROW(text1 | minstrobe3_hash(ungapped_shape,3,6));
     EXPECT_THROW((text3 | minstrobe3_hash(ungapped_shape,3,2)), std::invalid_argument);
 }
@@ -120,7 +117,7 @@ TEST_F(minstrobe_hash_test, gapped)
     EXPECT_THROW((text3 | minstrobe2_hash(gapped_shape, 2,1)), std::invalid_argument);
 
     EXPECT_RANGE_EQ(result3_1, text1_3 | gapped3_view);
-    EXPECT_RANGE_EQ(result3_3_gapped, text3 | gapped3_view);
+    EXPECT_RANGE_EQ(result3_3_gapped, text3_3 | gapped3_view);
     EXPECT_NO_THROW(text1 | minstrobe3_hash(gapped_shape, 2,5));
     EXPECT_THROW((text3 | minstrobe3_hash(gapped_shape, 2,1)), std::invalid_argument);
 }

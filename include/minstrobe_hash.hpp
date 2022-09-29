@@ -21,7 +21,6 @@
 #include "minstrobe.hpp"
 #include "shared.hpp"
 
-
 uint64_t combine_strobes(uint64_t multiplicator, uint64_t first_strobe, uint64_t second_strobe)
 {
     return first_strobe*multiplicator + second_strobe;
@@ -98,8 +97,21 @@ struct minstrobe2_hash_fn
 
         auto minstrobes = seqan3::detail::minstrobe_view(hashed_values, window_min + shape.size() - 1, window_len - shape.size() + 1);
         uint64_t multiplicator = std::pow(4, shape.count());
-        return std::views::transform(minstrobes, [multiplicator] (std::vector<uint64_t> i)
+        auto forward = std::views::transform(minstrobes, [multiplicator] (std::vector<uint64_t> i)
                            {return combine_strobes(multiplicator, i[0], i[1]);});
+
+        auto rev_hashed_values = std::forward<urng_t>(urange) | seqan3::views::complement
+                                                              | std::views::reverse
+                                                              | seqan3::views::kmer_hash(shape)
+                                                              | std::views::transform([seed] (uint64_t i)
+                                                                                     {return i ^ seed.get();});
+
+
+        auto rev_minstrobes = std::views::reverse(seqan3::detail::minstrobe_view(rev_hashed_values, window_min + shape.size() - 1, window_len - shape.size() + 1));
+        auto reverse = std::views::transform(rev_minstrobes, [multiplicator] (std::vector<uint64_t> i)
+                          {return combine_strobes(multiplicator, i[0], i[1]);});
+
+        return seqan3::views::zip(forward, reverse) | std::views::transform([](std::tuple<uint64_t, uint64_t> i){return std::min(std::get<0>(i), std::get<1>(i));});
 
     }
 };
@@ -169,8 +181,21 @@ struct minstrobe3_hash_fn
         auto minstrobes = seqan3::detail::minstrobe_view<decltype(hashed_values), 3>(hashed_values, window_min + shape.size() - 1, window_len - shape.size() + 1);
         uint64_t multiplicator = std::pow(4, shape.count()*2);
         uint64_t multiplicator2 = std::pow(4, shape.count());
-        return std::views::transform(minstrobes, [multiplicator, multiplicator2] (std::vector<uint64_t> i)
+        auto forward = std::views::transform(minstrobes, [multiplicator, multiplicator2] (std::vector<uint64_t> i)
                            {return combine_strobes(multiplicator, multiplicator2, i[0], i[1], i[2]);});
+
+
+        auto rev_hashed_values = std::forward<urng_t>(urange)  | seqan3::views::complement
+                                                             | std::views::reverse
+                                                             | seqan3::views::kmer_hash(shape)
+                                                             | std::views::transform([seed] (uint64_t i)
+                                                                                    {return i ^ seed.get();});
+
+        auto rev_minstrobes =  std::views::reverse(seqan3::detail::minstrobe_view<decltype(rev_hashed_values), 3>(rev_hashed_values, window_min + shape.size() - 1, window_len - shape.size() + 1));
+        auto reverse = std::views::transform(rev_minstrobes, [multiplicator, multiplicator2] (std::vector<uint64_t> i)
+                         {return combine_strobes(multiplicator, multiplicator2, i[0], i[1], i[2]);});
+
+        return seqan3::views::zip(forward, reverse) | std::views::transform([](std::tuple<uint64_t, uint64_t> i){return std::min(std::get<0>(i), std::get<1>(i));});
     }
 };
 

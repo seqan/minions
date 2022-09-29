@@ -15,6 +15,8 @@
 
 #include "../../lib/seqan3/test/unit/range/iterator_test_template.hpp"
 
+#include <seqan3/core/debug_stream.hpp>
+
 #include "minstrobe.hpp"
 
 using seqan3::operator""_dna4;
@@ -37,7 +39,7 @@ using order3_iterator_type = std::ranges::iterator_t<decltype(seqan3::detail::mi
 template <>
 struct iterator_fixture<iterator_type> : public ::testing::Test
 {
-    using iterator_tag = std::forward_iterator_tag;
+    using iterator_tag = std::bidirectional_iterator_tag;
     static constexpr bool const_iterable = true;
 
     seqan3::dna4_vector text{"ACGGCGACGTTTAG"_dna4};
@@ -51,7 +53,7 @@ struct iterator_fixture<iterator_type> : public ::testing::Test
 template <>
 struct iterator_fixture<order3_iterator_type> : public ::testing::Test
 {
-    using iterator_tag = std::forward_iterator_tag;
+    using iterator_tag = std::bidirectional_iterator_tag;
     static constexpr bool const_iterable = true;
 
     seqan3::dna4_vector text{"ACGGCGACGTTTAG"_dna4};
@@ -121,7 +123,7 @@ void compare_types(adaptor_t v)
 {
     EXPECT_TRUE(std::ranges::input_range<decltype(v)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v)>);
-    EXPECT_FALSE(std::ranges::bidirectional_range<decltype(v)>);
+    EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v)>);
     EXPECT_FALSE(std::ranges::random_access_range<decltype(v)>);
     EXPECT_TRUE(std::ranges::view<decltype(v)>);
     EXPECT_FALSE(std::ranges::sized_range<decltype(v)>);

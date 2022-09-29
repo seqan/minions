@@ -409,6 +409,9 @@ private:
     //!\brief Iterator to the left most value of the window and hence the third strobe of minstrobe for bidirectionality.
     urng_iterator_t third_iterator_back{};
 
+    //!\brief Iterator to first element in range.
+    urng_sentinel_t urng_first{};
+
     //!\brief Iterator to last element in range.
     urng_sentinel_t urng_sentinel{};
 
@@ -452,6 +455,7 @@ private:
         if (window_size == 0u)
             return;
 
+        urng_first = second_iterator;
         first_iterator = second_iterator;
         second_iterator_back = second_iterator;
         std::ranges::advance(second_iterator, window_dist);
@@ -460,8 +464,8 @@ private:
         {
             third_iterator = second_iterator;
             third_iterator_back = second_iterator;
-            std::ranges::advance(third_iterator, window_size);
-            std::ranges::advance(third_iterator_back, window_size);
+            std::ranges::advance(third_iterator, window_dist + window_size - 1);
+            std::ranges::advance(third_iterator_back, window_dist + window_size - 1);
         }
 
         for (int i = 1u; i < window_size; ++i)
@@ -560,6 +564,13 @@ private:
     void prev_minstrobe()
         requires std::ranges::bidirectional_range<urng_t>
     {
+        if (second_iterator_back == urng_first)
+            return;
+        if constexpr(order_3)
+        {
+            if (third_iterator_back == urng_first)
+                return;
+        }
         retreat_windows();
 
         value_t const new_value = *first_iterator;
