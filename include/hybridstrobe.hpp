@@ -21,6 +21,8 @@
 #include <seqan3/utility/range/concept.hpp>
 #include <seqan3/utility/type_traits/lazy_conditional.hpp>
 
+#include <seqan3/core/debug_stream.hpp>
+
 namespace seqan3::detail
 {
 // ---------------------------------------------------------------------------------------------------------------------
@@ -131,7 +133,6 @@ public:
     basic_iterator<false> begin()
     {
         return {std::ranges::begin(urange),
-                std::ranges::begin(urange),
                 std::ranges::end(urange),
                 window_dist,
                 window_size};
@@ -144,7 +145,6 @@ public:
     //!\endcond
     {
         return {std::ranges::cbegin(urange),
-                std::ranges::cbegin(urange),
                 std::ranges::cend(urange),
                 window_dist,
                 window_size};
@@ -225,6 +225,8 @@ public:
           first_iterator{std::move(it.first_iterator)},
           second_iterator{std::move(it.second_iterator)},
           third_iterator{std::move(it.third_iterator)},
+          second_iterator_back{std::move(it.second_iterator_back)},
+          third_iterator_back{std::move(it.third_iterator_back)},
           urng_sentinel{std::move(it.urng_sentinel)}
 
     {}
@@ -245,13 +247,14 @@ public:
     *
     */
     basic_iterator(urng_iterator_t second_iterator,
-                   urng_iterator_t third_iterator,
                    urng_sentinel_t urng_sentinel,
                    size_t window_dist,
                    size_t window_size) :
-        first_iterator{std::move(first_iterator)},
-        second_iterator{std::move(second_iterator)},
-        third_iterator{std::move(third_iterator)},
+        first_iterator{second_iterator},
+        second_iterator{second_iterator},
+        third_iterator{second_iterator},
+        second_iterator_back{second_iterator},
+        third_iterator_back{second_iterator},
         urng_sentinel{std::move(urng_sentinel)}
     {
         size_t size{};
@@ -402,6 +405,7 @@ private:
 
     int r_pos{};
     int elem_r{};
+    bool is_first = true;
 
     //!\brief Advances the window of the iterators to the next position.
     void advance_windows()
@@ -487,16 +491,24 @@ private:
     void next_hybridstrobe()
     {
         advance_windows();
+        is_first = false;
         r_pos = *first_iterator % 3;
 
-        if (second_iterator == urng_sentinel)
-            return;
+        if constexpr(order_3)
+        {
+            if (third_iterator == urng_sentinel)
+                return;
+        }
+        else
+        {
+            if (second_iterator == urng_sentinel)
+                return;
+        }
 
         hybridstrobe_value[0]= *first_iterator;
         window_values.pop_front();
         window_values.push_back(*second_iterator);
         auto hybridstrobe_it = std::ranges::min_element(window_values.begin() + (r_pos*elem_r), std::min(window_values.begin() + ((1+r_pos)*elem_r), window_values.end()), std::less_equal<value_t>{});
-
         if constexpr(order_3)
         {
             window_values3.pop_front();
@@ -518,13 +530,8 @@ private:
     void prev_hybridstrobe()
         requires std::ranges::bidirectional_range<urng_t>
     {
-        if (second_iterator_back == urng_first)
+        if (is_first)
             return;
-        if constexpr(order_3)
-        {
-            if (third_iterator_back == urng_first)
-                return;
-        }
 
         retreat_windows();
         r_pos = *first_iterator % 3;
@@ -533,7 +540,7 @@ private:
         window_values.pop_back();
         window_values.push_front(*second_iterator_back);
         auto hybridstrobe_it = std::ranges::min_element(window_values.begin() + (r_pos*elem_r), std::min(window_values.begin() + ((1+r_pos)*elem_r), window_values.end()), std::less_equal<value_t>{});
-
+        seqan3::debug_stream << "It: " << *first_iterator << "," << *hybridstrobe_it <<"\n";
         if constexpr(order_3)
         {
             window_values3.pop_back();
@@ -544,6 +551,14 @@ private:
         else
         {
             hybridstrobe_value = {*first_iterator, *hybridstrobe_it};
+        }
+
+        if (second_iterator_back == urng_first)
+            is_first = true;
+        if constexpr(order_3)
+        {
+            if (third_iterator_back == urng_first)
+                is_first = true;
         }
     }
 };
