@@ -37,7 +37,7 @@ using order3_iterator_type = std::ranges::iterator_t<decltype(seqan3::detail::hy
 template <>
 struct iterator_fixture<iterator_type> : public ::testing::Test
 {
-    using iterator_tag = std::forward_iterator_tag;
+    using iterator_tag = std::bidirectional_iterator_tag;
     static constexpr bool const_iterable = true;
 
     seqan3::dna4_vector text{"ACGGCGACGTTTAG"_dna4};
@@ -51,7 +51,7 @@ struct iterator_fixture<iterator_type> : public ::testing::Test
 template <>
 struct iterator_fixture<order3_iterator_type> : public ::testing::Test
 {
-    using iterator_tag = std::forward_iterator_tag;
+    using iterator_tag = std::bidirectional_iterator_tag;
     static constexpr bool const_iterable = true;
 
     seqan3::dna4_vector text{"ACGGCGACGTTTAG"_dna4};
@@ -80,7 +80,7 @@ TYPED_TEST_SUITE(hybridstrobe_view_properties_test, underlying_range_types, );
 class hybridstrobe_test : public ::testing::Test
 {
 protected:
-    std::vector<seqan3::dna4> text1{"AAAAAAAAAAAA"_dna4};
+    std::vector<seqan3::dna4> text1{"AAAAAAAAAAAAA"_dna4};
     result_t result1{{0,0},{0,0},{0,0},{0,0}}; // Same result for ungapped and gapped
 
     std::vector<seqan3::dna4> text3{"ACGGCGACGTTTAG"_dna4};
@@ -110,10 +110,8 @@ protected:
     //              gapped hybridstrobes: A--GC--CA--T, C--CC--CA--T, G--GC--CA--T, G--AA--TC--T, C--CA--TG--T
     // start at A ungapped hybridstrobes:                               GGCGCGACACGT, GCGAACGTCGTT, CGACACGTCGTT
     //   start at A gapped hybridstrobes:                               G--GC--CA--T, G--AA--TC--T, C--CA--TG--T
-    result_t result3_3_ungapped{{26,152,27},{105,166,134},{166,97,111},{152,27,252},{97,27,252}};
-    result_t result3_3_gapped{{2,8,3},{5,5,7},{10,5,7},{8,3,12},{5,7,14}};
-    result_t result3_3_ungapped_start{{152,27,252},{97,27,252}};
-    result_t result3_3_gapped_start{{8,3,12},{5,7,14}};
+    result_t result3_3_ungapped{{26,152,27},{105,166,134}};
+    result_t result3_3_gapped{{2,8,3},{5,5,7}};
 };
 
 template <typename adaptor_t>
@@ -121,7 +119,7 @@ void compare_types(adaptor_t v)
 {
     EXPECT_TRUE(std::ranges::input_range<decltype(v)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v)>);
-    EXPECT_FALSE(std::ranges::bidirectional_range<decltype(v)>);
+    EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v)>);
     EXPECT_FALSE(std::ranges::random_access_range<decltype(v)>);
     EXPECT_TRUE(std::ranges::view<decltype(v)>);
     EXPECT_FALSE(std::ranges::sized_range<decltype(v)>);
@@ -180,9 +178,6 @@ TEST_F(hybridstrobe_test, combinability)
     auto start_at_a = std::views::drop(3);
     EXPECT_RANGE_EQ(result3_ungapped_start, text3 | start_at_a | kmer_view | hybridstrobe_view);
     EXPECT_RANGE_EQ(result3_gapped_start, text3 | start_at_a | gapped_kmer_view | hybridstrobe_view);
-
-    EXPECT_RANGE_EQ(result3_3_ungapped_start, (seqan3::detail::hybridstrobe_view<decltype(text3 | start_at_a | kmer_view),3>(text3 | start_at_a | kmer_view,1,3)));
-    EXPECT_RANGE_EQ(result3_3_gapped_start, (seqan3::detail::hybridstrobe_view<decltype(text3 | start_at_a| gapped_kmer_view),3>(text3 | start_at_a | gapped_kmer_view,1,3)));
 
     auto stop_at_t = std::views::take_while([] (seqan3::dna4 const x) { return x != 'T'_dna4; });
     EXPECT_RANGE_EQ(result3_ungapped_stop, text3 | stop_at_t | kmer_view | hybridstrobe_view);

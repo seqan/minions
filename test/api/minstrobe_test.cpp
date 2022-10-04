@@ -15,8 +15,6 @@
 
 #include "../../lib/seqan3/test/unit/range/iterator_test_template.hpp"
 
-#include <seqan3/core/debug_stream.hpp>
-
 #include "minstrobe.hpp"
 
 using seqan3::operator""_dna4;
