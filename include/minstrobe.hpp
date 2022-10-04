@@ -155,12 +155,15 @@ public:
      * ### Complexity
      *
      * Constant.
+     * \details
+     *
+     * This element acts as a placeholder; attempting to dereference it results in undefined behaviour.
      *
      * ### Exceptions
      *
      * No-throw guarantee.
      */
-    sentinel end() const noexcept
+    sentinel end() const
     {
         return{};
     }
