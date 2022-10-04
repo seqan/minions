@@ -413,7 +413,7 @@ private:
     urng_iterator_t third_iterator_back{};
 
     //!\brief Iterator to first element in range.
-    urng_sentinel_t urng_first{};
+    urng_iterator_t urng_first{};
 
     //!\brief Iterator to last element in range.
     urng_sentinel_t urng_sentinel{};
