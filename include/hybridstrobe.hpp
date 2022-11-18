@@ -731,17 +731,6 @@ private:
             window_values3.push_back(*third_iterator);
         }
 
-        if constexpr(order_3)
-        {
-            if (third_iterator == urng_sentinel)
-                return;
-        }
-        else
-        {
-            if (second_iterator == urng_sentinel)
-                return;
-        }
-
         determine_value();
     }
 
