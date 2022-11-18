@@ -99,8 +99,6 @@ struct hybridstrobe2_hash_fn
 
 
         auto rev_hybridstrobes = std::views::reverse(seqan3::detail::hybridstrobe_view(rev_hashed_values, window_min + shape.size() - 1, window_len - shape.size() + 1));
-        auto test = seqan3::detail::hybridstrobe_view(rev_hashed_values, window_min + shape.size() - 1, window_len - shape.size() + 1);
-        auto test2 = std::views::reverse(test);
         auto reverse = std::views::transform(rev_hybridstrobes, [multiplicator] (std::vector<uint64_t> i)
                          {return combine_strobes(multiplicator, i[0], i[1]);});
 
@@ -184,7 +182,7 @@ struct hybridstrobe3_hash_fn
                                                                            {return i ^ seed.get();});
 
 
-        auto rev_hybridstrobes = std::views::reverse(seqan3::detail::hybridstrobe_view(rev_hashed_values, window_min + shape.size() - 1, window_len - shape.size() + 1));
+        auto rev_hybridstrobes = std::views::reverse(seqan3::detail::hybridstrobe_view<decltype(rev_hashed_values), 3>(rev_hashed_values, window_min + shape.size() - 1, window_len - shape.size() + 1));
         auto reverse = std::views::transform(rev_hybridstrobes, [multiplicator, multiplicator2] (std::vector<uint64_t> i)
                         {return combine_strobes(multiplicator, multiplicator2, i[0], i[1], i[2]);});
 

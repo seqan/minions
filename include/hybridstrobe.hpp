@@ -21,8 +21,6 @@
 #include <seqan3/utility/range/concept.hpp>
 #include <seqan3/utility/type_traits/lazy_conditional.hpp>
 
-#include <seqan3/core/debug_stream.hpp>
-
 namespace seqan3::detail
 {
 // ---------------------------------------------------------------------------------------------------------------------
@@ -198,7 +196,7 @@ public:
     //!\endcond
     {
         if constexpr(order_3)
-            return std::ranges::size(urange) - (2*window_size) - window_dist + 1;
+            return std::ranges::size(urange) - (2*(window_size + window_dist - 1));
         else
             return std::ranges::size(urange) - window_size - window_dist + 1;
     }
@@ -654,7 +652,7 @@ private:
         {
             third_iterator = second_iterator;
             third_iterator_back = third_iterator;
-            std::ranges::advance(third_iterator, window_size);
+            std::ranges::advance(third_iterator, window_size + window_dist - 1);
             third_iterator_back = third_iterator;
         }
 
@@ -792,7 +790,7 @@ struct hybridstrobe_fn
      * \tparam urng_t         The type of the input range to process. Must model std::ranges::viewable_range.
      * \param[in] urange      The input range to process. Must model std::ranges::viewable_range and
      *                        std::ranges::forward_range.
-     * \param[in] window_dist The lower offset for the position of the next window from the previous one.
+     * \param[in] window_dist The offset for the position of the next window from the previous one.
      * \param[in] window_size The number of elements in a window.
      * \returns  A range of the converted values in vectors of size 2.
      */
