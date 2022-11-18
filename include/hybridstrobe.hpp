@@ -654,7 +654,7 @@ private:
         {
             third_iterator = second_iterator;
             third_iterator_back = third_iterator;
-            std::ranges::advance(third_iterator, window_dist + window_size - 1);
+            std::ranges::advance(third_iterator, window_size);
             third_iterator_back = third_iterator;
         }
 
