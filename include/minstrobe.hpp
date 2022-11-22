@@ -166,7 +166,17 @@ public:
         return {};
     }
 
-    //!\copydoc end()
+    /*!\brief Returns an iterator to the element following the last element of the range.
+     * \returns Iterator to the end.
+     *
+     * ### Complexity
+     *
+     * Constant.
+     *
+     * ### Exceptions
+     *
+     * No-throw guarantee.
+     */
     auto end() noexcept
     //!\cond
         requires std::ranges::random_access_range<urng_t>
@@ -177,7 +187,17 @@ public:
 
     }
 
-    //!\copydoc end()
+    /*!\brief Returns an iterator to the element following the last element of the range.
+     * \returns Iterator to the end.
+     *
+     * ### Complexity
+     *
+     * Constant.
+     *
+     * ### Exceptions
+     *
+     * No-throw guarantee.
+     */
     auto end() const noexcept
     //!\cond
         requires const_iterable_range<urng_t> && std::ranges::random_access_range<urng_t>
