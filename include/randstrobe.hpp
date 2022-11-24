@@ -709,6 +709,7 @@ private:
      */
     void next_randstrobe()
     {
+        ++first_iterator;
         if (second_iterator_back == urng_sentinel)
             return;
         if constexpr(order_3)
@@ -717,7 +718,6 @@ private:
                 return;
         }
 
-        ++first_iterator;
         fill_window();
     }
 

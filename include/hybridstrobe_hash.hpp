@@ -19,7 +19,6 @@
 #include <seqan3/utility/views/zip.hpp>
 
 #include "hybridstrobe.hpp"
-#include "minstrobe_hash.hpp"
 #include "shared.hpp"
 
 namespace seqan3::detail

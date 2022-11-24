@@ -21,16 +21,6 @@
 #include "minstrobe.hpp"
 #include "shared.hpp"
 
-uint64_t combine_strobes(uint64_t multiplicator, uint64_t first_strobe, uint64_t second_strobe)
-{
-    return first_strobe*multiplicator + second_strobe;
-}
-
-uint64_t combine_strobes(uint64_t multiplicator, uint64_t multiplicator2, uint64_t first_strobe, uint64_t second_strobe, uint64_t third_strobe)
-{
-    return first_strobe*multiplicator + second_strobe*multiplicator2 + third_strobe;
-}
-
 namespace seqan3::detail
 {
 //!\brief seqan3::views::minstrobe2_hash's range adaptor object type (non-closure).

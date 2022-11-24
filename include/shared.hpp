@@ -1,6 +1,5 @@
 #pragma once
 
-//
 /*! \brief Function that ensures random hashes, based on https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
  *  \param hash_value The hash_value that should be transformed.
  *  \param seed       The seed.
@@ -26,4 +25,16 @@ uint64_t fnv_hash(uint64_t hash_value, uint64_t seed)
     }
 
     return hashed;
+}
+
+//!\brief Function that combines strobes for strobemer hash functions.
+uint64_t combine_strobes(uint64_t multiplicator, uint64_t first_strobe, uint64_t second_strobe)
+{
+    return first_strobe*multiplicator + second_strobe;
+}
+
+//!\brief Function that combines strobes for strobemer hash functions.
+uint64_t combine_strobes(uint64_t multiplicator, uint64_t multiplicator2, uint64_t first_strobe, uint64_t second_strobe, uint64_t third_strobe)
+{
+    return first_strobe*multiplicator + second_strobe*multiplicator2 + third_strobe;
 }
