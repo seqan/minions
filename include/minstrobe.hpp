@@ -734,7 +734,6 @@ private:
                 return;
         }
 
-
         window_values.pop_front();
         window_values.push_back(*second_iterator);
 
