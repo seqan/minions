@@ -504,8 +504,7 @@ public:
         return *this;
     }
 
-    /*!\anchor basic_iterator_operator-decrement
-     * \brief Return decremented copy of this iterator.
+    /*!\brief Return decremented copy of this iterator.
      * \attention This function is only available if `urng_t` models std::random_access_iterator.
      */
     basic_iterator operator-(difference_type const skip) const noexcept
@@ -528,8 +527,7 @@ public:
         return it - skip;
     }
 
-    /*!\anchor basic_iterator_operator-difference
-     * \brief Return offset between two iterator's positions.
+    /*!\brief Return offset between two iterator's positions.
      * \attention This function is only available if `urng_t` models std::random_access_iterator.
      */
     friend difference_type operator-(basic_iterator const & lhs, basic_iterator const & rhs) noexcept
