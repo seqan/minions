@@ -182,7 +182,7 @@ void accuracy(urng_t input_view,
 template <typename urng_t, int strobemers = 0>
 void counts(std::vector<std::filesystem::path> sequence_files, urng_t input_view, std::string method_name, range_arguments & args)
 {
-    std::vector<int> counts_results{};
+    std::vector<uint64_t> counts_results{};
     std::ofstream outfile;
     for (int i = 0; i < sequence_files.size(); ++i)
     {
@@ -210,7 +210,7 @@ void counts(std::vector<std::filesystem::path> sequence_files, urng_t input_view
         counts_results.push_back(hash_table.size());
 
         // Store representative k-mers
-        outfile.open(std::string{args.path_out} + method_name + "_"+ std::string{sequence_files[i].stem()} + ".out", std::ios::binary);
+        outfile.open(std::string{args.path_out} + method_name + "_"+ std::string{sequence_files[i].stem()} + "_counts.out", std::ios::binary);
         for (auto && hash : hash_table)
         {
             outfile.write(reinterpret_cast<const char*>(&hash.first), sizeof(hash.first));
@@ -472,7 +472,7 @@ void unique(std::vector<std::filesystem::path> sequence_files, std::string metho
    for (int i = 0; i < sequence_files.size(); ++i)
    {
        robin_hood::unordered_node_map<uint64_t, uint16_t> hash_table{};
-       infile.open(std::string{args.path_out} + method_name + "_"+ std::string{sequence_files[i].stem()} + ".out", std::ios::binary);
+       infile.open(std::string{args.path_out} + method_name + "_"+ std::string{sequence_files[i].stem()} + "_counts.out", std::ios::binary);
        uint64_t submer;
        uint16_t submer_count;
        while(infile.read((char*)&submer, sizeof(submer)))
