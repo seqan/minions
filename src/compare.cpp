@@ -463,12 +463,6 @@ uint64_t count_singletons(robin_hood::unordered_node_map<uint64_t, uint16_t> & h
     return singletons;
 }
 
-/*! \brief Function, that measures the speed of a method.
- *  \param sequence_files A vector of sequence files.
- *  \param input_view View that should be tested.
- *  \param method_name Name of the tested method.
- *  \param args The arguments about the view to be used, needed for strobemers.
- */
 void unique(std::vector<std::filesystem::path> sequence_files, std::string method_name, range_arguments & args)
 {
    std::ifstream infile;
