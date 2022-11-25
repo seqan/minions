@@ -15,5 +15,8 @@ add_api_test (modmer_test.cpp)
 add_api_test (modmer_hash_test.cpp)
 add_api_test (modmer_hash_distance_test.cpp)
 
+add_api_test (randstrobe_test.cpp)
+add_api_test (randstrobe_hash_test.cpp)
+
 add_api_test (syncmer_test.cpp)
 add_api_test (syncmer_hash_test.cpp)

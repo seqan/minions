@@ -5,3 +5,4 @@ add_cli_test (minions_accuracy_test.cpp FILES example.ibf expected_search_result
 add_cli_test (minions_counts_test.cpp FILES example1.fasta)
 add_cli_test (minions_coverage_test.cpp FILES example1.fasta)
 add_cli_test (minions_speed_test.cpp FILES example1.fasta)
+add_cli_test (minions_unique_test.cpp FILES example1.fasta)

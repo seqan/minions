@@ -13,7 +13,7 @@
 
 #include <gtest/gtest.h>
 
-#include "hybridstrobe_hash.hpp"
+#include "randstrobe_hash.hpp"
 
 using seqan3::operator""_dna4;
 using seqan3::operator""_shape;
@@ -21,14 +21,14 @@ using result_t = std::vector<uint64_t>;
 
 static constexpr seqan3::shape ungapped_shape = seqan3::ungapped{4};
 static constexpr seqan3::shape gapped_shape = 0b1001_shape;
-static constexpr auto ungapped_view = hybridstrobe2_hash(ungapped_shape, 1, 6, seqan3::seed{0});
-static constexpr auto gapped_view = hybridstrobe2_hash(gapped_shape, 1, 6, seqan3::seed{0});
+static constexpr auto ungapped_view = randstrobe2_hash(ungapped_shape, 1, 6, seqan3::seed{0});
+static constexpr auto gapped_view = randstrobe2_hash(gapped_shape, 1, 6, seqan3::seed{0});
 
-static constexpr auto ungapped3_view = hybridstrobe3_hash(ungapped_shape, 1, 6, seqan3::seed{0});
-static constexpr auto gapped3_view = hybridstrobe3_hash(gapped_shape, 1, 6, seqan3::seed{0});
+static constexpr auto ungapped3_view = randstrobe3_hash(ungapped_shape, 1, 6, seqan3::seed{0});
+static constexpr auto gapped3_view = randstrobe3_hash(gapped_shape, 1, 6, seqan3::seed{0});
 
 template <typename T>
-class hybridstrobe_hash_view_properties_test: public ::testing::Test { };
+class randstrobe_hash_view_properties_test: public ::testing::Test { };
 
 using underlying_range_types = ::testing::Types<std::vector<seqan3::dna4>,
                                                 std::vector<seqan3::dna4> const,
@@ -37,44 +37,39 @@ using underlying_range_types = ::testing::Types<std::vector<seqan3::dna4>,
                                                 std::list<seqan3::dna4>,
                                                 std::list<seqan3::dna4> const>;
 
-TYPED_TEST_SUITE(hybridstrobe_hash_view_properties_test, underlying_range_types, );
+TYPED_TEST_SUITE(randstrobe_hash_view_properties_test, underlying_range_types, );
 
-class hybridstrobe_hash_test : public ::testing::Test
+class randstrobe_hash_test : public ::testing::Test
 {
 protected:
     std::vector<seqan3::dna4> text1{"AAAAAAAAAAAA"_dna4};
     result_t result1{0,0,0}; // Same result for ungapped and gapped
 
-    std::vector<seqan3::dna4> text3{"ACGGCGACGTTTAG"_dna4};
+    std::vector<seqan3::dna4> text3{"ACGGCGACGTTTAG"_dna4}; // rev complement: CTAA ACGTCGCCGT
     //                          kmers: ACGG,     CGGC,     GGCG,     GCGA,     CGAC,     GACG,     ACGT, CGTT, GTTT, TTTA, TTAG
     //                ungapped Hashes: 26,       105,      166,      152,      97,       134,      27,   111,  191,  252,  242
     //        reverse ungapped Hashes: 91,       150,      101,      217,      182,      109,      27,   6,     1,   192,  176
     //                  gapped Hashes: 2,        5,        10,       8,        5,        10,       3,    7,    11,   12,   14
     //          reverse gapped Hashes: 7,        10,        5,       13,       10,       5,        3,    2,     1,   12,    4
-    //            ungapped hybridstrobes: ACGGACGT, aacgtcgc, aaactcgc, GCGATTTA, CGACTTTA
-    //              gapped hybridstrobes: A--GA--T, a--gt--c, a--ct--c, G--AT--A, c--ac--c
-    // start at A ungapped hybridstrobes:                               G--AT--A, c--ac--c
-    result_t result3_ungapped{6683, 1753, 473, 39164, 25084};
-    result_t result3_gapped{35, 42, 29, 140, 69};
-    result_t result3_ungapped_start{39164, 25084};
-    result_t result3_gapped_start{140, 69};
-
-    // Reverse complement: gcctaaacgtcgccgt
-    //                          kmers: gcct, ccta, ctaa,     taaa,     aaac,     aacg,     acgt,     cgtc,     gtcg, tcgc, cgcc, gccg, ccgt
-    //                ungapped Hashes:        92,   112,      192,        1,        6,       27,      109,      182,  217,  101,  150,  91
-    //                  gapped Hashes:   11,   4,    4,       12,        1,        2,        3,        5,       10,   13,    5,   10,   7
+    //            ungapped randstrobes: ACGGACGT, aacgcgcc, aaaccgcc, GCGAGTTT, CGACTTAG
+    //              gapped randstrobes: A--GA--T, a--gc--c, a--cc--c, G--AG--T, c--aa--t
+    // start at A ungapped randstrobes:                               GCGAGTTT, CGACTTAG
+    result_t result3_ungapped{6683, 1637, 357, 39103, 25074};
+    result_t result3_gapped{35, 37, 21, 139, 67};
+    result_t result3_ungapped_start{39103, 25074};
+    result_t result3_gapped_start{139, 67};
 
     std::vector<seqan3::dna4> text1_3{"AAAAAAAAAAAAAAAA"_dna4};
     result_t result3_1{0}; // Same result for ungapped and gapped
     std::vector<seqan3::dna4> text3_3{"ACGGCGACGTTTAGGC"_dna4};
-    // ACGGCGACGTTTAGGC
+    // ACGGCGACGTTTAG
     //                          kmers: ACGG,     CGGC,     GGCG,     GCGA,     CGAC,     GACG,     ACGT, CGTT, GTTT, TTTA, TTAG, TAGG, AGGC
-    //                ungapped Hashes: 26,       105,      166,      152,      97,       134,      27,   111,  191,  252,  242,   202,   41
-    //                  gapped Hashes: 2,        5,        10,       8,        5,        10,       3,    7,    11,   12,   14,    14,     1
-    //            ungapped hybridstrobes: ACGGACGTTTTA
-    //              gapped hybridstrobes: A--GA--TT--A
+    //                ungapped Hashes: 26,       105,      166,      152,      97,       134,      27,   111,  191,  252,  242,  202,    41
+    //                  gapped Hashes: 2,        5,        10,       8,        5,        10,       3,    7,    11,   12,   14,   16,      1
+    //            ungapped randstrobes: ACGGACGAGGC
+    //              gapped randstrobes: A--GA--TT--G
     result_t result3_3_ungapped{1710889};
-    result_t result3_3_gapped{561};
+    result_t result3_3_gapped{574};
 };
 
 template <typename adaptor_t>
@@ -91,43 +86,43 @@ void compare_types(adaptor_t v)
     EXPECT_FALSE((std::ranges::output_range<decltype(v), size_t>));
 }
 
-TYPED_TEST(hybridstrobe_hash_view_properties_test, different_input_ranges)
+TYPED_TEST(randstrobe_hash_view_properties_test, different_input_ranges)
 {
     TypeParam text{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4, 'C'_dna4, 'G'_dna4, 'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4,
                 'T'_dna4, 'T'_dna4, 'A'_dna4, 'G'_dna4}; // ACGTCGACGTTTAG
-    result_t ungapped{7009,1752,472,49261,25084};
-    result_t gapped{53,42,28,197,69};
+    result_t ungapped{6939,1633,353,49334,25074};
+    result_t gapped{51, 37, 21, 197, 67};
     EXPECT_RANGE_EQ(ungapped, text | ungapped_view);
     EXPECT_RANGE_EQ(gapped, text | gapped_view);
 }
 
-TEST_F(hybridstrobe_hash_test, ungapped)
+TEST_F(randstrobe_hash_test, ungapped)
 {
     EXPECT_RANGE_EQ(result1, text1 | ungapped_view);
     EXPECT_RANGE_EQ(result3_ungapped, text3 | ungapped_view);
-    EXPECT_NO_THROW(text1 | hybridstrobe2_hash(ungapped_shape,3,6));
-    EXPECT_THROW((text3 | hybridstrobe2_hash(ungapped_shape,3,2)), std::invalid_argument);
+    EXPECT_NO_THROW(text1 | randstrobe2_hash(ungapped_shape,3,6));
+    EXPECT_THROW((text3 | randstrobe2_hash(ungapped_shape,3,2)), std::invalid_argument);
 
     EXPECT_RANGE_EQ(result3_1, text1_3 | ungapped3_view);
     EXPECT_RANGE_EQ(result3_3_ungapped, text3_3 | ungapped3_view);
-    EXPECT_NO_THROW(text1 | hybridstrobe3_hash(ungapped_shape,3,6));
-    EXPECT_THROW((text3 | hybridstrobe3_hash(ungapped_shape,3,2)), std::invalid_argument);
+    EXPECT_NO_THROW(text1 | randstrobe3_hash(ungapped_shape,3,6));
+    EXPECT_THROW((text3 | randstrobe3_hash(ungapped_shape,3,2)), std::invalid_argument);
 }
 
-TEST_F(hybridstrobe_hash_test, gapped)
+TEST_F(randstrobe_hash_test, gapped)
 {
     EXPECT_RANGE_EQ(result1, text1 | gapped_view);
     EXPECT_RANGE_EQ(result3_gapped, text3 | gapped_view);
-    EXPECT_NO_THROW(text1 | hybridstrobe2_hash(gapped_shape, 2,5));
-    EXPECT_THROW((text3 | hybridstrobe2_hash(gapped_shape, 2,1)), std::invalid_argument);
+    EXPECT_NO_THROW(text1 | randstrobe2_hash(gapped_shape, 2,5));
+    EXPECT_THROW((text3 | randstrobe2_hash(gapped_shape, 2,1)), std::invalid_argument);
 
     EXPECT_RANGE_EQ(result3_1, text1_3 | gapped3_view);
     EXPECT_RANGE_EQ(result3_3_gapped, text3_3 | gapped3_view);
-    EXPECT_NO_THROW(text1 | hybridstrobe3_hash(gapped_shape, 2,5));
-    EXPECT_THROW((text3 | hybridstrobe3_hash(gapped_shape, 2,1)), std::invalid_argument);
+    EXPECT_NO_THROW(text1 | randstrobe3_hash(gapped_shape, 2,5));
+    EXPECT_THROW((text3 | randstrobe3_hash(gapped_shape, 2,1)), std::invalid_argument);
 }
 
-TEST_F(hybridstrobe_hash_test, combinability)
+TEST_F(randstrobe_hash_test, combinability)
 {
     auto start_at_a = std::views::drop(3);
     EXPECT_RANGE_EQ(result3_ungapped_start, text3 | start_at_a | ungapped_view);

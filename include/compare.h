@@ -38,6 +38,7 @@ struct strobemer_arguments
     bool hybrid;
     bool minstrobers;
     unsigned int order;
+    bool lib_implementation = false; // Set to true, if implementation of strobemer library should be used.
 };
 
 struct syncmer_arguments
@@ -105,6 +106,11 @@ void store_ibf(IBFType const & ibf,
     oarchive(seqan3::interleaved_bloom_filter(ibf));
 }
 
+/*! \brief Function that creates the string name of the used view.
+ *  \param args The arguments about the view to be used.
+ */
+std::string create_name(range_arguments & args);
+
 /*! \brief Function, comparing the methods in regard of their coverage.
  *  \param args The arguments about the view to be used.
  */
@@ -127,3 +133,10 @@ void do_coverage(std::filesystem::path sequence_file, range_arguments & args);
  *  \param args The arguments about the view to be used.
  */
 void do_speed(std::vector<std::filesystem::path> sequence_files, range_arguments & args);
+
+/*! \brief Function that calculates the uniqueness of submers in given sequence files.
+ *  \param sequence_files A vector of sequence files.
+ *  \param method_name The name of the method.
+ *  \param args The arguments about the view to be used.
+ */
+void unique(std::vector<std::filesystem::path> sequence_files, std::string method_name, range_arguments & args);
