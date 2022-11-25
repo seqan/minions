@@ -24,10 +24,10 @@ jobs:
       fail-fast: true
       matrix:
         include:
-          - name: "gcc12"
+          - name: "gcc11"
             os: macos-11.15
-            cxx: "g++-12"
-            cc: "gcc-12"
+            cxx: "g++-11"
+            cc: "gcc-11"
             build_type: Release
 
     steps:
