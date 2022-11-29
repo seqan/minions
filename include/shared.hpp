@@ -38,3 +38,15 @@ uint64_t combine_strobes(uint64_t multiplicator, uint64_t multiplicator2, uint64
 {
     return first_strobe*multiplicator + second_strobe*multiplicator2 + third_strobe;
 }
+
+//!\brief My own pow, which should be slightly faster than std::pow for n < 100.
+uint64_t my_pow(uint64_t x, uint64_t n){
+    uint64_t r = 1;
+
+    while(n > 0){
+        r *= x;
+        --n;
+    }
+
+    return r;
+}
