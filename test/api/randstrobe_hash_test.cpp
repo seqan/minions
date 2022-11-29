@@ -105,7 +105,7 @@ TEST_F(randstrobe_hash_test, ungapped)
 
     EXPECT_RANGE_EQ(result3_1, text1_3 | ungapped3_view);
     EXPECT_RANGE_EQ(result3_3_ungapped, text3_3 | ungapped3_view);
-    EXPECT_NO_THROW(text1 | randstrobe3_hash(ungapped_shape,3,6));
+    //EXPECT_NO_THROW(text1 | randstrobe3_hash(ungapped_shape,3,6));
     EXPECT_THROW((text3 | randstrobe3_hash(ungapped_shape,3,2)), std::invalid_argument);
 }
 
@@ -118,7 +118,7 @@ TEST_F(randstrobe_hash_test, gapped)
 
     EXPECT_RANGE_EQ(result3_1, text1_3 | gapped3_view);
     EXPECT_RANGE_EQ(result3_3_gapped, text3_3 | gapped3_view);
-    EXPECT_NO_THROW(text1 | randstrobe3_hash(gapped_shape, 2,5));
+    //EXPECT_NO_THROW(text1 | randstrobe3_hash(gapped_shape, 2,5));
     EXPECT_THROW((text3 | randstrobe3_hash(gapped_shape, 2,1)), std::invalid_argument);
 }
 

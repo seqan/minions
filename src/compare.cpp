@@ -641,15 +641,15 @@ void do_speed(std::vector<std::filesystem::path> sequence_files, range_arguments
                         else
                         {
                             if (args.hybrid & (args.order == 2))
-                                speed(sequence_files, minstrobe3_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                                speed(sequence_files, hybridstrobe2_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
                             else if (args.hybrid & (args.order == 3))
-                                speed(sequence_files, minstrobe3_hash(args.shape, args.w_min, args.w_max),create_name(args), args);
+                                speed(sequence_files, hybridstrobe3_hash(args.shape, args.w_min, args.w_max),create_name(args), args);
                             else if (args.minstrobers & (args.order == 2))
-                                speed(sequence_files, minstrobe3_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                                speed(sequence_files, minstrobe2_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
                             else if (args.minstrobers & (args.order == 3))
                                 speed(sequence_files, minstrobe3_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
                             else if (args.rand & (args.order == 2))
-                                speed(sequence_files, randstrobe3_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                                speed(sequence_files, randstrobe2_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
                             else if (args.rand & (args.order == 3))
                                 speed(sequence_files, randstrobe3_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
                     }
