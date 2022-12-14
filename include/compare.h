@@ -128,6 +128,13 @@ void do_counts(std::vector<std::filesystem::path> sequence_files, range_argument
  */
 void do_coverage(std::filesystem::path sequence_file, range_arguments & args);
 
+/*! \brief Function, counting number of matches between two sequences.
+ *  \param sequence_file1 The first sequence file.
+ *  \param sequence_file2 The second sequence file.
+ *  \param args The arguments about the view to be used.
+ */
+void do_match(std::filesystem::path sequence_file1, std::filesystem::path sequence_file2, range_arguments & args);
+
 /*! \brief Function, comparing the speed.
  *  \param sequence_files A vector of sequence files.
  *  \param args The arguments about the view to be used.

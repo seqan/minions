@@ -178,6 +178,40 @@ int coverage(seqan3::argument_parser & parser)
     return 0;
 }
 
+int match(seqan3::argument_parser & parser)
+{
+    range_arguments args{};
+    std::filesystem::path sequence_file1;
+    std::filesystem::path sequence_file2;
+    parser.info.short_description = "Counts the number of matches for a given method between the two given files.";
+    parser.add_positional_option(sequence_file1, "Please provide the first sequence file.");
+    parser.add_positional_option(sequence_file2, "Please provide the second sequence file.");
+    all_arguments(parser, args);
+    std::string method{};
+    parser.add_option(method, '\0', "method", "Pick your method.",
+                      seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer"});
+    parser.add_flag(args.lib_implementation, '\0', "library", "Set, if you want to use the strobemer implementation from Sahlin.");
+
+    read_range_arguments_minimiser(parser, args);
+    read_range_arguments_strobemers(parser, args);
+
+    try
+    {
+        parser.parse();
+        parsing(args);
+    }
+    catch (seqan3::argument_parser_error const & ext)                     // catch user errors
+    {
+        seqan3::debug_stream << "Error. Incorrect command line input for match. " << ext.what() << "\n";
+        return -1;
+    }
+
+    string_to_methods(method, args.name);
+    do_match(sequence_file1, sequence_file2, args);
+
+    return 0;
+}
+
 int speed(seqan3::argument_parser & parser)
 {
     range_arguments args{};
@@ -248,7 +282,7 @@ int main(int argc, char ** argv)
 {
     seqan3::argument_parser top_level_parser{"minions", argc, argv,
                                              seqan3::update_notifications::on,
-                                             {"accuracy", "counts", "coverage", "speed", "unique"}};
+                                             {"accuracy", "counts", "coverage", "match", "speed", "unique"}};
 
     // Parser
     top_level_parser.info.author = "Mitra Darvish"; // give parser some infos
@@ -272,6 +306,8 @@ int main(int argc, char ** argv)
         counts(sub_parser);
     else if (sub_parser.info.app_name == std::string_view{"minions-coverage"})
         coverage(sub_parser);
+    else if (sub_parser.info.app_name == std::string_view{"minions-match"})
+        match(sub_parser);
     else if (sub_parser.info.app_name == std::string_view{"minions-speed"})
         speed(sub_parser);
     else if (sub_parser.info.app_name == std::string_view{"minions-unique"})
