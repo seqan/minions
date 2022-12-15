@@ -395,6 +395,118 @@ void compare_cov2(std::filesystem::path sequence_file, urng_t distance_view, std
     outfile.close();
 }
 
+template <typename urng_t>
+std::vector<uint64_t> read_seq_file(std::filesystem::path sequence_file, urng_t input_view)
+{
+    std::vector<uint64_t> vector{};
+    seqan3::sequence_file_input<my_traits, seqan3::fields<seqan3::field::seq>> fin{sequence_file};
+    for (auto & [seq] : fin)
+    {
+        for (auto && hash : seq | input_view)
+            vector.push_back(hash);
+    }
+
+    return vector;
+}
+
+template <int strobemers>
+std::vector<uint64_t> read_seq_file(std::filesystem::path sequence_file, range_arguments & args)
+{
+    std::vector<uint64_t> vector{};
+    seqan3::sequence_file_input<my_traits2, seqan3::fields<seqan3::field::seq>> fin{sequence_file};
+    for (auto & [seq] : fin)
+    {
+        std::vector<std::tuple<uint64_t, unsigned int, unsigned int, unsigned int, unsigned int>> strobes_vector;
+        get_strobemers<strobemers>(seq, args, strobes_vector);
+        for (auto & t : strobes_vector) // iterate over the strobemer tuples
+            vector.push_back(std::get<0>(t));
+    }
+
+    return vector;
+}
+
+/*! \brief Count the number of matches found in two sequence files.
+ *  \param sequence_file1 The first sequence file.
+ *  \param sequence_file2 The second sequence file.
+ *  \param input_view View that should be tested.
+ *  \param method_name Name of the tested method.
+ *  \param args The arguments about the view to be used, needed for strobemers.
+ */
+template <typename urng_t, int strobemers = 0>
+void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_file2, urng_t input_view, std::string method_name, range_arguments & args)
+{
+    std::vector<uint64_t> seq1_vector{};
+    std::vector<uint64_t> seq2_vector{};
+    uint64_t matches{0};
+    uint64_t missed{0};
+    if constexpr (strobemers > 0)
+    {
+        seq1_vector = read_seq_file<strobemers>(sequence_file1, args);
+        seq2_vector = read_seq_file<strobemers>(sequence_file2, args);
+    }
+    else
+    {
+        seq1_vector = read_seq_file(sequence_file1, input_view);
+        seq2_vector = read_seq_file(sequence_file2, input_view);
+    }
+
+    for(int i = 0; i < seq1_vector.size(); ++i)
+    {
+        if (seq1_vector[i] == seq2_vector[i])
+            matches++;
+        else
+            missed++;
+    }
+    std::cout << "Matches: " << matches << "\t" << "Missed: " << missed << "\n";
+}
+
+/*! \brief Count the number of matches found in two sequence files.
+ *  \param sequence_file1 The first sequence file.
+ *  \param sequence_file2 The second sequence file.
+ *  \param input_view View that should be tested.
+ *  \param compare_view View for comparison, should be kmer_hash view.
+ *  \param method_name Name of the tested method.
+ */
+template <typename urng_t, typename urng2_t>
+void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_file2, urng_t input_view, urng2_t compare_view, std::string method_name)
+{
+    uint64_t matches{0};
+    uint64_t missed{0};
+    std::vector<uint64_t> seq1_vector = read_seq_file(sequence_file1, input_view);
+    std::vector<uint64_t> seq2_vector = read_seq_file(sequence_file2, input_view);
+    std::vector<uint64_t> all1_vector = read_seq_file(sequence_file1, compare_view);
+    std::vector<uint64_t> all2_vector = read_seq_file(sequence_file2, compare_view);
+
+    int it_1{0};
+    int it_2{0};
+    bool changed{true};
+    int i{0};
+
+    while((it_1 < seq1_vector.size()) & (it_2 < seq2_vector.size()) & (i < all1_vector.size()))
+    {
+        if ((seq1_vector[it_1] == seq2_vector[it_2]) & changed)
+        {
+            matches++;
+            changed = false;
+        }
+
+        if (seq1_vector[it_1] == all1_vector[i])
+        {
+            it_1++;
+            changed = true;
+        }
+        if (seq2_vector[it_2] == all2_vector[i])
+        {
+            it_2++;
+            changed = true;
+        }
+        i++;
+    }
+
+    missed = std::min(seq1_vector.size(), seq2_vector.size()) - matches;
+    std::cout << "Matches: " << matches << "\t" << "Missed: " << missed << "\n";
+}
+
 /*! \brief Function, that measures the speed of a method.
  *  \param sequence_files A vector of sequence files.
  *  \param input_view View that should be tested.
@@ -613,6 +725,52 @@ void do_coverage(std::filesystem::path sequence_file, range_arguments & args)
                         break;
     }
 }
+
+void do_match(std::filesystem::path sequence_file1, std::filesystem::path sequence_file2, range_arguments & args)
+{
+    seqan3::seed seed{args.seed_se};
+    switch(args.name)
+    {
+        case kmer: match(sequence_file1, sequence_file2, seqan3::views::kmer_hash(args.shape), create_name(args), args);
+                   break;
+        case minimiser: match(sequence_file1, sequence_file2, seqan3::views::minimiser_hash(args.shape,
+                                args.w_size, args.seed_se),seqan3::views::minimiser_hash(args.shape,
+                                                        seqan3::window_size{args.shape.size()}, args.seed_se), create_name(args));
+                        break;
+        case modmers: match(sequence_file1, sequence_file2, modmer_hash(args.shape,
+                                args.w_size.get(), args.seed_se), modmer_hash(args.shape,
+                                                        1, args.seed_se), create_name(args));
+                        break;
+        case strobemer: std::ranges::empty_view<seqan3::detail::empty_type> empty{};
+                        if (args.lib_implementation)
+                        {
+                            if (args.rand & (args.order == 2))
+                                match<std::ranges::empty_view<seqan3::detail::empty_type>, 1>(sequence_file1, sequence_file2, empty, create_name(args), args);
+                            else if (args.rand & (args.order == 3))
+                                match<std::ranges::empty_view<seqan3::detail::empty_type>, 2>(sequence_file1, sequence_file2, empty, create_name(args), args);
+                            else if (args.hybrid)
+                                match<std::ranges::empty_view<seqan3::detail::empty_type>, 3>(sequence_file1, sequence_file2, empty, create_name(args), args);
+                            else if (args.minstrobers & (args.order == 2))
+                                match<std::ranges::empty_view<seqan3::detail::empty_type>, 4>(sequence_file1, sequence_file2, empty, create_name(args), args);
+                        }
+                        else
+                        {
+                            if (args.hybrid & (args.order == 2))
+                                match(sequence_file1, sequence_file2, hybridstrobe2_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                            else if (args.hybrid & (args.order == 3))
+                                match(sequence_file1, sequence_file2, hybridstrobe3_hash(args.shape, args.w_min, args.w_max),create_name(args), args);
+                            else if (args.minstrobers & (args.order == 2))
+                                match(sequence_file1, sequence_file2, minstrobe2_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                            else if (args.minstrobers & (args.order == 3))
+                                match(sequence_file1, sequence_file2, minstrobe3_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                            else if (args.rand & (args.order == 2))
+                                match(sequence_file1, sequence_file2, randstrobe2_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                            else if (args.rand & (args.order == 3))
+                                match(sequence_file1, sequence_file2, randstrobe3_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                    }
+    }
+}
+
 
 void do_speed(std::vector<std::filesystem::path> sequence_files, range_arguments & args)
 {

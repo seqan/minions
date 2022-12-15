@@ -114,7 +114,6 @@ TEST_F(modmer_hash_test, ungapped)
     EXPECT_RANGE_EQ(result3_ungapped, text3 | ungapped_view);
     EXPECT_NO_THROW(text1 | modmer_hash(ungapped_shape, 2));
     EXPECT_RANGE_EQ(result3_ungapped_3, text3 | ungapped_3_view);
-    EXPECT_THROW((text3 | modmer_hash(ungapped_shape, 1)), std::invalid_argument);
 }
 
 TEST_F(modmer_hash_test, gapped)
@@ -123,7 +122,6 @@ TEST_F(modmer_hash_test, gapped)
     EXPECT_TRUE(std::ranges::empty(too_short_text | gapped_view));
     EXPECT_RANGE_EQ(result3_gapped, text3 | gapped_view);
     EXPECT_NO_THROW(text1 | modmer_hash(gapped_shape, 2));
-    EXPECT_THROW((text3 | modmer_hash(gapped_shape, 1)), std::invalid_argument);
 }
 
 TEST_F(modmer_hash_test, combinability)

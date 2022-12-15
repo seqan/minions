@@ -72,9 +72,9 @@ struct modmer_hash_fn
         static_assert(semialphabet<std::ranges::range_reference_t<urng_t>>,
             "The range parameter to views::modmer_hash must be over elements of seqan3::semialphabet.");
 
-        if (mod_used == 1) // Would just return urange1 without any changes
-            throw std::invalid_argument{"The chosen mod_used is not valid. "
-                                        "Please choose a value greater than 1."};
+        //if (mod_used == 1) // Would just return urange1 without any changes
+        //    throw std::invalid_argument{"The chosen mod_used is not valid. "
+        //                                "Please choose a value greater than 1."};
 
         auto forward_strand = std::forward<urng_t>(urange) | seqan3::views::kmer_hash(shape)
                                                            | std::views::transform([seed] (uint64_t i)
