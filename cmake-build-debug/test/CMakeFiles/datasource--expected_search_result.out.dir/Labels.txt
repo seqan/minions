@@ -1,0 +1,14 @@
+# Target labels
+ datasource--expected_search_result.out
+# Source files and their labels
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--expected_search_result.out
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--expected_search_result.out.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--expected_search_result.out-complete.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-build.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-configure.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-download.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-install.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-mkdir.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-patch.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-test.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-update.rule

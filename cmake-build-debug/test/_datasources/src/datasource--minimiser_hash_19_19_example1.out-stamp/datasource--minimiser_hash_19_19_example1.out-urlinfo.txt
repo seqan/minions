@@ -1,0 +1,12 @@
+# This is a generated file and its contents are an internal implementation detail.
+# The download step will be re-executed if anything in this file changes.
+# No other meaning or use of this file is supported.
+
+method=url
+command=/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake;-P;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--minimiser_hash_19_19_example1.out-stamp/verify-datasource--minimiser_hash_19_19_example1.out.cmake
+source_dir=/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--minimiser_hash_19_19_example1.out
+work_dir=/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src
+url(s)=/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/data/minimiser_hash_19_19_example1.out
+hash=SHA256=8086779dc7fb37a81f20a3d202d2f9c5a39c4611f67f2c3881e4ba394deef9e6
+no_extract=TRUE
+

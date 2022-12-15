@@ -1,0 +1,14 @@
+# Target labels
+ datasource--example.ibf
+# Source files and their labels
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--example.ibf
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--example.ibf.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--example.ibf-complete.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example.ibf-stamp/datasource--example.ibf-build.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example.ibf-stamp/datasource--example.ibf-configure.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example.ibf-stamp/datasource--example.ibf-download.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example.ibf-stamp/datasource--example.ibf-install.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example.ibf-stamp/datasource--example.ibf-mkdir.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example.ibf-stamp/datasource--example.ibf-patch.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example.ibf-stamp/datasource--example.ibf-test.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example.ibf-stamp/datasource--example.ibf-update.rule

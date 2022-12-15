@@ -1,0 +1,2 @@
+execute_process(COMMAND /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --build . --target api_test)
+execute_process(COMMAND /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --build . --target cli_test)

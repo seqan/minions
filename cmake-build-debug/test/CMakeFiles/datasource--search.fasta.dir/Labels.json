@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--search.fasta"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--search.fasta.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--search.fasta-complete.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--search.fasta-stamp/datasource--search.fasta-build.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--search.fasta-stamp/datasource--search.fasta-configure.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--search.fasta-stamp/datasource--search.fasta-download.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--search.fasta-stamp/datasource--search.fasta-install.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--search.fasta-stamp/datasource--search.fasta-mkdir.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--search.fasta-stamp/datasource--search.fasta-patch.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--search.fasta-stamp/datasource--search.fasta-test.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--search.fasta-stamp/datasource--search.fasta-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"datasource--search.fasta"
+		],
+		"name" : "datasource--search.fasta"
+	}
+}

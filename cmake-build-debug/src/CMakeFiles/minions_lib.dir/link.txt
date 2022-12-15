@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../lib/libminions_lib.a CMakeFiles/minions_lib.dir/compare.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../lib/libminions_lib.a

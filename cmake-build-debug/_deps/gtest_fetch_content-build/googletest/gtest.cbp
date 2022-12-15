@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="gtest"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="clang"/>
+		<Option virtualFolders="CMake Files\;CMake Files\cmake-build-debug\;CMake Files\cmake-build-debug\_deps\;CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\;CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\googletest\;CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\googletest\cmake\;CMake Files\cmake-build-debug\test\;CMake Files\cmake-build-debug\test\_datasources\;CMake Files\cmake-build-debug\test\_datasources\tmp\;CMake Files\lib\;CMake Files\lib\seqan3\;CMake Files\lib\seqan3\build_system\;CMake Files\lib\seqan3\test\;CMake Files\lib\seqan3\test\cmake\;CMake Files\lib\robin-hood-hashing\;CMake Files\lib\robin-hood-hashing\cmake\;CMake Files\src\;CMake Files\doc\;CMake Files\test\;CMake Files\test\data\;CMake Files\test\cmake\;CMake Files\test\api\;CMake Files\test\cli\;CMake Files\test\coverage\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/lib/libgtestd.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 gtest"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/lib/libgtestd.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 gtest/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/lib/libgtest_maind.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 gtest_main"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/lib/libgtest_maind.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 gtest_main/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/src/gtest-all.cc">
+			<Option target="gtest"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/src/gtest_main.cc">
+			<Option target="gtest_main"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\googletest\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/cmake/Config.cmake.in">
+			<Option virtualFolder="CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/cmake/gtest.pc.in">
+			<Option virtualFolder="CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/cmake/gtest_main.pc.in">
+			<Option virtualFolder="CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/tmp/datasource--example.ibf-mkdirs.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\test\_datasources\tmp\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/tmp/datasource--example1.fasta-mkdirs.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\test\_datasources\tmp\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/tmp/datasource--expected_search_result.out-mkdirs.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\test\_datasources\tmp\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/tmp/datasource--minimiser_hash_19_19_example1.out-mkdirs.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\test\_datasources\tmp\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/tmp/datasource--search.fasta-mkdirs.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\test\_datasources\tmp\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/build_system/seqan3-config-version.cmake">
+			<Option virtualFolder="CMake Files\lib\seqan3\build_system\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/build_system/seqan3-config.cmake">
+			<Option virtualFolder="CMake Files\lib\seqan3\build_system\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/cmake/seqan3_require_ccache.cmake">
+			<Option virtualFolder="CMake Files\lib\seqan3\test\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/cmake/seqan3_require_test.cmake">
+			<Option virtualFolder="CMake Files\lib\seqan3\test\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\lib\robin-hood-hashing\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/cmake/config.cmake.in">
+			<Option virtualFolder="CMake Files\lib\robin-hood-hashing\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/doc/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\doc\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\test\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/data/datasources.cmake">
+			<Option virtualFolder="CMake Files\test\data\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cmake/app_datasources.cmake">
+			<Option virtualFolder="CMake Files\test\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\test\api\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\test\cli\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/coverage/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\test\coverage\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,12 @@
+# This is a generated file and its contents are an internal implementation detail.
+# The download step will be re-executed if anything in this file changes.
+# No other meaning or use of this file is supported.
+
+method=url
+command=/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake;-P;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example.ibf-stamp/verify-datasource--example.ibf.cmake
+source_dir=/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example.ibf
+work_dir=/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src
+url(s)=/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/data/example.ibf
+hash=SHA256=8d18ce55fdbb78acbd4f44d5414de1b55ac9964e00e391a5fd12bcc1622b1c6c
+no_extract=TRUE
+

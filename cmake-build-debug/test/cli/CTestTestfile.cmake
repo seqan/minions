@@ -1,0 +1,16 @@
+# CMake generated Testfile for 
+# Source directory: /Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli
+# Build directory: /Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli
+# 
+# This file includes the relevant testing commands required for 
+# testing this directory and lists subdirectories to be tested as well.
+add_test(test/cli/minions_options_test "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/minions_options_test")
+set_tests_properties(test/cli/minions_options_test PROPERTIES  _BACKTRACE_TRIPLES "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/CMakeLists.txt;67;add_test;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/CMakeLists.txt;81;add_app_test;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/CMakeLists.txt;3;add_cli_test;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/CMakeLists.txt;0;")
+add_test(test/cli/minions_accuracy_test "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/minions_accuracy_test")
+set_tests_properties(test/cli/minions_accuracy_test PROPERTIES  _BACKTRACE_TRIPLES "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/CMakeLists.txt;67;add_test;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/CMakeLists.txt;81;add_app_test;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/CMakeLists.txt;4;add_cli_test;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/CMakeLists.txt;0;")
+add_test(test/cli/minions_counts_test "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/minions_counts_test")
+set_tests_properties(test/cli/minions_counts_test PROPERTIES  _BACKTRACE_TRIPLES "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/CMakeLists.txt;67;add_test;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/CMakeLists.txt;81;add_app_test;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/CMakeLists.txt;5;add_cli_test;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/CMakeLists.txt;0;")
+add_test(test/cli/minions_coverage_test "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/minions_coverage_test")
+set_tests_properties(test/cli/minions_coverage_test PROPERTIES  _BACKTRACE_TRIPLES "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/CMakeLists.txt;67;add_test;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/CMakeLists.txt;81;add_app_test;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/CMakeLists.txt;6;add_cli_test;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/CMakeLists.txt;0;")
+add_test(test/cli/minions_speed_test "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/minions_speed_test")
+set_tests_properties(test/cli/minions_speed_test PROPERTIES  _BACKTRACE_TRIPLES "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/CMakeLists.txt;67;add_test;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/CMakeLists.txt;81;add_app_test;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/CMakeLists.txt;7;add_cli_test;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/CMakeLists.txt;0;")

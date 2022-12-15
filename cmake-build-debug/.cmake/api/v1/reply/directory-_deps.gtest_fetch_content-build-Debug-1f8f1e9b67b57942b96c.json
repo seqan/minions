@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "_deps/gtest_fetch_content-build",
+		"source" : "cmake-build-debug/_deps/gtest_fetch_content-src"
+	}
+}

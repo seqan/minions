@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-subbuild/CMakeFiles/gtest_fetch_content-populate"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-subbuild/CMakeFiles/gtest_fetch_content-populate.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-subbuild/CMakeFiles/gtest_fetch_content-populate-complete.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-subbuild/gtest_fetch_content-populate-prefix/src/gtest_fetch_content-populate-stamp/gtest_fetch_content-populate-build.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-subbuild/gtest_fetch_content-populate-prefix/src/gtest_fetch_content-populate-stamp/gtest_fetch_content-populate-configure.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-subbuild/gtest_fetch_content-populate-prefix/src/gtest_fetch_content-populate-stamp/gtest_fetch_content-populate-download.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-subbuild/gtest_fetch_content-populate-prefix/src/gtest_fetch_content-populate-stamp/gtest_fetch_content-populate-install.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-subbuild/gtest_fetch_content-populate-prefix/src/gtest_fetch_content-populate-stamp/gtest_fetch_content-populate-mkdir.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-subbuild/gtest_fetch_content-populate-prefix/src/gtest_fetch_content-populate-stamp/gtest_fetch_content-populate-patch.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-subbuild/gtest_fetch_content-populate-prefix/src/gtest_fetch_content-populate-stamp/gtest_fetch_content-populate-test.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-subbuild/gtest_fetch_content-populate-prefix/src/gtest_fetch_content-populate-stamp/gtest_fetch_content-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"gtest_fetch_content-populate"
+		],
+		"name" : "gtest_fetch_content-populate"
+	}
+}

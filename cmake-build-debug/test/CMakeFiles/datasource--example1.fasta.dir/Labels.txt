@@ -1,0 +1,14 @@
+# Target labels
+ datasource--example1.fasta
+# Source files and their labels
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--example1.fasta
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--example1.fasta.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--example1.fasta-complete.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/datasource--example1.fasta-build.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/datasource--example1.fasta-configure.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/datasource--example1.fasta-download.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/datasource--example1.fasta-install.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/datasource--example1.fasta-mkdir.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/datasource--example1.fasta-patch.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/datasource--example1.fasta-test.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/datasource--example1.fasta-update.rule

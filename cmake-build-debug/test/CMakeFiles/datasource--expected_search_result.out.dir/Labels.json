@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--expected_search_result.out"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--expected_search_result.out.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--expected_search_result.out-complete.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-build.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-configure.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-download.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-install.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-mkdir.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-patch.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-test.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"datasource--expected_search_result.out"
+		],
+		"name" : "datasource--expected_search_result.out"
+	}
+}

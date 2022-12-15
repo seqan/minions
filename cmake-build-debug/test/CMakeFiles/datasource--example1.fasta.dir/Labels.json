@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--example1.fasta"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--example1.fasta.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--example1.fasta-complete.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/datasource--example1.fasta-build.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/datasource--example1.fasta-configure.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/datasource--example1.fasta-download.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/datasource--example1.fasta-install.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/datasource--example1.fasta-mkdir.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/datasource--example1.fasta-patch.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/datasource--example1.fasta-test.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/datasource--example1.fasta-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"datasource--example1.fasta"
+		],
+		"name" : "datasource--example1.fasta"
+	}
+}

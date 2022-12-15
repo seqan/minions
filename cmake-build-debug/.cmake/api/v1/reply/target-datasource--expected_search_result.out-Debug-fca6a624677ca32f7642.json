@@ -1,0 +1,161 @@
+{
+	"backtrace" : 5,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_custom_target",
+			"ExternalProject_Add",
+			"declare_datasource",
+			"include"
+		],
+		"files" : 
+		[
+			"/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/ExternalProject.cmake",
+			"test/cmake/app_datasources.cmake",
+			"test/data/datasources.cmake",
+			"test/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 3
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 85,
+				"parent" : 0
+			},
+			{
+				"file" : 2,
+				"parent" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 2,
+				"line" : 18,
+				"parent" : 2
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 49,
+				"parent" : 3
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 3453,
+				"parent" : 4
+			}
+		]
+	},
+	"folder" : 
+	{
+		"name" : "ExternalProjectTargets/datasource--expected_search_result.out"
+	},
+	"id" : "datasource--expected_search_result.out::@36f028580bb02cc8272a",
+	"name" : "datasource--expected_search_result.out",
+	"paths" : 
+	{
+		"build" : "test",
+		"source" : "test"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 5,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/test/CMakeFiles/datasource--expected_search_result.out",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/test/CMakeFiles/datasource--expected_search_result.out.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/test/CMakeFiles/datasource--expected_search_result.out-complete.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-build.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-configure.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-download.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-install.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-mkdir.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-patch.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-test.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/test/_datasources/src/datasource--expected_search_result.out-stamp/datasource--expected_search_result.out-update.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

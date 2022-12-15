@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--minimiser_hash_19_19_example1.out"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--minimiser_hash_19_19_example1.out.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--minimiser_hash_19_19_example1.out-complete.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--minimiser_hash_19_19_example1.out-stamp/datasource--minimiser_hash_19_19_example1.out-build.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--minimiser_hash_19_19_example1.out-stamp/datasource--minimiser_hash_19_19_example1.out-configure.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--minimiser_hash_19_19_example1.out-stamp/datasource--minimiser_hash_19_19_example1.out-download.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--minimiser_hash_19_19_example1.out-stamp/datasource--minimiser_hash_19_19_example1.out-install.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--minimiser_hash_19_19_example1.out-stamp/datasource--minimiser_hash_19_19_example1.out-mkdir.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--minimiser_hash_19_19_example1.out-stamp/datasource--minimiser_hash_19_19_example1.out-patch.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--minimiser_hash_19_19_example1.out-stamp/datasource--minimiser_hash_19_19_example1.out-test.rule"
+		},
+		{
+			"file" : "/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--minimiser_hash_19_19_example1.out-stamp/datasource--minimiser_hash_19_19_example1.out-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"datasource--minimiser_hash_19_19_example1.out"
+		],
+		"name" : "datasource--minimiser_hash_19_19_example1.out"
+	}
+}

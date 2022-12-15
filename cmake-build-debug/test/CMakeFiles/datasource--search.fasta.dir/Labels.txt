@@ -1,0 +1,14 @@
+# Target labels
+ datasource--search.fasta
+# Source files and their labels
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--search.fasta
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--search.fasta.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/CMakeFiles/datasource--search.fasta-complete.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--search.fasta-stamp/datasource--search.fasta-build.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--search.fasta-stamp/datasource--search.fasta-configure.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--search.fasta-stamp/datasource--search.fasta-download.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--search.fasta-stamp/datasource--search.fasta-install.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--search.fasta-stamp/datasource--search.fasta-mkdir.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--search.fasta-stamp/datasource--search.fasta-patch.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--search.fasta-stamp/datasource--search.fasta-test.rule
+/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--search.fasta-stamp/datasource--search.fasta-update.rule

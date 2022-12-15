@@ -20,6 +20,8 @@
 #include <seqan3/core/range/type_traits.hpp>
 #include <seqan3/utility/range/concept.hpp>
 #include <seqan3/utility/type_traits/lazy_conditional.hpp>
+#include <utility>
+#include <vector>
 
 namespace seqan3::detail
 {
@@ -331,6 +333,10 @@ private:
     //!\brief Stored values per window. It is necessary to store them, because a shift can remove the current randstrobe.
     std::deque<value_t> window_values{};
 
+    std::deque<value_t> second_it_values{};  //new!!
+
+    std::vector<std::pair< unsigned int, urng_iterator_t>> window_vector;
+
     //!\brief The number of values in one window.
     size_t window_size{};
 
@@ -350,18 +356,33 @@ private:
             return;
 
         first_iterator = second_iterator;
-        std::advance(second_iterator, window_min);
-
-        for (int i = 1u; i < window_size; ++i)
+        std::advance(second_iterator, window_min);  //std::advance advances the iterator ‘it’ by window_min element positions, in our case 2
+        
+        //unsigned int result_first = *first_iterator;
+        //unsigned int result_second = *second_iterator;
+        unsigned int end_result;
+        for (int i = 1u; i < window_size + 2; ++i)     // alt: habe i < window_max geschrieben statt i < window_size
         {
-            window_values.push_back((*second_iterator + *first_iterator)%5);
+            unsigned int end_result = (*second_iterator + *first_iterator)%5;
+            //window_values.push_back(end_result);
+            //second_it_values.push_back(*second_iterator);
+            window_vector.pushback(std::make_pair(end_result, *second_iterator));
             ++second_iterator;
         }
-        window_values.push_back(*second_iterator);   // von window min bis window size
+       // window_values.push_back(end_result);   // von window min bis window size, ohne Stern second_iterator
+       // second_it__values.push_back(*second_iterator);
 
-        auto randstrobe_it = std::ranges::min_element(window_values, std::less_equal<value_t>{});
-        randstrobe_value = {*first_iterator, *randstrobe_it};
-        randstrobe_position_offset = std::distance(std::begin(window_values), randstrobe_it);
+        window_vector.pushback(std::make_pair(end_result, *second_iterator));
+    
+        for (int i = 1u; i < window_size + 2; ++i){ 
+            auto minimum_it = std::ranges::min_element(window_vector[i].first, std::less_equal<value_t>{});
+            cout << *minimum_it << endl;
+            if(window_vector[i].first == *minimum_it){
+            auto randstrobe_it = window_vector[i].second;
+            randstrobe_value = {*first_iterator, *randstrobe_it};
+            randstrobe_position_offset = std::distance(std::begin(window_vector[i].second), randstrobe_it);
+            }
+        }
     }
 
     /*!\brief Calculates the next randstrobe value.
@@ -371,32 +392,71 @@ private:
      */
     void next_randstrobe()
     {
-        advance_windows();  // Erklaerung steht unter private Atrributen von class
+        advance_windows();  // Erklaerung steht unter private Atrributen von class, beide first und second iterator wird incrementiert
 
         if (second_iterator == urng_sentinel)
             return;
         value_t const new_value = *first_iterator;
         value_t const sw_new_value = *second_iterator;      //second window
 
-        randstrobe_value[0]= new_value;
+        randstrobe_value[0]= new_value;       //erste k-mer wert in randstrobe als erste iterator
 
-        window_values.pop_front();
+        //window_values.pop_front();
         
-        if (randstrobe_value[1] < sw_new_value)      // added this if loop here
-        {
-            window_values.push_back((*second_iterator + *first_iterator)%5);
+       // second_iterator = first_iterator;
+
+        //unsigned int end_result2;
+        //for (int i = 1u; i < window_size + 2; ++i)     // alt: habe i < window_max geschrieben statt i < window_size
+        //{
+        //    unsigned int end_result2 = (sw_new_value + new_value)%5;
+        //    window_values.push_back(end_result2);
+        //    ++second_iterator;
+        //}
+       // window_values.push_back((sw_new_value + new_value)%5); // von window min bis window size, ohne Stern second_iterator
+
+        window_vector[0].first.pop_front();
+        window_vector[0].second.pop_front();
+
+
+        window_vector.pushback(std::make_pair((sw_new_value + new_value)%5, *second_iterator));
+
+
+       // auto minimum_1 = std::ranges::min_element(window_values.begin(), window_values.end());
+       // std::cout << "min element at: " << ranges::distance(window_values.begin(), minimum_1) << '\n';
+
+        for (int i = 1u; i < window_size + 2; ++i){ 
+            //auto randstrobe_it = std::ranges::min_element(window_values, std::less_equal<value_t>{});
+            auto minimum_it = std::ranges::min_element(window_vector[i].first, std::less_equal<value_t>{});
+            auto randstrobe_it;
+                if(window_vector[i].first == *minimum_it){
+                  auto randstrobe_it = window_vector[i].second;
+                }
+            return randstrobe_it;
+            if (*randstrobe_it < randstrobe_value[1])
+            {
+                randstrobe_value[1] = *randstrobe_it;
+                randstrobe_position_offset = window_vector.size() - 1;
+                return;
+            } else if (randstrobe_position_offset == 0)
+            {
+            randstrobe_position_offset = std::distance(std::begin(window_vector[i].second), randstrobe_it);
             return;
+            }
         }
 
-        window_values.push_back(sw_new_value);  
+        --randstrobe_position_offset;
 
-        if (sw_new_value < randstrobe_value[1])
-        {
-            randstrobe_value[1] = sw_new_value;
-            randstrobe_position_offset = window_values.size() - 1;
+        /*for (int i = 1u; i < window_size + 2; ++i) {
+            second_iterator = window_values[i]; //back()
+            if(window_values[i-1] < window_values[i]){
+            
+            second_iterator = second_iterator - 1;
+            std::cout << *second_iterator << std::endl;
+            //--second_iterator; //window value werte miteinander vergleichen
+            randstrobe_value[1] = *second_iterator;  // zweite kmer in randstrobe wird zu zweite iterator (kleinere wert) assigned
+            randstrobe_position_offset = window_values.size() - 1; //ransrtobe position geht 1 runter (nach links)
             return;
         }
-
         else if (randstrobe_position_offset == 0)
         {
             auto randstrobe_it = std::ranges::min_element(window_values, std::less_equal<value_t>{});
@@ -404,10 +464,32 @@ private:
             randstrobe_position_offset = std::distance(std::begin(window_values), randstrobe_it);
             return;
         }
-
         --randstrobe_position_offset;
-    }
-};
+        } */
+       // --randstrobe_position_offset;
+           
+        
+        
+
+       // if (end_result2 < (sw_new_value + new_value)%5) // randstrobe_value[1] bedeutet zweite k-mer wert in randstrobe
+       // {
+       //     randstrobe_value[1] = *second_iterator;  // zweite kmer in randstrobe wird zu zweite iterator (kleinere wert) assigned
+       //     randstrobe_position_offset = window_values.size() - 1; //ransrtobe position geht 1 runter (nach links)
+       //     return;
+       // }
+       // else if (randstrobe_position_offset == 0)
+       // {
+       //     auto randstrobe_it = std::ranges::min_element(window_values, std::less_equal<value_t>{});
+       //     randstrobe_value[1] = *randstrobe_it;
+       //     randstrobe_position_offset = std::distance(std::begin(window_values), randstrobe_it);
+       //     return;
+       // }
+       // --randstrobe_position_offset;
+    } 
+};  
+    
+    
+    
 
 
 

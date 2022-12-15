@@ -1,0 +1,1691 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="minions"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\cmake-build-debug\;CMake Files\cmake-build-debug\_deps\;CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\;CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\googletest\;CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\googletest\cmake\;CMake Files\cmake-build-debug\test\;CMake Files\cmake-build-debug\test\_datasources\;CMake Files\cmake-build-debug\test\_datasources\tmp\;CMake Files\lib\;CMake Files\lib\seqan3\;CMake Files\lib\seqan3\build_system\;CMake Files\lib\seqan3\test\;CMake Files\lib\seqan3\test\cmake\;CMake Files\lib\robin-hood-hashing\;CMake Files\lib\robin-hood-hashing\cmake\;CMake Files\src\;CMake Files\doc\;CMake Files\test\;CMake Files\test\data\;CMake Files\test\cmake\;CMake Files\test\api\;CMake Files\test\cli\;CMake Files\test\coverage\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="strobemer_lib">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/lib/libstrobemer_lib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 strobemer_lib"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="strobemer_lib/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/lib/libstrobemer_lib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 strobemer_lib/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="list_install_components">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 list_install_components"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 install"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/local">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/local"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/strip">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/strip"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minions_lib">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/lib/libminions_lib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 minions_lib"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minions_lib/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/lib/libminions_lib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 minions_lib/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minions">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/minions" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 minions"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minions/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/minions" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 minions/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_build">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 gtest_build"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="api_test">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 api_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="cli_test">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 cli_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="datasource--example.ibf">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 datasource--example.ibf"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="datasource--minimiser_hash_19_19_example1.out">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 datasource--minimiser_hash_19_19_example1.out"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="datasource--example1.fasta">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 datasource--example1.fasta"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="datasource--search.fasta">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 datasource--search.fasta"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="datasource--expected_search_result.out">
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 datasource--expected_search_result.out"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/lib/libgtestd.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 gtest"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/lib/libgtestd.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 gtest/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/lib/libgtest_maind.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 gtest_main"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/lib/libgtest_maind.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 gtest_main/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-build/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="comparison_test">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/comparison_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 comparison_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="comparison_test/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/comparison_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 comparison_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minimiser_distance_test">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/minimiser_distance_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 minimiser_distance_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minimiser_distance_test/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/minimiser_distance_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 minimiser_distance_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="modmer_test">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/modmer_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 modmer_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="modmer_test/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/modmer_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 modmer_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="modmer_hash_test">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/modmer_hash_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 modmer_hash_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="modmer_hash_test/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/modmer_hash_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 modmer_hash_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="modmer_hash_distance_test">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/modmer_hash_distance_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 modmer_hash_distance_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="modmer_hash_distance_test/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/modmer_hash_distance_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 modmer_hash_distance_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="syncmer_test">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/syncmer_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 syncmer_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="syncmer_test/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/syncmer_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 syncmer_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="syncmer_hash_test">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/syncmer_hash_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 syncmer_hash_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="syncmer_hash_test/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/syncmer_hash_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 syncmer_hash_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minstrobe_test">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/minstrobe_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 minstrobe_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minstrobe_test/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/minstrobe_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 minstrobe_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minstrobe_hash_test">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/minstrobe_hash_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 minstrobe_hash_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minstrobe_hash_test/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/minstrobe_hash_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 minstrobe_hash_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="randstrobe_test">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/randstrobe_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 randstrobe_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="randstrobe_test/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/randstrobe_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 randstrobe_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/api/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minions_options_test">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/minions_options_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 minions_options_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minions_options_test/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/minions_options_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 minions_options_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minions_accuracy_test">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/minions_accuracy_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 minions_accuracy_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minions_accuracy_test/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/minions_accuracy_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 minions_accuracy_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minions_counts_test">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/minions_counts_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 minions_counts_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minions_counts_test/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/minions_counts_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 minions_counts_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minions_coverage_test">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/minions_coverage_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 minions_coverage_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minions_coverage_test/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/minions_coverage_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 minions_coverage_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minions_speed_test">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/minions_speed_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 minions_speed_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="minions_speed_test/fast">
+				<Option output="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/minions_speed_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DOUTPUTDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/output/&quot;"/>
+					<Add option="-DDATADIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/data/&quot;"/>
+					<Add option="-DBINDIR=&quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/bin/&quot;"/>
+					<Add option="-DSEQAN3_HAS_ZLIB=1"/>
+					<Add option="-DSEQAN3_HAS_BZIP2=1"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/vendor/googletest/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/../include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/src/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/sdsl-lite/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/range-v3/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/submodules/cereal/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/include"/>
+					<Add directory="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 minions_speed_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/cli/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/src/gtest-all.cc">
+			<Option target="gtest"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/src/gtest_main.cc">
+			<Option target="gtest_main"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp/index.cpp">
+			<Option target="strobemer_lib"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/strobemers/strobemers_cpp/index.hpp">
+			<Option target="strobemer_lib"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/compare.cpp">
+			<Option target="minions_lib"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/main.cpp">
+			<Option target="minions"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/api/comparison_test.cpp">
+			<Option target="comparison_test"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/api/minimiser_distance_test.cpp">
+			<Option target="minimiser_distance_test"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/api/minstrobe_hash_test.cpp">
+			<Option target="minstrobe_hash_test"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/api/minstrobe_test.cpp">
+			<Option target="minstrobe_test"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/api/modmer_hash_distance_test.cpp">
+			<Option target="modmer_hash_distance_test"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/api/modmer_hash_test.cpp">
+			<Option target="modmer_hash_test"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/api/modmer_test.cpp">
+			<Option target="modmer_test"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/api/randstrobe_test.cpp">
+			<Option target="randstrobe_test"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/api/syncmer_hash_test.cpp">
+			<Option target="syncmer_hash_test"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/api/syncmer_test.cpp">
+			<Option target="syncmer_test"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/minions_accuracy_test.cpp">
+			<Option target="minions_accuracy_test"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/minions_counts_test.cpp">
+			<Option target="minions_counts_test"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/minions_coverage_test.cpp">
+			<Option target="minions_coverage_test"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/minions_options_test.cpp">
+			<Option target="minions_options_test"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/minions_speed_test.cpp">
+			<Option target="minions_speed_test"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\googletest\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/cmake/Config.cmake.in">
+			<Option virtualFolder="CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/cmake/gtest.pc.in">
+			<Option virtualFolder="CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/cmake/gtest_main.pc.in">
+			<Option virtualFolder="CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/_deps/gtest_fetch_content-src/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\_deps\gtest_fetch_content-src\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/tmp/datasource--example.ibf-mkdirs.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\test\_datasources\tmp\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/tmp/datasource--example1.fasta-mkdirs.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\test\_datasources\tmp\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/tmp/datasource--expected_search_result.out-mkdirs.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\test\_datasources\tmp\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/tmp/datasource--minimiser_hash_19_19_example1.out-mkdirs.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\test\_datasources\tmp\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/tmp/datasource--search.fasta-mkdirs.cmake">
+			<Option virtualFolder="CMake Files\cmake-build-debug\test\_datasources\tmp\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/build_system/seqan3-config-version.cmake">
+			<Option virtualFolder="CMake Files\lib\seqan3\build_system\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/build_system/seqan3-config.cmake">
+			<Option virtualFolder="CMake Files\lib\seqan3\build_system\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/cmake/seqan3_require_ccache.cmake">
+			<Option virtualFolder="CMake Files\lib\seqan3\test\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/seqan3/test/cmake/seqan3_require_test.cmake">
+			<Option virtualFolder="CMake Files\lib\seqan3\test\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\lib\robin-hood-hashing\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/lib/robin-hood-hashing/cmake/config.cmake.in">
+			<Option virtualFolder="CMake Files\lib\robin-hood-hashing\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/doc/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\doc\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\test\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/data/datasources.cmake">
+			<Option virtualFolder="CMake Files\test\data\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cmake/app_datasources.cmake">
+			<Option virtualFolder="CMake Files\test\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\test\api\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/cli/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\test\cli\"/>
+		</Unit>
+		<Unit filename="/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/coverage/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\test\coverage\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

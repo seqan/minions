@@ -1,0 +1,12 @@
+# This is a generated file and its contents are an internal implementation detail.
+# The download step will be re-executed if anything in this file changes.
+# No other meaning or use of this file is supported.
+
+method=url
+command=/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake;-P;/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta-stamp/verify-datasource--example1.fasta.cmake
+source_dir=/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src/datasource--example1.fasta
+work_dir=/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/cmake-build-debug/test/_datasources/src
+url(s)=/Users/matanatmammadli/Desktop/Bachelorarbeit/minions/test/data/example1.fasta
+hash=SHA256=e7236e7b86303d84a86a4454044125005433857416183cdaac0f4cdf7ac34e06
+no_extract=TRUE
+

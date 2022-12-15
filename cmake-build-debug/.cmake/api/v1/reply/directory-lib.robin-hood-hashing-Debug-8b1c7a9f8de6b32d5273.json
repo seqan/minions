@@ -1,0 +1,83 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"lib/robin-hood-hashing/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 146,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 157,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 162,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "include",
+			"paths" : 
+			[
+				"lib/robin-hood-hashing/src/include/robin_hood.h"
+			],
+			"type" : "file"
+		},
+		{
+			"backtrace" : 2,
+			"component" : "Unspecified",
+			"destination" : "lib/cmake/robin_hood",
+			"paths" : 
+			[
+				"cmake-build-debug/lib/robin-hood-hashing/robin_hoodConfig.cmake"
+			],
+			"type" : "file"
+		},
+		{
+			"backtrace" : 3,
+			"component" : "Unspecified",
+			"destination" : "lib/cmake/robin_hood",
+			"exportName" : "robin_hood-targets",
+			"exportTargets" : 
+			[
+				{
+					"id" : "robin_hood::@f951c2b3e37ad0a38977",
+					"index" : 0
+				}
+			],
+			"paths" : 
+			[
+				"lib/robin-hood-hashing/CMakeFiles/Export/lib/cmake/robin_hood/robin_hood-targets.cmake"
+			],
+			"type" : "export"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "lib/robin-hood-hashing",
+		"source" : "lib/robin-hood-hashing"
+	}
+}
