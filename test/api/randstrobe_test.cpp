@@ -137,7 +137,7 @@ TYPED_TEST(randstrobe_view_properties_test, concepts)
     auto v = text | kmer_view | randstrobe_view;
     compare_types(v);
 }
-/*
+
 TYPED_TEST(randstrobe_view_properties_test, different_inputs_kmer_hash)
 {
     TypeParam text{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4, 'C'_dna4, 'G'_dna4, 'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4,
@@ -185,4 +185,3 @@ TEST_F(randstrobe_test, combinability)
     EXPECT_RANGE_EQ(result3_ungapped_stop, text3 | stop_at_t | kmer_view | randstrobe_view);
     EXPECT_RANGE_EQ(result3_gapped_stop, text3 | stop_at_t | gapped_kmer_view | randstrobe_view);
 }
-*/
