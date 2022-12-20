@@ -242,7 +242,7 @@ void counts(std::vector<std::filesystem::path> sequence_files, urng_t input_view
 
 /*! \brief Function, get the coverage of one sequence file for a representative method.
  *  \param sequence_file A sequence file.
- *  \param distant_view View that returns distances.
+ *  \param distance_view View that returns distances.
  *  \param method_name Name of the tested method.
  *  \param args The arguments about the view to be used, needed for strobemers.
  */
