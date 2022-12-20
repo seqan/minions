@@ -425,7 +425,13 @@ std::vector<uint64_t> read_seq_file(std::filesystem::path sequence_file, range_a
     return vector;
 }
 
-/*! \brief Count the number of matches found in two sequence files.
+void fill_positions(std::vector<bool> & positions, int pos, int match_length)
+{
+    for(int j = pos; j < pos+match_length; j++)
+        positions[j] = true;
+}
+
+/*! \brief Count the number of matches and the match coverage found in two sequence files.
  *  \param sequence_file1 The first sequence file.
  *  \param sequence_file2 The second sequence file.
  *  \param input_view View that should be tested.
@@ -450,25 +456,46 @@ void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_
         seq2_vector = read_seq_file(sequence_file2, input_view);
     }
 
+    std::size_t length{0};
+    switch(args.name)
+    {
+        case kmer: length = seq1_vector.size()+args.shape.size()-1;
+                        break;
+        case strobemer: length = seq1_vector.size()+(args.k_size * args.order)-1;
+    }
+    std::vector<bool> positions(length, false);
+
     for(int i = 0; i < seq1_vector.size(); ++i)
     {
         if (seq1_vector[i] == seq2_vector[i])
+        {
             matches++;
+            switch(args.name)
+            {
+                case kmer: fill_positions(positions, i, args.shape.size());
+                                break;
+                case strobemer: fill_positions(positions, i, (args.k_size * args.order));
+            }
+        }
         else
+        {
             missed++;
+        }
     }
     std::cout << "Matches: " << matches << "\t" << "Missed: " << missed << "\n";
+    std::cout << "Match Coverage: " << std::count(positions.begin(), positions.end(), true)*100.0/positions.size() << "\n";
 }
 
-/*! \brief Count the number of matches found in two sequence files.
+/*! \brief Count the number of matches and match coverage found in two sequence files.
  *  \param sequence_file1 The first sequence file.
  *  \param sequence_file2 The second sequence file.
  *  \param input_view View that should be tested.
  *  \param compare_view View for comparison, should be kmer_hash view.
  *  \param method_name Name of the tested method.
+ *  \param args The arguments about the view to be used, needed for strobemers.
  */
 template <typename urng_t, typename urng2_t>
-void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_file2, urng_t input_view, urng2_t compare_view, std::string method_name)
+void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_file2, urng_t input_view, urng2_t compare_view, std::string method_name, range_arguments & args)
 {
     uint64_t matches{0};
     uint64_t missed{0};
@@ -482,12 +509,22 @@ void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_
     bool changed{true};
     int i{0};
 
+    std::size_t length{0};
+    length = all1_vector.size()+args.shape.size()-1;
+    std::vector<bool> positions(length, false);
+
     while((it_1 < seq1_vector.size()) & (it_2 < seq2_vector.size()) & (i < all1_vector.size()))
     {
         if ((seq1_vector[it_1] == seq2_vector[it_2]) & changed)
         {
             matches++;
             changed = false;
+            switch(args.name)
+            {
+                case minimiser: fill_positions(positions, i, args.w_size.get());
+                                break;
+                case modmers: fill_positions(positions, i, args.k_size);
+            }
         }
 
         if (seq1_vector[it_1] == all1_vector[i])
@@ -505,6 +542,7 @@ void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_
 
     missed = std::min(seq1_vector.size(), seq2_vector.size()) - matches;
     std::cout << "Matches: " << matches << "\t" << "Missed: " << missed << "\n";
+    std::cout << "Match Coverage: " << std::count(positions.begin(), positions.end(), true)*100.0/positions.size() << "\n";
 }
 
 /*! \brief Function, that measures the speed of a method.
@@ -735,11 +773,11 @@ void do_match(std::filesystem::path sequence_file1, std::filesystem::path sequen
                    break;
         case minimiser: match(sequence_file1, sequence_file2, seqan3::views::minimiser_hash(args.shape,
                                 args.w_size, args.seed_se),seqan3::views::minimiser_hash(args.shape,
-                                                        seqan3::window_size{args.shape.size()}, args.seed_se), create_name(args));
+                                                        seqan3::window_size{args.shape.size()}, args.seed_se), create_name(args), args);
                         break;
         case modmers: match(sequence_file1, sequence_file2, modmer_hash(args.shape,
                                 args.w_size.get(), args.seed_se), modmer_hash(args.shape,
-                                                        1, args.seed_se), create_name(args));
+                                                        1, args.seed_se), create_name(args), args);
                         break;
         case strobemer: std::ranges::empty_view<seqan3::detail::empty_type> empty{};
                         if (args.lib_implementation)
