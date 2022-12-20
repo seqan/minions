@@ -16,8 +16,20 @@
 #include "randstrobe_hash.hpp"
 #include "syncmer_hash.hpp"
 
+/*! \brief Returns expected value of given list.
+ *  \param results The vector from which mean and variance should be calculated of.
+ */
+template<typename urng_t>
+double get_expected(urng_t & results)
+{
+    double sum{0.0};
+    for(auto & elem : results)
+        sum = sum + (elem*elem);
+    return sum/results.size();
+}
+
 /*! \brief Calculate mean and variance of given list.
- *  \param results The vector from which mean and varaince should be calculated of.
+ *  \param results The vector from which mean and variance should be calculated of.
  *  \param mean Variable to store the mean.
  *  \param stdev Variable to store the variance.
  */
@@ -464,12 +476,18 @@ void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_
         case strobemer: length = seq1_vector.size()+(args.k_size * args.order)-1;
     }
     std::vector<bool> positions(length, false);
+    std::vector<uint64_t> islands{};
+    uint64_t current_island{0};
+    bool new_island{false};
 
     for(int i = 0; i < seq1_vector.size(); ++i)
     {
         if (seq1_vector[i] == seq2_vector[i])
         {
             matches++;
+            if (current_island > 0)
+                new_island = true;
+
             switch(args.name)
             {
                 case kmer: fill_positions(positions, i, args.shape.size());
@@ -480,10 +498,28 @@ void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_
         else
         {
             missed++;
+
+            if (new_island)
+            {
+                islands.push_back(current_island);
+                new_island = false;
+                current_island = 1;
+            }
+            else
+            {
+                current_island++;
+            }
         }
     }
+    islands.push_back(current_island);
+
+    double mean_island, stdev_island;
+    get_mean_and_var(islands, mean_island, stdev_island);
+
     std::cout << "Matches: " << matches << "\t" << "Missed: " << missed << "\n";
     std::cout << "Match Coverage: " << std::count(positions.begin(), positions.end(), true)*100.0/positions.size() << "\n";
+    std::cout << "Islands: " << *std::min_element(islands.begin(), islands.end()) << "\t" << mean_island << "\t" << stdev_island << "\t" << *std::max_element(islands.begin(), islands.end()) << "\n";
+    std::cout << "Expected Island Size: " << get_expected(islands) << "\n";
 }
 
 /*! \brief Count the number of matches and match coverage found in two sequence files.
@@ -512,6 +548,9 @@ void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_
     std::size_t length{0};
     length = all1_vector.size()+args.shape.size()-1;
     std::vector<bool> positions(length, false);
+    std::vector<uint64_t> islands{};
+    uint64_t current_island{0};
+    bool new_island{false};
 
     while((it_1 < seq1_vector.size()) & (it_2 < seq2_vector.size()) & (i < all1_vector.size()))
     {
@@ -519,11 +558,27 @@ void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_
         {
             matches++;
             changed = false;
+            if (current_island > 0)
+                new_island = true;
+
             switch(args.name)
             {
                 case minimiser: fill_positions(positions, i, args.w_size.get());
                                 break;
                 case modmers: fill_positions(positions, i, args.k_size);
+            }
+        }
+        else if ((seq1_vector[it_1] == all1_vector[i]) & (seq2_vector[it_2] == all2_vector[i]) & changed)
+        {
+            if (new_island)
+            {
+                islands.push_back(current_island);
+                new_island = false;
+                current_island = 1;
+            }
+            else
+            {
+                current_island++;
             }
         }
 
@@ -539,10 +594,16 @@ void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_
         }
         i++;
     }
+    islands.push_back(current_island);
+
+    double mean_island, stdev_island;
+    get_mean_and_var(islands, mean_island, stdev_island);
 
     missed = std::min(seq1_vector.size(), seq2_vector.size()) - matches;
     std::cout << "Matches: " << matches << "\t" << "Missed: " << missed << "\n";
     std::cout << "Match Coverage: " << std::count(positions.begin(), positions.end(), true)*100.0/positions.size() << "\n";
+    std::cout << "Islands: " << *std::min_element(islands.begin(), islands.end()) << "\t" << mean_island << "\t" << stdev_island << "\t" << *std::max_element(islands.begin(), islands.end()) << "\n";
+    std::cout << "Expected Island Size: " << get_expected(islands) << "\n";
 }
 
 /*! \brief Function, that measures the speed of a method.
