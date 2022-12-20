@@ -16,8 +16,20 @@
 #include "randstrobe_hash.hpp"
 #include "syncmer_hash.hpp"
 
+/*! \brief Returns expected value of given list.
+ *  \param results The vector from which mean and variance should be calculated of.
+ */
+template<typename urng_t>
+double get_expected(urng_t & results)
+{
+    double sum{0.0};
+    for(auto & elem : results)
+        sum = sum + (elem*elem);
+    return sum/results.size();
+}
+
 /*! \brief Calculate mean and variance of given list.
- *  \param results The vector from which mean and varaince should be calculated of.
+ *  \param results The vector from which mean and variance should be calculated of.
  *  \param mean Variable to store the mean.
  *  \param stdev Variable to store the variance.
  */
@@ -228,151 +240,12 @@ void counts(std::vector<std::filesystem::path> sequence_files, urng_t input_view
     outfile.close();
 }
 
-/*! \brief Function, that increases how often a position is covered by one.
- *  \param covs A vector, where every entry represents a position in the sequence and how often it is covered.
- *  \param position Starting position.
- *  \param shape The positions of covered positions.
- */
-void positions_covered(std::vector<uint32_t> & covs, int position, seqan3::shape shape)
-{
-    for(int pos = 0; pos < shape.size(); pos++)
-    {
-        if (shape[pos] == 1)
-            covs[position+pos]++;
-    }
-}
-
-/*! \brief Function, get the actual coverage of some submers.
- *  \param kmers A view that contains all possible k-mers (minimisers with window length = kmer length, if reverse strand should be considered).
- *  \param submers The submers, which coverage should be obtained.
- *  \param covs A vector, where every entry represents a position in the sequence and how often it is covered.
- *  \param shape Shape of a submer.
- */
-template <typename urng_t>
-void coverage(urng_t kmers, std::deque<uint64_t> & submers, std::vector<uint32_t> & covs, seqan3::shape shape)
-{
-    int i{};
-    for (auto && elem : kmers)
-    {
-        if (elem == submers[0])
-        {
-            positions_covered(covs, i, shape);
-            submers.pop_front();
-        }
-
-        if (submers.size() == 0)
-            break;
-        i++;
-    }
-}
-
-/*! \brief Function, get the coverage of one sequence file for a method.
- *  Strobemers not supported, because strobemers should cover every position at least once because they are not
- *  a sampling method.
+/*! \brief Function, get the coverage of one sequence file for a representative method.
  *  \param sequence_file A sequence file.
- *  \param kmer_view View to compare to (Should be k-mers in most cases or minimisers with window length = kmer length).
- *  \param input_view View that should be evaluated.
+ *  \param distant_view View that returns distances.
  *  \param method_name Name of the tested method.
  *  \param args The arguments about the view to be used, needed for strobemers.
  */
-template <typename urng_t, typename urng_t2>
-void compare_cov(std::filesystem::path sequence_file, urng_t kmer_view, urng_t2 input_view, std::string method_name, range_arguments & args)
-{
-    std::vector<int> islands{};
-    int island{};
-    int covered{};
-    std::vector<int> avg_islands{};
-    std::vector<int> largest_islands{};
-    std::vector<int> covered_percentage{};
-    std::vector<int> covereage_avg{};
-    std::ofstream outfile;
-
-    seqan3::sequence_file_input<my_traits, seqan3::fields<seqan3::field::id,seqan3::field::seq>> fin{sequence_file};
-    for (auto & [id, seq] : fin)
-    {
-        auto kmers = seq | kmer_view;
-        auto submers = seq | input_view;
-
-        std::vector<uint32_t> covs{};
-        covs.assign(seq.size(), 0);
-        std::deque<uint64_t> submers2{};
-
-        for(auto && sub: submers)
-            submers2.push_back(sub);
-        coverage(kmers, submers2, covs, args.shape);
-
-        int i{0};
-        for(auto & elem : covs)
-        {
-            if (elem == 0)
-            {
-                island++;
-            }
-            else
-            {
-                if (island > 0)
-                {
-                    if (island >23)
-                        std::cout << i << " " << island << ", " << id<< "\n";
-                    islands.push_back(island);
-                    island = 0;
-                }
-                covered++;
-            }
-            i++;
-        }
-
-        if (island > 0)
-        {
-            if (island >23)
-                std::cout << i << " " << island << ", " << id<< "\n";
-            islands.push_back(island);
-            island = 0;
-        }
-
-        covered_percentage.push_back(covered);
-
-        double mean_cov{};
-        double var_cov{};
-        get_mean_and_var(covs, mean_cov, var_cov);
-        covereage_avg.push_back(mean_cov);
-
-        if (islands.size() == 0)
-        {
-            avg_islands.push_back(0);
-            largest_islands.push_back(0);
-        }
-        else
-        {
-            double mean{};
-            double var{};
-            get_mean_and_var(islands, mean, var);
-            avg_islands.push_back(mean);
-            largest_islands.push_back(*std::max_element(islands.begin(), islands.end()));
-        }
-
-        islands.clear();
-        island = 0;
-        covered = 0;
-    }
-
-    double mean_covered, mean_largest_island, mean_avg_island, stdev_covered, stdev_largest_island, stdev_avg_island;
-    get_mean_and_var(covered_percentage, mean_covered, stdev_covered);
-    get_mean_and_var(largest_islands, mean_largest_island, stdev_largest_island);
-    get_mean_and_var(avg_islands, mean_avg_island, stdev_avg_island);
-
-    std::nth_element(covereage_avg.begin(), covereage_avg.begin() + covereage_avg.size()/2, covereage_avg.end());
-    int median = covereage_avg[covereage_avg.size()/2];
-
-    // Store speed and counts
-    outfile.open(std::string{args.path_out} + method_name + "_coverage.out");
-    outfile << "Covered\t"<< method_name << "\t" << *std::min_element(covered_percentage.begin(), covered_percentage.end()) << "\t" << mean_covered << "\t" << stdev_covered << "\t" << *std::max_element(covered_percentage.begin(), covered_percentage.end()) << "\n";
-    outfile << "Covered Median\t"<< method_name << "\t" << *std::min_element(covereage_avg.begin(), covereage_avg.end()) << "\t" << median << "\t" << *std::max_element(covereage_avg.begin(), covereage_avg.end()) << "\n";
-    outfile << "Largest Island\t"<< method_name << "\t" << *std::min_element(largest_islands.begin(), largest_islands.end()) << "\t" << mean_largest_island << "\t" << stdev_largest_island << "\t" << *std::max_element(largest_islands.begin(), largest_islands.end()) << "\n";
-    outfile << "Avg Island\t"<< method_name << "\t" << *std::min_element(avg_islands.begin(), avg_islands.end()) << "\t" << mean_avg_island << "\t" << stdev_avg_island << "\t" << *std::max_element(avg_islands.begin(), avg_islands.end()) << "\n";
-    outfile.close();
-}
-
 template <typename urng_t>
 void compare_cov2(std::filesystem::path sequence_file, urng_t distance_view, std::string method_name, range_arguments & args)
 {
@@ -425,7 +298,13 @@ std::vector<uint64_t> read_seq_file(std::filesystem::path sequence_file, range_a
     return vector;
 }
 
-/*! \brief Count the number of matches found in two sequence files.
+void fill_positions(std::vector<bool> & positions, int pos, int match_length)
+{
+    for(int j = pos; j < pos+match_length; j++)
+        positions[j] = true;
+}
+
+/*! \brief Count the number of matches and the match coverage found in two sequence files.
  *  \param sequence_file1 The first sequence file.
  *  \param sequence_file2 The second sequence file.
  *  \param input_view View that should be tested.
@@ -450,25 +329,70 @@ void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_
         seq2_vector = read_seq_file(sequence_file2, input_view);
     }
 
+    std::size_t length{0};
+    switch(args.name)
+    {
+        case kmer: length = seq1_vector.size()+args.shape.size()-1;
+                        break;
+        case strobemer: length = seq1_vector.size()+(args.k_size * args.order)-1;
+    }
+    std::vector<bool> positions(length, false);
+    std::vector<uint64_t> islands{};
+    uint64_t current_island{0};
+    bool new_island{false};
+
     for(int i = 0; i < seq1_vector.size(); ++i)
     {
         if (seq1_vector[i] == seq2_vector[i])
+        {
             matches++;
+            if (current_island > 0)
+                new_island = true;
+
+            switch(args.name)
+            {
+                case kmer: fill_positions(positions, i, args.shape.size());
+                                break;
+                case strobemer: fill_positions(positions, i, (args.k_size * args.order));
+            }
+        }
         else
+        {
             missed++;
+
+            if (new_island)
+            {
+                islands.push_back(current_island);
+                new_island = false;
+                current_island = 1;
+            }
+            else
+            {
+                current_island++;
+            }
+        }
     }
+    islands.push_back(current_island);
+
+    double mean_island, stdev_island;
+    get_mean_and_var(islands, mean_island, stdev_island);
+
     std::cout << "Matches: " << matches << "\t" << "Missed: " << missed << "\n";
+    std::cout << "Match Coverage: " << std::count(positions.begin(), positions.end(), true)*100.0/positions.size() << "\n";
+    std::cout << "Islands: " << *std::min_element(islands.begin(), islands.end()) << "\t" << mean_island << "\t" << stdev_island << "\t" << *std::max_element(islands.begin(), islands.end()) << "\n";
+    std::cout << "Expected Island Size: " << get_expected(islands) << "\n";
 }
 
-/*! \brief Count the number of matches found in two sequence files.
+/*! \brief Count the number of matches and match coverage found in two sequence files.
  *  \param sequence_file1 The first sequence file.
  *  \param sequence_file2 The second sequence file.
  *  \param input_view View that should be tested.
  *  \param compare_view View for comparison, should be kmer_hash view.
  *  \param method_name Name of the tested method.
+ *  \param args The arguments about the view to be used, needed for strobemers.
  */
 template <typename urng_t, typename urng2_t>
-void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_file2, urng_t input_view, urng2_t compare_view, std::string method_name)
+void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_file2, urng_t input_view, urng2_t compare_view, std::string method_name, range_arguments & args)
 {
     uint64_t matches{0};
     uint64_t missed{0};
@@ -482,12 +406,41 @@ void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_
     bool changed{true};
     int i{0};
 
+    std::size_t length{0};
+    length = all1_vector.size()+args.shape.size()-1;
+    std::vector<bool> positions(length, false);
+    std::vector<uint64_t> islands{};
+    uint64_t current_island{0};
+    bool new_island{false};
+
     while((it_1 < seq1_vector.size()) & (it_2 < seq2_vector.size()) & (i < all1_vector.size()))
     {
         if ((seq1_vector[it_1] == seq2_vector[it_2]) & changed)
         {
             matches++;
             changed = false;
+            if (current_island > 0)
+                new_island = true;
+
+            switch(args.name)
+            {
+                case minimiser: fill_positions(positions, i, args.w_size.get());
+                                break;
+                case modmers: fill_positions(positions, i, args.k_size);
+            }
+        }
+        else if ((seq1_vector[it_1] == all1_vector[i]) & (seq2_vector[it_2] == all2_vector[i]) & changed)
+        {
+            if (new_island)
+            {
+                islands.push_back(current_island);
+                new_island = false;
+                current_island = 1;
+            }
+            else
+            {
+                current_island++;
+            }
         }
 
         if (seq1_vector[it_1] == all1_vector[i])
@@ -502,9 +455,16 @@ void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_
         }
         i++;
     }
+    islands.push_back(current_island);
+
+    double mean_island, stdev_island;
+    get_mean_and_var(islands, mean_island, stdev_island);
 
     missed = std::min(seq1_vector.size(), seq2_vector.size()) - matches;
     std::cout << "Matches: " << matches << "\t" << "Missed: " << missed << "\n";
+    std::cout << "Match Coverage: " << std::count(positions.begin(), positions.end(), true)*100.0/positions.size() << "\n";
+    std::cout << "Islands: " << *std::min_element(islands.begin(), islands.end()) << "\t" << mean_island << "\t" << stdev_island << "\t" << *std::max_element(islands.begin(), islands.end()) << "\n";
+    std::cout << "Expected Island Size: " << get_expected(islands) << "\n";
 }
 
 /*! \brief Function, that measures the speed of a method.
@@ -735,11 +695,11 @@ void do_match(std::filesystem::path sequence_file1, std::filesystem::path sequen
                    break;
         case minimiser: match(sequence_file1, sequence_file2, seqan3::views::minimiser_hash(args.shape,
                                 args.w_size, args.seed_se),seqan3::views::minimiser_hash(args.shape,
-                                                        seqan3::window_size{args.shape.size()}, args.seed_se), create_name(args));
+                                                        seqan3::window_size{args.shape.size()}, args.seed_se), create_name(args), args);
                         break;
         case modmers: match(sequence_file1, sequence_file2, modmer_hash(args.shape,
                                 args.w_size.get(), args.seed_se), modmer_hash(args.shape,
-                                                        1, args.seed_se), create_name(args));
+                                                        1, args.seed_se), create_name(args), args);
                         break;
         case strobemer: std::ranges::empty_view<seqan3::detail::empty_type> empty{};
                         if (args.lib_implementation)
