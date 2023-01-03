@@ -673,7 +673,7 @@ void do_counts(std::vector<std::filesystem::path> sequence_files, range_argument
     }
 }
 
-void do_coverage(std::filesystem::path sequence_file, range_arguments & args)
+void do_distance(std::filesystem::path sequence_file, range_arguments & args)
 {
     switch(args.name)
     {

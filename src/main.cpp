@@ -147,17 +147,17 @@ int counts(seqan3::argument_parser & parser)
     return 0;
 }
 
-int coverage(seqan3::argument_parser & parser)
+int distance(seqan3::argument_parser & parser)
 {
     range_arguments args{};
     std::filesystem::path sequence_file{};
-    parser.info.short_description = "Estimates the coverage of the different methods.";
+    parser.info.short_description = "Estimates the distance of the singular submers to each other for different methods.";
     parser.add_positional_option(sequence_file, "Please provide one sequence file.");
     all_arguments(parser, args);
     std::string method{};
     parser.add_option(method, '\0', "method", "Pick your method.",
                       seqan3::option_spec::required,
-                      seqan3::value_list_validator{"kmer", "minimiser", "modmer"});
+                      seqan3::value_list_validator{"minimiser", "modmer"});
 
     read_range_arguments_minimiser(parser, args);
 
@@ -168,12 +168,12 @@ int coverage(seqan3::argument_parser & parser)
     }
     catch (seqan3::argument_parser_error const & ext)                     // catch user errors
     {
-        seqan3::debug_stream << "Error. Incorrect command line input for coverage. " << ext.what() << "\n";
+        seqan3::debug_stream << "Error. Incorrect command line input for distance. " << ext.what() << "\n";
         return -1;
     }
 
     string_to_methods(method, args.name);
-    do_coverage(sequence_file, args);
+    do_distance(sequence_file, args);
 
     return 0;
 }
@@ -282,7 +282,7 @@ int main(int argc, char ** argv)
 {
     seqan3::argument_parser top_level_parser{"minions", argc, argv,
                                              seqan3::update_notifications::on,
-                                             {"accuracy", "counts", "coverage", "match", "speed", "unique"}};
+                                             {"accuracy", "counts", "distance", "match", "speed", "unique"}};
 
     // Parser
     top_level_parser.info.author = "Mitra Darvish"; // give parser some infos
@@ -304,8 +304,8 @@ int main(int argc, char ** argv)
         accuracy(sub_parser);
     else if (sub_parser.info.app_name == std::string_view{"minions-counts"})
         counts(sub_parser);
-    else if (sub_parser.info.app_name == std::string_view{"minions-coverage"})
-        coverage(sub_parser);
+    else if (sub_parser.info.app_name == std::string_view{"minions-distance"})
+        distance(sub_parser);
     else if (sub_parser.info.app_name == std::string_view{"minions-match"})
         match(sub_parser);
     else if (sub_parser.info.app_name == std::string_view{"minions-speed"})
