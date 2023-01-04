@@ -22,19 +22,16 @@ using seqan3::operator""_shape;
 using result_t = std::vector<size_t>;
 
 using iterator_type = std::ranges::iterator_t<decltype(std::declval<seqan3::dna4_vector&>()
-                                                       | syncmer_hash<true>(2, 5, 0, seqan3::seed{0}))>;
+                                                       | syncmer_hash(2, 5, {0}, seqan3::seed{0}))>;
 
-using closed_iterator_type = std::ranges::iterator_t<decltype(std::declval<seqan3::dna4_vector&>()
-                                                      | syncmer_hash<false>(2, 5, 0, seqan3::seed{0}))>;
-
-static constexpr auto open_view = syncmer_hash<true>(2, 5, 0, seqan3::seed{0});
-static constexpr auto open_view_t1 = syncmer_hash<true>(2, 5, 1, seqan3::seed{0});
-static constexpr auto open_view_t2 = syncmer_hash<true>(2, 5, 2, seqan3::seed{0});
-static constexpr auto closed_view = syncmer_hash<false>(2, 5, 0, seqan3::seed{0});
-static constexpr auto open_view_14 = syncmer_hash<true>(1, 4, 0, seqan3::seed{0});
-static constexpr auto open_view_14_t1 = syncmer_hash<true>(1, 4, 1, seqan3::seed{0});
-static constexpr auto open_view_14_t2 = syncmer_hash<true>(1, 4, 2, seqan3::seed{0});
-static constexpr auto closed_view_14 = syncmer_hash<false>(1, 4, 0, seqan3::seed{0});
+static auto open_view = syncmer_hash(2, 5, {0}, seqan3::seed{0});
+static auto open_view_t1 = syncmer_hash(2, 5, {1}, seqan3::seed{0});
+static auto open_view_t2 = syncmer_hash(2, 5, {2}, seqan3::seed{0});
+static auto closed_view = syncmer_hash(2, 5, {0,3}, seqan3::seed{0});
+static auto open_view_14 = syncmer_hash(1, 4, {0}, seqan3::seed{0});
+static auto open_view_14_t1 = syncmer_hash(1, 4, {1}, seqan3::seed{0});
+static auto open_view_14_t2 = syncmer_hash(1, 4, {2}, seqan3::seed{0});
+static auto closed_view_14 = syncmer_hash(1, 4, {0,3}, seqan3::seed{0});
 
 template <>
 struct iterator_fixture<iterator_type> : public ::testing::Test
@@ -49,20 +46,7 @@ struct iterator_fixture<iterator_type> : public ::testing::Test
     test_range_t test_range = text | open_view;
 };
 
-template <>
-struct iterator_fixture<closed_iterator_type> : public ::testing::Test
-{
-    using iterator_tag = std::forward_iterator_tag;
-    static constexpr bool const_iterable = false;
-
-    seqan3::dna4_vector text{"ACGGCGACGTTTAG"_dna4};
-    result_t expected_range{105,422,609,111,447,764,1010};
-
-    using test_range_t = decltype(text | closed_view);
-    test_range_t test_range = text | closed_view;
-};
-
-using test_type = ::testing::Types<iterator_type, closed_iterator_type>;
+using test_type = ::testing::Types<iterator_type>;
 INSTANTIATE_TYPED_TEST_SUITE_P(iterator_fixture, iterator_fixture, test_type, );
 
 template <typename T>
@@ -151,7 +135,7 @@ TEST_F(syncmer_hash_test, open)
     EXPECT_RANGE_EQ(result3_14_open, text3 | open_view_14);
     EXPECT_RANGE_EQ(result3_14_open_t1, text3 | open_view_14_t1);
     EXPECT_RANGE_EQ(result3_14_open_t2, text3 | open_view_14_t2);
-    EXPECT_THROW((text3 | syncmer_hash<true>(6, 5, 0, seqan3::seed{0})), std::invalid_argument);
+    EXPECT_THROW((text3 | syncmer_hash(6, 5, {0}, seqan3::seed{0})), std::invalid_argument);
 }
 
 TEST_F(syncmer_hash_test, closed)
@@ -159,7 +143,7 @@ TEST_F(syncmer_hash_test, closed)
     EXPECT_RANGE_EQ(result1_open, text1 | closed_view);
     EXPECT_RANGE_EQ(result3_closed, text3 | closed_view);
     EXPECT_RANGE_EQ(result3_14_closed, text3 | closed_view_14);
-    EXPECT_THROW((text3 | syncmer_hash<false>(6, 5, 0, seqan3::seed{0})), std::invalid_argument);
+    EXPECT_THROW((text3 | syncmer_hash(6, 5, {0,1}, seqan3::seed{0})), std::invalid_argument);
 }
 
 TEST_F(syncmer_hash_test, combinability_open)

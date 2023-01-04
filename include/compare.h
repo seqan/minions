@@ -44,7 +44,7 @@ struct strobemer_arguments
 struct syncmer_arguments
 {
     // Needed for syncmers
-    bool closed;
+    std::vector<int> positions;
     unsigned int t;
 };
 
