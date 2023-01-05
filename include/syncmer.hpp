@@ -652,6 +652,7 @@ struct syncmer_fn
      * \param[in] urange2     The second input range to process. Must model std::ranges::viewable_range and
      *                        std::ranges::forward_range.
      * \param[in] window_size The number of elements in one window (should be window size - subwindow size + 1).
+     * \param[in] pos 	      The position that determines if an element is a syncmer.
      * \returns  A range of converted values.
      */
     template <std::ranges::range urng1_t, std::ranges::range urng2_t>
@@ -684,6 +685,8 @@ struct syncmer_fn
      * \param[in] urange4     The fourth input range to process. Must model std::ranges::viewable_range and
      *                        std::ranges::forward_range.
      * \param[in] window_size The number of elements in one window (should be window size - subwindow size + 1).
+     * \param[in] pos	      The position that determines if an element is a syncmer.
+     
      * \returns  A range of converted values.
      */
     template <std::ranges::range urng1_t, std::ranges::range urng2_t, std::ranges::range urng3_t, std::ranges::range urng4_t>
@@ -716,7 +719,7 @@ namespace seqan3::views
  * \param[in] urange2     The second input range to process. Must model std::ranges::viewable_range and
  *                        std::ranges::forward_range.
  * \param[in] window_size The number of elements in one window (should be window size - subwindow size + 1).
- * \param[in] positions   The position that determines if an element is a syncmer.
+ * \param[in] pos	  The position that determines if an element is a syncmer.
  * \returns A range of std::totally_ordered where each value is ... See below for the
  *          properties of the returned range.
  * \ingroup search_views
