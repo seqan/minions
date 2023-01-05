@@ -601,13 +601,8 @@ std::string create_name(range_arguments & args)
                                     return "";
                             }
                     }
-        case syncmer:  {
-                            if (args.closed)
-                                return "closedsyncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get())+ "_" + std::to_string(args.t);
-                            else
-                                return "opensyncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get())+ "_" + std::to_string(args.t);
-                            break;
-                        }
+        case syncmer:  return "syncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get())+ "_" + std::to_string(*args.positions.begin()) + "_" + std::to_string(*args.positions.end());
+
         default: return "";
 
     }
@@ -625,15 +620,10 @@ void do_accuracy(accuracy_arguments & args)
         case modmers: accuracy(modmer_hash(args.shape,
                                 args.w_size.get(), args.seed_se), create_name(args), args);
                         break;
-        case syncmer: {
-                        if (args.closed)
-                            accuracy(syncmer_hash<false>(args.w_size.get(), args.k_size, args.t, args.seed_se),
-                                     create_name(args), args);
-                        else
-                            accuracy(syncmer_hash<true>(args.w_size.get(), args.k_size, args.t, args.seed_se),
-                                     create_name(args), args);
+        case syncmer: accuracy(syncmer_hash(args.w_size.get(), args.k_size, args.positions, args.seed_se),
+                               create_name(args), args);
                         break;
-                    }
+
     }
 }
 
@@ -649,15 +639,9 @@ void do_counts(std::vector<std::filesystem::path> sequence_files, range_argument
         case modmers: counts(sequence_files, modmer_hash(args.shape,
                                 args.w_size.get(), args.seed_se), create_name(args), args);
                         break;
-        case syncmer:  {
-                            if (args.closed)
-                                counts(sequence_files, syncmer_hash<false>(args.w_size.get(), args.k_size, args.t, args.seed_se),
-                                create_name(args), args);
-                            else
-                                counts(sequence_files, syncmer_hash<true>(args.w_size.get(), args.k_size, args.t, args.seed_se),
-                                create_name(args), args);
-                            break;
-                        }
+        case syncmer:  counts(sequence_files, syncmer_hash(args.w_size.get(), args.k_size,  args.positions, args.seed_se),
+                              create_name(args), args);
+                        break;
         case strobemer: {
                             std::ranges::empty_view<seqan3::detail::empty_type> empty{};
                             if (args.rand & (args.order == 2))
@@ -673,7 +657,7 @@ void do_counts(std::vector<std::filesystem::path> sequence_files, range_argument
     }
 }
 
-void do_coverage(std::filesystem::path sequence_file, range_arguments & args)
+void do_distance(std::filesystem::path sequence_file, range_arguments & args)
 {
     switch(args.name)
     {

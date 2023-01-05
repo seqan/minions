@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \author Hossein Eizadi Moghadam <hosseinem AT fu-berlin.de>
+ * \author Hossein Eizadi Moghadam <hosseinem AT fu-berlin.de> & Mitra Darvish <mitra darvish AT fu-berlin.de>
  * \brief Provides syncmer_hash.
  */
 
@@ -24,32 +24,31 @@ namespace seqan3::detail
 {
 //!\brief seqan3::views::syncmer_hash's range adaptor object type (non-closure).
 //!\ingroup search_views
-template <bool open>
 struct syncmer_hash_fn
 {
     /*!\brief Store the kmers and the smers and return a range adaptor closure object.
     * \param[in] kmers       The k-mer size to be used.
     * \param[in] smers       The s-mer size (s<k) to be used.
-    * \param[in] t           The offset for the position of the smallest s-mer.
+    * \param[in] pos         The position that determines if an element is a syncmer.
     * \throws std::invalid_argumentif the s-mer size is smaller than 1 or the k-mer size is smaller than the s-mers.
     * \returns               A range of converted elements.
     */
-    constexpr auto operator()(size_t const smers, size_t const kmers, size_t const t) const
+    auto operator()(size_t const smers, size_t const kmers, std::vector<int> const pos) const
     {
-        return seqan3::detail::adaptor_from_functor{*this, smers, kmers, t};
+        return seqan3::detail::adaptor_from_functor{*this, smers, kmers, pos};
     }
 
     /*!\brief Store the k-mer size, the s-mer size and the seed and return a range adaptor closure object.
     * \param[in] kmers       The k-mer size to be used.
     * \param[in] smers       The s-mer size (s<k) to be used.
-    * \param[in] t           The offset for the position of the smallest s-mer.
+    * \param[in] pos         The position that determines if an element is a syncmer.
     * \param[in] seed        The seed to use.
     * \throws std::invalid_argument if the s-mer size is smaller than 1 or the k-mer size is smaller than the s-mers.
     * \returns               A range of converted elements.
     */
-    constexpr auto operator()(size_t const smers, size_t const kmers, size_t const t, seed const seed) const
+    auto operator()(size_t const smers, size_t const kmers, std::vector<int> const pos, seed const seed) const
     {
-        return seqan3::detail::adaptor_from_functor{*this, smers, kmers, t, seed};
+        return seqan3::detail::adaptor_from_functor{*this, smers, kmers, pos, seed};
     }
 
     /*!\brief Call the view's constructor with the underlying view, a k-mer size and a s-mer size as argument.
@@ -57,16 +56,16 @@ struct syncmer_hash_fn
      *                       the reference type of the range must model seqan3::semialphabet.
      * \param[in] kmers      The k-mer size to be used.
      * \param[in] smers      The s-mer size (s<k) to be used.
-     * \param[in] t          The offset for the position of the smallest s-mer.
+     * \param[in] pos        The position that determines if an element is a syncmer.
      * \param[in] seed       The seed to use.
      * \throws std::invalid_argument if the s-mer size is smaller than 1 or the k-mer size is smaller than the s-mers.
      * \returns              A range of converted elements.
      */
     template <std::ranges::range urng_t>
-    constexpr auto operator()(urng_t && urange,
+    auto operator()(urng_t && urange,
                               size_t const smers,
 			                  size_t const kmers,
-			                      size_t const t,
+			                  std::vector<int> const pos,
                               seed const seed = seqan3::seed{0x8F3F73B5CF1C9ADE}) const
     {
         static_assert(std::ranges::viewable_range<urng_t>,
@@ -90,8 +89,23 @@ struct syncmer_hash_fn
                                                  | std::views::transform([seed] (uint64_t i)
                                                           {return i ^ seed.get();});
 
-        return seqan3::detail::syncmer_view<decltype(forward_strand_smer), decltype(forward_strand), open>
-                                            (forward_strand_smer, forward_strand, kmers - smers + 1, t);
+
+        auto reverse_strand = std::forward<urng_t>(urange) | seqan3::views::complement
+                                                           | std::views::reverse
+                                                           | seqan3::views::kmer_hash(seqan3::shape(seqan3::ungapped(kmers)))
+                                                           | std::views::transform([seed] (uint64_t i)
+                                                                                  {return i ^ seed.get();})
+                                                           | std::views::reverse;
+
+        auto reverse_strand_smer = std::forward<urng_t>(urange) | seqan3::views::complement
+                                                                | std::views::reverse
+                                                                | seqan3::views::kmer_hash(seqan3::shape(seqan3::ungapped(smers)))
+                                                                | std::views::transform([seed] (uint64_t i)
+                                                                                       {return i ^ seed.get();})
+                                                                | std::views::reverse;
+
+        return seqan3::detail::syncmer_view<decltype(forward_strand_smer), decltype(forward_strand), decltype(reverse_strand_smer), decltype(reverse_strand)>
+                                            (forward_strand_smer, forward_strand, reverse_strand_smer, reverse_strand, kmers - smers + 1, pos);
     }
 };
 
@@ -102,13 +116,12 @@ struct syncmer_hash_fn
  */
 
 /*!\brief                    Computes syncmers for a range with given k-mer and s-mer sizes, and seed.
- * \tparam open              Flag, if true open syncmers are used, otherwise closed syncmers are used.
  * \tparam urng_t            The type of the range being processed. See below for requirements.
  *                           [template parameter is omitted in pipe notation]
  * \param[in] urange         The range being processed. [parameter is omitted in pipe notation]
  * \param[in] kmers          The k-mer size to be used.
  * \param[in] smers          The s-mer size (s<k) to be used.
- * \param[in] t              The offset for the position of the smallest s-mer.
+ * \param[in] positions   The position that determines if an element is a syncmer.
  * \param[in] seed           The seed used to skew the hash values. Default: 0x8F3F73B5CF1C9ADE.
  * \returns                  A range of `size_t` where each value is the syncmer of the underlying range.
  *                           See below for the properties of the returned range.
@@ -142,7 +155,5 @@ struct syncmer_hash_fn
  * \hideinitializer
  *
  */
-template <bool open>
-inline constexpr auto syncmer_hash = seqan3::detail::syncmer_hash_fn<open>{};
-
+inline constexpr auto syncmer_hash = seqan3::detail::syncmer_hash_fn{};
 //!\}

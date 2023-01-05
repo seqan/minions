@@ -21,7 +21,7 @@ TEST_F(cli_test, fail_no_argument)
     {
         "Parsing error. You either forgot or misspelled the subcommand! Please "
         "specify which sub-program you want to use: one of [accuracy,counts,"
-        "coverage,match,speed,unique]. Use -h/--help for more information.\n"
+        "distance,match,speed,unique]. Use -h/--help for more information.\n"
 
     };
     EXPECT_NE(result.exit_code, 0);

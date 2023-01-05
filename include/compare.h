@@ -44,7 +44,7 @@ struct strobemer_arguments
 struct syncmer_arguments
 {
     // Needed for syncmers
-    bool closed;
+    std::vector<int> positions;
     unsigned int t;
 };
 
@@ -122,11 +122,11 @@ void do_accuracy(accuracy_arguments & args);
  */
 void do_counts(std::vector<std::filesystem::path> sequence_files, range_arguments & args);
 
-/*! \brief Function, comparing the methods in regard of their coverage.
+/*! \brief Function, comparing the methods in regard of their distance.
  *  \param sequence_file A sequence file.
  *  \param args The arguments about the view to be used.
  */
-void do_coverage(std::filesystem::path sequence_file, range_arguments & args);
+void do_distance(std::filesystem::path sequence_file, range_arguments & args);
 
 /*! \brief Function, counting number of matches between two sequences.
  *  \param sequence_file1 The first sequence file.

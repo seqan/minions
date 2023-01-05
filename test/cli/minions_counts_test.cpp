@@ -64,7 +64,7 @@ TEST_F(cli_test, minstrobers)
 
 TEST_F(cli_test,closedsyncmer)
 {
-    cli_test_result result = execute_app("minions counts --method syncmer --closed -t 0 -k 19 -w 3", data("example1.fasta"));
+    cli_test_result result = execute_app("minions counts --method syncmer --pos 0 --pos 16 -k 19 -w 3", data("example1.fasta"));
     EXPECT_EQ(result.exit_code, 0);
     EXPECT_EQ(result.out, std::string{});
     EXPECT_EQ(result.err, std::string{});
@@ -73,7 +73,7 @@ TEST_F(cli_test,closedsyncmer)
 
 TEST_F(cli_test, opensyncmer)
 {
-    cli_test_result result = execute_app("minions counts --method syncmer -t 0 -k 19 -w 3", data("example1.fasta"));
+    cli_test_result result = execute_app("minions counts --method syncmer --pos 0 -k 19 -w 3", data("example1.fasta"));
     EXPECT_EQ(result.exit_code, 0);
     EXPECT_EQ(result.out, std::string{});
     EXPECT_EQ(result.err, std::string{});
