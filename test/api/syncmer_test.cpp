@@ -15,6 +15,7 @@
 
 #include "../../lib/seqan3/test/unit/range/iterator_test_template.hpp"
 
+#include "randstrobe_hash.hpp"
 #include "syncmer.hpp"
 
 using seqan3::operator""_dna4;
@@ -144,4 +145,26 @@ TEST_F(syncmer_test, combinability)
     auto v3_2 = text3 | start_at_a | kmer_view;
 
     EXPECT_RANGE_EQ(result3_open_start, (seqan3::detail::syncmer_view<decltype(v3), decltype(v3_2)>(v3, v3_2, 4, positions_open)));
+}
+
+TEST_F(syncmer_test, filter)
+{
+    auto filter = [](uint64_t i) { return syncmer_filter(i, 2, 4, {0}, 0);};
+    auto v1 = text1 | kmer_view | std::views::filter(filter);
+    auto v3 = text3 | kmer_view | std::views::filter(filter);
+
+    EXPECT_RANGE_EQ(result1, v1);
+    EXPECT_RANGE_EQ(result3_open, v3);
+
+    auto filter2 = [](uint64_t i) { return syncmer_filter(i, 2, 8, {0}, 0);};
+    std::vector<seqan3::dna4> text11{"AAAAAAAAAAAA"_dna4};
+    static constexpr auto randstrobe_view = randstrobe2_hash(seqan3::ungapped{4}, 1, 6, seqan3::seed{0});
+    std::vector<uint64_t> r1 = text11 | randstrobe_view;
+    std::vector<uint64_t> r3 = text3 | randstrobe_view;
+
+    result_t result_r1{0,0,0};
+    result_t result_r3{6683,1637,357,};
+
+    EXPECT_RANGE_EQ(result_r1, (r1 | std::views::filter(filter2)));
+    EXPECT_RANGE_EQ(result_r3, (r3 | std::views::filter(filter2)));
 }

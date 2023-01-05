@@ -15,6 +15,7 @@
 #include <seqan3/std/algorithm>
 #include <deque>
 
+#include <seqan3/alphabet/nucleotide/dna4.hpp>
 #include <seqan3/core/detail/empty_type.hpp>
 #include <seqan3/core/range/detail/adaptor_from_functor.hpp>
 #include <seqan3/core/range/type_traits.hpp>
@@ -686,7 +687,7 @@ struct syncmer_fn
      *                        std::ranges::forward_range.
      * \param[in] window_size The number of elements in one window (should be window size - subwindow size + 1).
      * \param[in] pos	      The position that determines if an element is a syncmer.
-     
+
      * \returns  A range of converted values.
      */
     template <std::ranges::range urng1_t, std::ranges::range urng2_t, std::ranges::range urng3_t, std::ranges::range urng4_t>
@@ -755,3 +756,64 @@ namespace seqan3::views
 inline constexpr auto syncmer = detail::syncmer_fn{};
 
 } // namespace seqan3::views
+
+using seqan3::operator""_dna4;
+
+seqan3::dna4 transform_to_dna(uint64_t letter)
+{
+    switch (letter)
+    {
+       case 0:
+          return 'A'_dna4;
+          break;
+       case 1:
+          return 'C'_dna4;
+          break;
+       case 2:
+          return 'G'_dna4;
+          break;
+       case 3:
+          return 'T'_dna4;
+          break;
+      default:
+         return 'A'_dna4;
+
+    }
+}
+
+bool syncmer_filter(uint64_t seq, uint64_t smer, uint64_t kmer, std::vector<int> const positions, uint64_t const seed = 0x8F3F73B5CF1C9ADE)
+{
+    uint64_t mod{};
+    seq = seq ^ seed;
+    std::deque<seqan3::dna4> text{};
+
+    while(seq > 4)
+    {
+        mod = seq % 4;
+        seq = seq/4;
+        text.push_front(transform_to_dna(mod));
+    }
+    mod = seq % 4;
+    text.push_front(transform_to_dna(mod));
+
+    while(text.size() < kmer)
+    {
+        text.push_front(transform_to_dna(0));
+    }
+
+    auto smers = text | seqan3::views::kmer_hash(seqan3::shape(seqan3::ungapped(smer)));
+    size_t min_pos{};
+    uint64_t min = std::numeric_limits<uint64_t>::max();
+    int i{0};
+    for (auto && hash : smers)
+    {
+        if (hash < min)
+        {
+            min = hash;
+            min_pos = i;
+        }
+        ++i;
+    }
+
+    return (std::find(positions.begin(), positions.end(), min_pos) != positions.end());
+}

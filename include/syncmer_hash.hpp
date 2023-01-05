@@ -63,10 +63,10 @@ struct syncmer_hash_fn
      */
     template <std::ranges::range urng_t>
     auto operator()(urng_t && urange,
-                              size_t const smers,
-			                  size_t const kmers,
-			                  std::vector<int> const pos,
-                              seed const seed = seqan3::seed{0x8F3F73B5CF1C9ADE}) const
+                    size_t const smers,
+			        size_t const kmers,
+			        std::vector<int> const pos,
+                    seed const seed = seqan3::seed{0x8F3F73B5CF1C9ADE}) const
     {
         static_assert(std::ranges::viewable_range<urng_t>,
             "The range parameter to views::syncmer_hash cannot be a temporary of a non-view range.");
