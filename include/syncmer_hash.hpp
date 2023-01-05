@@ -89,8 +89,23 @@ struct syncmer_hash_fn
                                                  | std::views::transform([seed] (uint64_t i)
                                                           {return i ^ seed.get();});
 
-        return seqan3::detail::syncmer_view<decltype(forward_strand_smer), decltype(forward_strand)>
-                                            (forward_strand_smer, forward_strand, kmers - smers + 1, pos);
+
+        auto reverse_strand = std::forward<urng_t>(urange) | seqan3::views::complement
+                                                           | std::views::reverse
+                                                           | seqan3::views::kmer_hash(seqan3::shape(seqan3::ungapped(kmers)))
+                                                           | std::views::transform([seed] (uint64_t i)
+                                                                                  {return i ^ seed.get();})
+                                                           | std::views::reverse;
+
+        auto reverse_strand_smer = std::forward<urng_t>(urange) | seqan3::views::complement
+                                                                | std::views::reverse
+                                                                | seqan3::views::kmer_hash(seqan3::shape(seqan3::ungapped(smers)))
+                                                                | std::views::transform([seed] (uint64_t i)
+                                                                                       {return i ^ seed.get();})
+                                                                | std::views::reverse;
+
+        return seqan3::detail::syncmer_view<decltype(forward_strand_smer), decltype(forward_strand), decltype(reverse_strand_smer), decltype(reverse_strand)>
+                                            (forward_strand_smer, forward_strand, reverse_strand_smer, reverse_strand, kmers - smers + 1, pos);
     }
 };
 
