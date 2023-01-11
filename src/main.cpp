@@ -35,9 +35,9 @@ void read_range_arguments_strobemers(seqan3::argument_parser & parser, range_arg
     parser.add_option(args.w_min, '\0', "w-min", "Define w-min for strobemers.");
     parser.add_option(args.w_max, '\0', "w-max", "Define w-ax for strobemers.");
     parser.add_option(args.order, '\0', "order", "Define order for strobemers.", seqan3::option_spec::standard, seqan3::arithmetic_range_validator{2,3});
-    parser.add_flag(args.rand, '\0', "randstrobemers", "If randstrobemers should be calculated.");
+    parser.add_flag(args.rand, '\0', "rand", "If randstrobemers should be calculated.");
     parser.add_flag(args.hybrid, '\0', "hybrid", "If hybridstrobemers should be calculated.");
-    parser.add_flag(args.minstrobers, '\0', "minstrobers", "If minstrobemers should be calculated.");
+    parser.add_flag(args.minstrobers, '\0', "min", "If minstrobemers should be calculated.");
 }
 
 void read_range_arguments_syncmers(seqan3::argument_parser & parser, range_arguments & args)
