@@ -194,7 +194,7 @@ struct randstrobe3_hash_fn
                                                              | std::views::transform([seed] (uint64_t i)
                                                                                     {return i ^ seed.get();});
 
-        auto rev_randstrobes =  std::views::reverse(seqan3::detail::randstrobe_view<decltype(rev_hashed_values), 3>(rev_hashed_values, window_min + shape.size() - 1, window_len - shape.size() + 1));
+        auto rev_randstrobes = seqan3::detail::randstrobe_view<decltype(rev_hashed_values), 3>(rev_hashed_values, window_min + shape.size() - 1, window_len - shape.size() + 1);
         auto reverse = std::views::transform(rev_randstrobes, [multiplicator, multiplicator2] (std::vector<uint64_t> i)
                          {return combine_strobes(multiplicator, multiplicator2, i[0], i[1], i[2]);});
 
