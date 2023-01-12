@@ -366,19 +366,19 @@ private:
             unsigned int end_result = (*second_iterator + *first_iterator)%5;
             //window_values.push_back(end_result);
             //second_it_values.push_back(*second_iterator);
-            window_vector.pushback(std::make_pair(end_result, *second_iterator));
+            window_vector.push_back(std::make_pair(end_result, *second_iterator));
             ++second_iterator;
         }
        // window_values.push_back(end_result);   // von window min bis window size, ohne Stern second_iterator
        // second_it__values.push_back(*second_iterator);
 
-        window_vector.pushback(std::make_pair(end_result, *second_iterator));
+        window_vector.push_back(std::make_pair(end_result, *second_iterator));
     
         for (int i = 1u; i < window_size + 2; ++i){ 
             auto minimum_it = std::ranges::min_element(window_vector[i].first, std::less_equal<value_t>{});
-            cout << *minimum_it << endl;
+            std::cout << *minimum_it << std::endl;
             if(window_vector[i].first == *minimum_it){
-            auto randstrobe_it = window_vector[i].second;
+            int randstrobe_it = window_vector[i].second;
             randstrobe_value = {*first_iterator, *randstrobe_it};
             randstrobe_position_offset = std::distance(std::begin(window_vector[i].second), randstrobe_it);
             }
@@ -418,7 +418,7 @@ private:
         window_vector[0].second.pop_front();
 
 
-        window_vector.pushback(std::make_pair((sw_new_value + new_value)%5, *second_iterator));
+        window_vector.push_back(std::make_pair((sw_new_value + new_value)%5, *second_iterator));
 
 
        // auto minimum_1 = std::ranges::min_element(window_values.begin(), window_values.end());
