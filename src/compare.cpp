@@ -494,7 +494,7 @@ void speed(std::vector<std::filesystem::path> sequence_files, urng_t input_view,
                start = std::chrono::high_resolution_clock::now();
                get_strobemers<strobemers>(seq, args, strobes_vector);
                for (auto & t : strobes_vector) // iterate over the strobemer tuples
-                   count++;
+                   count += std::get<0>(t);
                end = std::chrono::high_resolution_clock::now();
                duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
                speed_results.push_back(duration.count());
@@ -507,10 +507,11 @@ void speed(std::vector<std::filesystem::path> sequence_files, urng_t input_view,
            {
                start = std::chrono::high_resolution_clock::now();
                for (auto && hash : seq | input_view)
-                   count++;
+                   count += hash; // Store hash value to enforce evaluation of it
                end = std::chrono::high_resolution_clock::now();
                duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
                speed_results.push_back(duration.count());
+
            }
        }
    }
@@ -518,9 +519,9 @@ void speed(std::vector<std::filesystem::path> sequence_files, urng_t input_view,
    double mean_speed, stdev_speed;
    get_mean_and_var(speed_results, mean_speed, stdev_speed);
 
-   // Store speed
+   // Store speed, the count value is stored so the compiler can not optimize the speed by not calculating the hash values
    outfile.open(std::string{args.path_out} + method_name + "_speed.out");
-   outfile << method_name << "\t" << *std::min_element(speed_results.begin(), speed_results.end()) << "\t" << mean_speed << "\t" << stdev_speed << "\t" << *std::max_element(speed_results.begin(), speed_results.end()) << "\n";
+   outfile << method_name << "\t" << *std::min_element(speed_results.begin(), speed_results.end()) << "\t" << mean_speed << "\t" << stdev_speed << "\t" << *std::max_element(speed_results.begin(), speed_results.end()) << "\t" << count << "\n";
    outfile.close();
 }
 

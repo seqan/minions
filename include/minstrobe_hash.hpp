@@ -171,7 +171,7 @@ struct minstrobe3_hash_fn
         static_assert(semialphabet<std::ranges::range_reference_t<urng_t>>,
             "The range parameter to views::minstrobe_hash must be over elements of seqan3::semialphabet.");
 
-        if (window_min < 1 || window_len < window_min)
+        if (window_len < window_min)
             throw std::invalid_argument{"The chosen parameters are not valid. "
                                         "Please choose values greater than 0 and a window_len greater than window_min."};
 
