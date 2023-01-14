@@ -27,13 +27,13 @@ void all_arguments(seqan3::argument_parser & parser, range_arguments & args)
 {
     parser.add_option(args.path_out, 'o', "out",
                       "Directory, where output files should be saved.");
-    parser.add_option(args.k_size, 'k', "kmer-size", "Define kmer size.");
+    parser.add_option(args.k_size, 'k', "kmer-size", "Define kmer size. For strobemer, this should be the size for one strobe.");
 }
 
 void read_range_arguments_strobemers(seqan3::argument_parser & parser, range_arguments & args)
 {
     parser.add_option(args.w_min, '\0', "w-min", "Define w-min for strobemers.");
-    parser.add_option(args.w_max, '\0', "w-max", "Define w-ax for strobemers.");
+    parser.add_option(args.w_max, '\0', "w-max", "Define w-max for strobemers.");
     parser.add_option(args.order, '\0', "order", "Define order for strobemers.", seqan3::option_spec::standard, seqan3::arithmetic_range_validator{2,3});
     parser.add_flag(args.rand, '\0', "rand", "If randstrobemers should be calculated.");
     parser.add_flag(args.hybrid, '\0', "hybrid", "If hybridstrobemers should be calculated.");
@@ -190,7 +190,7 @@ int match(seqan3::argument_parser & parser)
     std::string method{};
     parser.add_option(method, '\0', "method", "Pick your method.",
                       seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer"});
-    parser.add_flag(args.lib_implementation, '\0', "library", "Set, if you want to use the strobemer implementation from Sahlin.");
+    parser.add_flag(args.lib_implementation, '\0', "original", "Set, if you want to use the strobemer implementation from Sahlin.");
 
     read_range_arguments_minimiser(parser, args);
     read_range_arguments_strobemers(parser, args);

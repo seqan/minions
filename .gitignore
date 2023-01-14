@@ -40,3 +40,7 @@ src/snakemake/
 !src/snakemake/genmap/count/plot_count_genomes.py
 !src/snakemake/genmap/Snakefile
 !src/snakemake/genmap/genmap_uniqueness.py
+
+!src/snakemake/speed/README
+!src/snakemake/speed/Snakefile
+!src/snakemake/speed/plot_speed.py

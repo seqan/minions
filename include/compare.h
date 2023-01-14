@@ -37,7 +37,7 @@ struct strobemer_arguments
     bool rand;
     bool hybrid;
     bool minstrobers;
-    unsigned int order;
+    unsigned int order{2};
     bool lib_implementation = false; // Set to true, if implementation of strobemer library should be used.
 };
 

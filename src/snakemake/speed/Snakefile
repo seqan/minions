@@ -1,0 +1,75 @@
+rule all:
+    input: "Speed_all.png",
+           "Speed_all8.png",
+           "Speed_kmers.png",
+           "Speed_strobemers.png",
+           "Speed_strobemers4.png",
+           "Speed_strobemers8.png"
+
+rule plot:
+    output:
+        "Speed_all.png",
+        "Speed_all8.png",
+        "Speed_kmers.png",
+        "Speed_strobemers.png",
+        "Speed_strobemers4.png",
+        "Speed_strobemers8.png"
+    input:
+        [shape + "_kmer_hash_16_speed.out" for shape in ["0", "36607", "51755"]],
+        [shape + "_kmer_hash_18_speed.out" for shape in ["0","233469", "246365"]],
+        [shape + "_kmer_hash_20_speed.out" for shape in ["0", "933855", "975475"]],
+        [shape + "_kmer_hash_22_speed.out" for shape in ["0", "4192891", "3669089"]],
+        [shape + "_kmer_hash_24_speed.out" for shape in ["0", "14548847", "13954519"]],
+        [shape + "_kmer_hash_26_speed.out" for shape in ["0", "14351359", "16503191"]],
+        [shape + "_kmer_hash_28_speed.out" for shape in ["0", "3758077695", "241004285"]],
+        [shape + "_kmer_hash_30_speed.out" for shape in ["0", "805287931", "1004529051"]],
+        [shape + "_kmer_hash_32_speed.out" for shape in ["0", "3169577727", "241004285"]],
+        # 4 "gaps"
+        ["minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17)],
+        ["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17)],
+        ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17)],
+        ["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in [9,12,15]],
+        # 8 "gaps"
+        ["minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17)],
+        ["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17)],
+        ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17)],
+        ["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in [9,12,15]]
+    shell: "python3 plot_speed.py"
+
+rule download_example_Data:
+    output:
+        "../results/simulated_10000.fa.gz"
+    shell:
+        """wget "https://ftp.imp.fu-berlin.de/pub/darvish/simulated_10000.fa.gz" -O ../results/simulated_10000.fa.gz"""
+
+rule speed_kmer:
+    input:
+        "../results/simulated_10000.fa.gz"
+    output:
+        "{shape}_kmer_hash_{kmer_size}_speed.out"
+    shell:
+        "minions speed --method kmer -k {wildcards.kmer_size} --shape {wildcards.shape} -o {wildcards.shape}_ {input}"
+
+rule speed_minstrobemer:
+    input:
+        "../results/simulated_10000.fa.gz"
+    output:
+        "minstrobemers_{kmer_size}_2_{wmin}_{wmax}_speed.out"
+    shell:
+        "minions speed --method strobemer --min -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --library --order 2 {input}"
+
+rule speed_hybridstrobemer:
+    input:
+        "../results/simulated_10000.fa.gz"
+    output:
+        "hybridstrobemers_{kmer_size}_2_{wmin}_{wmax}_speed.out"
+    shell:
+        "minions speed --method strobemer --hybrid -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --library --order 2 {input}"
+
+rule speed_randstrobemer:
+    input:
+        "../results/simulated_10000.fa.gz"
+    output:
+        "randstrobemers_{kmer_size}_{order}_{wmin}_{wmax}_speed.out"
+    shell:
+        "minions speed --method strobemer --rand -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --library --order {wildcards.order} {input}"
