@@ -25,15 +25,15 @@ rule plot:
         [shape + "_kmer_hash_30_speed.out" for shape in ["0", "805287931", "1004529051"]],
         [shape + "_kmer_hash_32_speed.out" for shape in ["0", "3169577727", "241004285"]],
         # 4 "gaps"
-        ["minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17)],
-        ["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17)],
-        ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17)],
-        ["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in [9,12,15]],
+        ["minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(12+k)+"_speed.out" for k in range(8,17)],
+        ["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(12+k)+"_speed.out" for k in range(8,17)],
+        ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(12+k)+"_speed.out" for k in range(8,17)],
+        ["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(12+k)+"_speed.out" for k in [9,12,15]],
         # 8 "gaps"
-        ["minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17)],
-        ["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17)],
-        ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17)],
-        ["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in [9,12,15]]
+        ["minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(16+k)+"_speed.out" for k in range(8,17)],
+        ["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(16+k)+"_speed.out" for k in range(8,17)],
+        ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(16+k)+"_speed.out" for k in range(8,17)],
+        ["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(16+k)+"_speed.out" for k in [9,12,15]]
     shell: "python3 plot_speed.py"
 
 rule download_example_Data:

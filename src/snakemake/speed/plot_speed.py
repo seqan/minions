@@ -22,14 +22,14 @@ shapes4 = ["36607","933855","14548847","3758077695","3169577727"]
 gapped4_kmers = read_file([], [shapes4[i] + "_kmer_hash_"+str(k_size[i])+"_speed.out" for i in range(len(k_size))])
 shapes8 = ["51755","975475","13954519","241004285","241004285"]
 gapped8_kmers = read_file([], [shapes8[i] + "_kmer_hash_"+str(k_size[i])+"_speed.out" for i in range(len(k_size))])
-minstrobemers = read_file([], ["minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17,2)])
-hybridstrobemers = read_file([],["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17,2)])
-randstrobemers2 = read_file([], ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17,2)])
-randstrobemers3 = read_file([],["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in [9,12,15]])
-minstrobemers8 = read_file([], ["minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17,2)])
-hybridstrobemers8 = read_file([],["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17,2)])
-randstrobemers28 = read_file([], ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17,2)])
-randstrobemers38 = read_file([],["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in [9,12,15]])
+minstrobemers = read_file([], ["minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(12+k)+"_speed.out" for k in range(8,17,2)])
+hybridstrobemers = read_file([],["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(12+k)+"_speed.out" for k in range(8,17,2)])
+randstrobemers2 = read_file([], ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(12+k)+"_speed.out" for k in range(8,17,2)])
+randstrobemers3 = read_file([],["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(12+k)+"_speed.out" for k in [9,12,15]])
+minstrobemers8 = read_file([], ["minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(16+k)+"_speed.out" for k in range(8,17,2)])
+hybridstrobemers8 = read_file([],["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(16+k)+"_speed.out" for k in range(8,17,2)])
+randstrobemers28 = read_file([], ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(16+k)+"_speed.out" for k in range(8,17,2)])
+randstrobemers38 = read_file([],["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(16+k)+"_speed.out" for k in [9,12,15]])
 
 # Plot comparison between k-mers
 fig = plt.figure()
@@ -137,14 +137,14 @@ pos = [x+0.25 for x in range(len(k_size))]
 pos_order3 = [1.25,4.25,7.25]
 strobe_range = [k for k in range(8,17)]
 
-minstrobemers = read_file([], ["minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in strobe_range])
-hybridstrobemers = read_file([],["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in strobe_range])
-randstrobemers2 = read_file([], ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in strobe_range])
-randstrobemers3 = read_file([],["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in [9,12,15]])
-minstrobemers8 = read_file([], ["minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in strobe_range])
-hybridstrobemers8 = read_file([],["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in strobe_range])
-randstrobemers28 = read_file([], ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in strobe_range])
-randstrobemers38 = read_file([],["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in [9,12,15]])
+minstrobemers = read_file([], ["minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(12+k)+"_speed.out" for k in strobe_range])
+hybridstrobemers = read_file([],["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(12+k)+"_speed.out" for k in strobe_range])
+randstrobemers2 = read_file([], ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(12+k)+"_speed.out" for k in strobe_range])
+randstrobemers3 = read_file([],["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(12+k)+"_speed.out" for k in [9,12,15]])
+minstrobemers8 = read_file([], ["minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(16+k)+"_speed.out" for k in strobe_range])
+hybridstrobemers8 = read_file([],["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(16+k)+"_speed.out" for k in strobe_range])
+randstrobemers28 = read_file([], ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(16+k)+"_speed.out" for k in strobe_range])
+randstrobemers38 = read_file([],["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(16+k)+"_speed.out" for k in [9,12,15]])
 
 fig = plt.figure()
 X = np.arange(len(k_size))
