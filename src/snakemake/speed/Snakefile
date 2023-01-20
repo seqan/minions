@@ -56,7 +56,7 @@ rule speed_minstrobemer:
     output:
         "minstrobemers_{kmer_size}_2_{wmin}_{wmax}_speed.out"
     shell:
-        "minions speed --method strobemer --min -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --library --order 2 {input}"
+        "minions speed --method strobemer --min -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --original --order 2 {input}"
 
 rule speed_hybridstrobemer:
     input:
@@ -64,7 +64,7 @@ rule speed_hybridstrobemer:
     output:
         "hybridstrobemers_{kmer_size}_2_{wmin}_{wmax}_speed.out"
     shell:
-        "minions speed --method strobemer --hybrid -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --library --order 2 {input}"
+        "minions speed --method strobemer --hybrid -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --original --order 2 {input}"
 
 rule speed_randstrobemer:
     input:
@@ -72,4 +72,4 @@ rule speed_randstrobemer:
     output:
         "randstrobemers_{kmer_size}_{order}_{wmin}_{wmax}_speed.out"
     shell:
-        "minions speed --method strobemer --rand -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --library --order {wildcards.order} {input}"
+        "minions speed --method strobemer --rand -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --original --order {wildcards.order} {input}"
