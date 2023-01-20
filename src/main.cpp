@@ -247,24 +247,16 @@ int speed(seqan3::argument_parser & parser)
 
 int unique(seqan3::argument_parser & parser)
 {
-    range_arguments args{};
-    std::vector<std::filesystem::path> sequence_files{};
-    parser.info.short_description = "Calculates the percentage of unique submers of a method for the given sequence files.";
-    parser.add_positional_option(sequence_files,
-                                 "Please provide at least one sequence file.");
-    all_arguments(parser, args);
-    std::string method{};
-    parser.add_option(method, '\0', "method", "Pick your method.",
-                      seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer"});
-    parser.add_flag(args.lib_implementation, '\0', "library", "Set, if you want to use the strobemer implementation from Sahlin.");
-
-    read_range_arguments_minimiser(parser, args);
-    read_range_arguments_strobemers(parser, args);
+    std::filesystem::path oname{};
+    std::vector<std::filesystem::path> input_files{};
+    parser.info.short_description = "Calculates the percentage of unique submers of a method for the given files.";
+    parser.add_positional_option(input_files,
+                                 "Please provide at least one input file. An input file is a count file obtained by minions count.");
+    parser.add_option(oname, 'o', "out", "Name of the output file.");
 
     try
     {
         parser.parse();
-        parsing(args);
     }
     catch (seqan3::argument_parser_error const & ext)                     // catch user errors
     {
@@ -272,8 +264,7 @@ int unique(seqan3::argument_parser & parser)
         return -1;
     }
 
-    string_to_methods(method, args.name);
-    unique(sequence_files, create_name(args), args);
+    unique(input_files, oname);
 
     return 0;
 }

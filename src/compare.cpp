@@ -536,16 +536,17 @@ uint64_t count_singletons(robin_hood::unordered_node_map<uint64_t, uint16_t> & h
     return singletons;
 }
 
-void unique(std::vector<std::filesystem::path> sequence_files, std::string method_name, range_arguments & args)
+// Input files should be the output files from count
+void unique(std::vector<std::filesystem::path> input_files, std::filesystem::path oname)
 {
    std::ifstream infile;
    std::ofstream outfile;
-   outfile.open(std::string{args.path_out} + method_name + "_unique.out");
+   outfile.open(oname);
 
-   for (int i = 0; i < sequence_files.size(); ++i)
+   for (int i = 0; i < input_files.size(); ++i)
    {
        robin_hood::unordered_node_map<uint64_t, uint16_t> hash_table{};
-       infile.open(std::string{args.path_out} + method_name + "_"+ std::string{sequence_files[i].stem()} + "_counts.out", std::ios::binary);
+       infile.open(input_files[i], std::ios::binary);
        uint64_t submer;
        uint16_t submer_count;
        while(infile.read((char*)&submer, sizeof(submer)))
@@ -555,7 +556,7 @@ void unique(std::vector<std::filesystem::path> sequence_files, std::string metho
        }
        infile.close();
 
-       outfile << sequence_files[i].stem() << "\t" << (count_singletons(hash_table) * 100.0)/hash_table.size() << "\n";
+       outfile << input_files[i].stem() << "\t" << (count_singletons(hash_table) * 100.0)/hash_table.size() << "\n";
 
    }
    outfile.close();

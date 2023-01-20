@@ -141,9 +141,8 @@ void do_match(std::filesystem::path sequence_file1, std::filesystem::path sequen
  */
 void do_speed(std::vector<std::filesystem::path> sequence_files, range_arguments & args);
 
-/*! \brief Function that calculates the uniqueness of submers in given sequence files.
- *  \param sequence_files A vector of sequence files.
- *  \param method_name The name of the method.
- *  \param args The arguments about the view to be used.
+/*! \brief Function that calculates the uniqueness of submers in given files.
+ *  \param input_files A vector of input files. An input file is a count file obtained by counts.
+ *  \param oname The name of the output file.
  */
-void unique(std::vector<std::filesystem::path> sequence_files, std::string method_name, range_arguments & args);
+void unique(std::vector<std::filesystem::path> input_files, std::filesystem::path oname);
