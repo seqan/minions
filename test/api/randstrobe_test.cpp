@@ -37,7 +37,7 @@ using order3_iterator_type = std::ranges::iterator_t<decltype(seqan3::detail::ra
 template <>
 struct iterator_fixture<iterator_type> : public ::testing::Test
 {
-    using iterator_tag = std::random_access_iterator_tag;
+    using iterator_tag = std::forward_iterator_tag;
     static constexpr bool const_iterable = true;
 
     seqan3::dna4_vector text{"ACGGCGACGTTTAG"_dna4};
@@ -51,7 +51,7 @@ struct iterator_fixture<iterator_type> : public ::testing::Test
 template <>
 struct iterator_fixture<order3_iterator_type> : public ::testing::Test
 {
-    using iterator_tag = std::random_access_iterator_tag;
+    using iterator_tag = std::forward_iterator_tag;
     static constexpr bool const_iterable = true;
 
     seqan3::dna4_vector text{"ACGGCGACGTTTAG"_dna4};
@@ -94,13 +94,6 @@ protected:
     result_t result3_ungapped_start{{152,191},{97,252},{134,191}};
     result_t result3_gapped_start{{8,11},{5,12},{10,7}};
 
-    // Reverse complement: ctaaacgtcgccgt
-    //                          kmers: ctaa,     taaa,     aaac,     aacg,     acgt,     cgtc,     gtcg, tcgc, cgcc, gccg, ccgt
-    //                ungapped Hashes:  112,      192,        1,        6,       27,      109,      182,  217,  101,  150,  91
-    //                  gapped Hashes:    4,       12,        1,        2,        3,        5,       10,   13,    5,   10,   7
-    result_t result3_rev_comp_ungapped{{112,1},{192,182},{1,27},{6,109},{27,101},{109,150}};
-    result_t result3_rev_comp_gapped{{4,1},{12,5},{1,3},{2,5},{3,13},{5,13}};
-
     result_t result3_1{{0,0,0},{0,0,0},{0,0,0}}; // Same result for ungapped and gapped
 
     // ACGGCGACGTTTAG
@@ -118,7 +111,8 @@ void compare_types(adaptor_t v)
 {
     EXPECT_TRUE(std::ranges::input_range<decltype(v)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v)>);
-    EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v)>);
+    EXPECT_FALSE(std::ranges::bidirectional_range<decltype(v)>);
+    EXPECT_FALSE(std::ranges::random_access_range<decltype(v)>);
     EXPECT_TRUE(std::ranges::view<decltype(v)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(v)>);
     EXPECT_TRUE(seqan3::const_iterable_range<decltype(v)>);
@@ -132,13 +126,9 @@ TYPED_TEST(randstrobe_view_properties_test, concepts)
 
     auto v = text | kmer_view | randstrobe_view;
     compare_types(v);
-    EXPECT_EQ(std::ranges::random_access_range<decltype(text)>, std::ranges::random_access_range<decltype(v)>);
-    EXPECT_EQ(std::ranges::random_access_range<decltype(text)>, std::ranges::common_range<decltype(v)>);
 
     auto v2 = seqan3::detail::randstrobe_view<decltype(text | kmer_view),3>(text | kmer_view,1,3);
     compare_types(v2);
-    EXPECT_EQ(std::ranges::random_access_range<decltype(text)>, std::ranges::random_access_range<decltype(v2)>);
-    EXPECT_EQ(std::ranges::random_access_range<decltype(text)>, std::ranges::common_range<decltype(v2)>);
 }
 
 TYPED_TEST(randstrobe_view_properties_test, different_inputs_kmer_hash)
@@ -163,7 +153,6 @@ TEST_F(randstrobe_test, ungapped_kmer_hash)
 {
     EXPECT_RANGE_EQ(result1, text1 | kmer_view | randstrobe_view);
     EXPECT_RANGE_EQ(result3_ungapped, text3 | kmer_view | randstrobe_view);
-    EXPECT_RANGE_EQ(result3_rev_comp_ungapped, text3 | seqan3::views::complement  | std::views::reverse | kmer_view | randstrobe_view);
 
     EXPECT_RANGE_EQ(result3_1, (seqan3::detail::randstrobe_view<decltype(text1 | kmer_view),3>(text1 | kmer_view,1,3)));
     EXPECT_RANGE_EQ(result3_3_ungapped, (seqan3::detail::randstrobe_view<decltype(text3 | kmer_view),3>(text3 | kmer_view,1,3)));
@@ -173,7 +162,6 @@ TEST_F(randstrobe_test, gapped_kmer_hash)
 {
     EXPECT_RANGE_EQ(result1, text1 | gapped_kmer_view | randstrobe_view);
     EXPECT_RANGE_EQ(result3_gapped, text3 | gapped_kmer_view | randstrobe_view);
-    EXPECT_RANGE_EQ(result3_rev_comp_gapped, text3 | seqan3::views::complement  | std::views::reverse | gapped_kmer_view | randstrobe_view);
 
     EXPECT_RANGE_EQ(result3_1, (seqan3::detail::randstrobe_view<decltype(text1 | gapped_kmer_view),3>(text1 | gapped_kmer_view,1,3)));
     EXPECT_RANGE_EQ(result3_3_gapped, (seqan3::detail::randstrobe_view<decltype(text3 | gapped_kmer_view),3>(text3 | gapped_kmer_view,1,3)));
@@ -181,9 +169,6 @@ TEST_F(randstrobe_test, gapped_kmer_hash)
 
 TEST_F(randstrobe_test, combinability)
 {
-    EXPECT_RANGE_EQ(std::views::reverse(result3_rev_comp_ungapped), std::views::reverse(text3 | seqan3::views::complement  | std::views::reverse | kmer_view | randstrobe_view));
-    EXPECT_RANGE_EQ(std::views::reverse(result3_rev_comp_gapped), std::views::reverse(text3 | seqan3::views::complement  | std::views::reverse | gapped_kmer_view | randstrobe_view));
-
     auto start_at_a = std::views::drop(3);
     EXPECT_RANGE_EQ(result3_ungapped_start, text3 | start_at_a | kmer_view | randstrobe_view);
     EXPECT_RANGE_EQ(result3_gapped_start, text3 | start_at_a | gapped_kmer_view | randstrobe_view);

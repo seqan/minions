@@ -159,52 +159,8 @@ public:
      * No-throw guarantee.
      */
     sentinel end() const
-    //!\cond
-        requires (!std::ranges::random_access_range<urng_t>)
-    //!\endcond
     {
         return {};
-    }
-
-    /*!\brief Returns an iterator to the element following the last element of the range.
-     * \returns Iterator to the end.
-     *
-     * ### Complexity
-     *
-     * Constant.
-     *
-     * ### Exceptions
-     *
-     * No-throw guarantee.
-     */
-    auto end() noexcept
-    //!\cond
-        requires std::ranges::random_access_range<urng_t>
-    //!\endcond
-    {
-        // If the underlying range supports random access, then we can just jump to the end.
-        return begin()+size();
-
-    }
-
-    /*!\brief Returns an iterator to the element following the last element of the range.
-     * \returns Iterator to the end.
-     *
-     * ### Complexity
-     *
-     * Constant.
-     *
-     * ### Exceptions
-     *
-     * No-throw guarantee.
-     */
-    auto end() const noexcept
-    //!\cond
-        requires const_iterable_range<urng_t> && std::ranges::random_access_range<urng_t>
-    //!\endcond
-    {
-        // If the underlying range supports random access, then we can just jump to the end.
-        return begin()+size();
     }
 
     /*!\brief Returns the size of the range, if the underlying range is a std::ranges::sized_range.
@@ -250,9 +206,9 @@ public:
     using pointer = void;
     //!\brief Reference to `value_type`.
     using reference = value_type;
-    //!\brief Tag this class as a bidirectional iterator.
-    using iterator_category = std::random_access_iterator_tag;
-    //!\brief Tag this class as a bidirectional iterator.
+    //!\brief Tag this class as a forward iterator.
+    using iterator_category = std::forward_iterator_tag;
+    //!\brief Tag this class as a forward iterator.
     using iterator_concept = iterator_category;
     //!\}
 
@@ -275,8 +231,6 @@ public:
           first_iterator{std::move(it.first_iterator)},
           second_iterator{std::move(it.second_iterator)},
           third_iterator{std::move(it.third_iterator)},
-          second_iterator_back{std::move(it.second_iterator_back)},
-          third_iterator_back{std::move(it.third_iterator_back)},
           urng_sentinel{std::move(it.urng_sentinel)},
           window_dist{std::move(it.window_dist)},
           window_size{std::move(it.window_size)}
@@ -299,10 +253,7 @@ public:
         first_iterator{first_iterator},
         second_iterator{first_iterator},
         third_iterator{first_iterator},
-        second_iterator_back{first_iterator},
-        third_iterator_back{first_iterator},
         urng_sentinel{std::move(urng_sentinel)},
-        urng_first{first_iterator},
         window_dist{window_dist},
         window_size{window_size}
     {
@@ -433,111 +384,6 @@ public:
         return tmp;
     }
 
-    /*!\brief Pre-decrement.
-    * \attention This function is only available if underlying range is bidirectional.
-    */
-    basic_iterator & operator--() noexcept
-    //!\cond
-        requires std::ranges::bidirectional_range<urng_t>
-    //!\endcond
-    {
-        prev_randstrobe();
-        return *this;
-    }
-
-    /*!\brief Post-decrement.
-     * \attention This function is only available if underlying range is bidirectional.
-     */
-    basic_iterator operator--(int) noexcept
-    //!\cond
-        requires std::ranges::bidirectional_range<urng_t>
-    //!\endcond
-    {
-        basic_iterator tmp{*this};
-        prev_randstrobe();
-        return tmp;
-    }
-    /*!\brief Forward this iterator.
-     * \attention This function is only available if `urng_t` models std::random_access_iterator.
-     */
-    basic_iterator & operator+=(difference_type const skip) noexcept
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        move_forward_backward(skip);
-        return *this;
-    }
-
-    /*!\brief Forward copy of this iterator.
-     * \attention This function is only available if `urng_t` models std::random_access_iterator.
-     */
-    basic_iterator operator+(difference_type const skip) const noexcept
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        basic_iterator tmp{*this};
-        return tmp += skip;
-    }
-
-    /*!\brief Non-member operator+ delegates to non-friend operator+.
-     * \attention This function is only available if `urng_t` models std::random_access_iterator.
-     */
-    friend basic_iterator operator+(difference_type const skip, basic_iterator const & it) noexcept
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        return it + skip;
-    }
-
-    /*!\brief Decrement iterator by `skip`.
-     * \attention This function is only available if `urng_t` models std::random_access_iterator.
-     */
-    basic_iterator & operator-=(difference_type const skip) noexcept
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        move_forward_backward(-skip);
-        return *this;
-    }
-
-    /*!\brief Return decremented copy of this iterator.
-     * \attention This function is only available if `urng_t` models std::random_access_iterator.
-     */
-    basic_iterator operator-(difference_type const skip) const noexcept
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        basic_iterator tmp{*this};
-        return tmp -= skip;
-    }
-
-    /*!\brief Non-member operator- delegates to non-friend operator-.
-     * \attention This function is only available if `urng_t` models std::random_access_iterator.
-     */
-    friend basic_iterator operator-(difference_type const skip, basic_iterator const & it) noexcept
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        return it - skip;
-    }
-
-    /*!\brief Return offset between two iterator's positions.
-     * \attention This function is only available if `urng_t` models std::random_access_iterator.
-     */
-    friend difference_type operator-(basic_iterator const & lhs, basic_iterator const & rhs) noexcept
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        return static_cast<difference_type>(lhs.first_iterator - rhs.first_iterator);
-    }
-
     /*!\brief Return offset between remote sentinel's position and this.
      * \attention This function is only available if sentinel_t and urng_t model std::sized_sentinel_for.
      */
@@ -566,17 +412,6 @@ public:
             return static_cast<difference_type>(lhs.second_iterator - rhs);
     }
 
-    /*!\brief Move the iterator by a given offset and return the corresponding hash value.
-     * \attention This function is only available if `urng_t` models std::random_access_iterator.
-     */
-    reference operator[](difference_type const n) const
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        return *(*this + n);
-    }
-
     //!\brief Return the randstrobe.
     value_type operator*() const noexcept
     {
@@ -595,15 +430,6 @@ private:
 
     //!\brief Iterator to the third strobe of randstrobe, if order is 3.
     urng_iterator_t third_iterator{};
-
-    //!\brief Iterator to the left most value of the window and hence the second strobe of randstrobe for bidirectionality.
-    urng_iterator_t second_iterator_back{};
-
-    //!\brief Iterator to the left most value of the second window and hence the third strobe of randstrobe for bidirectionality, if order is 3.
-    urng_iterator_t third_iterator_back{};
-
-    //!\brief Iterator to first element in range. Needed for bidirectionality.
-    urng_iterator_t urng_first{};
 
     //!\brief Iterator to last element in range.
     urng_sentinel_t urng_sentinel{};
@@ -646,16 +472,13 @@ private:
 
         second_iterator = first_iterator;
         std::ranges::advance(second_iterator, window_dist);
-        second_iterator_back = second_iterator;
         minimum = *second_iterator;
         minimum_hash = linking(*first_iterator, *second_iterator);
 
         if constexpr(order_3)
         {
             third_iterator = second_iterator;
-            third_iterator_back = third_iterator;
             std::ranges::advance(third_iterator, window_size + window_dist - 1);
-            third_iterator_back = third_iterator;
         }
 
         for (int i = 1u; i < window_size; ++i)
@@ -693,19 +516,6 @@ private:
         }
     }
 
-    /*!\brief Increments or decrements iterator by `skip`.
-     * \param skip Amount to increment.
-     * \attention This function is only available if `urng_iterator_t` models std::random_access_iterator.
-     */
-    void move_forward_backward(difference_type const skip)
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        std::ranges::advance(first_iterator, skip);
-        fill_window();
-    }
-
     /*!\brief Calculates the next randstrobe value.
      * \details
      * For the following windows, we remove the first window value (is now not in window_values) and add the new
@@ -714,34 +524,14 @@ private:
     void next_randstrobe()
     {
         ++first_iterator;
-        if (second_iterator_back == urng_sentinel)
+        if (second_iterator == urng_sentinel)
             return;
         if constexpr(order_3)
         {
-            if (third_iterator_back == urng_sentinel)
+            if (third_iterator == urng_sentinel)
                 return;
         }
 
-        fill_window();
-    }
-
-    /*!\brief Calculates the previous randstrobe value.
-     * \details
-     * For the following windows, we remove the last window value (is now not in window_values) and add the new
-     * value that results from the window shifting.
-     */
-    void prev_randstrobe()
-        requires std::ranges::bidirectional_range<urng_t>
-    {
-        if (second_iterator_back == urng_first)
-            return;
-        if constexpr(order_3)
-        {
-            if (third_iterator_back == urng_first)
-                return;
-        }
-
-        --first_iterator;
         fill_window();
     }
 };
@@ -828,8 +618,8 @@ namespace seqan3::views
  * |----------------------------------|:----------------------------------:|:--------------------------------:|
  * | std::ranges::input_range         | *required*                         | *preserved*                      |
  * | std::ranges::forward_range       | *required*                         | *preserved*                      |
- * | std::ranges::bidirectional_range |                                    | *preserved*                      |
- * | std::ranges::random_access_range |                                    | *preserved*                      |
+ * | std::ranges::bidirectional_range |                                    | *lost*                           |
+ * | std::ranges::random_access_range |                                    | *lost*                           |
  * | std::ranges::contiguous_range    |                                    | *lost*                           |
  * |                                  |                                    |                                  |
  * | std::ranges::viewable_range      | *required*                         | *guaranteed*                     |
