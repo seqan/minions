@@ -632,21 +632,23 @@ private:
     //!\brief Fills window and determines randstrobe value.
     void fill_window()
     {
-        //!\brief Stored values per window. It is necessary to store them, because a shift can remove the current randstrobe.
-        std::deque<value_t> window_values{};
+        //!\brief Stores minimum for order 2.
+        value_t  minimum{};
 
-        //!\brief Stored values per window for order 3.
-        std::deque<value_t> window_values3{};
+        //!\brief Stores minimum for order 3.
+        value_t  minimum3{};
 
-        //!\brief Stored hash values per window. It is necessary to store them, because a shift can remove the current randstrobe.
-        std::deque<value_t> hash_values{};
+        //!\brief Stores minimum hash value for order 2.
+        value_t  minimum_hash{};
 
-        //!\brief Stored hash values per window for order 3.
-        std::deque<value_t> hash_values3{};
+        //!\brief Stores minimum hash value for order 3.
+        value_t  minimum_hash3{};
 
         second_iterator = first_iterator;
         std::ranges::advance(second_iterator, window_dist);
         second_iterator_back = second_iterator;
+        minimum = *second_iterator;
+        minimum_hash = linking(*first_iterator, *second_iterator);
 
         if constexpr(order_3)
         {
@@ -658,34 +660,36 @@ private:
 
         for (int i = 1u; i < window_size; ++i)
         {
-            hash_values.push_back(linking(*first_iterator, *second_iterator));
-            window_values.push_back(*second_iterator);
             ++second_iterator;
+            value_t new_value = linking(*first_iterator, *second_iterator);
+            if (new_value <= minimum_hash)
+            {
+                minimum_hash = new_value;
+                minimum = *second_iterator;
+            }
         }
-        hash_values.push_back(linking(*first_iterator, *second_iterator));
-        window_values.push_back(*second_iterator);
-
-        auto randstrobe_it = std::ranges::min_element(hash_values, std::less_equal<value_t>{});
-        auto index = std::distance(std::begin(hash_values), randstrobe_it);
 
         if constexpr(order_3)
         {
+            minimum3 = *third_iterator;
+            minimum_hash3 = linking(*first_iterator, minimum, *third_iterator);
+
             for (int i = 1u; i < window_size; ++i)
             {
-                hash_values3.push_back(linking(*first_iterator, window_values[index], *third_iterator));
-                window_values3.push_back(*third_iterator);
                 ++third_iterator;
+                value_t new_value = linking(*first_iterator, minimum, *third_iterator);
+                if (new_value <= minimum_hash3)
+                {
+                    minimum_hash3 = new_value;
+                    minimum3 = *third_iterator;
+                }
             }
-            hash_values3.push_back(linking(*first_iterator, window_values[index], *third_iterator));
-            window_values3.push_back(*third_iterator);
 
-            auto randstrobe_it3 = std::ranges::min_element(hash_values3, std::less_equal<value_t>{});
-            auto index3 = std::distance(std::begin(hash_values3), randstrobe_it3);
-            randstrobe_value = {*first_iterator, window_values[index], window_values3[index3]};
+            randstrobe_value = {*first_iterator, minimum, minimum3};
         }
         else
         {
-            randstrobe_value = {*first_iterator, window_values[index]};
+            randstrobe_value = {*first_iterator, minimum};
         }
     }
 

@@ -317,7 +317,6 @@ public:
                                         "Please choose a bigger window size greater than 0."};
 
         fill_window();
-        determine_value();
     }
     //!\}
 
@@ -621,6 +620,12 @@ private:
     //!\brief The number of elements in a window.
     size_t window_size{};
 
+    //!\brief The offset of the minstrobe.
+    size_t minstrobe_position_offset{};
+
+    //!\brief The offset of the minstrobe for order 3.
+    size_t minstrobe_position_offset3{};
+
     //!\brief Advances the window of the iterators to the next position.
     void advance_windows()
     {
@@ -681,15 +686,13 @@ private:
         {
             window_values3.push_back(*third_iterator);
         }
-    }
 
-    //!\brief Determine minstrobe value based on the contents of the window and the first_iterator.
-    void determine_value()
-    {
-        auto minstrobe_it =std::ranges::min_element(window_values, std::less_equal<value_t>{});
+        auto minstrobe_it = std::ranges::min_element(window_values, std::less_equal<value_t>{});
+        minstrobe_position_offset = std::distance(std::begin(window_values), minstrobe_it);
         if constexpr(order_3)
         {
             auto minstrobe_it3 = std::ranges::min_element(window_values3, std::less_equal<value_t>{});
+            minstrobe_position_offset3 = std::distance(std::begin(window_values3), minstrobe_it3);
             minstrobe_value = {*first_iterator, *minstrobe_it, *minstrobe_it3};
         }
         else
@@ -715,7 +718,6 @@ private:
             window_values3.clear();
         }
         fill_window();
-        determine_value();
     }
 
     /*!\brief Calculates the next minstrobe value.
@@ -734,16 +736,45 @@ private:
                 return;
         }
 
+        minstrobe_value[0] = *first_iterator;
         window_values.pop_front();
         window_values.push_back(*second_iterator);
+
+        if (minstrobe_position_offset == 0)
+        {
+            auto minstrobe_it = std::ranges::min_element(window_values, std::less_equal<value_t>{});
+            minstrobe_value[1] = *minstrobe_it;
+            minstrobe_position_offset = std::distance(std::begin(window_values), minstrobe_it) + 1;
+        }
+
+        if (*second_iterator <= minstrobe_value[1])
+        {
+            minstrobe_value[1] = *second_iterator;
+            minstrobe_position_offset = window_values.size();
+        }
 
         if constexpr(order_3)
         {
             window_values3.pop_front();
             window_values3.push_back(*third_iterator);
+
+            if (minstrobe_position_offset3 == 0)
+            {
+                auto minstrobe_it3 = std::ranges::min_element(window_values3, std::less_equal<value_t>{});
+                minstrobe_value[2] = *minstrobe_it3;
+                minstrobe_position_offset3 = std::distance(std::begin(window_values3), minstrobe_it3) + 1;
+            }
+
+            if (*third_iterator <= minstrobe_value[2])
+            {
+                minstrobe_value[2] = *third_iterator;
+                minstrobe_position_offset3 = window_values3.size();
+            }
+
+            --minstrobe_position_offset3;
         }
 
-        determine_value();
+        --minstrobe_position_offset;
     }
 
     /*!\brief Calculates the previous minstrobe value.
@@ -763,16 +794,46 @@ private:
         }
 
         retreat_windows();
+
+        minstrobe_value[0] = *first_iterator;
         window_values.pop_back();
         window_values.push_front(*second_iterator_back);
+
+        if (minstrobe_position_offset == (window_values.size() - 1))
+        {
+            auto minstrobe_it = std::ranges::min_element(window_values, std::less_equal<value_t>{});
+            minstrobe_value[1] = *minstrobe_it;
+            minstrobe_position_offset = std::distance(std::begin(window_values), minstrobe_it);
+        }
+
+        if (*second_iterator_back < minstrobe_value[1])
+        {
+            minstrobe_value[1] = *second_iterator_back;
+            minstrobe_position_offset = 0;
+        }
 
         if constexpr(order_3)
         {
             window_values3.pop_back();
             window_values3.push_front(*third_iterator_back);
+
+            if (minstrobe_position_offset3 == (window_values3.size() - 1))
+            {
+                auto minstrobe_it3 = std::ranges::min_element(window_values3, std::less_equal<value_t>{});
+                minstrobe_value[2] = *minstrobe_it3;
+                minstrobe_position_offset3 = std::distance(std::begin(window_values3), minstrobe_it3);
+            }
+
+            if (*third_iterator_back <= minstrobe_value[2])
+            {
+                minstrobe_value[2] = *third_iterator_back;
+                minstrobe_position_offset3 = 0;
+            }
+
+            ++minstrobe_position_offset3;
         }
 
-        determine_value();
+        ++minstrobe_position_offset;
     }
 };
 
