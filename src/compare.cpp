@@ -494,7 +494,7 @@ void speed(std::vector<std::filesystem::path> sequence_files, urng_t input_view,
                start = std::chrono::high_resolution_clock::now();
                get_strobemers<strobemers>(seq, args, strobes_vector);
                for (auto & t : strobes_vector) // iterate over the strobemer tuples
-                   count += std::get<0>(t);
+                    count += std::get<0>(t);
                end = std::chrono::high_resolution_clock::now();
                duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
                speed_results.push_back(duration.count());
@@ -710,7 +710,7 @@ void do_match(std::filesystem::path sequence_file1, std::filesystem::path sequen
     }
 }
 
-
+// Note: Speed is based on non-canonical version!
 void do_speed(std::vector<std::filesystem::path> sequence_files, range_arguments & args)
 {
     switch(args.name)
@@ -738,17 +738,17 @@ void do_speed(std::vector<std::filesystem::path> sequence_files, range_arguments
                         else
                         {
                             if (args.hybrid & (args.order == 2))
-                                speed(sequence_files, hybridstrobe2_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                                speed(sequence_files, seqan3::views::kmer_hash(args.shape) | seqan3::views::hybridstrobe(args.w_min + args.shape.size() - 1, args.w_max - args.shape.size() + 1, args.shape.count()), create_name(args), args);
                             else if (args.hybrid & (args.order == 3))
-                                speed(sequence_files, hybridstrobe3_hash(args.shape, args.w_min, args.w_max),create_name(args), args);
+                                speed(sequence_files, seqan3::views::kmer_hash(args.shape) | seqan3::views::hybridstrobe(true, args.w_min + args.shape.size() - 1, args.w_max - args.shape.size() + 1, args.shape.count()), create_name(args), args);
                             else if (args.minstrobers & (args.order == 2))
                                 speed(sequence_files, seqan3::views::kmer_hash(args.shape) | seqan3::views::minstrobe(args.w_min + args.shape.size() - 1, args.w_max - args.shape.size() + 1, args.shape.count()), create_name(args), args);
                             else if (args.minstrobers & (args.order == 3))
                                 speed(sequence_files, seqan3::views::kmer_hash(args.shape) | seqan3::views::minstrobe(true, args.w_min + args.shape.size() - 1, args.w_max - args.shape.size() + 1, args.shape.count()), create_name(args), args);
                             else if (args.rand & (args.order == 2))
-                                speed(sequence_files, randstrobe2_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                                speed(sequence_files, seqan3::views::kmer_hash(args.shape) | seqan3::views::randstrobe(args.w_min + args.shape.size() - 1, args.w_max - args.shape.size() + 1, args.shape.count()), create_name(args), args);
                             else if (args.rand & (args.order == 3))
-                                speed(sequence_files, randstrobe3_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                                speed(sequence_files, seqan3::views::kmer_hash(args.shape) | seqan3::views::randstrobe(true, args.w_min + args.shape.size() - 1, args.w_max - args.shape.size() + 1, args.shape.count()), create_name(args), args);
                     }
     }
 }

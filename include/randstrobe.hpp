@@ -21,6 +21,8 @@
 #include <seqan3/utility/range/concept.hpp>
 #include <seqan3/utility/type_traits/lazy_conditional.hpp>
 
+#include "shared.hpp"
+
 namespace seqan3::detail
 {
 // ---------------------------------------------------------------------------------------------------------------------
@@ -60,6 +62,9 @@ private:
     //!\brief The number of elements in a window.
     size_t window_size{};
 
+    //!\brief The multiplicator.
+    uint64_t multi{};
+
     template <bool const_range>
     class basic_iterator;
 
@@ -84,11 +89,13 @@ public:
     *                        std::ranges::forward_range.
     * \param[in] window_dist  The lower offset for the position of the next window from the previous one.
     * \param[in] window_size The number of elements in a window.
+    * \param[in] multi       The multiplicator.
     */
-    randstrobe_view(urng_t urange, size_t const window_dist, size_t const window_size) :
+    randstrobe_view(urng_t urange, size_t const window_dist, size_t const window_size, uint64_t const multi) :
         urange{std::move(urange)},
         window_dist{window_dist},
-        window_size{window_size}
+        window_size{window_size},
+        multi{multi}
     {}
 
     /*!\brief Construct from a non-view that can be view-wrapped and the two (lower and upper) offsets
@@ -99,16 +106,18 @@ public:
     *                        std::ranges::forward_range.
     * \param[in] window_dist  The lower offset for the position of the next window from the previous one.
     * \param[in] window_size The number of elements in a window.
+    * \param[in] multi       The multiplicator.
     */
     template <typename other_urng_t>
     //!\cond
         requires (std::ranges::viewable_range<other_urng_t> &&
                   std::constructible_from<urng_t, ranges::ref_view<std::remove_reference_t<other_urng_t>>>)
     //!\endcond
-    randstrobe_view(other_urng_t && urange, size_t const window_dist, size_t const window_size) :
+    randstrobe_view(other_urng_t && urange, size_t const window_dist, size_t const window_size, uint64_t const multi) :
         urange{std::views::all(std::forward<other_urng_t>(urange))},
         window_dist{window_dist},
-        window_size{window_size}
+        window_size{window_size},
+        multi{multi}
     {}
 
     /*!\name Iterators
@@ -132,7 +141,8 @@ public:
         return {std::ranges::begin(urange),
                 std::ranges::end(urange),
                 window_dist,
-                window_size};
+                window_size,
+                multi};
     }
 
     //!\copydoc begin()
@@ -144,7 +154,8 @@ public:
         return {std::ranges::cbegin(urange),
                 std::ranges::cend(urange),
                 window_dist,
-                window_size};
+                window_size,
+                multi};
     }
 
     /*!\brief Returns an iterator to the element following the last element of the range.
@@ -199,9 +210,7 @@ public:
     //!\brief Type for distances between iterators.
     using difference_type = typename std::iter_difference_t<urng_iterator_t>; //typename std::ranges::range_difference_t<urng_t>;
     //!\brief Value type of the iterator.
-    using value_t = std::ranges::range_value_t<urng_t>;
-    //!\brief Value type of the output.
-    using value_type = std::vector<value_t>;
+    using value_type = std::ranges::range_value_t<urng_t>;
     //!\brief The pointer type.
     using pointer = void;
     //!\brief Reference to `value_type`.
@@ -233,7 +242,9 @@ public:
           third_iterator{std::move(it.third_iterator)},
           urng_sentinel{std::move(it.urng_sentinel)},
           window_dist{std::move(it.window_dist)},
-          window_size{std::move(it.window_size)}
+          window_size{std::move(it.window_size)},
+          multiplicator{std::move(it.multiplicator)},
+          multiplicator3{std::move(it.multiplicator3)}
 
     {}
 
@@ -243,13 +254,13 @@ public:
     * \param[in] urng_sentinel   Iterator pointing to the last position of the underlying range.
     * \param[in] window_dist     The lower offset for the position of the next window from the previous one.
     * \param[in] window_size     The number of elements in a window.
-    *
-    *
+    * \param[in] power_multi           The multiplicator.
     */
     basic_iterator(urng_iterator_t first_iterator,
                    urng_sentinel_t urng_sentinel,
                    size_t window_dist,
-                   size_t window_size) :
+                   size_t window_size,
+                   uint64_t power_multi) :
         first_iterator{first_iterator},
         second_iterator{first_iterator},
         third_iterator{first_iterator},
@@ -267,6 +278,15 @@ public:
             throw std::invalid_argument{"The given window size is too small.\n"
                                         "Please choose a bigger window size greater than 0."};
 
+        if constexpr (order_3)
+        {
+            multiplicator = my_pow(4, power_multi*2);
+            multiplicator3 = my_pow(4, power_multi);
+        }
+        else
+        {
+            multiplicator = my_pow(4, power_multi);
+        }
         fill_window();
     }
     //!\}
@@ -443,14 +463,20 @@ private:
     //!\brief The bitmask.
     size_t bitmask{0x1C5C4AE};
 
+    //!\brief The multiplicator.
+    uint64_t multiplicator{};
+
+    //!\brief The multiplicator for order 3.
+    uint64_t multiplicator3{};
+
     //!\brief Link two strobes.
-    value_t linking(value_t const & first, value_t const & second)
+    value_type linking(value_type const & first, value_type const & second)
     {
         return (first+second) &bitmask;
     }
 
     //!\brief Link three strobes.
-    value_t linking(value_t const & first, value_t const & second, value_t const & third)
+    value_type linking(value_type const & first, value_type const & second, value_type const & third)
     {
         return (first+second+third) & bitmask;
     }
@@ -459,16 +485,16 @@ private:
     void fill_window()
     {
         //!\brief Stores minimum for order 2.
-        value_t  minimum{};
+        value_type  minimum{};
 
         //!\brief Stores minimum for order 3.
-        value_t  minimum3{};
+        value_type  minimum3{};
 
         //!\brief Stores minimum hash value for order 2.
-        value_t  minimum_hash{};
+        value_type  minimum_hash{};
 
         //!\brief Stores minimum hash value for order 3.
-        value_t  minimum_hash3{};
+        value_type  minimum_hash3{};
 
         second_iterator = first_iterator;
         std::ranges::advance(second_iterator, window_dist);
@@ -484,7 +510,7 @@ private:
         for (int i = 1u; i < window_size; ++i)
         {
             ++second_iterator;
-            value_t new_value = linking(*first_iterator, *second_iterator);
+            value_type new_value = linking(*first_iterator, *second_iterator);
             if (new_value <= minimum_hash)
             {
                 minimum_hash = new_value;
@@ -500,7 +526,7 @@ private:
             for (int i = 1u; i < window_size; ++i)
             {
                 ++third_iterator;
-                value_t new_value = linking(*first_iterator, minimum, *third_iterator);
+                value_type new_value = linking(*first_iterator, minimum, *third_iterator);
                 if (new_value <= minimum_hash3)
                 {
                     minimum_hash3 = new_value;
@@ -508,11 +534,11 @@ private:
                 }
             }
 
-            randstrobe_value = {*first_iterator, minimum, minimum3};
+            randstrobe_value = *first_iterator*multiplicator + minimum*multiplicator3 + minimum3;
         }
         else
         {
-            randstrobe_value = {*first_iterator, minimum};
+            randstrobe_value = *first_iterator*multiplicator + minimum;
         }
     }
 
@@ -538,11 +564,11 @@ private:
 
 //!\brief A deduction guide for the view class template.
 template <std::ranges::viewable_range rng_t>
-randstrobe_view(rng_t &&, size_t const window_dist, size_t const window_size) -> randstrobe_view<std::views::all_t<rng_t>>;
+randstrobe_view(rng_t &&, size_t const window_dist, size_t const window_size, uint64_t const multi) -> randstrobe_view<std::views::all_t<rng_t>>;
 
 //!\brief A deduction guide for the view class template.
 template <std::ranges::viewable_range rng_t, std::uint16_t ord>
-randstrobe_view(rng_t &&, size_t const window_dist, size_t const window_size) -> randstrobe_view<std::views::all_t<rng_t>, ord>;
+randstrobe_view(rng_t &&, size_t const window_dist, size_t const window_size, uint64_t const multi) -> randstrobe_view<std::views::all_t<rng_t>, ord>;
 
 // ---------------------------------------------------------------------------------------------------------------------
 // randstrobe_fn (adaptor definition)
@@ -554,9 +580,15 @@ randstrobe_view(rng_t &&, size_t const window_dist, size_t const window_size) ->
 struct randstrobe_fn
 {
     //!\brief Store the number of values in two windows and return a range adaptor closure object.
-    constexpr auto operator()(const size_t window_dist, const size_t window_size) const
+    constexpr auto operator()(bool order3, const size_t window_dist, const size_t window_size, uint64_t const multi) const
     {
-        return adaptor_from_functor{*this, window_dist, window_size};
+        return adaptor_from_functor{*this, window_dist, window_size, multi, order3};
+    }
+
+    //!\brief Store the number of values in two windows and return a range adaptor closure object.
+    constexpr auto operator()(const size_t window_dist, const size_t window_size, uint64_t const multi) const
+    {
+        return adaptor_from_functor{*this, window_dist, window_size, multi};
     }
 
     /*!\brief Call the view's constructor with three arguments: the underlying view and an integer indicating a lower
@@ -566,21 +598,40 @@ struct randstrobe_fn
      *                        std::ranges::forward_range.
      * \param[in] window_dist The offset for the position of the next window from the previous one.
      * \param[in] window_size The number of elements in a window.
-     * \returns  A range of the converted values in vectors of size 2.
+     * \param[in] multi       The multiplicator.
+     * \returns  A range of the converted values.
      */
     template <std::ranges::range urng_t>
-    constexpr auto operator()(urng_t && urange, size_t const window_dist, size_t const window_size) const
+    constexpr auto operator()(urng_t && urange, size_t const window_dist, size_t const window_size, uint64_t const multi) const
     {
         static_assert(std::ranges::viewable_range<urng_t>,
                       "The range parameter to views::randstrobe cannot be a temporary of a non-view range.");
         static_assert(std::ranges::forward_range<urng_t>,
                       "The range parameter to views::randstrobe must model std::ranges::forward_range.");
 
-        if (window_size <= window_dist)
-            throw std::invalid_argument{"The chosen min and max windows are not valid."
-                                        "Please choose a window_size greater than window_dist."};
+        return randstrobe_view{urange, window_dist, window_size, multi};
+    }
 
-        return randstrobe_view{urange, window_dist, window_size};
+    /*!\brief Call the view's constructor with three arguments: the underlying view and an integer indicating a lower
+     *        offset and another integer indicating the upper offset of the second window.
+     * \tparam urng_t         The type of the input range to process. Must model std::ranges::viewable_range.
+     * \param[in] urange      The input range to process. Must model std::ranges::viewable_range and
+     *                        std::ranges::forward_range.
+     * \param[in] window_dist The offset for the position of the next window from the previous one.
+     * \param[in] window_size The number of elements in a window.
+     * \param[in] multi       The multiplicator.
+     * \param[in] order3      Use, if order 3 is wanted. TODO: The actual value does not matter. but make distinction between orders so much easier.
+     * \returns  A range of the converted values.
+     */
+    template <std::ranges::range urng_t>
+    constexpr auto operator()(urng_t && urange, size_t const window_dist, size_t const window_size, uint64_t const multi, bool order3) const
+    {
+        static_assert(std::ranges::viewable_range<urng_t>,
+                      "The range parameter to views::randstrobe cannot be a temporary of a non-view range.");
+        static_assert(std::ranges::forward_range<urng_t>,
+                      "The range parameter to views::randstrobe must model std::ranges::forward_range.");
+
+        return randstrobe_view<urng_t, 3>{urange, window_dist, window_size, multi};
     }
 };
 //![adaptor_def]
@@ -596,6 +647,7 @@ namespace seqan3::views
  * \param[in] urange      The range being processed. [parameter is omitted in pipe notation]
  * \param[in] window_dist The lower offset for the position of the next window from the previous one.
  * \param[in] window_size The number of elements in a window.
+ * \param[in] multi       The multiplicator used to combine strobes. Should be the shape.count().
  * \returns A range of std::totally_ordered where each value is a vector of size 2. See below for the
  *          properties of the returned range.
  * \ingroup search_views

@@ -242,7 +242,9 @@ public:
           third_iterator{std::move(it.third_iterator)},
           urng_sentinel{std::move(it.urng_sentinel)},
           window_dist{std::move(it.window_dist)},
-          window_size{std::move(it.window_size)}
+          window_size{std::move(it.window_size)},
+          multiplicator{std::move(it.multiplicator)},
+          multiplicator3{std::move(it.multiplicator3)}
 
     {}
 
@@ -252,8 +254,7 @@ public:
     * \param[in] urng_sentinel   Iterator pointing to the last position of the underlying range.
     * \param[in] window_dist     The lower offset for the position of the next window from the previous one.
     * \param[in] window_size     The number of elements in a window.
-    *
-    *
+    * \param[in] power_multi           The multiplicator.
     */
     basic_iterator(urng_iterator_t first_iterator,
                    urng_sentinel_t urng_sentinel,
@@ -642,9 +643,10 @@ struct minstrobe_fn
      *                        std::ranges::forward_range.
      * \param[in] window_dist The offset for the position of the next window from the previous one.
      * \param[in] window_size The number of elements in a window.
+     * \param[in] multi       The multiplicator.
      * \returns  A range of the converted values in vectors of size 2.
      */
-    template <std::ranges::range urng_t, std::uint16_t order = 2>
+    template <std::ranges::range urng_t>
     constexpr auto operator()(urng_t && urange, size_t const window_dist, size_t const window_size, uint64_t const multi) const
     {
         static_assert(std::ranges::viewable_range<urng_t>,
@@ -652,7 +654,7 @@ struct minstrobe_fn
         static_assert(std::ranges::forward_range<urng_t>,
                       "The range parameter to views::minstrobe must model std::ranges::forward_range.");
 
-        return minstrobe_view<urng_t, order>{urange, window_dist, window_size, multi};
+        return minstrobe_view{urange, window_dist, window_size, multi};
     }
 
     /*!\brief Call the view's constructor with three arguments: the underlying view and an integer indicating a lower
@@ -662,7 +664,9 @@ struct minstrobe_fn
      *                        std::ranges::forward_range.
      * \param[in] window_dist The offset for the position of the next window from the previous one.
      * \param[in] window_size The number of elements in a window.
-     * \returns  A range of the converted values in vectors of size 2.
+     * \param[in] multi       The multiplicator.
+     * \param[in] order3      Use, if order 3 is wanted. TODO: The actual value does not matter. but make distinction between orders so much easier.
+     * \returns  A range of the converted values.
      */
     template <std::ranges::range urng_t>
     constexpr auto operator()(urng_t && urange, size_t const window_dist, size_t const window_size, uint64_t const multi, bool order3) const
