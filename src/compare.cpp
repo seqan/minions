@@ -742,9 +742,9 @@ void do_speed(std::vector<std::filesystem::path> sequence_files, range_arguments
                             else if (args.hybrid & (args.order == 3))
                                 speed(sequence_files, hybridstrobe3_hash(args.shape, args.w_min, args.w_max),create_name(args), args);
                             else if (args.minstrobers & (args.order == 2))
-                                speed(sequence_files, minstrobe2_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                                speed(sequence_files, seqan3::views::kmer_hash(args.shape) | seqan3::views::minstrobe(args.w_min + args.shape.size() - 1, args.w_max - args.shape.size() + 1, args.shape.count()), create_name(args), args);
                             else if (args.minstrobers & (args.order == 3))
-                                speed(sequence_files, minstrobe3_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                                speed(sequence_files, seqan3::views::kmer_hash(args.shape) | seqan3::views::minstrobe(true, args.w_min + args.shape.size() - 1, args.w_max - args.shape.size() + 1, args.shape.count()), create_name(args), args);
                             else if (args.rand & (args.order == 2))
                                 speed(sequence_files, randstrobe2_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
                             else if (args.rand & (args.order == 3))
