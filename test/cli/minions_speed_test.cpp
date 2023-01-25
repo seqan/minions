@@ -24,7 +24,7 @@ TEST_F(cli_test, with_argument)
 
 TEST_F(cli_test, minimiser)
 {
-    cli_test_result result = execute_app("minions speed --method minimiser -k 19 -w 19 ", data("example1.fasta"));
+    cli_test_result result = execute_app("minions speed --method minimiser -k 19 -w 23 ", data("example1.fasta"));
     EXPECT_EQ(result.exit_code, 0);
     EXPECT_EQ(result.out, std::string{});
     EXPECT_EQ(result.err, std::string{});
@@ -68,7 +68,7 @@ TEST_F(cli_test, wrong_method)
     std::string expected
     {
         "Error. Incorrect command line input for speed. Validation failed "
-        "for option --method: Value submer is not one of [kmer,minimiser,modmer,strobemer].\n"
+        "for option --method: Value submer is not one of [kmer,minimiser,modmer,strobemer,syncmer].\n"
     };
     EXPECT_EQ(result.exit_code, 0);
     EXPECT_EQ(result.out, std::string{});

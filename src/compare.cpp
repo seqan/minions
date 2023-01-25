@@ -717,13 +717,11 @@ void do_speed(std::vector<std::filesystem::path> sequence_files, range_arguments
     {
         case kmer: speed(sequence_files, seqan3::views::kmer_hash(args.shape), create_name(args), args);
                    break;
-        case minimiser: speed(sequence_files, seqan3::views::minimiser_hash(args.shape,
-                                args.w_size, args.seed_se), create_name(args), args);
+        case minimiser: speed(sequence_files, seqan3::views::kmer_hash(args.shape) | seqan3::views::minimiser(args.w_size.get()-args.shape.size()+1), create_name(args), args);
                         break;
-        case modmers: speed(sequence_files, modmer_hash(args.shape,
-                                args.w_size.get(), args.seed_se), create_name(args), args);
+        case modmers: speed(sequence_files, seqan3::views::kmer_hash(args.shape) | modmer(args.w_size.get()), create_name(args), args);
                         break;
-        case strobemer: std::ranges::empty_view<seqan3::detail::empty_type> empty{};
+        case strobemer: {std::ranges::empty_view<seqan3::detail::empty_type> empty{};
                         if (args.lib_implementation)
                         {
                             if (args.rand & (args.order == 2))
@@ -750,5 +748,7 @@ void do_speed(std::vector<std::filesystem::path> sequence_files, range_arguments
                             else if (args.rand & (args.order == 3))
                                 speed(sequence_files, seqan3::views::kmer_hash(args.shape) | seqan3::views::randstrobe(true, args.w_min + args.shape.size() - 1, args.w_max - args.shape.size() + 1, args.shape.count()), create_name(args), args);
                     }
+                    break;}
+        case syncmer: speed(sequence_files, syncmer_hash_no_reverse(args.w_size.get(), args.k_size, args.positions), create_name(args), args);
     }
 }

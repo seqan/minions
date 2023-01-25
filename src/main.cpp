@@ -43,12 +43,12 @@ void read_range_arguments_strobemers(seqan3::argument_parser & parser, range_arg
 void read_range_arguments_syncmers(seqan3::argument_parser & parser, range_arguments & args)
 {
     parser.add_option(args.positions, 'p', "pos", "The positions that determine, if a submer is a syncmer.");
-    parser.add_option(args.t, 't', "t_vlue", "The offset for the position of the smallest sub-window.");
 }
 
 void read_range_arguments_minimiser(seqan3::argument_parser & parser, range_arguments & args)
 {
-    parser.add_option(w_size, 'w', "window", "Define window size. Default: 60.");
+    parser.add_option(w_size, 'w', "window", "Define window size for minimiser. For syncmers, use this parameter for "
+                                             "the s-mer size, which should be smaller than the k-mer size in that case. Default: 60.");
     parser.add_option(shape, '\0', "shape", "Define a shape by the decimal of a bitvector, where 0 symbolizes a "
                                            "position to be ignored, 1 a position considered. Default: ungapped.");
     parser.add_option(se, '\0', "seed", "Define seed.");
@@ -222,11 +222,12 @@ int speed(seqan3::argument_parser & parser)
     all_arguments(parser, args);
     std::string method{};
     parser.add_option(method, '\0', "method", "Pick your method.",
-                      seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer"});
+                      seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer","syncmer"});
     parser.add_flag(args.lib_implementation, '\0', "original", "Set, if you want to use the strobemer implementation from Sahlin.");
 
     read_range_arguments_minimiser(parser, args);
     read_range_arguments_strobemers(parser, args);
+    read_range_arguments_syncmers(parser, args);
 
     try
     {
