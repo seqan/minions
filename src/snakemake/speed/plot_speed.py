@@ -50,7 +50,7 @@ plt.fill_between(pos, [x[0]-x[1] for x in gapped4_kmers], [x[0]+x[1] for x in ga
 plt.fill_between(pos, [x[0]-x[1] for x in gapped8_kmers], [x[0]+x[1] for x in gapped8_kmers], color = colors_error[2], alpha=0.7)
 
 plt.legend(title="Number of gaps")
-plt.savefig("Speed_kmers.png")
+plt.savefig("../results/Speed_kmers.png")
 
 # Plot comparison between strobemers 4 gaps
 fig = plt.figure()
@@ -70,7 +70,7 @@ plt.fill_between(pos, [x[0]-x[1] for x in hybridstrobemers], [x[0]+x[1] for x in
 plt.fill_between(pos, [x[0]-x[1] for x in randstrobemers2], [x[0]+x[1] for x in randstrobemers2], color = colors_error[2], alpha=0.7)
 
 #plt.legend(bbox_to_anchor=(1.25, 0.75), title="Methods")
-plt.savefig("Speed_strobemers4.png")
+plt.savefig("../results/Speed_strobemers4.png")
 
 # Plot comparison between strobemers 8 gaps
 fig = plt.figure()
@@ -90,7 +90,7 @@ plt.fill_between(pos, [x[0]-x[1] for x in hybridstrobemers8], [x[0]+x[1] for x i
 plt.fill_between(pos, [x[0]-x[1] for x in randstrobemers28], [x[0]+x[1] for x in randstrobemers28], color = colors_error[2], alpha=0.7)
 
 plt.legend(bbox_to_anchor=(1.01, 0.75), title="Methods")
-plt.savefig("Speed_strobemers8.png", bbox_inches='tight')
+plt.savefig("../results/Speed_strobemers8.png", bbox_inches='tight')
 
 # Plot comparison between all
 fig = plt.figure()
@@ -109,7 +109,7 @@ plt.plot(pos, [x[0] for x in hybridstrobemers], color = colors[4], label='hybrid
 plt.plot(pos, [x[0] for x in randstrobemers2], color = colors[5], label='randstrobemers',linewidth=3.0)
 
 plt.legend(bbox_to_anchor=(1.01, 0.75), title="Methods")
-plt.savefig("Speed_all.png",bbox_inches='tight')
+plt.savefig("../results/Speed_all.png",bbox_inches='tight')
 
 # Plot comparison between all with 8
 fig = plt.figure()
@@ -128,7 +128,7 @@ plt.plot(pos, [x[0] for x in hybridstrobemers8], color = colors[4], label='hybri
 plt.plot(pos, [x[0] for x in randstrobemers28], color = colors[5], label='randstrobemers',linewidth=3.0)
 
 plt.legend(bbox_to_anchor=(1.01, 0.75), title="Methods")
-plt.savefig("Speed_all8.png",bbox_inches='tight')
+plt.savefig("../results/Speed_all8.png",bbox_inches='tight')
 
 
 # Plot comparison between strobemers all gaps
@@ -173,4 +173,4 @@ plt.fill_between(pos, [x[0]-x[1] for x in randstrobemers28], [x[0]+x[1] for x in
 plt.fill_between(pos_order3, [x[0]-x[1] for x in randstrobemers38], [x[0]+x[1] for x in randstrobemers38], color = colors_error[5], alpha=0.7)
 
 plt.legend(bbox_to_anchor=(1.01, 0.75), title="Methods")
-plt.savefig("Speed_strobemers.png", bbox_inches='tight')
+plt.savefig("../results/Speed_strobemers.png", bbox_inches='tight')

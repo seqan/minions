@@ -1,19 +1,19 @@
 rule all:
-    input: "Speed_all.png",
-           "Speed_all8.png",
-           "Speed_kmers.png",
-           "Speed_strobemers.png",
-           "Speed_strobemers4.png",
-           "Speed_strobemers8.png"
+    input: "../results/Speed_all.png",
+           "../results/Speed_all8.png",
+           "../results/Speed_kmers.png",
+           "../results/Speed_strobemers.png",
+           "../results/Speed_strobemers4.png",
+           "../results/Speed_strobemers8.png"
 
 rule plot:
     output:
-        "Speed_all.png",
-        "Speed_all8.png",
-        "Speed_kmers.png",
-        "Speed_strobemers.png",
-        "Speed_strobemers4.png",
-        "Speed_strobemers8.png"
+        "../results/Speed_all.png",
+        "../results/Speed_all8.png",
+        "../results/Speed_kmers.png",
+        "../results/Speed_strobemers.png",
+        "../results/Speed_strobemers4.png",
+        "../results/Speed_strobemers8.png"
     input:
         [shape + "_kmer_hash_16_speed.out" for shape in ["0", "36607", "51755"]],
         [shape + "_kmer_hash_18_speed.out" for shape in ["0","233469", "246365"]],
