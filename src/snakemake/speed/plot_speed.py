@@ -18,9 +18,9 @@ def read_file(results, files):
 
 # Read all files
 kmers = read_file([], ["0_kmer_hash_"+str(k)+"_speed.out" for k in k_size])
-shapes4 = ["36607","933855","14548847","3758077695","3169577727"]
+shapes4 = ["36607","933855","14548847","234879855","3169577727"]
 gapped4_kmers = read_file([], [shapes4[i] + "_kmer_hash_"+str(k_size[i])+"_speed.out" for i in range(len(k_size))])
-shapes8 = ["51755","975475","13954519","241004285","241004285"]
+shapes8 = ["51755","975475","13954519","241004285","3856068575"]
 gapped8_kmers = read_file([], [shapes8[i] + "_kmer_hash_"+str(k_size[i])+"_speed.out" for i in range(len(k_size))])
 minstrobemers = read_file([], ["Original_minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(4+k)+"_speed.out" for k in strobe_range])
 hybridstrobemers = read_file([],["Original_hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in strobe_range])

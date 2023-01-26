@@ -20,10 +20,10 @@ rule plot:
         [shape + "_kmer_hash_20_speed.out" for shape in ["0", "933855", "975475"]],
         [shape + "_kmer_hash_22_speed.out" for shape in ["0", "4192891", "3669089"]],
         [shape + "_kmer_hash_24_speed.out" for shape in ["0", "14548847", "13954519"]],
-        [shape + "_kmer_hash_26_speed.out" for shape in ["0", "14351359", "16503191"]],
-        [shape + "_kmer_hash_28_speed.out" for shape in ["0", "3758077695", "241004285"]],
+        [shape + "_kmer_hash_26_speed.out" for shape in ["0", "62257151", "66560815"]],
+        [shape + "_kmer_hash_28_speed.out" for shape in ["0", "234879855", "241004285"]],
         [shape + "_kmer_hash_30_speed.out" for shape in ["0", "805287931", "1004529051"]],
-        [shape + "_kmer_hash_32_speed.out" for shape in ["0", "3169577727", "241004285"]],
+        [shape + "_kmer_hash_32_speed.out" for shape in ["0", "3169577727", "3856068575"]],
         # 4 "gaps"
         ["minstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(3+k)+"_speed.out" for k in range(8,17)],
         ["minstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(3+k)+"_speed.out" for k in range(8,17)],
