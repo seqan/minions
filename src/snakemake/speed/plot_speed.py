@@ -6,6 +6,7 @@ import numpy as np
 
 k_size = [16,20,24,28,32]
 pos = [x+0.25 for x in range(len(k_size))]
+strobe_range = [int(k/2) for k in k_size]
 
 def read_file(results, files):
     for file in files:

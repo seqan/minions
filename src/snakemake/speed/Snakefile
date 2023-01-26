@@ -37,7 +37,7 @@ rule plot:
         ["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(7+k)+"_speed.out" for k in range(8,17)],
         ["hybridstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(7+k)+"_speed.out" for k in range(8,17)],
         ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(7+k)+"_speed.out" for k in range(8,17)],
-        ["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(7+k)+"_speed.out" for k in [9,12,15]]
+        ["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(7+k)+"_speed.out" for k in [9,12,15]],
         # 4 "gaps"
         ["Original_minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(4+k)+"_speed.out" for k in range(8,17)],
         ["Original_hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17)],
