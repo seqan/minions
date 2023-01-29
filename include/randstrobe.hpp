@@ -22,6 +22,7 @@
 #include <seqan3/utility/type_traits/lazy_conditional.hpp>
 #include <utility>
 #include <vector>
+#include <functional>
 
 namespace seqan3::detail
 {
@@ -364,22 +365,21 @@ private:
         {
             unsigned int end_result = (*second_iterator + *first_iterator)%5;
          
-            window_vector.push_back(std::make_pair(end_result, *second_iterator));
+            window_vector.push_back(std::make_pair(end_result, second_iterator));
             ++second_iterator;
         }
      
 
-        window_vector.push_back(std::make_pair(end_result, *second_iterator));
+        window_vector.push_back(std::make_pair(end_result, second_iterator));
 
         // newly added
-        auto v = std::vector<std::pair< unsigned int, urng_iterator_t>> window_vector;
-        auto result = *std::min_element(v.cbegin(), v.cend(), [](const auto& lhs, const auto& rhs) {
+        auto result = *std::min_element(window_vector.cbegin(), window_vector.cend(), [](const auto& lhs, const auto& rhs) {
             return lhs.first < rhs.first;    
             });
         std::cout << result.first << " " << result.second  << std::endl; // 0 3
     
         int randstrobe_it = result.second;
-        randstrobe_value = {*first_iterator, *randstrobe_it};
+        randstrobe_value = {*first_iterator, randstrobe_it};
         randstrobe_position_offset = std::distance(std::begin(result.second), randstrobe_it);
         
         //for (int i = 1u; i < window_size + 2; ++i){ 
@@ -413,20 +413,19 @@ private:
        // window_vector[0].first.pop_front();
        // window_vector[0].second.pop_front();
 
-        window_vector[0].first.clear();
-        window_vector[0].second.clear();
+       // window_vector[0].first.clear();
+       // window_vector[0].second.clear();
 
-        window_vector.push_back(std::make_pair((sw_new_value + new_value)%5, *second_iterator));
+        window_vector.push_back(std::make_pair((sw_new_value + new_value)%5, sw_new_value));
 
 
-        auto v = std::vector<std::pair< unsigned int, urng_iterator_t>> window_vector;
         auto result = *std::min_element(v.cbegin(), v.cend(), [](const auto& lhs, const auto& rhs) {
             return lhs.first < rhs.first;    
             });
         std::cout << result.first << " " << result.second  << std::endl; // 0 3
     
         int randstrobe_it = result.second;
-        randstrobe_value = {*first_iterator, *randstrobe_it};
+        randstrobe_value = {*first_iterator, randstrobe_it};
         randstrobe_position_offset = std::distance(std::begin(result.second), randstrobe_it);
 
     //    for (int i = 1u; i < window_size + 2; ++i){ 
