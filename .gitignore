@@ -46,3 +46,4 @@ src/snakemake/
 !src/snakemake/speed/README
 !src/snakemake/speed/Snakefile
 !src/snakemake/speed/plot_speed.py
+!src/snakemake/speed/plot_speed_representative.py

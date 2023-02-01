@@ -596,7 +596,7 @@ std::string create_name(range_arguments & args)
                                     return "";
                             }
                     }
-        case syncmer:  return "syncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get())+ "_" + std::to_string(*args.positions.begin()) + "_" + std::to_string(*args.positions.end());
+        case syncmer: return "syncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get())+ "_" + std::to_string(args.positions[0]) + "_" + std::to_string(args.positions[args.positions.size()-1]);
 
         default: return "";
 
