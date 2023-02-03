@@ -376,11 +376,12 @@ private:
         auto result = *std::min_element(window_vector.cbegin(), window_vector.cend(), [](const auto& lhs, const auto& rhs) {
             return lhs.first < rhs.first;    
             });
-        std::cout << result.first << " " << result.second  << std::endl; // 0 3
+        std::cout << result.first << std::endl;
+        //cout << "First Randstrobe Result(" << result.first << ',' << result.second << ") =>" << endl;
     
-        int randstrobe_it = result.second;
+        auto randstrobe_it = result.second;
         randstrobe_value = {*first_iterator, randstrobe_it};
-        randstrobe_position_offset = std::distance(std::begin(result.second), randstrobe_it);
+        randstrobe_position_offset = std::distance(std::begin(window_vector.second), randstrobe_it);
         
         //for (int i = 1u; i < window_size + 2; ++i){ 
         //    auto minimum_it = std::ranges::min_element(window_vector[i].first, std::less_equal<value_t>{});
@@ -410,7 +411,7 @@ private:
         randstrobe_value[0]= new_value;       //erste k-mer wert in randstrobe als erste iterator
 
        
-       // window_vector[0].first.pop_front();
+       window_vector.pop_front();
        // window_vector[0].second.pop_front();
 
        // window_vector[0].first.clear();
@@ -419,14 +420,16 @@ private:
         window_vector.push_back(std::make_pair((sw_new_value + new_value)%5, sw_new_value));
 
 
-        auto result = *std::min_element(v.cbegin(), v.cend(), [](const auto& lhs, const auto& rhs) {
+        auto result = *std::min_element(window_vector.cbegin(), window_vector.cend(), [](const auto& lhs, const auto& rhs) {
             return lhs.first < rhs.first;    
             });
-        std::cout << result.first << " " << result.second  << std::endl; // 0 3
+        //cout << "Randstrobe Result(" << result.first << ',' << result.second << ") =>" << endl;
+        std::cout << result.first << std::endl;
+        //std::cout << result.second << std::endl; // 0 3
     
-        int randstrobe_it = result.second;
+        auto randstrobe_it = result.second;
         randstrobe_value = {*first_iterator, randstrobe_it};
-        randstrobe_position_offset = std::distance(std::begin(result.second), randstrobe_it);
+        randstrobe_position_offset = std::distance(std::begin(window_vector.second), randstrobe_it);
 
     //    for (int i = 1u; i < window_size + 2; ++i){ 
     //        //auto randstrobe_it = std::ranges::min_element(window_values, std::less_equal<value_t>{});
