@@ -65,8 +65,6 @@ struct modmer_hash_fn
                               uint32_t const mod_used,
                               seed const seed = seqan3::seed{0x8F3F73B5CF1C9ADE}) const
     {
-        static_assert(std::ranges::viewable_range<urng_t>,
-            "The range parameter to views::modmer_hash cannot be a temporary of a non-view range.");
         static_assert(std::ranges::forward_range<urng_t>,
             "The range parameter to views::modmer_hash must model std::ranges::forward_range.");
         static_assert(semialphabet<std::ranges::range_reference_t<urng_t>>,

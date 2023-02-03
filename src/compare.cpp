@@ -191,7 +191,7 @@ void accuracy(urng_t input_view,
  *  \param method_name Name of the tested method.
  *  \param args The arguments about the view to be used, needed for strobemers.
  */
-template <typename urng_t, int strobemers = 0>
+template <typename urng_t, bool underlying_strobemer = false>
 void counts(std::vector<std::filesystem::path> sequence_files, urng_t input_view, std::string method_name, range_arguments & args)
 {
     std::vector<uint64_t> counts_results{};
@@ -199,20 +199,20 @@ void counts(std::vector<std::filesystem::path> sequence_files, urng_t input_view
     for (int i = 0; i < sequence_files.size(); ++i)
     {
         robin_hood::unordered_node_map<uint64_t, uint16_t> hash_table{};
-        if constexpr (strobemers > 0)
+        seqan3::sequence_file_input<my_traits, seqan3::fields<seqan3::field::seq>> fin{sequence_files[i]};
+        if constexpr (underlying_strobemer) // TODO: Fix this, so that syncmers for strobemers do not need extra code.
         {
-            seqan3::sequence_file_input<my_traits2, seqan3::fields<seqan3::field::seq>> fin{sequence_files[i]};
             for (auto & [seq] : fin)
             {
-                std::vector<std::tuple<uint64_t, unsigned int, unsigned int, unsigned int, unsigned int>> strobes_vector;
-                get_strobemers<strobemers>(seq, args, strobes_vector);
-                for (auto & t : strobes_vector) // iterate over the strobemer tuples
-                    hash_table[std::get<0>(t)] = std::min<uint16_t>(65534u, hash_table[std::get<0>(t)] + 1);
+                for (auto && hash : seq | input_view)
+                {
+                    if (syncmer_filter(hash,args.w_size.get(), (args.k_size *args.order),  args.positions, args.seed_se.get()))
+                        hash_table[hash] = std::min<uint16_t>(65534u, hash_table[hash] + 1);
+                }
             }
         }
         else
         {
-            seqan3::sequence_file_input<my_traits, seqan3::fields<seqan3::field::seq>> fin{sequence_files[i]};
             for (auto & [seq] : fin)
             {
                 for (auto && hash : seq | input_view)
@@ -555,15 +555,21 @@ void unique(std::vector<std::filesystem::path> input_files, std::filesystem::pat
    outfile.close();
 }
 
-std::string create_name(range_arguments & args)
+std::string create_name(range_arguments & args, bool underlying_strobemer)
 {
+    std::string prefix{""};
+    if (underlying_strobemer)
+    {
+        prefix = "Strobemer_";
+    }
+
     switch(args.name)
     {
         case kmer: return "kmer_hash_"+std::to_string(args.k_size);
                    break;
-        case minimiser: return "minimiser_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get());
+        case minimiser: return prefix +"minimiser_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get());
                         break;
-        case modmers: return "modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get());
+        case modmers: return prefix +"modmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get());
                         break;
         case strobemer: {
                             std::ranges::empty_view<seqan3::detail::empty_type> empty{};
@@ -596,10 +602,9 @@ std::string create_name(range_arguments & args)
                                     return "";
                             }
                     }
-        case syncmer: return "syncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get())+ "_" + std::to_string(args.positions[0]) + "_" + std::to_string(args.positions[args.positions.size()-1]);
+        case syncmer: return prefix + "syncmer_hash_" + std::to_string(args.k_size) + "_" + std::to_string(args.w_size.get())+ "_" + std::to_string(args.positions[0]) + "_" + std::to_string(args.positions[args.positions.size()-1]);
 
         default: return "";
-
     }
 }
 
@@ -622,33 +627,92 @@ void do_accuracy(accuracy_arguments & args)
     }
 }
 
-void do_counts(std::vector<std::filesystem::path> sequence_files, range_arguments & args)
+void do_counts(std::vector<std::filesystem::path> sequence_files, range_arguments & args, bool underlying_strobemer)
 {
-    switch(args.name)
+    if(underlying_strobemer)
     {
-        case kmer: counts(sequence_files, seqan3::views::kmer_hash(args.shape), create_name(args), args);
-                   break;
-        case minimiser: counts(sequence_files, seqan3::views::minimiser_hash(args.shape,
-                                args.w_size, args.seed_se), create_name(args), args);
-                        break;
-        case modmers: counts(sequence_files, modmer_hash(args.shape,
-                                args.w_size.get(), args.seed_se), create_name(args), args);
-                        break;
-        case syncmer:  counts(sequence_files, syncmer_hash(args.w_size.get(), args.k_size,  args.positions, args.seed_se),
-                              create_name(args), args);
-                        break;
-        case strobemer: {
-                            std::ranges::empty_view<seqan3::detail::empty_type> empty{};
-                            if (args.rand & (args.order == 2))
-                                counts<std::ranges::empty_view<seqan3::detail::empty_type>, 1>(sequence_files, empty, create_name(args), args);
-                            else if (args.rand & (args.order == 3))
-                                counts<std::ranges::empty_view<seqan3::detail::empty_type>, 2>(sequence_files, empty, create_name(args), args);
-                            else if (args.hybrid)
-                                counts<std::ranges::empty_view<seqan3::detail::empty_type>, 3>(sequence_files, empty, create_name(args), args);
-                            else if (args.minstrobers)
-                                counts<std::ranges::empty_view<seqan3::detail::empty_type>, 4>(sequence_files, empty, create_name(args), args);
+        seqan3::debug_stream << args.shape.size();
+        switch(args.name)
+        {
+            case minimiser: {
+                                if (args.hybrid & (args.order == 2))
+                                    counts(sequence_files, hybridstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector> | seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1), create_name(args, true), args);
+                                if (args.hybrid & (args.order == 3))
+                                    counts(sequence_files, hybridstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector> | seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*3)+1), create_name(args, true), args);
+                                if (args.minstrobers & (args.order == 2))
+                                    counts(sequence_files, minstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector> | seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1), create_name(args, true), args);
+                                if (args.minstrobers & (args.order == 3))
+                                    counts(sequence_files, minstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector> | seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*3)+1), create_name(args, true), args);
+                                if (args.rand & (args.order == 2))
+                                    counts(sequence_files, randstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector> | seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1), create_name(args, true), args);
+                                if (args.rand & (args.order == 3))
+                                    counts(sequence_files, randstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector> | seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*3)+1), create_name(args, true), args);
+
+                            }
                             break;
-                        }
+            case modmers: {
+                                if (args.hybrid & (args.order == 2))
+                                    counts(sequence_files, hybridstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector> | modmer(args.w_size.get()), create_name(args, true), args);
+                                if (args.hybrid & (args.order == 3))
+                                    counts(sequence_files, hybridstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector> | modmer(args.w_size.get()), create_name(args, true), args);
+                                if (args.minstrobers & (args.order == 2))
+                                    counts(sequence_files, minstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector> | modmer(args.w_size.get()), create_name(args, true), args);
+                                if (args.minstrobers & (args.order == 3))
+                                    counts(sequence_files, minstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector> | modmer(args.w_size.get()), create_name(args, true), args);
+                                if (args.rand & (args.order == 2))
+                                    counts(sequence_files, randstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector> | modmer(args.w_size.get()), create_name(args, true), args);
+                                if (args.rand & (args.order == 3))
+                                    counts(sequence_files, randstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector> | modmer(args.w_size.get()), create_name(args, true), args);
+
+                            }
+                            break;
+            case syncmer:  {
+                                if (args.hybrid & (args.order == 2))
+                                    counts<decltype(hybridstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector>),true>(sequence_files, hybridstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector>, create_name(args,true), args);
+                                if (args.hybrid & (args.order == 3))
+                                    counts<decltype(hybridstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector>),true>(sequence_files, hybridstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector>, create_name(args,true), args);
+                                if (args.minstrobers & (args.order == 2))
+                                    counts<decltype(minstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector>),true>(sequence_files, minstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector>, create_name(args,true), args);
+                                if (args.minstrobers & (args.order == 3))
+                                    counts<decltype(minstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector>),true>(sequence_files, minstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector>, create_name(args,true), args);
+                                if (args.rand & (args.order == 2))
+                                    counts<decltype(randstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector>),true>(sequence_files, randstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector>, create_name(args,true), args);
+                                if (args.rand & (args.order == 3))
+                                    counts<decltype(randstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector>),true>(sequence_files, randstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se) | seqan3::views::to<std::vector>, create_name(args,true), args);
+                           }
+                            break;
+        }
+    }
+    else
+    {
+        switch(args.name)
+        {
+            case kmer: counts(sequence_files, seqan3::views::kmer_hash(args.shape), create_name(args), args);
+                       break;
+            case minimiser: counts(sequence_files, seqan3::views::minimiser_hash(args.shape,
+                                    args.w_size, args.seed_se), create_name(args), args);
+                            break;
+            case modmers: counts(sequence_files, modmer_hash(args.shape,
+                                    args.w_size.get(), args.seed_se), create_name(args), args);
+                            break;
+            case syncmer:  counts(sequence_files, syncmer_hash(args.w_size.get(), args.k_size, args.positions, args.seed_se),
+                                  create_name(args), args);
+                            break;
+            case strobemer: {
+                                if (args.hybrid & (args.order == 2))
+                                    counts(sequence_files, hybridstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
+                                else if (args.hybrid & (args.order == 3))
+                                    counts(sequence_files, hybridstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
+                                else if (args.minstrobers & (args.order == 2))
+                                    counts(sequence_files, minstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
+                                else if (args.minstrobers & (args.order == 3))
+                                    counts(sequence_files, minstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
+                                else if (args.rand & (args.order == 2))
+                                    counts(sequence_files, randstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
+                                else if (args.rand & (args.order == 3))
+                                    counts(sequence_files, randstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
+                            }
+        }
     }
 }
 
@@ -695,17 +759,17 @@ void do_match(std::filesystem::path sequence_file1, std::filesystem::path sequen
                         else
                         {
                             if (args.hybrid & (args.order == 2))
-                                match(sequence_file1, sequence_file2, hybridstrobe2_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                                match(sequence_file1, sequence_file2, hybridstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
                             else if (args.hybrid & (args.order == 3))
-                                match(sequence_file1, sequence_file2, hybridstrobe3_hash(args.shape, args.w_min, args.w_max),create_name(args), args);
+                                match(sequence_file1, sequence_file2, hybridstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se),create_name(args), args);
                             else if (args.minstrobers & (args.order == 2))
-                                match(sequence_file1, sequence_file2, minstrobe2_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                                match(sequence_file1, sequence_file2, minstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
                             else if (args.minstrobers & (args.order == 3))
-                                match(sequence_file1, sequence_file2, minstrobe3_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                                match(sequence_file1, sequence_file2, minstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
                             else if (args.rand & (args.order == 2))
-                                match(sequence_file1, sequence_file2, randstrobe2_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                                match(sequence_file1, sequence_file2, randstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
                             else if (args.rand & (args.order == 3))
-                                match(sequence_file1, sequence_file2, randstrobe3_hash(args.shape, args.w_min, args.w_max), create_name(args), args);
+                                match(sequence_file1, sequence_file2, randstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
                     }
     }
 }
