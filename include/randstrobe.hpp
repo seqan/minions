@@ -381,7 +381,7 @@ private:
     
         auto randstrobe_it = result.second;
         randstrobe_value = {*first_iterator, randstrobe_it};
-        randstrobe_position_offset = std::distance(std::begin(window_vector.second), randstrobe_it);
+        randstrobe_position_offset = std::distance(std::begin(window_vector), randstrobe_it);
         
         //for (int i = 1u; i < window_size + 2; ++i){ 
         //    auto minimum_it = std::ranges::min_element(window_vector[i].first, std::less_equal<value_t>{});
@@ -411,7 +411,7 @@ private:
         randstrobe_value[0]= new_value;       //erste k-mer wert in randstrobe als erste iterator
 
        
-       window_vector.pop_front();
+       window_vector[0].clear();
        // window_vector[0].second.pop_front();
 
        // window_vector[0].first.clear();
@@ -428,8 +428,8 @@ private:
         //std::cout << result.second << std::endl; // 0 3
     
         auto randstrobe_it = result.second;
-        randstrobe_value = {*first_iterator, randstrobe_it};
-        randstrobe_position_offset = std::distance(std::begin(window_vector.second), randstrobe_it);
+        randstrobe_value[1] = *randstrobe_it;
+        randstrobe_position_offset = std::distance(std::begin(window_vector), randstrobe_it);
 
     //    for (int i = 1u; i < window_size + 2; ++i){ 
     //        //auto randstrobe_it = std::ranges::min_element(window_values, std::less_equal<value_t>{});
