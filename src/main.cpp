@@ -186,17 +186,21 @@ int match(seqan3::argument_parser & parser)
     range_arguments args{};
     std::filesystem::path sequence_file1;
     std::filesystem::path sequence_file2;
+    bool underlying_strobemer = false;
     parser.info.short_description = "Counts the number of matches for a given method between the two given files.";
     parser.add_positional_option(sequence_file1, "Please provide the first sequence file.");
     parser.add_positional_option(sequence_file2, "Please provide the second sequence file.");
     all_arguments(parser, args);
     std::string method{};
     parser.add_option(method, '\0', "method", "Pick your method.",
-                      seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer"});
+                      seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer", "syncmer"});
     parser.add_flag(args.lib_implementation, '\0', "original", "Set, if you want to use the strobemer implementation from Sahlin.");
+    parser.add_flag(underlying_strobemer,'\0', "strobemer", "If strobemers should be used as base for representative "
+                                                            "methods like minimizers. Default: False.");
 
     read_range_arguments_minimiser(parser, args);
     read_range_arguments_strobemers(parser, args);
+    read_range_arguments_syncmers(parser, args);
 
     try
     {
@@ -210,7 +214,7 @@ int match(seqan3::argument_parser & parser)
     }
 
     string_to_methods(method, args.name);
-    do_match(sequence_file1, sequence_file2, args);
+    do_match(sequence_file1, sequence_file2, args, underlying_strobemer);
 
     return 0;
 }

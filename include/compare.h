@@ -134,8 +134,9 @@ void do_distance(std::filesystem::path sequence_file, range_arguments & args);
  *  \param sequence_file1 The first sequence file.
  *  \param sequence_file2 The second sequence file.
  *  \param args The arguments about the view to be used.
+ *  \param underlying_strobemer True, if strobemers should be used with a representative method like minimizer.
  */
-void do_match(std::filesystem::path sequence_file1, std::filesystem::path sequence_file2, range_arguments & args);
+void do_match(std::filesystem::path sequence_file1, std::filesystem::path sequence_file2, range_arguments & args, bool underlying_strobemer = false);
 
 /*! \brief Function, comparing the speed.
  *  \param sequence_files A vector of sequence files.

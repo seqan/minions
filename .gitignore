@@ -42,6 +42,8 @@ src/snakemake/
 !src/snakemake/genmap/genmap_uniqueness.py
 
 !src/snakemake/accuracy/add_errors.py
+!src/snakemake/accuracy/README
+!src/snakemake/accuracy/Snakefile
 
 !src/snakemake/speed/README
 !src/snakemake/speed/Snakefile
