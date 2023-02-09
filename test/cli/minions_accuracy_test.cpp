@@ -78,13 +78,37 @@ TEST_F(cli_test, sequence_file)
     EXPECT_EQ(result.err, std::string{});
 }
 
+TEST_F(cli_test, hybridstrobemer)
+{
+    cli_test_result result = execute_app("minions accuracy --method strobemer --hybrid -k 8 --w-min 0 --w-max 16 --order 2 --ibfsize 10000 ", data("example1.fasta"), "--search-file", data("search.fasta"), "--solution-file", data("expected_search_result.out"));
+    EXPECT_EQ(result.exit_code, 0);
+    EXPECT_EQ(result.out, std::string{});
+    EXPECT_EQ(result.err, std::string{});
+}
+
+TEST_F(cli_test, minstrobemer)
+{
+    cli_test_result result = execute_app("minions accuracy --method strobemer --min -k 8 --w-min 0 --w-max 16 --order 2 --ibfsize 10000 ", data("example1.fasta"), "--search-file", data("search.fasta"), "--solution-file", data("expected_search_result.out"));
+    EXPECT_EQ(result.exit_code, 0);
+    EXPECT_EQ(result.out, std::string{});
+    EXPECT_EQ(result.err, std::string{});
+}
+
+TEST_F(cli_test, randstrobemer)
+{
+    cli_test_result result = execute_app("minions accuracy --method strobemer --rand -k 8 --w-min 0 --w-max 16 --order 2 --ibfsize 10000 ", data("example1.fasta"), "--search-file", data("search.fasta"), "--solution-file", data("expected_search_result.out"));
+    EXPECT_EQ(result.exit_code, 0);
+    EXPECT_EQ(result.out, std::string{});
+    EXPECT_EQ(result.err, std::string{});
+}
+
 TEST_F(cli_test, wrong_method)
 {
     cli_test_result result = execute_app("minions accuracy --method submer -k 19 --search-file ", data("search.fasta"), data("example.ibf"));
     std::string expected
     {
         "Error. Incorrect command line input for accuracy. Validation failed "
-        "for option --method: Value submer is not one of [kmer,minimiser,modmer,syncmer].\n"
+        "for option --method: Value submer is not one of [kmer,minimiser,modmer,syncmer,strobemer].\n"
     };
 
     EXPECT_EQ(result.exit_code, 0);

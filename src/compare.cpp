@@ -820,7 +820,20 @@ void do_accuracy(accuracy_arguments & args)
         case syncmer: accuracy(syncmer_hash(args.w_size.get(), args.k_size, args.positions, args.seed_se),
                                create_name(args), args);
                         break;
-
+        case strobemer: {
+                            if (args.hybrid & (args.order == 2))
+                                accuracy(hybridstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
+                            else if (args.hybrid & (args.order == 3))
+                                accuracy(hybridstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
+                            else if (args.minstrobers & (args.order == 2))
+                                accuracy(minstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
+                            else if (args.minstrobers & (args.order == 3))
+                                accuracy(minstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
+                            else if (args.rand & (args.order == 2))
+                                accuracy(randstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
+                            else if (args.rand & (args.order == 3))
+                                accuracy(randstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args), args);
+                        }
     }
 }
 

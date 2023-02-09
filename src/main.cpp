@@ -79,7 +79,7 @@ int accuracy(seqan3::argument_parser & parser)
     std::string method{};
     parser.add_option(method, '\0', "method", "Pick your method.",
                       seqan3::option_spec::required,
-                      seqan3::value_list_validator{"kmer", "minimiser", "modmer", "syncmer"});
+                      seqan3::value_list_validator{"kmer", "minimiser", "modmer", "syncmer", "strobemer"});
     parser.add_option(args.search_file, '\0', "search-file", "A sequence files with sequences to search for.",
                       seqan3::option_spec::required);
     parser.add_option(args.solution_file, '\0', "solution-file", "A file giving the correct files a sequence should be find in.",
@@ -94,6 +94,7 @@ int accuracy(seqan3::argument_parser & parser)
                       seqan3::option_spec::advanced);
 
     read_range_arguments_minimiser(parser, args);
+    read_range_arguments_strobemers(parser, args);
     read_range_arguments_syncmers(parser, args);
 
     try
