@@ -127,8 +127,9 @@ void do_counts(std::vector<std::filesystem::path> sequence_files, range_argument
 /*! \brief Function, comparing the methods in regard of their distance.
  *  \param sequence_file A sequence file.
  *  \param args The arguments about the view to be used.
+ *  \param underlying_strobemer True, if strobemers should be used with a representative method like minimizer.
  */
-void do_distance(std::filesystem::path sequence_file, range_arguments & args);
+void do_distance(std::filesystem::path sequence_file, range_arguments & args, bool underlying_strobemer = false);
 
 /*! \brief Function, counting number of matches between two sequences.
  *  \param sequence_file1 The first sequence file.

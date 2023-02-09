@@ -154,15 +154,20 @@ int distance(seqan3::argument_parser & parser)
 {
     range_arguments args{};
     std::filesystem::path sequence_file{};
+    bool underlying_strobemer = false;
     parser.info.short_description = "Estimates the distance of the singular submers to each other for different methods.";
     parser.add_positional_option(sequence_file, "Please provide one sequence file.");
     all_arguments(parser, args);
     std::string method{};
     parser.add_option(method, '\0', "method", "Pick your method.",
                       seqan3::option_spec::required,
-                      seqan3::value_list_validator{"minimiser", "modmer"});
+                      seqan3::value_list_validator{"minimiser", "modmer", "syncmer"});
+    parser.add_flag(underlying_strobemer,'\0', "strobemer", "If strobemers should be used as base for representative "
+                                                            "methods like minimizers. Default: False.");
 
     read_range_arguments_minimiser(parser, args);
+    read_range_arguments_strobemers(parser, args);
+    read_range_arguments_syncmers(parser, args);
 
     try
     {
@@ -176,7 +181,7 @@ int distance(seqan3::argument_parser & parser)
     }
 
     string_to_methods(method, args.name);
-    do_distance(sequence_file, args);
+    do_distance(sequence_file, args, underlying_strobemer);
 
     return 0;
 }

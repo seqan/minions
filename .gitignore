@@ -45,6 +45,8 @@ src/snakemake/
 !src/snakemake/accuracy/README
 !src/snakemake/accuracy/Snakefile
 
+!src/snakemake/distance/Snakefile
+
 !src/snakemake/speed/README
 !src/snakemake/speed/Snakefile
 !src/snakemake/speed/plot_speed.py
