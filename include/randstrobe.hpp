@@ -379,9 +379,9 @@ private:
         std::cout << result.first << std::endl;
         //cout << "First Randstrobe Result(" << result.first << ',' << result.second << ") =>" << endl;
     
-        int randstrobe_it = result.second;
+        urng_iterator_t randstrobe_it = result.second;
         randstrobe_value = {*first_iterator, randstrobe_it};
-        randstrobe_position_offset = std::distance(window_vector[0].second, randstrobe_it);
+        randstrobe_position_offset = std::distance(*first_iterator, randstrobe_it);
         
         //for (int i = 1u; i < window_size + 2; ++i){ 
         //    auto minimum_it = std::ranges::min_element(window_vector[i].first, std::less_equal<value_t>{});
@@ -401,7 +401,7 @@ private:
      */
     void next_randstrobe()
     {
-        advance_windows();  // Erklaerung steht unter private Atrributen von class, beide first und second iterator wird incrementiert
+        //advance_windows();  // Erklaerung steht unter private Atrributen von class, beide first und second iterator wird incrementiert
 
         if (second_iterator == urng_sentinel)
             return;
@@ -417,7 +417,19 @@ private:
        // window_vector[0].first.clear();
        // window_vector[0].second.clear();
 
-        window_vector.push_back(std::make_pair((sw_new_value + new_value)%5, sw_new_value));
+        unsigned int end_result_2;
+        for (int i = 1u; i < window_size + 2; ++i)     // alt: habe i < window_max geschrieben statt i < window_size
+        {
+            unsigned int end_result_2 = (*second_iterator + *first_iterator)%5;
+         
+            window_vector.push_back(std::make_pair(end_result_2, second_iterator));
+            advance_windows(); 
+        }
+     
+
+        window_vector.push_back(std::make_pair(end_result_2, second_iterator));
+
+        //window_vector.push_back(std::make_pair((sw_new_value + new_value)%5, sw_new_value));
 
 
         auto result = *std::min_element(window_vector.cbegin(), window_vector.cend(), [](const auto& lhs, const auto& rhs) {
@@ -427,7 +439,7 @@ private:
         std::cout << result.first << std::endl;
         //std::cout << result.second << std::endl; // 0 3
     
-        int randstrobe_it = result.second;
+        urng_iterator_t randstrobe_it = result.second;
         randstrobe_value[1] = randstrobe_it;
         //randstrobe_position_offset = std::distance(std::begin(window_vector), randstrobe_it);
 
@@ -440,7 +452,7 @@ private:
 
         else if (randstrobe_position_offset == 0)
         {                                                       
-            randstrobe_position_offset = std::distance(window_vector[0].second, randstrobe_it);        
+            randstrobe_position_offset = std::distance(*first_iterator, randstrobe_it);        
             return;
         }
 
