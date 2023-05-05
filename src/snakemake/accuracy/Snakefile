@@ -1,0 +1,185 @@
+rule all:
+    input:
+        # Match
+        [str(shape)+"_minimiser_hash_16_16_match_"+str(error)+".out" for shape in ["0", "36607", "51755"] for error in [1,2,5,10]],
+        [str(shape)+"_minimiser_hash_20_20_match_"+str(error)+".out" for shape in ["0", "933855", "975475"] for error in [1,2,5,10]],
+        [str(shape)+"_minimiser_hash_24_24_match_"+str(error)+".out" for shape in ["0", "14548847", "13954519"] for error in [1,2,5,10]],
+        [str(shape)+"_minimiser_hash_28_28_match_"+str(error)+".out" for shape in ["0", "234879855", "241004285"] for error in [1,2,5,10]],
+        [str(shape)+"_minimiser_hash_32_32_match_"+str(error)+".out" for shape in ["0", "3169577727", "3856068575"] for error in [1,2,5,10]],
+        ["minstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(3+k)+"_match_"+str(error)+".out" for k in range(8,17) for error in [1,2,5,10]],
+        ["hybridstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(4+k)+"_match_"+str(error)+".out" for k in range(8,17) for error in [1,2,5,10]],
+        ["randstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(3+k)+"_match_"+str(error)+".out" for k in range(8,17) for error in [1,2,5,10]],
+        ["minstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_match_"+str(error)+".out" for k in range(8,17) for error in [1,2,5,10]],
+        ["hybridstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_match_"+str(error)+".out" for k in range(8,17) for error in [1,2,5,10]],
+        ["randstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_match_"+str(error)+".out" for k in range(8,17) for error in [1,2,5,10]],
+        # Representative
+        ["0_minimiser_hash_20_"+str(w)+"_match_"+str(error)+".out" for w in range(24,44,4) for error in [1,2,5,10]],
+        ["0_modmer_hash_20_"+str(w)+"_match_"+str(error)+".out" for w in [3,5,7,9,11] for error in [1,2,5,10]],
+        ["syncmer_hash_20_"+str(w)+"_0_0_match_"+str(error)+".out" for w in [18,16,14,12,10] for error in [1,2,5,10]],
+        ["syncmer_hash_20_"+str(w)+"_0_6_match_"+str(error)+".out" for w in [15,11,7,3,1] for error in [1,2,5,10]],
+        # Representative based on strobemers
+        ["hybridstrobemers_2_"+str(0)+"_"+str(4+k)+"_minimiser_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in range(24,44,4) for error in [1,2,5,10]],
+        ["minstrobemers_2_"+str(0)+"_"+str(3+k)+"_minimiser_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in range(24,44,4) for error in [1,2,5,10]],
+        ["randstrobemers_2_"+str(0)+"_"+str(3+k)+"_minimiser_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in range(24,44,4) for error in [1,2,5,10]],
+        ["hybridstrobemers_2_"+str(0)+"_"+str(7+k)+"_minimiser_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in range(24,44,4) for error in [1,2,5,10]],
+        ["minstrobemers_2_"+str(0)+"_"+str(7+k)+"_minimiser_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in range(24,44,4) for error in [1,2,5,10]],
+        ["randstrobemers_2_"+str(0)+"_"+str(7+k)+"_minimiser_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in range(24,44,4) for error in [1,2,5,10]],
+        # Accuracy
+	["0_"+str(error)+"_"+str(threshold)+"_minimiser_hash_"+str(k)+"_"+str(k)+"_all_accuracy.out" for k in [20] for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+        [str(error)+"_"+str(threshold)+"_minstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(3+k)+"_all_accuracy.out" for k in [20] for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+        [str(error)+"_"+str(threshold)+"_hybridstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(4+k)+"_all_accuracy.out" for k in [20] for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+        [str(error)+"_"+str(threshold)+"_randstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(3+k)+"_all_accuracy.out" for k in [20] for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+        [str(error)+"_"+str(threshold)+"_minstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_all_accuracy.out" for k in [20] for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+        [str(error)+"_"+str(threshold)+"_hybridstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_all_accuracy.out" for k in [20] for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+        [str(error)+"_"+str(threshold)+"_randstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_all_accuracy.out" for k in [20] for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+        # Representative
+        ["0_"+str(error)+"_"+str(threshold)+"_minimiser_hash_20_"+str(w)+"_all_accuracy.out" for w in [24] for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+        ["0_"+str(error)+"_"+str(threshold)+"_modmer_hash_20_"+str(w)+"_all_accuracy.out" for w in [3] for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+        [str(error)+"_"+str(threshold)+"_syncmer_hash_20_"+str(w)+"_0_0"+"_all_accuracy.out" for w in [18] for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+        [str(error)+"_"+str(threshold)+"_syncmer_hash_20_"+str(w)+"_0_6"+"_all_accuracy.out" for w in [15] for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]]
+#        ["0_"+str(error)+"_"+str(threshold)+"_minimiser_hash_"+str(k)+"_"+str(k)+"_all_accuracy.out" for k in range(16,36,4) for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+ #       [str(error)+"_"+str(threshold)+"_minstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(3+k)+"_all_accuracy.out" for k in range(8,17) for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+  #      [str(error)+"_"+str(threshold)+"_hybridstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(4+k)+"_all_accuracy.out" for k in range(8,17) for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+   #     [str(error)+"_"+str(threshold)+"_randstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(3+k)+"_all_accuracy.out" for k in range(8,17) for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+    #    [str(error)+"_"+str(threshold)+"_minstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_all_accuracy.out" for k in range(8,17) for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+     #   [str(error)+"_"+str(threshold)+"_hybridstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_all_accuracy.out" for k in range(8,17) for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+      #  [str(error)+"_"+str(threshold)+"_randstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_all_accuracy.out" for k in range(8,17) for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+        # Representative
+#        ["0_"+str(error)+"_"+str(threshold)+"_minimiser_hash_20_"+str(w)+"_all_accuracy.out" for w in range(24,44,4) for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+ #       ["0_"+str(error)+"_"+str(threshold)+"_modmer_hash_20_"+str(w)+"_all_accuracy.out" for w in [3,5,7,9,11] for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+  #      [str(error)+"_"+str(threshold)+"_syncmer_hash_20_"+str(w)+"_0_0"+"_all_accuracy.out" for w in [18,16,14,12,10] for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+   #     [str(error)+"_"+str(threshold)+"_syncmer_hash_20_"+str(w)+"_0_6"+"_all_accuracy.out" for w in [15,11,7,3,1] for error in [2,5] for threshold in [0.1,0.2,0.3,0.4,0.5,0.6,0.7]],
+
+rule download_example_Data:
+    output:
+        "../results/simulated_reads100000.fa"
+    shell:
+        """wget "https://ftp.imp.fu-berlin.de/pub/darvish/simulated_reads100000.fa.fa.gz" -O ../results/simulated_reads100000.fa.gz
+        gunzip ../results/simulated_reads100000.fa.gz"""
+
+rule add_error:
+    input:
+        "../results/simulated_reads100000.fa"
+    output:
+        "simulated_reads100000_{error}.fa"
+    shell:
+        "python3 add_errors.py ../results/simulated_reads100000.fa simulated_reads100000_{wildcards.error}.fa {wildcards.error}"
+
+rule match_minimiser_modmer:
+    input:
+        "../results/simulated_reads100000.fa",
+        "simulated_reads100000_{error}.fa"
+    output:
+        "{shape}_{method}_hash_{kmer_size}_{w_size}_match_{error}.out"
+    wildcard_constraints:
+         shape='[0-9]*',
+         method='(modmer|minimiser)'
+    shell:
+        "minions match --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.w_size} --shape {wildcards.shape} -o {wildcards.shape}_  {input} > {wildcards.shape}_{wildcards.method}_hash_{wildcards.kmer_size}_{wildcards.w_size}_match_{wildcards.error}.out"
+
+rule match_syncmer:
+    input:
+        "../results/simulated_reads100000.fa",
+        "simulated_reads100000_{error}.fa"
+    output:
+        "syncmer_hash_{kmer_size}_{w_size}_{pos_begin}_{pos_end}_match_{error}.out",
+    shell:
+        "minions match --method syncmer -k {wildcards.kmer_size} -w {wildcards.w_size} -p {wildcards.pos_begin} -p {wildcards.pos_end} --shape 0 {input} > syncmer_hash_{wildcards.kmer_size}_{wildcards.w_size}_{wildcards.pos_begin}_{wildcards.pos_end}_match_{wildcards.error}.out"
+
+rule match_strobemer:
+    input:
+        "../results/simulated_reads100000.fa",
+        "simulated_reads100000_{error}.fa"
+    output:
+        "{method}strobemers_{kmer_size}_{order}_{wmin}_{wmax}_match_{error}.out"
+    wildcard_constraints:
+         method='(min|rand|hybrid)',
+         kmer_size='[0-9]*',
+         order='(2|3)',
+         wmin='[0-9]*',
+         wmax='[0-9]*'
+    shell:
+        "minions match --method strobemer --{wildcards.method} -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --order {wildcards.order} {input} > {wildcards.method}strobemers_{wildcards.kmer_size}_{wildcards.order}_{wildcards.wmin}_{wildcards.wmax}_match_{wildcards.error}.out"
+
+rule match_minimiser_modmer_strobemer:
+    input:
+        "../results/simulated_reads100000.fa",
+        "simulated_reads100000_{error}.fa"
+    output:
+        "{method2}strobemers_{order}_{wmin}_{wmax}_{method}_hash_{kmer_size}_{w_size}_match_{error}.out"
+    wildcard_constraints:
+         method='(modmer|minimiser)',
+         method2='(min|rand|hybrid)',
+         order='(2|3)',
+         kmer_size='[0-9]*',
+         w_size='[0-9]*',
+         wmin='[0-9]*',
+         wmax='[0-9]*'
+    shell:
+        "minions match --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.w_size} --strobemer --w-min {wildcards.wmin} --w-max {wildcards.wmax} --{wildcards.method2} --order {wildcards.order} {input} > {wildcards.method2}strobemers_{wildcards.order}_{wildcards.wmin}_{wildcards.wmax}_{wildcards.method}_hash_{wildcards.kmer_size}_{wildcards.w_size}_match_{wildcards.error}.out"
+
+rule match_minimiser_modmer_accuracy_ibf:
+    input:
+        ["64/bins/bin_"+"%02d" % (i,) + ".fasta" for i in range(64)]
+    output:
+        "{shape}_{error}_{threshold}_{method}_hash_{kmer_size}_{w_size}.ibf"
+    wildcard_constraints:
+         shape='[0-9]*',
+         method='(modmer|minimiser)'
+    shell:
+        "minions accuracy --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.w_size} --threshold {wildcards.threshold} --shape {wildcards.shape} -o {wildcards.shape}_{wildcards.error}_{wildcards.threshold}_  --ibfsize 536870912 --search-file 64/reads_e{wildcards.error}_100/all.fastq --solution-file search_results.out {input}"
+
+rule match_minimiser_modmer_accuracy:
+    input:
+        "{shape}_{error}_{threshold}_{method}_hash_{kmer_size}_{w_size}.ibf"
+    output:
+        "{shape}_{error}_{threshold}_{method}_hash_{kmer_size}_{w_size}_all_accuracy.out"
+    wildcard_constraints:
+         shape='[0-9]*',
+         method='(modmer|minimiser)'
+    shell:
+        "minions accuracy --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.w_size} --threshold {wildcards.threshold} --shape {wildcards.shape} -o {wildcards.shape}_{wildcards.error}_{wildcards.threshold}_  --ibfsize 536870912 --search-file 64/reads_e{wildcards.error}_100/all.fastq --solution-file search_results.out {input}"
+
+rule match_strobemer_accuracy_ibf:
+    input:
+        ["64/bins/bin_"+"%02d" % (i,) + ".fasta" for i in range(64)]
+    output:
+        "{error}_{threshold}_{method}strobemers_{kmer_size}_{order}_{wmin}_{wmax}.ibf"
+    wildcard_constraints:
+          method='(min|rand|hybrid)',
+          kmer_size='[0-9]*',
+          order='(2|3)',
+          wmin='[0-9]*',
+          wmax='[0-9]*'
+    shell:
+        "minions accuracy --method strobemer --{wildcards.method} -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --order {wildcards.order} --threshold {wildcards.threshold} --shape 0 -o {wildcards.error}_{wildcards.threshold}_  --ibfsize 536870912 --search-file 64/reads_e{wildcards.error}_100/all.fastq --solution-file search_results.out {input}"
+
+rule match_strobemer_accuracy:
+    input:
+        "{error}_{threshold}_{method}strobemers_{kmer_size}_{order}_{wmin}_{wmax}.ibf"
+    output:
+        "{error}_{threshold}_{method}strobemers_{kmer_size}_{order}_{wmin}_{wmax}_all_accuracy.out"
+    wildcard_constraints:
+          method='(min|rand|hybrid)',
+          kmer_size='[0-9]*',
+          order='(2|3)',
+          wmin='[0-9]*',
+          wmax='[0-9]*'
+    shell:
+        "minions accuracy --method strobemer --{wildcards.method} -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --order {wildcards.order} --threshold {wildcards.threshold} --shape 0 -o {wildcards.error}_{wildcards.threshold}_  --ibfsize 536870912 --search-file 64/reads_e{wildcards.error}_100/all.fastq --solution-file search_results.out {input}"
+
+rule match_syncmer_accuracy_ibf:
+    input:
+        ["64/bins/bin_"+"%02d" % (i,) + ".fasta" for i in range(64)]
+    output:
+        "{error}_{threshold}_syncmer_hash_{kmer_size}_{w_size}_{pos_begin}_{pos_end}.ibf"
+    shell:
+        "minions accuracy --method syncmer -k {wildcards.kmer_size} -w {wildcards.w_size} -p {wildcards.pos_begin} -p {wildcards.pos_end} --threshold {wildcards.threshold} --shape 0 -o {wildcards.error}_{wildcards.threshold}_  --ibfsize 536870912 --search-file 64/reads_e{wildcards.error}_100/all.fastq --solution-file search_results.out {input}"
+
+rule match_syncmer_accuracy:
+    input:
+        "{error}_{threshold}_syncmer_hash_{kmer_size}_{w_size}_{pos_begin}_{pos_end}.ibf"
+    output:
+        "{error}_{threshold}_syncmer_hash_{kmer_size}_{w_size}_{pos_begin}_{pos_end}_all_accuracy.out"
+    shell:
+        "minions accuracy --method syncmer -k {wildcards.kmer_size} -w {wildcards.w_size} -p {wildcards.pos_begin} -p {wildcards.pos_end} --threshold {wildcards.threshold} --shape 0 -o {wildcards.error}_{wildcards.threshold}_  --ibfsize 536870912 --search-file 64/reads_e{wildcards.error}_100/all.fastq --solution-file search_results.out {input}"

@@ -44,6 +44,8 @@ src/snakemake/
 !src/snakemake/accuracy/add_errors.py
 !src/snakemake/accuracy/README
 !src/snakemake/accuracy/Snakefile
+!src/snakemake/accuracy/plot_match.py
+!src/snakemake/accuracy/plot_match_representative.py
 
 !src/snakemake/distance/Snakefile
 
