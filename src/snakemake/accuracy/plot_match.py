@@ -57,7 +57,7 @@ for error in [1,2,5,10]:
     plt.plot(pos, [x[0] for x in gapped8_kmers], color = colors[2], label='8 k-mer',linewidth=3.0)
     plt.plot(pos, [x[0] for x in minstrobemers2], color = colors[3], label='minstrobemers',linewidth=3.0)
     plt.plot(pos, [x[0] for x in hybridstrobemers2], color = colors[4], label='hybridstrobemers',linewidth=3.0)
-    plt.plot(pos, [x[2] for x in randstrobemers2], color = colors[5], label='randstrobemers',linewidth=3.0)
+    plt.plot(pos, [x[0] for x in randstrobemers2], color = colors[5], label='randstrobemers',linewidth=3.0)
 
     plt.legend(bbox_to_anchor=(1.01, 0.75), title="Methods")
     plt.savefig("../results/Match_island_"+str(error)+".png",bbox_inches='tight')

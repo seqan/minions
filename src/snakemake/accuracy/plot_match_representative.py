@@ -27,13 +27,7 @@ def read_file(results, files):
                     results.append((mean,stdev,cov))
     return results
 
-# Read all files for an error
-for error in [1,2,5,10]:
-    minimiser = read_file([], ["0_minimiser_hash_20_"+str(w)+"_match_"+str(error)+".out" for w in range(24,44,4)])
-    modmer = read_file([], ["0_modmer_hash_20_"+str(w)+"_match_"+str(error)+".out" for w in [3,5,7,9,11]])
-    opensyncmer = read_file([],["syncmer_hash_20_"+str(w)+"_0_0_match_"+str(error)+".out" for w in [18,16,14,12,10]])
-    closedsyncmer = read_file([], ["syncmer_hash_20_"+str(w)+"_0_6_match_"+str(error)+".out" for w in [15,11,7,3,1]])
-
+def plot_match(minimiser, modmer, opensyncmer, closedsyncmer, outfile1, outfile2):
     # Plot comparison between all Island size
     fig = plt.figure()
     X = np.arange(len(k_size))
@@ -41,7 +35,7 @@ for error in [1,2,5,10]:
     colors = ["#01d63a","#00e7e0","#fefea1","#748beb"]
     plt.xlabel("k")
     plt.xticks(pos, k_size)
-    print(opensyncmer)#plt.ylabel("Average island size")
+    plt.ylabel("Average island size")
 
     plt.plot(pos, [x[0] for x in minimiser], color = colors[0], label='(w,20)-minimizer', linewidth=3.0)
     plt.plot(pos, [x[0] for x in modmer], color = colors[1], label='(20,m)-modmer',linewidth=3.0)
@@ -49,7 +43,7 @@ for error in [1,2,5,10]:
     plt.plot(pos, [x[0] for x in closedsyncmer], color = colors[3], label='(20,s,[0,6],1)-syncmer',linewidth=3.0)
 
     plt.legend(bbox_to_anchor=(1.01, 0.75), title="Methods")
-    plt.savefig("../results/Match_island_representative"+str(error)+".png",bbox_inches='tight')
+    plt.savefig(outfile1,bbox_inches='tight')
 
     # Plot comparison between all match coverage
     fig = plt.figure()
@@ -67,4 +61,50 @@ for error in [1,2,5,10]:
 
 
     plt.legend(bbox_to_anchor=(1.01, 0.75), title="Methods")
-    plt.savefig("../results/Match_cov_representative"+str(error)+".png",bbox_inches='tight')
+    plt.savefig(outfile2,bbox_inches='tight')
+
+
+# Read all files for an error
+for error in [1,2,5,10]:
+    minimiser = read_file([], ["0_minimiser_hash_20_"+str(w)+"_match_"+str(error)+".out" for w in range(24,44,4)])
+    modmer = read_file([], ["0_modmer_hash_20_"+str(w)+"_match_"+str(error)+".out" for w in [3,5,7,9,11]])
+    opensyncmer = read_file([],["syncmer_hash_20_"+str(w)+"_0_0_match_"+str(error)+".out" for w in [18,16,14,12,10]])
+    closedsyncmer = read_file([], ["syncmer_hash_20_"+str(w)+"_0_6_match_"+str(error)+".out" for w in [15,11,7,3,1]])
+
+    plot_match(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Match_island_representative"+str(error)+".png","../results/Match_cov_representative"+str(error)+".png")
+
+    minimiser = read_file([], ["hybridstrobemers_2_"+str(0)+"_"+str(4+k)+"_minimiser_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in range(24,44,4)])
+    modmer = read_file([], ["hybridstrobemers_2_"+str(0)+"_"+str(4+k)+"_modmer_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in [3,5,7,9,11]])
+    opensyncmer = read_file([],["hybridstrobemers_2_"+str(0)+"_"+str(4+k)+"_syncmer_hash_10_"+str(w)+"_0_0_match_"+str(error)+".out" for k in [10] for w in [18,16,14,12,10]])
+    closedsyncmer = read_file([], ["hybridstrobemers_2_"+str(0)+"_"+str(4+k)+"_syncmer_hash_10_"+str(w)+"_0_6_match_"+str(error)+".out" for k in [10] for w in [15,11,7,3,1]])
+    plot_match(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Match_island_representative_hybrid1_"+str(error)+".png","../results/Match_cov_representative_hybrid1_"+str(error)+".png")
+
+    minimiser = read_file([], ["minstrobemers_2_"+str(0)+"_"+str(3+k)+"_minimiser_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in range(24,44,4)])
+    modmer = read_file([], ["minstrobemers_2_"+str(0)+"_"+str(3+k)+"_modmer_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in [3,5,7,9,11]])
+    opensyncmer = read_file([],["minstrobemers_2_"+str(0)+"_"+str(3+k)+"_syncmer_hash_10_"+str(w)+"_0_0_match_"+str(error)+".out" for k in [10] for w in [18,16,14,12,10]])
+    closedsyncmer = read_file([], ["minstrobemers_2_"+str(0)+"_"+str(3+k)+"_syncmer_hash_10_"+str(w)+"_0_6_match_"+str(error)+".out" for k in [10] for w in [15,11,7,3,1]])
+    plot_match(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Match_island_representative_min1_"+str(error)+".png","../results/Match_cov_representative_min1_"+str(error)+".png")
+
+    minimiser = read_file([], ["randstrobemers_2_"+str(0)+"_"+str(3+k)+"_minimiser_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in range(24,44,4)])
+    modmer = read_file([], ["randstrobemers_2_"+str(0)+"_"+str(3+k)+"_modmer_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in [3,5,7,9,11]])
+    opensyncmer = read_file([],["randstrobemers_2_"+str(0)+"_"+str(3+k)+"_syncmer_hash_10_"+str(w)+"_0_0_match_"+str(error)+".out" for k in [10] for w in [18,16,14,12,10]])
+    closedsyncmer = read_file([], ["randstrobemers_2_"+str(0)+"_"+str(3+k)+"_syncmer_hash_10_"+str(w)+"_0_6_match_"+str(error)+".out" for k in [10] for w in [15,11,7,3,1]])
+    plot_match(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Match_island_representative_rand1_"+str(error)+".png","../results/Match_cov_representative_rand1_"+str(error)+".png")
+
+    minimiser = read_file([], ["hybridstrobemers_2_"+str(0)+"_"+str(7+k)+"_minimiser_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in range(24,44,4)])
+    modmer = read_file([], ["hybridstrobemers_2_"+str(0)+"_"+str(7+k)+"_modmer_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in [3,5,7,9,11]])
+    opensyncmer = read_file([],["hybridstrobemers_2_"+str(0)+"_"+str(7+k)+"_syncmer_hash_10_"+str(w)+"_0_0_match_"+str(error)+".out" for k in [10] for w in [18,16,14,12,10]])
+    closedsyncmer = read_file([], ["hybridstrobemers_2_"+str(0)+"_"+str(7+k)+"_syncmer_hash_10_"+str(w)+"_0_6_match_"+str(error)+".out" for k in [10] for w in [15,11,7,3,1]])
+    plot_match(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Match_island_representative_hybrid_"+str(error)+".png","../results/Match_cov_representative_hybrid_"+str(error)+".png")
+
+    minimiser = read_file([], ["minstrobemers_2_"+str(0)+"_"+str(7+k)+"_minimiser_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in range(24,44,4)])
+    modmer = read_file([], ["minstrobemers_2_"+str(0)+"_"+str(7+k)+"_modmer_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in [3,5,7,9,11]])
+    opensyncmer = read_file([],["minstrobemers_2_"+str(0)+"_"+str(7+k)+"_syncmer_hash_10_"+str(w)+"_0_0_match_"+str(error)+".out" for k in [10] for w in [18,16,14,12,10]])
+    closedsyncmer = read_file([], ["minstrobemers_2_"+str(0)+"_"+str(7+k)+"_syncmer_hash_10_"+str(w)+"_0_6_match_"+str(error)+".out" for k in [10] for w in [15,11,7,3,1]])
+    plot_match(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Match_island_representative_min_"+str(error)+".png","../results/Match_cov_representative_min_"+str(error)+".png")
+
+    minimiser = read_file([], ["randstrobemers_2_"+str(0)+"_"+str(7+k)+"_minimiser_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in range(24,44,4)])
+    modmer = read_file([], ["randstrobemers_2_"+str(0)+"_"+str(7+k)+"_modmer_hash_10_"+str(w)+"_match_"+str(error)+".out" for k in [10] for w in [3,5,7,9,11]])
+    opensyncmer = read_file([],["randstrobemers_2_"+str(0)+"_"+str(7+k)+"_syncmer_hash_10_"+str(w)+"_0_0_match_"+str(error)+".out" for k in [10] for w in [18,16,14,12,10]])
+    closedsyncmer = read_file([], ["randstrobemers_2_"+str(0)+"_"+str(7+k)+"_syncmer_hash_10_"+str(w)+"_0_6_match_"+str(error)+".out" for k in [10] for w in [15,11,7,3,1]])
+    plot_match(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Match_island_representative_rand_"+str(error)+".png","../results/Match_cov_representative_rand_"+str(error)+".png")
