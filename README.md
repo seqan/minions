@@ -32,11 +32,21 @@ Run test to check, if Comparison is working as intended. All tests should pass.
 make test
 ```
 
+# Counts
+
+Counts creates two output files: One named `{method}_{inputfile_name}_counts.out` storing as a binary file all submers and their respective count values and one named `{method}_counts.out` storing the minimium, mean, the variance and maximum of the count values. Count can also handle multiple files and calculate the mean over all sequences found in all files. Counts considers for all supported methods the canonical version.
+
+Example usage for calculating the counts of k-mers of a given input file `in.fa`:
+```
+minions counts --method kmer -k 16 in.fasta
+```
+This results in the two files: `kmer_hash_16_in_counts.out` and `kmer_hash_16_counts.out`.
+
 # Speed
 
 Speeds creates a file called `{method}_speed.out` and returns the speed of processing a singular sequence in microseconds. As typical one sequence file contains multiple sequences the minimum speed, the mean, the variance and the maximum speed are returned. Speed can also handle multiple files and calculate the mean over all sequences found in all files. Speed considers for all supported methods the non-canonical version.
 
-Example usage for calculating the k-mers of a given input file `in.fa`:
+Example usage for calculating the speed of k-mers of a given input file `in.fa`:
 ```
 minions speed --method kmer -k 16 in.fasta
 ```
@@ -56,6 +66,21 @@ For the original implementation, add the flag `--original` and note that for the
 `w-min` in the implementation from minions is the distance between the first strobe to second strobe. While for the original implementation, it is the starting position in the sequence of the window that is considered for the second strobe. Therefore, the call with original should always add (k+1) to `w-min` compared to the minion implementation.
 
 `w-max` in the implementation from minions is the window length that should be considered for every strobe besides the first one. All strobes need to be completely inside this window length to be considered. While for the original implementation, it is the position in the sequence until which a strobe that is considered has to start. Therefore, for a strobemer with a strobe length of 8, `w-min` of 0 and `w-max` of 15 in the minion implementation would equal a `w-min` of 9 and `w-max` of 17. For more details, please read the documentation for both implementations.
+
+# Unique
+
+Unique should be run after counts, as the input should be a `{method}_{inputfile_name}_counts.out` file, which stores the submers with their count values. Unique then calculates the percentage of unique submers for all given files and reports it in a output file.
+
+Example usage for calculating the uniqueness of k-mers for the output file of the example in counts:
+```
+minions unique `kmer_hash_16_in_counts.out` -o Unique.out
+```
+
+This results in the file `Unique.out`, which looks like:
+```
+kmer_hash_16	89.7
+```
+If multiple files would have been given, each file would have added another row.
 
 # Methods
 
