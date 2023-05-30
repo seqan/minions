@@ -46,6 +46,10 @@ src/snakemake/
 !src/snakemake/accuracy/Snakefile
 !src/snakemake/accuracy/plot_match.py
 !src/snakemake/accuracy/plot_match_representative.py
+!src/snakemake/count/Snakefile
+!src/snakemake/count/plot_counts.py
+!src/snakemake/count/plot_counts_representative.py
+!src/snakemake/count/plot_counts_representative2.py
 
 !src/snakemake/distance/Snakefile
 
