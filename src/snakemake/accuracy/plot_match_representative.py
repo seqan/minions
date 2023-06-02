@@ -22,8 +22,8 @@ def read_file(results, files):
                 if (line[:7]=="Match C"):
                     cov = round(float(line.split()[2]),2)
                 if (line[:7]=="Islands"):
-                    mean = round(float(line.split('\t')[2]),2)
-                    stdev = round(float(line.split('\t')[3]),2)
+                    mean = round(float(line.split('\t')[1]),2)
+                    stdev = round(float(line.split('\t')[2]),2)
                     results.append((mean,stdev,cov))
     return results
 
@@ -32,7 +32,7 @@ def plot_match(minimiser, modmer, opensyncmer, closedsyncmer, outfile1, outfile2
     fig = plt.figure()
     X = np.arange(len(k_size))
 
-    colors = ["#01d63a","#00e7e0","#fefea1","#748beb"]
+    colors = ["#890015","#5cffca","#a13ff0","#ff9ba0"]
     plt.xlabel("k")
     plt.xticks(pos, k_size)
     plt.ylabel("Average island size")
@@ -48,8 +48,6 @@ def plot_match(minimiser, modmer, opensyncmer, closedsyncmer, outfile1, outfile2
     # Plot comparison between all match coverage
     fig = plt.figure()
     X = np.arange(len(k_size))
-
-    colors = ["#00ba32","#00d6e7","#fad100","#697ed5","#c76674","#9350a1"]
     plt.xlabel("k")
     plt.xticks(pos, k_size)
     plt.ylabel("Match coverage")
@@ -60,7 +58,7 @@ def plot_match(minimiser, modmer, opensyncmer, closedsyncmer, outfile1, outfile2
     plt.plot(pos, [x[2] for x in closedsyncmer], color = colors[3], label='(20,s,[0,6],1)-syncmer',linewidth=3.0)
 
 
-    plt.legend(bbox_to_anchor=(1.01, 0.75), title="Methods")
+    plt.legend(loc="upper right", title="Methods")
     plt.savefig(outfile2,bbox_inches='tight')
 
 

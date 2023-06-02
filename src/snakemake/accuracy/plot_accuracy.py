@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import numpy as np
 
-thresholds = [0.1,0.2,0.3,0.4,0.5,0.6,0.7]
+thresholds = [0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11,0.12,0.13,0.14,0.15,0.16,0.17,0.18,0.19,0.2,0.25,0.3,0.35,0.4,0.5,0.6,0.7]
 pos = [x+0.25 for x in range(len(thresholds))]
 strobe_range = [10]
 
@@ -26,11 +26,11 @@ def read_file(results, files):
     results.append([num_fp, fn_0])
 
 # Read all files for an error
-for error in [2,5]:
+for error in [2,3,4,5]:
     results = []
     read_file(results, ["0_"+str(error)+"_"+str(threshold)+"_minimiser_hash_"+str(k)+"_"+str(k)+"_all_accuracy.out" for k in [20] for threshold in thresholds])
-    read_file(results, ["933855_"+str(error)+"_"+str(threshold)+"_minimiser_hash_"+str(k)+"_"+str(k)+"_all_accuracy.out" for k in [20] for threshold in thresholds])
-    read_file(results, ["975475_"+str(error)+"_"+str(threshold)+"_minimiser_hash_"+str(k)+"_"+str(k)+"_all_accuracy.out" for k in [20] for threshold in thresholds])
+    read_file(results, ["16252901_"+str(error)+"_"+str(threshold)+"_minimiser_hash_"+str(k)+"_"+str(k)+"_all_accuracy.out" for k in [24] for threshold in thresholds])
+    read_file(results, ["180082591_"+str(error)+"_"+str(threshold)+"_minimiser_hash_"+str(k)+"_"+str(k)+"_all_accuracy.out" for k in [28] for threshold in thresholds])
 
     read_file(results, [str(error)+"_"+str(threshold)+"_minstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(3+k)+"_all_accuracy.out" for k in strobe_range for threshold in thresholds])
     read_file(results,[str(error)+"_"+str(threshold)+"_hybridstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(4+k)+"_all_accuracy.out" for k in strobe_range for threshold in thresholds])
@@ -39,6 +39,15 @@ for error in [2,5]:
     read_file(results,[str(error)+"_"+str(threshold)+"_hybridstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_all_accuracy.out" for k in strobe_range for threshold in thresholds])
     read_file(results, [str(error)+"_"+str(threshold)+"_randstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_all_accuracy.out" for k in strobe_range for threshold in thresholds])
 
+    print("Error: ",error, "\n", results)
+
+print("Representative:")
+for error in [2,3,4,5]:
+    results = []
+    read_file(results, ["0_"+str(error)+"_"+str(threshold)+"_minimiser_hash_20_24_all_accuracy.out" for k in [20] for threshold in thresholds])
+    #read_file(results, ["0_"+str(error)+"_"+str(threshold)+"_modmer_hash_20_3_all_accuracy.out" for k in [20] for threshold in thresholds])
+    read_file(results, [str(error)+"_"+str(threshold)+"_syncmer_hash_20_18_0_0"+"_all_accuracy.out" for k in [20] for threshold in thresholds])
+    read_file(results, [str(error)+"_"+str(threshold)+"_syncmer_hash_20_15_0_6"+"_all_accuracy.out" for k in [20] for threshold in thresholds])
     print("Error: ",error, "\n", results)
 
 def fix():

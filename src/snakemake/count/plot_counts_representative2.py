@@ -371,6 +371,7 @@ def plot_bar(minimiser_all, modmer_all, opensyncmer_all, closedsyncmer_all, outf
     ax.bar(X + 0.6, closedsyncmer_all, color = colors[3], label='syncmer', width = 0.2)
     ax.set_xticks([0.3,1.3,2.3,3.3])
     ax.set_xticklabels(["k-mer","min", "hybrid", "rand"])
+    plt.ylabel("% of unique submers")
 
     plt.legend(title="Methods", bbox_to_anchor=(1.01, 0.65))
     plt.savefig(outfile,bbox_inches='tight')
