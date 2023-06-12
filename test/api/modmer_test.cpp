@@ -65,7 +65,6 @@ class modmer_test : public ::testing::Test
 protected:
     std::vector<seqan3::dna4> text1{"AAAAAA"_dna4};
     result_t result1{0, 0, 0}; // Same result for ungapped and gapped
-    result_t result1_distance{0, 0, 0};
 
     std::vector<seqan3::dna4> too_short_text{"AC"_dna4};
 
@@ -75,13 +74,10 @@ protected:
     std::vector<seqan3::dna4> text3{"ACGGCGACGTTTAG"_dna4};
     result_t result3_ungapped{26, 166, 152, 134, 252, 242}; // ACGG, GGCG, GCGA, GACG, TTTA, TTAG
     result_t result3_gapped{2, 10, 8, 10, 12, 14};      // A--G, G--G, G--A, G--G, T--A, T--G "-" for gap
-    result_t result3_distance{0, 1, 0, 1, 3, 0};
     result_t result3_ungapped_stop{26, 166, 152, 134}; // ACGG, GGCG, GCGA, GACG
     result_t result3_gapped_stop{2, 10, 8, 10};
-    result_t result3_distance_stop{0, 1, 0, 1};
     result_t result3_ungapped_start{252, 242};        // For start at second A, TTTA, TTAG
     result_t result3_gapped_start{14};      // For start at second A, T--G
-    result_t result3_distance_start{3, 0};
 };
 
 template <typename adaptor_t>
@@ -125,9 +121,7 @@ TEST_F(modmer_test, ungapped_kmer_hash)
     EXPECT_RANGE_EQ(result3_ungapped, text3 | kmer_view | modmer_view);
 
     auto v1 = text1 | kmer_view;
-    EXPECT_RANGE_EQ(result1_distance, (seqan3::detail::modmer_view<decltype(v1), true>(v1, 2)));
     auto v2 = text3 | kmer_view;
-    EXPECT_RANGE_EQ(result3_distance, (seqan3::detail::modmer_view<decltype(v2), true>(v2, 2)));
 }
 
 TEST_F(modmer_test, gapped_kmer_hash)
@@ -138,9 +132,7 @@ TEST_F(modmer_test, gapped_kmer_hash)
     EXPECT_RANGE_EQ(result3_gapped, text3 | gapped_kmer_view | modmer_view);
 
     auto v1 = text1 | gapped_kmer_view;
-    EXPECT_RANGE_EQ(result1_distance, (seqan3::detail::modmer_view<decltype(v1), true>(v1, 2)));
     auto v2 = text3 | gapped_kmer_view;
-    EXPECT_RANGE_EQ(result3_distance, (seqan3::detail::modmer_view<decltype(v2), true>(v2, 2)));
 }
 
 TEST_F(modmer_test, combinability)
@@ -151,14 +143,14 @@ TEST_F(modmer_test, combinability)
 
     auto v1 = text3 | stop_at_t | kmer_view;
     auto v2 = text3 | stop_at_t | kmer_view;
-    EXPECT_RANGE_EQ(result3_distance_stop, (seqan3::detail::modmer_view<decltype(v1), true>(v1, 2)));
-    EXPECT_RANGE_EQ(result3_distance_stop, (seqan3::detail::modmer_view<decltype(v2), true>(v2, 2)));
 
     auto start_at_a = std::views::drop(6);
-    EXPECT_RANGE_EQ(result3_ungapped_start, (seqan3::detail::modmer_view{text3 | start_at_a | kmer_view, 2}));
+    EXPECT_RANGE_EQ(result3_ungapped_start, (seqan3::detail::modmer_view{text3 | start_at_a | kmer_view, 2, 0}));
 
     auto v3 = text3 | start_at_a | kmer_view;
     auto v4 = text3 | start_at_a | gapped_kmer_view;
-    EXPECT_RANGE_EQ(result3_distance_start, (seqan3::detail::modmer_view<decltype(v3), true>(v3, 2)));
-    EXPECT_RANGE_EQ(result3_distance_start, (seqan3::detail::modmer_view<decltype(v4), true>(v4, 2)));
+
+    std::vector<uint64_t> ints{7, 182, 3, 9, 5, 216, 134, 252, 3, 242};
+    std::vector<uint64_t> ints_results{182, 216, 134, 252, 242};
+    EXPECT_RANGE_EQ(ints_results, ints | modmer_view);
 }

@@ -12,12 +12,10 @@ uint64_t fnv_hash(uint64_t hash_value, uint64_t seed)
 
     constexpr static uint64_t default_offset_basis = 0xcbf29ce484222325;
     constexpr static uint64_t prime                = 0x100000001b3;
-
     uint64_t hashed = hash_value;
     std::ostringstream os;
     os << hash_value;
     std::string oss = os.str();
-
     for (int i = 0; i < oss.size(); i++)
     {
         hashed = hashed * prime;

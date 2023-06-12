@@ -7,7 +7,7 @@
 
 uint32_t w_size;
 uint64_t shape{};
-uint64_t se;
+uint64_t se{0x8F3F73B5CF1C9ADEULL};
 
 void string_to_methods(std::string name, methods & m)
 {

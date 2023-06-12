@@ -19,7 +19,6 @@
 #include <seqan3/utility/views/zip.hpp>
 
 #include "modmer.hpp"
-#include "shared.hpp"
 
 namespace seqan3::detail
 {
@@ -74,19 +73,14 @@ struct modmer_hash_fn
         //    throw std::invalid_argument{"The chosen mod_used is not valid. "
         //                                "Please choose a value greater than 1."};
 
-        auto forward_strand = std::forward<urng_t>(urange) | seqan3::views::kmer_hash(shape)
-                                                           | std::views::transform([seed] (uint64_t i)
-                                                                                  {return i ^ seed.get();});
+        auto forward_strand = std::forward<urng_t>(urange) | seqan3::views::kmer_hash(shape);
 
         auto reverse_strand = std::forward<urng_t>(urange) | seqan3::views::complement
                                                            | std::views::reverse
                                                            | seqan3::views::kmer_hash(shape)
-                                                           | std::views::transform([seed] (uint64_t i)
-                                                                                  {return i ^ seed.get();})
                                                            | std::views::reverse;
-        // fnv_hash ensures actual randomness.
-        auto combined_strand = seqan3::views::zip(forward_strand, reverse_strand) | std::views::transform([seed](std::tuple<uint64_t, uint64_t> i){return fnv_hash(std::get<0>(i) + std::get<1>(i), seed.get());});
-        return seqan3::detail::modmer_view(combined_strand, mod_used);
+
+        return seqan3::detail::modmer_view(forward_strand, reverse_strand, mod_used, seed.get());
     }
 };
 
