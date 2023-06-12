@@ -14,11 +14,10 @@ rule plot:
     output:
         "../results/Speed_all.png",
         "../results/Speed_all8.png",
-        "../results/Speed_all_order3.png",
-        "../results/Speed_all8_order3.png",
-        "../results/Speed_strobemers_original_all.png",
-        "../results/Speed_minstrobemers_original.png",
-        "../results/Speed_hybridstrobemers_original.png",
+        "../results/Speed_kmers.png",
+        "../results/Speed_strobemers.png",
+        "../results/Speed_strobemers4.png",
+        "../results/Speed_strobemers8.png",
         "../results/Speed_randstrobemers_original.png",
         "../results/Speed_randstrobemers_original_order3.png"
     input:
@@ -146,7 +145,7 @@ rule speed_minimiser_modmer:
     output:
         "0_{method}_hash_{kmer_size}_{w_size}_speed.out"
     shell:
-        "minions speed --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.w_size} -o 0_ {input}"
+        "minions speed --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.w_size} --shape 0 -o 0_ {input}"
 
 rule speed_syncmer:
     input:
@@ -154,4 +153,4 @@ rule speed_syncmer:
     output:
         "syncmer_hash_{kmer_size}_{w_size}_{pos_begin}_{pos_end}_speed.out"
     shell:
-        "minions speed --method syncmer -k {wildcards.kmer_size} -w {wildcards.w_size} -p {wildcards.pos_begin} -p {wildcards.pos_end} {input}"
+        "minions speed --method syncmer -k {wildcards.kmer_size} -w {wildcards.w_size} -p {wildcards.pos_begin} -p {wildcards.pos_end} --shape 0 {input}"

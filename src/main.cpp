@@ -118,13 +118,10 @@ int counts(seqan3::argument_parser & parser)
 {
     range_arguments args{};
     std::vector<std::filesystem::path> sequence_files{};
-    bool underlying_strobemer = false;
     parser.info.short_description = "Counts the number of submers in the given "
                                     "sequence files.";
     parser.add_positional_option(sequence_files,
                                  "Please provide at least one sequence file.");
-    parser.add_flag(underlying_strobemer,'\0', "strobemer", "If strobemers should be used as base for representative "
-                                                            "methods like minimizers. Default: False.");
     all_arguments(parser, args);
     std::string method{};
     parser.add_option(method, '\0', "method", "Pick your method.",
@@ -146,7 +143,7 @@ int counts(seqan3::argument_parser & parser)
     }
 
     string_to_methods(method, args.name);
-    do_counts(sequence_files, args, underlying_strobemer);
+    do_counts(sequence_files, args);
 
     return 0;
 }

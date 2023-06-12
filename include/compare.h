@@ -108,9 +108,8 @@ void store_ibf(IBFType const & ibf,
 
 /*! \brief Function that creates the string name of the used view.
  *  \param args The arguments about the view to be used.
- *  \param args If true, "Strobmer" is added to the name.
  */
-std::string create_name(range_arguments & args, bool underlying_strobemer = false);
+std::string create_name(range_arguments & args);
 
 /*! \brief Function, comparing the methods in regard of their coverage.
  *  \param args The arguments about the view to be used.
@@ -120,9 +119,8 @@ void do_accuracy(accuracy_arguments & args);
 /*! \brief Function, comparing the number of submers.
  *  \param sequence_files A vector of sequence files.
  *  \param args The arguments about the view to be used.
- *  \param underlying_strobemer True, if strobemers should be used with a representative method like minimizer.
  */
-void do_counts(std::vector<std::filesystem::path> sequence_files, range_arguments & args, bool underlying_strobemer = false);
+void do_counts(std::vector<std::filesystem::path> sequence_files, range_arguments & args);
 
 /*! \brief Function, comparing the methods in regard of their distance.
  *  \param sequence_file A sequence file.
