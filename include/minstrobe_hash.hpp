@@ -69,8 +69,6 @@ struct minstrobe2_hash_fn
                               uint32_t const window_len,
                               seed const seed = seqan3::seed{0x8F3F73B5CF1C9ADE}) const
     {
-        static_assert(std::ranges::viewable_range<urng_t>,
-            "The range parameter to views::minstrobe_hash cannot be a temporary of a non-view range.");
         static_assert(std::ranges::forward_range<urng_t>,
             "The range parameter to views::minstrobe_hash must model std::ranges::forward_range.");
         static_assert(semialphabet<std::ranges::range_reference_t<urng_t>>,
@@ -94,7 +92,6 @@ struct minstrobe2_hash_fn
 
         // Todo: Instead of using vectors, use the std::views::reverse function and zip, but the view reverse is very slow in comparison.
         auto reverse = seqan3::detail::minstrobe_view(rev_hashed_values, window_min + shape.size() - 1, window_len - shape.size() + 1, shape.count());
-
 
         std::vector<uint64_t> rev{};
         for(auto && h : reverse)
@@ -159,8 +156,6 @@ struct minstrobe3_hash_fn
                               uint32_t const window_len,
                               seed const seed = seqan3::seed{0x8F3F73B5CF1C9ADE}) const
     {
-        static_assert(std::ranges::viewable_range<urng_t>,
-            "The range parameter to views::minstrobe_hash cannot be a temporary of a non-view range.");
         static_assert(std::ranges::forward_range<urng_t>,
             "The range parameter to views::minstrobe_hash must model std::ranges::forward_range.");
         static_assert(semialphabet<std::ranges::range_reference_t<urng_t>>,

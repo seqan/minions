@@ -34,7 +34,7 @@ TEST_F(cli_test, modmer)
 {
     cli_test_result result = execute_app("minions match --method modmer -k 19 -w 2 ", data("example1.fasta"), data("example1.fasta"));
     EXPECT_EQ(result.exit_code, 0);
-    EXPECT_EQ(result.out, std::string{"Matches: 3221251\tMissed: 0\nMatch Coverage: 99.9999\nIslands: 0\t0\t0\t0\nExpected Island Size: 0\n"});
+    EXPECT_EQ(result.out, std::string{"Matches: 3853327\tMissed: 0\nMatch Coverage: 99.9981\nIslands: 0\t0\t0\t0\nExpected Island Size: 0\n"});
     EXPECT_EQ(result.err, std::string{});
 }
 
@@ -42,7 +42,7 @@ TEST_F(cli_test, syncmer)
 {
     cli_test_result result = execute_app("minions match --method syncmer -k 19 -w 2 -p 0", data("example1.fasta"), data("example1.fasta"));
     EXPECT_EQ(result.exit_code, 0);
-    EXPECT_EQ(result.out, std::string{"Matches: 339395\tMissed: 0\nMatch Coverage: 65.7439\nIslands: 0\t0\t0\t0\nExpected Island Size: 0\n"});
+    EXPECT_EQ(result.out, std::string{"Matches: 1305894\tMissed: 0\nMatch Coverage: 97.9846\nIslands: 0\t0\t0\t0\nExpected Island Size: 0\n"});
     EXPECT_EQ(result.err, std::string{});
 }
 

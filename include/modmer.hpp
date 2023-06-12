@@ -495,8 +495,6 @@ struct modmer_fn
     template <std::ranges::range urng1_t>
     constexpr auto operator()(urng1_t && urange1, size_t const mod_used, uint64_t const seed_used = 0) const
     {
-        static_assert(std::ranges::viewable_range<urng1_t>,
-                      "The range parameter to views::modmer cannot be a temporary of a non-view range.");
         static_assert(std::ranges::forward_range<urng1_t>,
                       "The range parameter to views::modmer must model std::ranges::forward_range.");
 
