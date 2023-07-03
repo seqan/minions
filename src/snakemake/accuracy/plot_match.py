@@ -35,12 +35,12 @@ for error in [1,2,5,10]:
     shapes8 = ['14021527', '180082591', '3522001919', '64423783901', '1094946651927']
     gapped8_kmers = read_file([], [shapes8[i] + "_minimiser_hash_"+str(k_size[i]+8)+"_"+str(k_size[i]+8)+"_match_"+str(error)+".out" for i in range(len(k_size))])
 
-    minstrobemers2 = read_file([], ["minstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(3+k)+"_match_"+str(error)+".out" for k in strobe_range])
-    hybridstrobemers2 = read_file([],["hybridstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(4+k)+"_match_"+str(error)+".out" for k in strobe_range])
-    randstrobemers2 = read_file([], ["randstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(3+k)+"_match_"+str(error)+".out" for k in strobe_range])
-    minstrobemers28 = read_file([], ["minstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_match_"+str(error)+".out" for k in strobe_range])
-    hybridstrobemers28 = read_file([],["hybridstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_match_"+str(error)+".out" for k in strobe_range])
-    randstrobemers28 = read_file([], ["randstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_match_"+str(error)+".out" for k in strobe_range])
+    minstrobemers2 = read_file([], ["minstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_match_"+str(error)+".out" for k in strobe_range])
+    hybridstrobemers2 = read_file([],["hybridstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_match_"+str(error)+".out" for k in strobe_range])
+    randstrobemers2 = read_file([], ["randstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_match_"+str(error)+".out" for k in strobe_range])
+    minstrobemers28 = read_file([], ["minstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_match_"+str(error)+".out" for k in strobe_range])
+    hybridstrobemers28 = read_file([],["hybridstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_match_"+str(error)+".out" for k in strobe_range])
+    randstrobemers28 = read_file([], ["randstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_match_"+str(error)+".out" for k in strobe_range])
 
 
     # Plot comparison between all Island size
@@ -114,12 +114,12 @@ for error in [1,2,5,10]:
     shapes8 = ["45607667", "3522001919", "205814423455"]
     gapped8_kmers = read_file([], [shapes8[i] + "_minimiser_hash_"+str(k_size_order3[i]+8)+"_"+str(k_size_order3[i]+8)+"_match_"+str(error)+".out" for i in range(len(k_size_order3))])
 
-    minstrobemers3 = read_file([], ["minstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(3+k)+"_match_"+str(error)+".out" for k in k_order3])
-    hybridstrobemers3 = read_file([],["hybridstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(4+k)+"_match_"+str(error)+".out" for k in k_order3])
-    randstrobemers3 = read_file([], ["randstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(3+k)+"_match_"+str(error)+".out" for k in k_order3])
-    minstrobemers38 = read_file([], ["minstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(7+k)+"_match_"+str(error)+".out" for k in k_order3])
-    hybridstrobemers38 = read_file([],["hybridstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(7+k)+"_match_"+str(error)+".out" for k in k_order3])
-    randstrobemers38 = read_file([], ["randstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(7+k)+"_match_"+str(error)+".out" for k in k_order3])
+    minstrobemers3 = read_file([], ["minstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_match_"+str(error)+".out" for k in k_order3])
+    hybridstrobemers3 = read_file([],["hybridstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_match_"+str(error)+".out" for k in k_order3])
+    randstrobemers3 = read_file([], ["randstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_match_"+str(error)+".out" for k in k_order3])
+    minstrobemers38 = read_file([], ["minstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_match_"+str(error)+".out" for k in k_order3])
+    hybridstrobemers38 = read_file([],["hybridstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_match_"+str(error)+".out" for k in k_order3])
+    randstrobemers38 = read_file([], ["randstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_match_"+str(error)+".out" for k in k_order3])
 
     fig = plt.figure()
     X = np.arange(len(k_size_order3))

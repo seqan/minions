@@ -31,87 +31,87 @@ def create_plot(minimiser, modmer, opensyncmer, closedsyncmer, outfile,number_el
         plt.plot(pos, [x[0] for x in minimiser], color = colors[0], label='(w,20)-minimizer',linewidth=3.0)
         plt.plot(pos, [x[0] for x in modmer], color = colors[1], label='(20,m)-modmer')
         plt.plot(pos, [x[0] for x in opensyncmer], color = colors[2], label='(20,s,[0],1)-syncmer',linewidth=3.0)
-        plt.plot(pos, [x[0] for x in closedsyncmer], color = colors[3], label='(20,s,[0,6],1)-syncmer',linewidth=3.0)
+        plt.plot(pos, [x[0] for x in closedsyncmer], color = colors[3], label='(20,s,[0,20-s],1)-syncmer',linewidth=3.0)
     else:
         plt.plot(pos, [x[0] for x in minimiser], color = colors[0], label='(w,27)-minimizer',linewidth=3.0)
         plt.plot(pos, [x[0] for x in modmer], color = colors[1], label='(27,m)-modmer',linewidth=3.0)
         plt.plot(pos, [x[0] for x in opensyncmer], color = colors[2], label='(27,s,[0],1)-syncmer',linewidth=3.0)
-        plt.plot(pos, [x[0] for x in closedsyncmer], color = colors[3], label='(27,s,[0,6],1)-syncmer',linewidth=3.0)
+        plt.plot(pos, [x[0] for x in closedsyncmer], color = colors[3], label='(27,s,[0,27-s],1)-syncmer',linewidth=3.0)
 
     plt.legend(title="Methods")
     plt.savefig(outfile, bbox_inches='tight')
 
-minimiser = read_file([], ["Rep2_min_2_0_13_Strobemer_minimiser_hash_10_"+str(w)+"_counts.out" for w in [i for i in range(24,44,4)]])
-modmer = read_file([], ["Rep2_min_2_0_13_Strobemer_modmer_hash_10_"+str(w)+"_counts.out" for w in [3,5,7,9,11]])
-opensyncmer = read_file([], ["min_2_0_13_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10]])
-closedsyncmer = read_file([], ["min_2_0_13_Strobemer_syncmer_hash_10_"+str(w)+"_0_6_counts.out" for w in [15,11,7,3,1]])
+minimiser = read_file([], ["Rep2_min_2_1_14_Strobemer_minimiser_hash_10_"+str(w)+"_counts.out" for w in [i for i in range(24,44,4)]])
+modmer = read_file([], ["Rep2_min_2_1_14_Strobemer_modmer_hash_10_"+str(w)+"_counts.out" for w in [3,5,7,9,11]])
+opensyncmer = read_file([], ["min_2_1_14_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10]])
+closedsyncmer = read_file([], ["min_2_1_14_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_counts.out" for w in [15,11,7,3,1]])
 create_plot(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Count_representative_min1.png")
 
-minimiser = read_file([], ["Rep2_rand_2_0_13_Strobemer_minimiser_hash_10_"+str(w)+"_counts.out" for w in [i for i in range(24,44,4)]])
-modmer = read_file([], ["Rep2_rand_2_0_13_Strobemer_modmer_hash_10_"+str(w)+"_counts.out" for w in [3,5,7,9,11]])
-opensyncmer = read_file([], ["rand_2_0_13_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10]])
-closedsyncmer = read_file([], ["rand_2_0_13_Strobemer_syncmer_hash_10_"+str(w)+"_0_6_counts.out" for w in [15,11,7,3,1]])
+minimiser = read_file([], ["Rep2_rand_2_1_14_Strobemer_minimiser_hash_10_"+str(w)+"_counts.out" for w in [i for i in range(24,44,4)]])
+modmer = read_file([], ["Rep2_rand_2_1_14_Strobemer_modmer_hash_10_"+str(w)+"_counts.out" for w in [3,5,7,9,11]])
+opensyncmer = read_file([], ["rand_2_1_14_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10]])
+closedsyncmer = read_file([], ["rand_2_1_14_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_counts.out" for w in [15,11,7,3,1]])
 create_plot(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Count_representative_rand1.png")
 
-minimiser = read_file([], ["Rep2_hybrid_2_0_14_Strobemer_minimiser_hash_10_"+str(w)+"_counts.out" for w in [i for i in range(24,44,4)]])
-modmer = read_file([], ["Rep2_hybrid_2_0_14_Strobemer_modmer_hash_10_"+str(w)+"_counts.out" for w in [3,5,7,9,11]])
-opensyncmer = read_file([], ["hybrid_2_0_14_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10]])
-closedsyncmer = read_file([], ["hybrid_2_0_14_Strobemer_syncmer_hash_10_"+str(w)+"_0_6_counts.out" for w in [15,11,7,3,1]])
+minimiser = read_file([], ["Rep2_hybrid_2_1_14_Strobemer_minimiser_hash_10_"+str(w)+"_counts.out" for w in [i for i in range(24,44,4)]])
+modmer = read_file([], ["Rep2_hybrid_2_1_14_Strobemer_modmer_hash_10_"+str(w)+"_counts.out" for w in [3,5,7,9,11]])
+opensyncmer = read_file([], ["hybrid_2_1_14_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10]])
+closedsyncmer = read_file([], ["hybrid_2_1_14_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_counts.out" for w in [15,11,7,3,1]])
 create_plot(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Count_representative_hybrid1.png")
 
-minimiser = read_file([], ["Rep2_min_2_0_17_Strobemer_minimiser_hash_10_"+str(w)+"_counts.out" for w in [i for i in range(24,44,4)]])
-modmer = read_file([], ["Rep2_min_2_0_17_Strobemer_modmer_hash_10_"+str(w)+"_counts.out" for w in [3,5,7,9,11]])
-opensyncmer = read_file([], ["min_2_0_17_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10]])
-closedsyncmer = read_file([], ["min_2_0_17_Strobemer_syncmer_hash_10_"+str(w)+"_0_6_counts.out" for w in [15,11,7,3,1]])
+minimiser = read_file([], ["Rep2_min_2_1_18_Strobemer_minimiser_hash_10_"+str(w)+"_counts.out" for w in [i for i in range(24,44,4)]])
+modmer = read_file([], ["Rep2_min_2_1_18_Strobemer_modmer_hash_10_"+str(w)+"_counts.out" for w in [3,5,7,9,11]])
+opensyncmer = read_file([], ["min_2_1_18_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10]])
+closedsyncmer = read_file([], ["min_2_1_18_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_counts.out" for w in [15,11,7,3,1]])
 create_plot(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Count_representative_min.png")
 
 
-minimiser = read_file([], ["Rep2_rand_2_0_17_Strobemer_minimiser_hash_10_"+str(w)+"_counts.out" for w in [i for i in range(24,44,4)]])
-modmer = read_file([], ["Rep2_rand_2_0_17_Strobemer_modmer_hash_10_"+str(w)+"_counts.out" for w in [3,5,7,9,11]])
-opensyncmer = read_file([], ["rand_2_0_17_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10]])
-closedsyncmer = read_file([], ["rand_2_0_17_Strobemer_syncmer_hash_10_"+str(w)+"_0_6_counts.out" for w in [15,11,7,3,1]])
+minimiser = read_file([], ["Rep2_rand_2_1_18_Strobemer_minimiser_hash_10_"+str(w)+"_counts.out" for w in [i for i in range(24,44,4)]])
+modmer = read_file([], ["Rep2_rand_2_1_18_Strobemer_modmer_hash_10_"+str(w)+"_counts.out" for w in [3,5,7,9,11]])
+opensyncmer = read_file([], ["rand_2_1_18_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10]])
+closedsyncmer = read_file([], ["rand_2_1_18_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_counts.out" for w in [15,11,7,3,1]])
 create_plot(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Count_representative_rand.png")
 
-minimiser = read_file([], ["Rep2_hybrid_2_0_17_Strobemer_minimiser_hash_10_"+str(w)+"_counts.out" for w in [i for i in range(24,44,4)]])
-modmer = read_file([], ["Rep2_hybrid_2_0_17_Strobemer_modmer_hash_10_"+str(w)+"_counts.out" for w in [3,5,7,9,11]])
-opensyncmer = read_file([], ["hybrid_2_0_17_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10]])
-closedsyncmer = read_file([], ["hybrid_2_0_17_Strobemer_syncmer_hash_10_"+str(w)+"_0_6_counts.out" for w in [15,11,7,3,1]])
+minimiser = read_file([], ["Rep2_hybrid_2_1_18_Strobemer_minimiser_hash_10_"+str(w)+"_counts.out" for w in [i for i in range(24,44,4)]])
+modmer = read_file([], ["Rep2_hybrid_2_1_18_Strobemer_modmer_hash_10_"+str(w)+"_counts.out" for w in [3,5,7,9,11]])
+opensyncmer = read_file([], ["hybrid_2_1_18_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10]])
+closedsyncmer = read_file([], ["hybrid_2_1_18_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_counts.out" for w in [15,11,7,3,1]])
 create_plot(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Count_representative_hybrid.png")
 
-minimiser = read_file([], ["Rep2_min_3_0_13_Strobemer_minimiser_hash_9_"+str(w)+"_counts.out" for w in [i for i in range(29,44,4)]])
-modmer = read_file([], ["Rep2_min_3_0_13_Strobemer_modmer_hash_9_"+str(w)+"_counts.out" for w in [2,4,6,8]])
-opensyncmer = read_file([], ["min_3_0_13_Strobemer_syncmer_hash_9_"+str(w)+"_0_0_counts.out" for w in [26,24,22,20]])
-closedsyncmer = read_file([], ["min_3_0_13_Strobemer_syncmer_hash_9_"+str(w)+"_0_6_counts.out" for w in [24,20,16,12]])
-create_plot(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Count_representative_min31.png", 4)
+minimiser = read_file([], ["Rep2_min_3_1_13_Strobemer_minimiser_hash_9_"+str(w)+"_counts.out" for w in [i for i in range(29,44,4)]])
+modmer = read_file([], ["Rep2_min_3_1_13_Strobemer_modmer_hash_9_"+str(w)+"_counts.out" for w in [2,4,6,8]])
+opensyncmer = read_file([], ["min_3_1_13_Strobemer_syncmer_hash_9_"+str(w)+"_0_0_counts.out" for w in [26,24,22,20]])
+closedsyncmer = read_file([], ["min_3_1_13_Strobemer_syncmer_hash_9_"+str(w)+"_0_"+str(27-w)+"_counts.out" for w in [24,20,16,12]])
+create_plot(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Count_representative_min31.png",4)
 
-minimiser = read_file([], ["Rep2_rand_3_0_13_Strobemer_minimiser_hash_9_"+str(w)+"_counts.out" for w in [i for i in range(29,44,4)]])
-modmer = read_file([], ["Rep2_rand_3_0_13_Strobemer_modmer_hash_9_"+str(w)+"_counts.out" for w in [2,4,6,8]])
-opensyncmer = read_file([], ["rand_3_0_13_Strobemer_syncmer_hash_9_"+str(w)+"_0_0_counts.out" for w in [26,24,22,20]])
-closedsyncmer = read_file([], ["rand_3_0_13_Strobemer_syncmer_hash_9_"+str(w)+"_0_6_counts.out" for w in [24,20,16,12]])
-create_plot(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Count_representative_rand31.png", 4)
+minimiser = read_file([], ["Rep2_rand_3_1_13_Strobemer_minimiser_hash_9_"+str(w)+"_counts.out" for w in [i for i in range(29,44,4)]])
+modmer = read_file([], ["Rep2_rand_3_1_13_Strobemer_modmer_hash_9_"+str(w)+"_counts.out" for w in [2,4,6,8]])
+opensyncmer = read_file([], ["rand_3_1_13_Strobemer_syncmer_hash_9_"+str(w)+"_0_0_counts.out" for w in [26,24,22,20]])
+closedsyncmer = read_file([], ["rand_3_1_13_Strobemer_syncmer_hash_9_"+str(w)+"_0_"+str(27-w)+"_counts.out" for w in [24,20,16,12]])
+create_plot(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Count_representatie_rand31.png", 4)
 
-minimiser = read_file([], ["Rep2_hybrid_3_0_13_Strobemer_minimiser_hash_9_"+str(w)+"_counts.out" for w in [i for i in range(29,44,4)]])
-modmer = read_file([], ["Rep2_hybrid_3_0_13_Strobemer_modmer_hash_9_"+str(w)+"_counts.out" for w in [2,4,6,8]])
-opensyncmer = read_file([], ["hybrid_3_0_13_Strobemer_syncmer_hash_9_"+str(w)+"_0_0_counts.out" for w in [26,24,22,20]])
-closedsyncmer = read_file([], ["hybrid_3_0_13_Strobemer_syncmer_hash_9_"+str(w)+"_0_6_counts.out" for w in [24,20,16,12]])
+minimiser = read_file([], ["Rep2_hybrid_3_1_13_Strobemer_minimiser_hash_9_"+str(w)+"_counts.out" for w in [i for i in range(29,44,4)]])
+modmer = read_file([], ["Rep2_hybrid_3_1_13_Strobemer_modmer_hash_9_"+str(w)+"_counts.out" for w in [2,4,6,8]])
+opensyncmer = read_file([], ["hybrid_3_1_13_Strobemer_syncmer_hash_9_"+str(w)+"_0_0_counts.out" for w in [26,24,22,20]])
+closedsyncmer = read_file([], ["hybrid_3_1_13_Strobemer_syncmer_hash_9_"+str(w)+"_0_"+str(27-w)+"_counts.out" for w in [24,20,16,12]])
 create_plot(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Count_representative_hybrid31.png",4)
 
-minimiser = read_file([], ["Rep2_min_3_0_17_Strobemer_minimiser_hash_9_"+str(w)+"_counts.out" for w in [i for i in range(29,44,4)]])
-modmer = read_file([], ["Rep2_min_3_0_17_Strobemer_modmer_hash_9_"+str(w)+"_counts.out" for w in [2,4,6,8]])
-opensyncmer = read_file([], ["min_3_0_17_Strobemer_syncmer_hash_9_"+str(w)+"_0_0_counts.out" for w in [26,24,22,20]])
-closedsyncmer = read_file([], ["min_3_0_17_Strobemer_syncmer_hash_9_"+str(w)+"_0_6_counts.out" for w in [24,20,16,12]])
+minimiser = read_file([], ["Rep2_min_3_1_17_Strobemer_minimiser_hash_9_"+str(w)+"_counts.out" for w in [i for i in range(29,44,4)]])
+modmer = read_file([], ["Rep2_min_3_1_17_Strobemer_modmer_hash_9_"+str(w)+"_counts.out" for w in [2,4,6,8]])
+opensyncmer = read_file([], ["min_3_1_17_Strobemer_syncmer_hash_9_"+str(w)+"_0_0_counts.out" for w in [26,24,22,20]])
+closedsyncmer = read_file([], ["min_3_1_17_Strobemer_syncmer_hash_9_"+str(w)+"_0_"+str(27-w)+"_counts.out" for w in [24,20,16,12]])
 create_plot(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Count_representative_min3.png", 4)
 
-minimiser = read_file([], ["Rep2_rand_3_0_17_Strobemer_minimiser_hash_9_"+str(w)+"_counts.out" for w in [i for i in range(29,44,4)]])
-modmer = read_file([], ["Rep2_rand_3_0_17_Strobemer_modmer_hash_9_"+str(w)+"_counts.out" for w in [2,4,6,8]])
-opensyncmer = read_file([], ["rand_3_0_17_Strobemer_syncmer_hash_9_"+str(w)+"_0_0_counts.out" for w in [26,24,22,20]])
-closedsyncmer = read_file([], ["rand_3_0_17_Strobemer_syncmer_hash_9_"+str(w)+"_0_6_counts.out" for w in [24,20,16,12]])
+minimiser = read_file([], ["Rep2_rand_3_1_17_Strobemer_minimiser_hash_9_"+str(w)+"_counts.out" for w in [i for i in range(29,44,4)]])
+modmer = read_file([], ["Rep2_rand_3_1_17_Strobemer_modmer_hash_9_"+str(w)+"_counts.out" for w in [2,4,6,8]])
+opensyncmer = read_file([], ["rand_3_1_17_Strobemer_syncmer_hash_9_"+str(w)+"_0_0_counts.out" for w in [26,24,22,20]])
+closedsyncmer = read_file([], ["rand_3_1_17_Strobemer_syncmer_hash_9_"+str(w)+"_0_"+str(27-w)+"_counts.out" for w in [24,20,16,12]])
 create_plot(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Count_representative_rand3.png", 4)
 
-minimiser = read_file([], ["Rep2_hybrid_3_0_17_Strobemer_minimiser_hash_9_"+str(w)+"_counts.out" for w in [i for i in range(29,44,4)]])
-modmer = read_file([], ["Rep2_hybrid_3_0_17_Strobemer_modmer_hash_9_"+str(w)+"_counts.out" for w in [2,4,6,8]])
-opensyncmer = read_file([], ["hybrid_3_0_17_Strobemer_syncmer_hash_9_"+str(w)+"_0_0_counts.out" for w in [26,24,22,20]])
-closedsyncmer = read_file([], ["hybrid_3_0_17_Strobemer_syncmer_hash_9_"+str(w)+"_0_6_counts.out" for w in [24,20,16,12]])
+minimiser = read_file([], ["Rep2_hybrid_3_1_17_Strobemer_minimiser_hash_9_"+str(w)+"_counts.out" for w in [i for i in range(29,44,4)]])
+modmer = read_file([], ["Rep2_hybrid_3_1_17_Strobemer_modmer_hash_9_"+str(w)+"_counts.out" for w in [2,4,6,8]])
+opensyncmer = read_file([], ["hybrid_3_1_17_Strobemer_syncmer_hash_9_"+str(w)+"_0_0_counts.out" for w in [26,24,22,20]])
+closedsyncmer = read_file([], ["hybrid_3_1_17_Strobemer_syncmer_hash_9_"+str(w)+"_0_"+str(27-w)+"_counts.out" for w in [24,20,16,12]])
 create_plot(minimiser, modmer, opensyncmer, closedsyncmer, "../results/Count_representative_hybrid3.png",4)
 
 
@@ -180,7 +180,7 @@ it = 0
 with open("../results/Unique_representative2.out", 'r') as f:
     for line in f:
         number = float(line.split()[1])
-        if ("2_0_17_" in line):
+        if ("2_1_18_" in line):
             if ("hybrid" in line):
                 if ("minimiser" in line):
                     minimiser_hybrid.append(number)
@@ -208,7 +208,7 @@ with open("../results/Unique_representative2.out", 'r') as f:
                     opensyncmer_min.append(number)
                 else:
                     closedsyncmer_min.append(number)
-        elif ("3_0_17_" in line):
+        elif ("3_1_17_" in line):
             if ("hybrid" in line):
                 if ("minimiser" in line):
                     minimiser_hybrid3.append(number)
@@ -236,7 +236,7 @@ with open("../results/Unique_representative2.out", 'r') as f:
                     opensyncmer_min3.append(number)
                 else:
                     closedsyncmer_min3.append(number)
-        elif ("3_0_13_" in line):
+        elif ("3_1_13_" in line):
             if ("hybrid" in line):
                 if ("minimiser" in line):
                     minimiser_hybrid31.append(number)
@@ -312,12 +312,12 @@ def plot_unique(minimiser, modmer, opensyncmer, closedsyncmer, outfile, num_elem
         plt.plot(pos, minimiser[:5], color = colors[0], label='(w,20)-minimizer',linewidth=3.0)
         plt.plot(pos, modmer[:5], color = colors[1], label='(20,m)-modmer',linewidth=3.0)
         plt.plot(pos, opensyncmer[:5], color = colors[2], label='(20,s,[0],1)-syncmer',linewidth=3.0)
-        plt.plot(pos, closedsyncmer[:5], color = colors[3], label='(20,s,[0,6],1)-syncmer',linewidth=3.0)
+        plt.plot(pos, closedsyncmer[:5], color = colors[3], label='(20,s,[0,20-s],1)-syncmer',linewidth=3.0)
     else:
         plt.plot(pos, minimiser[:5], color = colors[0], label='(w,27)-minimizer',linewidth=3.0)
         plt.plot(pos, modmer[:5], color = colors[1], label='(27,m)-modmer',linewidth=3.0)
         plt.plot(pos, opensyncmer[:5], color = colors[2], label='(27,s,[0],1)-syncmer',linewidth=3.0)
-        plt.plot(pos, closedsyncmer[:5], color = colors[3], label='(27,s,[0,6],1)-syncmer',linewidth=3.0)
+        plt.plot(pos, closedsyncmer[:5], color = colors[3], label='(27,s,[0,27-s],1)-syncmer',linewidth=3.0)
 
     plt.legend(title="Methods")
     plt.savefig(outfile, bbox_inches='tight')

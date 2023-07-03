@@ -448,7 +448,7 @@ private:
         }
         else
         {
-            if (fnv_hash(*urng1_iterator, seed) % mod == 0)
+            if (*urng1_iterator % mod == 0)
             {
                 modmer_value = *urng1_iterator;
                 return true;

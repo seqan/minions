@@ -21,8 +21,8 @@ modmer_setw = read_file([], ["0_modmer_hash_"+str(k)+"_7_speed.out" for k in [i 
 # syncmer
 opensyncmer = read_file([], ["syncmer_hash_20_"+str(w)+"_0_0_speed.out" for w in [18,16,14,12,10]])
 opensyncmer_setw = read_file([], ["syncmer_hash_"+str(k)+"_10_0_0_speed.out" for k in [i for i in range(22,12,-2)]])
-closedsyncmer = read_file([], ["syncmer_hash_20_"+str(w)+"_0_6_speed.out" for w in [15,11,7,3,1]])
-closedsyncmer_setw = read_file([], ["syncmer_hash_"+str(k)+"_3_0_6_speed.out" for k in [i for i in range(28,8,-4)]])
+closedsyncmer = read_file([], ["syncmer_hash_20_"+str(w)+"_0_"+str(20-w)+"_speed.out" for w in [15,11,7,3,1]])
+#closedsyncmer_setw = read_file([], ["syncmer_hash_"+str(k)+"_3_0_6_speed.out" for k in [i for i in range(28,8,-4)]])
 
 
 # Plot comparison between k-mers
@@ -40,7 +40,7 @@ plt.ylabel("Speed in microseconds") # in microseconds
 plt.plot(pos, [x[0] for x in minimiser], color = colors[0], label='(w,20)-minimizer', linewidth=3.0)
 plt.plot(pos, [x[0] for x in modmer], color = colors[1], label='(20,m)-modmer', linewidth=3.0)
 plt.plot(pos, [x[0] for x in opensyncmer], color = colors[2], label='(20,s,[0],1)-syncmer', linewidth=3.0)
-plt.plot(pos, [x[0] for x in closedsyncmer], color = colors[3], label='(20,s,[0,6],1)-syncmer',linewidth=3.0)
+plt.plot(pos, [x[0] for x in closedsyncmer], color = colors[3], label='(20,s,[0,20-s],1)-syncmer',linewidth=3.0)
 
 #plt.fill_between(pos, [x[0]-x[1] for x in minimiser], [x[0]+x[1] for x in minimiser], color = colors_error[0], alpha=0.7)
 #plt.fill_between(pos, [x[0]-x[1] for x in modmer], [x[0]+x[1] for x in modmer], color = colors_error[1], alpha=0.7)
@@ -66,7 +66,7 @@ plt.ylabel("Speed in microseconds") # in microseconds
 plt.plot(pos, [x[0] for x in minimiser_setw], color = colors[0], label='(40,k)-minimizer',linewidth=3.0)
 plt.plot(pos, [x[0] for x in modmer_setw], color = colors[1], label='(k,7)-modmer',linewidth=3.0)
 plt.plot(pos, [x[0] for x in opensyncmer_setw], color = colors[2], label='(k,10,[0],1)-syncmer',linewidth=3.0)
-plt.plot(pos, [x[0] for x in closedsyncmer_setw], color = colors[3], label='(k,3,[0,6],1)-syncmer',linewidth=3.0)
+#plt.plot(pos, [x[0] for x in closedsyncmer_setw], color = colors[3], label='(k,3,[0,6],1)-syncmer',linewidth=3.0)
 
 #plt.fill_between(pos, [x[0]-x[1] for x in minimiser_setw], [x[0]+x[1] for x in minimiser_setw], color = colors_error[0], alpha=0.7)
 #plt.fill_between(pos, [x[0]-x[1] for x in modmer_setw], [x[0]+x[1] for x in modmer_setw], color = colors_error[1], alpha=0.7)

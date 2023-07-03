@@ -35,29 +35,29 @@ rule plot:
         [["777695", "2621175", "16252901", "50196477", "251620351", "905838335", "4286578095", "13958643693", "66035113981"][i]+"_kmer_hash_"+str([k for k in range(16,34,2)][i]+4)+"_speed.out" for i in range(9)],
         [["14021527", "45607667", "180082591", "1068161519", "3522001919", "13957854679", "64423783901", "205814423455", "1094946651927"][i]+"_kmer_hash_"+str([k for k in range(16,34,2)][i]+8)+"_speed.out" for i in range(9)],
         # 4 "gaps"
-        ["minstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(3+k)+"_speed.out" for k in range(8,17)],
-        ["minstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(3+k)+"_speed.out" for k in [6,8,10]],
-        ["hybridstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(4+k)+"_speed.out" for k in range(8,17)],
-        ["hybridstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(4+k)+"_speed.out" for k in [6,8,10]],
-        ["randstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(3+k)+"_speed.out" for k in range(8,17)],
-        ["randstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(3+k)+"_speed.out" for k in [6,8,10]],
+        ["minstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_speed.out" for k in range(8,17)],
+        ["minstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_speed.out" for k in [6,8,10]],
+        ["hybridstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_speed.out" for k in range(8,17)],
+        ["hybridstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_speed.out" for k in [6,8,10]],
+        ["randstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_speed.out" for k in range(8,17)],
+        ["randstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_speed.out" for k in [6,8,10]],
         # 8 "gaps"
-        ["minstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_speed.out" for k in range(8,17)],
-        ["minstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(7+k)+"_speed.out" for k in [6,8,10]],
-        ["hybridstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_speed.out" for k in range(8,17)],
-        ["hybridstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(7+k)+"_speed.out" for k in [6,8,10]],
-        ["randstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_speed.out" for k in range(8,17)],
-        ["randstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(7+k)+"_speed.out" for k in [6,8,10]],
+        ["minstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_speed.out" for k in range(8,17)],
+        ["minstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_speed.out" for k in [6,8,10]],
+        ["hybridstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_speed.out" for k in range(8,17)],
+        ["hybridstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_speed.out" for k in [6,8,10]],
+        ["randstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_speed.out" for k in range(8,17)],
+        ["randstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_speed.out" for k in [6,8,10]],
         # 4 "gaps"
-        ["Original_minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(4+k)+"_speed.out" for k in range(8,17)],
+        ["Original_minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17)],
         ["Original_hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17)],
-        ["Original_randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(4+k)+"_speed.out" for k in range(8,17)],
-        ["Original_randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(4+k)+"_speed.out" for k in [6,8,10]],
+        ["Original_randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17)],
+        ["Original_randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in [6,8,10]],
         # 8 "gaps"
-        ["Original_minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(8+k)+"_speed.out" for k in range(8,17)],
-        ["Original_hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(8+k)+"_speed.out" for k in range(8,17)],
-        ["Original_randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(8+k)+"_speed.out" for k in range(8,17)],
-        ["Original_randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(8+k)+"_speed.out" for k in [6,8,10]]
+        ["Original_minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17)],
+        ["Original_hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17)],
+        ["Original_randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17)],
+        ["Original_randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in [6,8,10]]
     shell: "python3 plot_speed.py"
 
 rule plot_representative:
@@ -73,8 +73,8 @@ rule plot_representative:
         # syncmer
         ["syncmer_hash_20_"+str(w)+"_0_0_speed.out" for w in [18,16,14,12,10]],
         ["syncmer_hash_"+str(k)+"_10_0_0_speed.out" for k in [i for i in range(22,12,-2)]],
-        ["syncmer_hash_20_"+str(w)+"_0_6_speed.out" for w in [15,11,7,3,1]],
-        ["syncmer_hash_"+str(k)+"_3_0_6_speed.out" for k in [i for i in range(28,8,-4)]]
+        ["syncmer_hash_20_"+str(w)+"_0_"+str(20-w)+"_speed.out" for w in [15,11,7,3,1]]
+        #["syncmer_hash_"+str(k)+"_3_0_6_speed.out" for k in [i for i in range(28,8,-4)]]
     shell: "python3 plot_speed_representative.py"
 
 rule download_example_Data:

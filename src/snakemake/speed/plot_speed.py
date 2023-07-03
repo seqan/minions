@@ -40,20 +40,20 @@ gapped4_order3 = read_file([], [shapes4_order3[i] + "_kmer_hash_"+str(k_size_ord
 shapes8_order3 = ['45607667', '3522001919', '205814423455']
 gapped8_order3 = read_file([], [shapes8_order3[i] + "_kmer_hash_"+str(k_size_order3[i])+"_speed.out" for i in range(len(k_order3))])
 
-minstrobemers2 = read_file([], ["minstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(3+k)+"_speed.out" for k in strobe_range])
-minstrobemers3 = read_file([], ["minstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(3+k)+"_speed.out" for k in k_order3])
-hybridstrobemers2 = read_file([],["hybridstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(4+k)+"_speed.out" for k in strobe_range])
-hybridstrobemers3 = read_file([],["hybridstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(4+k)+"_speed.out" for k in k_order3])
-randstrobemers2 = read_file([], ["randstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(3+k)+"_speed.out" for k in strobe_range])
-randstrobemers3 = read_file([],["randstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(3+k)+"_speed.out" for k in k_order3])
-minstrobemers28 = read_file([], ["minstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_speed.out" for k in strobe_range])
-minstrobemers38 = read_file([], ["minstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(7+k)+"_speed.out" for k in k_order3])
-hybridstrobemers28 = read_file([],["hybridstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_speed.out" for k in strobe_range])
-hybridstrobemers38 = read_file([],["hybridstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(7+k)+"_speed.out" for k in k_order3])
-randstrobemers28 = read_file([], ["randstrobemers_"+str(k)+"_2_"+str(0)+"_"+str(7+k)+"_speed.out" for k in strobe_range])
-randstrobemers38 = read_file([],["randstrobemers_"+str(k)+"_3_"+str(0)+"_"+str(7+k)+"_speed.out" for k in k_order3])
-original_randstrobemers2 = read_file([], ["Original_randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(4+k)+"_speed.out" for k in strobe_range])
-original_randstrobemers38 = read_file([],["Original_randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(8+k)+"_speed.out" for k in k_order3])
+minstrobemers2 = read_file([], ["minstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_speed.out" for k in strobe_range])
+minstrobemers3 = read_file([], ["minstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_speed.out" for k in k_order3])
+hybridstrobemers2 = read_file([],["hybridstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_speed.out" for k in strobe_range])
+hybridstrobemers3 = read_file([],["hybridstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_speed.out" for k in k_order3])
+randstrobemers2 = read_file([], ["randstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_speed.out" for k in strobe_range])
+randstrobemers3 = read_file([],["randstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_speed.out" for k in k_order3])
+minstrobemers28 = read_file([], ["minstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_speed.out" for k in strobe_range])
+minstrobemers38 = read_file([], ["minstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_speed.out" for k in k_order3])
+hybridstrobemers28 = read_file([],["hybridstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_speed.out" for k in strobe_range])
+hybridstrobemers38 = read_file([],["hybridstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_speed.out" for k in k_order3])
+randstrobemers28 = read_file([], ["randstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_speed.out" for k in strobe_range])
+randstrobemers38 = read_file([],["randstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_speed.out" for k in k_order3])
+original_randstrobemers2 = read_file([], ["Original_randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in strobe_range])
+original_randstrobemers38 = read_file([],["Original_randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in k_order3])
 
 # Plot comparison between k-mers
 fig = plt.figure()
@@ -160,8 +160,6 @@ plt.savefig("../results/Speed_strobemers8_order3.png", bbox_inches='tight')
 fig = plt.figure()
 X = np.arange(len(k_size))
 
-colors = ["#00ba32","#00d6e7","#fad100","#697ed5","#c76674","#9350a1"]
-colors = ["#004c6d","#009dbe","#00f6ff","#fee6ce","#fdae6b","#e6550d"]
 colors = ["#004c6d","#009dbe","#00f6ff","#fdcc8a","#fc8d59","#d7301f"]
 plt.xlabel("k")
 plt.xticks(pos, k_size)
@@ -183,7 +181,6 @@ plt.savefig("../results/Speed_all.png",bbox_inches='tight')
 fig = plt.figure()
 X = np.arange(len(k_size))
 
-#colors = ["#00ba32","#00d6e7","#fad100","#697ed5","#c76674","#9350a1"]
 plt.xlabel("k")
 plt.xticks(pos, k_size)
 plt.ylabel("Speed in microseconds") # in microseconds
@@ -204,7 +201,6 @@ plt.savefig("../results/Speed_all8.png",bbox_inches='tight')
 fig = plt.figure()
 X = np.arange(len(k_size_order3))
 
-#colors = ["#00ba32","#00d6e7","#fad100","#697ed5","#c76674","#9350a1"]
 plt.xlabel("k")
 plt.xticks(pos_order3, k_size_order3)
 plt.ylabel("Speed in microseconds") # in microseconds
@@ -225,7 +221,6 @@ plt.savefig("../results/Speed_all_order3.png",bbox_inches='tight')
 fig = plt.figure()
 X = np.arange(len(k_size_order3))
 
-#colors = ["#00ba32","#00d6e7","#fad100","#697ed5","#c76674","#9350a1"]
 plt.xlabel("k")
 plt.xticks(pos_order3, k_size_order3)
 plt.ylabel("Speed in microseconds") # in microseconds
@@ -283,18 +278,18 @@ plt.savefig("../results/Speed_strobemers.png", bbox_inches='tight')
 
 
 # Plot comparison between strobemers all gaps
-original_minstrobemers2 = read_file([], ["Original_minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(4+k)+"_speed.out" for k in strobe_range])
+original_minstrobemers2 = read_file([], ["Original_minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in strobe_range])
 original_hybridstrobemers2 = read_file([],["Original_hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in strobe_range])
-original_randstrobemers2 = read_file([], ["Original_randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(4+k)+"_speed.out" for k in strobe_range])
-original_randstrobemers3 = read_file([],["Original_randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(4+k)+"_speed.out" for k in k_order3])
-original_minstrobemers28 = read_file([], ["Original_minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(8+k)+"_speed.out" for k in strobe_range])
-original_hybridstrobemers28 = read_file([],["Original_hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(8+k)+"_speed.out" for k in strobe_range])
-original_randstrobemers28 = read_file([], ["Original_randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(8+k)+"_speed.out" for k in strobe_range])
-original_randstrobemers38 = read_file([],["Original_randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(8+k)+"_speed.out" for k in k_order3])
+original_randstrobemers2 = read_file([], ["Original_randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in strobe_range])
+original_randstrobemers3 = read_file([],["Original_randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in k_order3])
+original_minstrobemers28 = read_file([], ["Original_minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in strobe_range])
+original_hybridstrobemers28 = read_file([],["Original_hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in strobe_range])
+original_randstrobemers28 = read_file([], ["Original_randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in strobe_range])
+original_randstrobemers38 = read_file([],["Original_randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in k_order3])
 
 fig = plt.figure()
 X = np.arange(len(k_size))
-#colors = ["#697ed5","#c76674","#9350a1","#00ba32","#00d6e7","#fad100"]
+colors = ["#697ed5","#c76674","#9350a1","#00ba32","#00d6e7","#fad100"]
 colors_error = ["#748beb","#e47585","#b261c2","#01d63a","#00e7e0","#fefea1"]
 plt.xlabel("k")
 plt.xticks(pos, k_size)
@@ -323,13 +318,11 @@ plt.xlabel("k")
 plt.xticks(pos, k_size)
 plt.ylabel("Speed in microseconds") # in microseconds
 colors_ori = ["#bae4bc","#7bccc4","#43a2ca","#0868ac"]
-colors_ori = ["#e66101","#fdb863","#b2abd2","#5e3c99"]
-colors_ori = ["#dfc27d","#a6611a","#80cdc1","#018571"]
 
-plt.plot(pos, [x[0] for x in minstrobemers2], color = colors_ori[0], label='4', linewidth=3.0)
-plt.plot(pos, [x[0] for x in minstrobemers28], color = colors_ori[1], label='8',linewidth=3.0)
-plt.plot(pos, [x[0] for x in original_minstrobemers2], color = colors_ori[2], label='4 ori',linewidth=3.0)
-plt.plot(pos, [x[0] for x in original_minstrobemers28], color = colors_ori[3], label='8 ori',linewidth=3.0)
+plt.plot(pos, [x[0] for x in minstrobemers2], color = colors_ori[0], label='4')
+plt.plot(pos, [x[0] for x in minstrobemers28], color = colors_ori[1], label='8')
+plt.plot(pos, [x[0] for x in original_minstrobemers2], color = colors_ori[2], label='4 ori')
+plt.plot(pos, [x[0] for x in original_minstrobemers28], color = colors_ori[3], label='8 ori')
 
 #plt.fill_between(pos, [x[0]-x[1] for x in minstrobemers2], [x[0]+x[1] for x in minstrobemers2], color = colors_error[2], alpha=0.7)
 #plt.fill_between(pos, [x[0]-x[1] for x in minstrobemers28], [x[0]+x[1] for x in minstrobemers28], color = colors_error[5], alpha=0.7)
@@ -344,10 +337,10 @@ plt.xlabel("k")
 plt.xticks(pos, k_size)
 plt.ylabel("Speed in microseconds") # in microseconds
 
-plt.plot(pos, [x[0] for x in hybridstrobemers2], color = colors_ori[0], label='4',linewidth=3.0)
-plt.plot(pos, [x[0] for x in hybridstrobemers28], color = colors_ori[1], label='8',linewidth=3.0)
-plt.plot(pos, [x[0] for x in original_hybridstrobemers2], color = colors_ori[2], label='4 ori',linewidth=3.0)
-plt.plot(pos, [x[0] for x in original_hybridstrobemers28], color = colors_ori[3], label='8 ori',linewidth=3.0)
+plt.plot(pos, [x[0] for x in hybridstrobemers2], color = colors_ori[0], label='4')
+plt.plot(pos, [x[0] for x in hybridstrobemers28], color = colors_ori[1], label='8')
+plt.plot(pos, [x[0] for x in original_hybridstrobemers2], color = colors_ori[2], label='4 ori')
+plt.plot(pos, [x[0] for x in original_hybridstrobemers28], color = colors_ori[3], label='8 ori')
 
 #plt.fill_between(pos, [x[0]-x[1] for x in hybridstrobemers2], [x[0]+x[1] for x in hybridstrobemers2], color = colors_error[2], alpha=0.7)
 #plt.fill_between(pos, [x[0]-x[1] for x in hybridstrobemers28], [x[0]+x[1] for x in hybridstrobemers28], color = colors_error[5], alpha=0.7)
@@ -362,10 +355,10 @@ plt.xlabel("k")
 plt.xticks(pos, k_size)
 plt.ylabel("Speed in microseconds") # in microseconds
 
-plt.plot(pos, [x[0] for x in randstrobemers2], color = colors_ori[0], label='4',linewidth=3.0)
-plt.plot(pos, [x[0] for x in randstrobemers28], color = colors_ori[1], label='8',linewidth=3.0)
-plt.plot(pos, [x[0] for x in original_randstrobemers2], color = colors_ori[2], label='4 ori',linewidth=3.0)
-plt.plot(pos, [x[0] for x in original_randstrobemers28], color = colors_ori[3], label='8 ori',linewidth=3.0)
+plt.plot(pos, [x[0] for x in randstrobemers2], color = colors_ori[0], label='4')
+plt.plot(pos, [x[0] for x in randstrobemers28], color = colors_ori[1], label='8')
+plt.plot(pos, [x[0] for x in original_randstrobemers2], color = colors_ori[2], label='4 ori')
+plt.plot(pos, [x[0] for x in original_randstrobemers28], color = colors_ori[3], label='8 ori')
 
 #plt.fill_between(pos, [x[0]-x[1] for x in randstrobemers2], [x[0]+x[1] for x in randstrobemers2], color = colors_error[2], alpha=0.7)
 #plt.fill_between(pos, [x[0]-x[1] for x in randstrobemers28], [x[0]+x[1] for x in randstrobemers28], color = colors_error[5], alpha=0.7)
@@ -380,10 +373,10 @@ plt.xlabel("k")
 plt.xticks(pos_order3, k_order3)
 plt.ylabel("Speed in microseconds") # in microseconds
 
-plt.plot(pos_order3, [x[0] for x in randstrobemers3], color = colors_ori[0], label='4',linewidth=3.0)
-plt.plot(pos_order3, [x[0] for x in randstrobemers38], color = colors_ori[1], label='8',linewidth=3.0)
-plt.plot(pos_order3, [x[0] for x in original_randstrobemers3], color = colors_ori[2], label='4 ori',linewidth=3.0)
-plt.plot(pos_order3, [x[0] for x in original_randstrobemers38], color = colors_ori[3], label='8 ori',linewidth=3.0)
+plt.plot(pos_order3, [x[0] for x in randstrobemers3], color = colors_ori[0], label='4')
+plt.plot(pos_order3, [x[0] for x in randstrobemers38], color = colors_ori[1], label='8')
+plt.plot(pos_order3, [x[0] for x in original_randstrobemers3], color = colors_ori[2], label='4 ori')
+plt.plot(pos_order3, [x[0] for x in original_randstrobemers38], color = colors_ori[3], label='8 ori')
 
 #plt.fill_between(pos_order3, [x[0]-x[1] for x in randstrobemers3], [x[0]+x[1] for x in randstrobemers3], color = colors_error[2], alpha=0.7)
 #plt.fill_between(pos_order3, [x[0]-x[1] for x in randstrobemers38], [x[0]+x[1] for x in randstrobemers38], color = colors_error[5], alpha=0.7)

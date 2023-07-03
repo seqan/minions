@@ -502,9 +502,6 @@ void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_
         if (seq1_vector[i] == seq2_vector[i])
         {
             matches++;
-            if (current_island > 0)
-                new_island = true;
-
             switch(args.name)
             {
                 case kmer: fill_positions(positions, i, args.shape.size());
@@ -515,20 +512,23 @@ void match(std::filesystem::path sequence_file1, std::filesystem::path sequence_
         else
         {
             missed++;
+        }
+    }
 
-            if (new_island)
-            {
-                islands.push_back(current_island);
-                new_island = false;
-                current_island = 1;
-            }
-            else
-            {
-                current_island++;
-            }
+    for (int i = 0; i < positions.size(); ++i)
+    {
+        if (!positions[i])
+        {
+            current_island++;
+        }
+        else if (i > 0)
+        {
+            islands.push_back(current_island);
+            current_island = 0;
         }
     }
     islands.push_back(current_island);
+
 
     double mean_island, stdev_island;
     get_mean_and_var(islands, mean_island, stdev_island);
@@ -573,37 +573,31 @@ void match_vectors(std::vector<uint64_t> & seq1_vector,
         if ((seq1_vector[it_1] == seq2_vector[it_2]) & changed)
         {
             matches++;
-            changed = false;
-            if (current_island > 0)
-                new_island = true;
-
             fill_positions(positions, i, args.k_size);
-        }
-        else if ((seq1_vector[it_1] == all1_vector[i]) & (seq2_vector[it_2] == all2_vector[i]) & changed)
-        {
-            if (new_island)
-            {
-                islands.push_back(current_island);
-                new_island = false;
-                current_island = 1;
-            }
-            else
-            {
-                current_island++;
-            }
         }
 
         if (seq1_vector[it_1] == all1_vector[i])
         {
             it_1++;
-            changed = true;
         }
         if (seq2_vector[it_2] == all2_vector[i])
         {
             it_2++;
-            changed = true;
         }
         i++;
+    }
+
+    for (int i = 0; i < positions.size(); ++i)
+    {
+        if (!positions[i])
+        {
+            current_island++;
+        }
+        else if (i > 0)
+        {
+            islands.push_back(current_island);
+            current_island = 0;
+        }
     }
     islands.push_back(current_island);
 

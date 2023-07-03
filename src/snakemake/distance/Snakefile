@@ -1,17 +1,35 @@
 rule all:
     input:
         # Representative
-        ["0_minimiser_hash_20_"+str(w)+"_distance_"+str(error)+".out" for w in range(24,44,4) for error in [1,2,5,10]],
-        ["0_modmer_hash_20_"+str(w)+"_distance_"+str(error)+".out" for w in [3,5,7,9,11] for error in [1,2,5,10]],
-        ["syncmer_hash_20_"+str(w)+"_0_0_distance_"+str(error)+".out" for w in [18,16,14,12,10] for error in [1,2,5,10]],
-        ["syncmer_hash_20_"+str(w)+"_0_6_distance_"+str(error)+".out" for w in [15,11,7,3,1] for error in [1,2,5,10]],
+        ["0_minimiser_hash_20_"+str(w)+"_GRCh38.p13.genome.fa_distances.out" for w in range(24,44,4)],
+        ["0_modmer_hash_20_"+str(w)+"_GRCh38.p13.genome.fa_distances.out" for w in [3,5,7,9,11]],
+        ["syncmer_hash_20_"+str(w)+"_0_0_GRCh38.p13.genome.fa_distances.out" for w in [18,16,14,12,10]],
+        ["syncmer_hash_20_"+str(w)+"_0_"+str(20-w)+"_GRCh38.p13.genome.fa_distances.out" for w in [15,11,7,3,1]],
         # Representative based on strobemers
-        ["hybridstrobemers_2_"+str(0)+"_"+str(4+k)+"_minimiser_hash_10_"+str(w)+"_distance_"+str(error)+".out" for k in [10] for w in range(24,44,4) for error in [1,2,5,10]],
-        ["minstrobemers_2_"+str(0)+"_"+str(3+k)+"_minimiser_hash_10_"+str(w)+"_distance_"+str(error)+".out" for k in [10] for w in range(24,44,4) for error in [1,2,5,10]],
-        ["randstrobemers_2_"+str(0)+"_"+str(3+k)+"_minimiser_hash_10_"+str(w)+"_distance_"+str(error)+".out" for k in [10] for w in range(24,44,4) for error in [1,2,5,10]],
-        ["hybridstrobemers_2_"+str(0)+"_"+str(7+k)+"_minimiser_hash_10_"+str(w)+"_distance_"+str(error)+".out" for k in [10] for w in range(24,44,4) for error in [1,2,5,10]],
-        ["minstrobemers_2_"+str(0)+"_"+str(7+k)+"_minimiser_hash_10_"+str(w)+"_distance_"+str(error)+".out" for k in [10] for w in range(24,44,4) for error in [1,2,5,10]],
-        ["randstrobemers_2_"+str(0)+"_"+str(7+k)+"_minimiser_hash_10_"+str(w)+"_distance_"+str(error)+".out" for k in [10] for w in range(24,44,4) for error in [1,2,5,10]]
+        ["hybridstrobemers_2_"+str(1)+"_"+str(4+k)+"_Strobemer_minimiser_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in range(24,44,4)],
+        ["minstrobemers_2_"+str(1)+"_"+str(4+k)+"_Strobemer_minimiser_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in range(24,44,4)],
+        ["randstrobemers_2_"+str(1)+"_"+str(4+k)+"_Strobemer_minimiser_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in range(24,44,4)],
+        ["hybridstrobemers_2_"+str(1)+"_"+str(8+k)+"_Strobemer_minimiser_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in range(24,44,4)],
+        ["minstrobemers_2_"+str(1)+"_"+str(8+k)+"_Strobemer_minimiser_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in range(24,44,4)],
+        ["randstrobemers_2_"+str(1)+"_"+str(8+k)+"_Strobemer_minimiser_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in range(24,44,4)],
+        ["hybridstrobemers_2_"+str(1)+"_"+str(4+k)+"_Strobemer_modmer_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [3,5,7,9,11]],
+        ["minstrobemers_2_"+str(1)+"_"+str(4+k)+"_Strobemer_modmer_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [3,5,7,9,11]],
+        ["randstrobemers_2_"+str(1)+"_"+str(4+k)+"_Strobemer_modmer_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [3,5,7,9,11]],
+        ["hybridstrobemers_2_"+str(1)+"_"+str(8+k)+"_Strobemer_modmer_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [3,5,7,9,11]],
+        ["minstrobemers_2_"+str(1)+"_"+str(8+k)+"_Strobemer_modmer_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [3,5,7,9,11]],
+        ["randstrobemers_2_"+str(1)+"_"+str(8+k)+"_Strobemer_modmer_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [3,5,7,9,11]],
+        ["hybridstrobemers_2_"+str(1)+"_"+str(4+k)+"_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [18,16,14,12,10]],
+        ["minstrobemers_2_"+str(1)+"_"+str(4+k)+"_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [18,16,14,12,10]],
+        ["randstrobemers_2_"+str(1)+"_"+str(4+k)+"_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [18,16,14,12,10]],
+        ["hybridstrobemers_2_"+str(1)+"_"+str(8+k)+"_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [18,16,14,12,10]],
+        ["minstrobemers_2_"+str(1)+"_"+str(8+k)+"_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [18,16,14,12,10]],
+        ["randstrobemers_2_"+str(1)+"_"+str(8+k)+"_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [18,16,14,12,10]],
+        ["hybridstrobemers_2_"+str(1)+"_"+str(4+k)+"_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [15,11,7,3,1]],
+        ["minstrobemers_2_"+str(1)+"_"+str(4+k)+"_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [15,11,7,3,1]],
+        ["randstrobemers_2_"+str(1)+"_"+str(4+k)+"_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [15,11,7,3,1]],
+        ["hybridstrobemers_2_"+str(1)+"_"+str(8+k)+"_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [15,11,7,3,1]],
+        ["minstrobemers_2_"+str(1)+"_"+str(8+k)+"_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [15,11,7,3,1]],
+        ["randstrobemers_2_"+str(1)+"_"+str(8+k)+"_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_GRCh38.p13.genome.fa_distances.out" for k in [10] for w in [15,11,7,3,1]]
 
 rule download_human_genome:
     output:
@@ -23,26 +41,26 @@ rule distance_minimiser_modmer:
     input:
         "../results/GRCh38.p13.genome.fa.gz"
     output:
-        "{shape}_{method}_hash_{kmer_size}_{w_size}_distance_{error}.out"
+        "{shape}_{method}_hash_{kmer_size}_{w_size}_GRCh38.p13.genome.fa_distances.out"
     wildcard_constraints:
          shape='[0-9]*',
          method='(modmer|minimiser)'
     shell:
-        "minions distance --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.w_size} --shape {wildcards.shape} -o {wildcards.shape}_  {input} > {wildcards.shape}_{wildcards.method}_hash_{wildcards.kmer_size}_{wildcards.w_size}_distance_{wildcards.error}.out"
+        "minions distance --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.w_size} --shape {wildcards.shape} -o {wildcards.shape}_  {input}"
 
 rule distance_syncmer:
     input:
         "../results/GRCh38.p13.genome.fa.gz"
     output:
-        "syncmer_hash_{kmer_size}_{w_size}_{pos_begin}_{pos_end}_distance_{error}.out",
+        "syncmer_hash_{kmer_size}_{w_size}_{pos_begin}_{pos_end}_GRCh38.p13.genome.fa_distances.out",
     shell:
-        "minions distance --method syncmer -k {wildcards.kmer_size} -w {wildcards.w_size} -p {wildcards.pos_begin} -p {wildcards.pos_end} --shape 0 {input} > syncmer_hash_{wildcards.kmer_size}_{wildcards.w_size}_{wildcards.pos_begin}_{wildcards.pos_end}_distance_{wildcards.error}.out"
+        "minions distance --method syncmer -k {wildcards.kmer_size} -w {wildcards.w_size} -p {wildcards.pos_begin} -p {wildcards.pos_end} --shape 0 {input}"
 
 rule distance_strobemer:
     input:
         "../results/GRCh38.p13.genome.fa.gz"
     output:
-        "{method}strobemers_{kmer_size}_{order}_{wmin}_{wmax}_distance_{error}.out"
+        "{method}strobemers_{kmer_size}_{order}_{wmin}_{wmax}_GRCh38.p13.genome.fa_distances.out"
     wildcard_constraints:
          method='(min|rand|hybrid)',
          kmer_size='[0-9]*',
@@ -50,13 +68,13 @@ rule distance_strobemer:
          wmin='[0-9]*',
          wmax='[0-9]*'
     shell:
-        "minions distance --method strobemer --{wildcards.method} -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --order {wildcards.order} {input} > {wildcards.method}strobemers_{wildcards.kmer_size}_{wildcards.order}_{wildcards.wmin}_{wildcards.wmax}_distance_{wildcards.error}.out"
+        "minions distance --method strobemer --{wildcards.method} -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --order {wildcards.order} {input}"
 
 rule distance_minimiser_modmer_strobemer:
     input:
         "../results/GRCh38.p13.genome.fa.gz"
     output:
-        "{method2}strobemers_{order}_{wmin}_{wmax}_{method}_hash_{kmer_size}_{w_size}_distance_{error}.out"
+        "{method2}strobemers_{order}_{wmin}_{wmax}_Strobemer_{method}_hash_{kmer_size}_{w_size}_GRCh38.p13.genome.fa_distances.out"
     wildcard_constraints:
          method='(modmer|minimiser)',
          method2='(min|rand|hybrid)',
@@ -66,4 +84,20 @@ rule distance_minimiser_modmer_strobemer:
          wmin='[0-9]*',
          wmax='[0-9]*'
     shell:
-        "minions distance --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.w_size} --strobemer --w-min {wildcards.wmin} --w-max {wildcards.wmax} --{wildcards.method2} --order {wildcards.order} {input} > {wildcards.method2}strobemers_{wildcards.order}_{wildcards.wmin}_{wildcards.wmax}_{wildcards.method}_hash_{wildcards.kmer_size}_{wildcards.w_size}_distance_{wildcards.error}.out"
+        "minions distance --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.w_size} --strobemer --w-min {wildcards.wmin} --w-max {wildcards.wmax} --{wildcards.method2} --order {wildcards.order} -o {wildcards.method2}strobemers_{wildcards.order}_{wildcards.wmin}_{wildcards.wmax}_ {input}"
+
+rule distance_syncmer_strobemer:
+    input:
+        "../results/GRCh38.p13.genome.fa.gz"
+    output:
+        "{method2}strobemers_{order}_{wmin}_{wmax}_Strobemer_{method}_hash_{kmer_size}_{w_size}_{pos_begin}_{pos_end}_GRCh38.p13.genome.fa_distances.out"
+    wildcard_constraints:
+         method='(syncmer)',
+         method2='(min|rand|hybrid)',
+         order='(2|3)',
+         kmer_size='[0-9]*',
+         w_size='[0-9]*',
+         wmin='[0-9]*',
+         wmax='[0-9]*'
+    shell:
+        "minions distance --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.w_size} --strobemer --w-min {wildcards.wmin} --w-max {wildcards.wmax} --{wildcards.method2} --order {wildcards.order} -p {wildcards.pos_begin} -p {wildcards.pos_end} -o {wildcards.method2}strobemers_{wildcards.order}_{wildcards.wmin}_{wildcards.wmax}_ {input}"

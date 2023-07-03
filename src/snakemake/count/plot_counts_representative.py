@@ -21,8 +21,8 @@ modmer_setw = read_file([], ["Rep_modmer_hash_"+str(k)+"_7_counts.out" for k in 
 # syncmer
 opensyncmer = read_file([], ["syncmer_hash_20_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10]])
 opensyncmer_setw = read_file([], ["syncmer_hash_"+str(k)+"_10_0_0_counts.out" for k in [i for i in range(22,12,-2)]])
-closedsyncmer = read_file([], ["syncmer_hash_20_"+str(w)+"_0_6_counts.out" for w in [15,11,7,3,1]])
-closedsyncmer_setw = read_file([], ["syncmer_hash_"+str(k)+"_3_0_6_counts.out" for k in [i for i in range(28,8,-4)]])
+closedsyncmer = read_file([], ["syncmer_hash_20_"+str(w)+"_0_"+str(20-w)+"_counts.out" for w in [15,11,7,3,1]])
+closedsyncmer_setw = read_file([], ["syncmer_hash_"+str(k)+"_3_0_5_counts.out" for k in [i for i in range(28,8,-4)]])
 
 
 # Plot comparison between k-mers
@@ -39,7 +39,7 @@ plt.ylabel("# of submers") # in microseconds
 plt.plot(pos, [x[0] for x in minimiser], color = colors[0], label='(w,20)-minimizer',linewidth=3.0)
 plt.plot(pos, [x[0] for x in modmer], color = colors[1], label='(20,m)-modmer',linewidth=3.0)
 plt.plot(pos, [x[0] for x in opensyncmer], color = colors[2], label='(20,s,[0],1)-syncmer',linewidth=3.0)
-plt.plot(pos, [x[0] for x in closedsyncmer], color = colors[3], label='(20,s,[0,6],1)-syncmer',linewidth=3.0)
+plt.plot(pos, [x[0] for x in closedsyncmer], color = colors[3], label='(20,s,[0,20-s],1)-syncmer',linewidth=3.0)
 
 plt.legend(bbox_to_anchor=(1.01, 0.75),title="Methods")
 plt.savefig("../results/Count_representative.png", bbox_inches='tight')
