@@ -11,7 +11,7 @@ Currently, the following methods are supported:
 - k-mers
 - minimizers
 - modmers
-- strobemers (integrated as submodule from [here](https://github.com/ksahlin/strobemers) and implemented as a view)
+- strobemers (integrated as submodule from [here](https://github.com/ksahlin/strobemers) and implemented as a view for hybrid-, min- and randstrobemers)
 - syncmers
 
 See Issue #1 for a list of methods that will be added in the future (see down below here for an example usage of each method).
