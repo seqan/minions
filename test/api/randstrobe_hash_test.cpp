@@ -8,7 +8,7 @@
 #include <seqan3/alphabet/views/complement.hpp>
 #include <seqan3/io/views/detail/take_until_view.hpp>
 #include <seqan3/search/views/kmer_hash.hpp>
-#include <seqan3/search/views/minimiser.hpp>
+#include <minions_minimiser.hpp>
 
 #include <seqan3/test/expect_range_eq.hpp>
 
@@ -130,5 +130,5 @@ TEST_F(randstrobe_hash_test, combinability)
     EXPECT_RANGE_EQ(result3_ungapped_start, text3 | start_at_a | ungapped_view);
     EXPECT_RANGE_EQ(result3_gapped_start, text3 | start_at_a | gapped_view);
 
-    EXPECT_RANGE_EQ(result3_minimiser, text3 | ungapped_view | seqan3::views::minimiser(2));
+    EXPECT_RANGE_EQ(result3_minimiser, text3 | ungapped_view | minions::views::minimiser(2));
 }

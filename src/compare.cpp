@@ -6,9 +6,11 @@
 #include <seqan3/alphabet/nucleotide/dna5.hpp>
 #include <seqan3/core/detail/empty_type.hpp>
 #include <seqan3/io/views/detail/take_until_view.hpp>
+#include <seqan3/search/views/minimiser_hash.hpp>
 
 #include "compare.h"
 #include "hybridstrobe_hash.hpp"
+#include "minions_minimiser_hash.hpp"
 #include "minstrobe_hash.hpp"
 #include "modmer_hash.hpp"
 #include "randstrobe_hash.hpp"
@@ -849,17 +851,17 @@ void do_counts(std::vector<std::filesystem::path> sequence_files, range_argument
         {
             case minimiser: {
                                 if (args.hybrid & (args.order == 2))
-                                    counts_strobemer(sequence_files, hybridstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1), create_name(args, true), args);
+                                    counts_strobemer(sequence_files, hybridstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), minions::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1), create_name(args, true), args);
                                 if (args.hybrid & (args.order == 3))
-                                    counts_strobemer(sequence_files, hybridstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*3)+1), create_name(args, true), args);
+                                    counts_strobemer(sequence_files, hybridstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), minions::views::minimiser(args.w_size.get()-(args.shape.size()*3)+1), create_name(args, true), args);
                                 if (args.minstrobers & (args.order == 2))
-                                    counts_strobemer(sequence_files, minstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1), create_name(args, true), args);
+                                    counts_strobemer(sequence_files, minstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), minions::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1), create_name(args, true), args);
                                 if (args.minstrobers & (args.order == 3))
-                                    counts_strobemer(sequence_files, minstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*3)+1), create_name(args, true), args);
+                                    counts_strobemer(sequence_files, minstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), minions::views::minimiser(args.w_size.get()-(args.shape.size()*3)+1), create_name(args, true), args);
                                 if (args.rand & (args.order == 2))
-                                    counts_strobemer(sequence_files, randstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1), create_name(args, true), args);
+                                    counts_strobemer(sequence_files, randstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), minions::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1), create_name(args, true), args);
                                 if (args.rand & (args.order == 3))
-                                    counts_strobemer(sequence_files, randstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*3)+1), create_name(args, true), args);
+                                    counts_strobemer(sequence_files, randstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), minions::views::minimiser(args.w_size.get()-(args.shape.size()*3)+1), create_name(args, true), args);
                             }
                             break;
             case modmers: {
@@ -937,17 +939,17 @@ void do_distance(std::filesystem::path sequence_file, range_arguments & args, bo
         {
             case minimiser: {
                                 if (args.hybrid & (args.order == 2))
-                                    distance_strobemer(sequence_file, seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),hybridstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), std::string{args.path_out} + create_name(args, true));
+                                    distance_strobemer(sequence_file, minions::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),hybridstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), std::string{args.path_out} + create_name(args, true));
                                 if (args.hybrid & (args.order == 3))
-                                    distance_strobemer(sequence_file, seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),hybridstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), std::string{args.path_out} + create_name(args, true));
+                                    distance_strobemer(sequence_file, minions::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),hybridstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), std::string{args.path_out} + create_name(args, true));
                                 if (args.minstrobers & (args.order == 2))
-                                    distance_strobemer(sequence_file, seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),minstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), std::string{args.path_out} + create_name(args, true));
+                                    distance_strobemer(sequence_file, minions::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),minstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), std::string{args.path_out} + create_name(args, true));
                                 if (args.minstrobers & (args.order == 3))
-                                    distance_strobemer(sequence_file, seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),minstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), std::string{args.path_out} + create_name(args, true));
+                                    distance_strobemer(sequence_file, minions::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),minstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), std::string{args.path_out} + create_name(args, true));
                                 if (args.rand & (args.order == 2))
-                                    distance_strobemer(sequence_file, seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),randstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), std::string{args.path_out} + create_name(args, true));
+                                    distance_strobemer(sequence_file, minions::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),randstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), std::string{args.path_out} + create_name(args, true));
                                 if (args.rand & (args.order == 3))
-                                    distance_strobemer(sequence_file, seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),randstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), std::string{args.path_out} + create_name(args, true));
+                                    distance_strobemer(sequence_file, minions::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),randstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), std::string{args.path_out} + create_name(args, true));
                             }
                             break;
             case modmers: {
@@ -1009,17 +1011,17 @@ void do_match(std::filesystem::path sequence_file1, std::filesystem::path sequen
         {
             case minimiser: {
                                 if (args.hybrid & (args.order == 2))
-                                    match_strobemer(sequence_file1, sequence_file2, seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),hybridstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args, true), args);
+                                    match_strobemer(sequence_file1, sequence_file2, minions::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),hybridstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args, true), args);
                                 if (args.hybrid & (args.order == 3))
-                                    match_strobemer(sequence_file1, sequence_file2, seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),hybridstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args, true), args);
+                                    match_strobemer(sequence_file1, sequence_file2, minions::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),hybridstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args, true), args);
                                 if (args.minstrobers & (args.order == 2))
-                                    match_strobemer(sequence_file1, sequence_file2, seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),minstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args, true), args);
+                                    match_strobemer(sequence_file1, sequence_file2, minions::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),minstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args, true), args);
                                 if (args.minstrobers & (args.order == 3))
-                                    match_strobemer(sequence_file1, sequence_file2, seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),minstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args, true), args);
+                                    match_strobemer(sequence_file1, sequence_file2, minions::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),minstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args, true), args);
                                 if (args.rand & (args.order == 2))
-                                    match_strobemer(sequence_file1, sequence_file2, seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),randstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args, true), args);
+                                    match_strobemer(sequence_file1, sequence_file2, minions::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),randstrobe2_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args, true), args);
                                 if (args.rand & (args.order == 3))
-                                    match_strobemer(sequence_file1, sequence_file2, seqan3::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),randstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args, true), args);
+                                    match_strobemer(sequence_file1, sequence_file2, minions::views::minimiser(args.w_size.get()-(args.shape.size()*2)+1),randstrobe3_hash(args.shape, args.w_min, args.w_max, args.seed_se), create_name(args, true), args);
                             }
                             break;
             case modmers: {
