@@ -107,8 +107,8 @@ void store_ibf(IBFType const & ibf,
 }
 
 /*! \brief Function that creates the string name of the used view.
- *  \param args The arguments about the view to be used.
- *  \param args If true, "Strobmer" is added to the name.
+ *  \param args                 The arguments about the view to be used.
+ *  \param underlying_strobemer If true, "Strobmer" is added to the name.
  */
 std::string create_name(range_arguments & args, bool underlying_strobemer = false);
 

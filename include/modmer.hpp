@@ -160,10 +160,12 @@ public:
     * \param[in] seed_used   The seed used.
     */
     template <typename other_urng1_t, typename other_urng2_t>
+    //!\cond
       requires (std::ranges::viewable_range<other_urng1_t>
                 && std::constructible_from<urng1_t, std::views::all_t<other_urng1_t>>
                 && std::ranges::viewable_range<other_urng2_t>
                 && std::constructible_from<urng2_t, std::views::all_t<other_urng2_t>>)
+    //!\endcond
       explicit modmer_view(other_urng1_t && urange1, other_urng2_t && urange2, size_t const mod_used, uint64_t const seed_used) :
           urange1{std::views::all(std::forward<other_urng1_t>(urange1))},
           urange2{std::views::all(std::forward<other_urng2_t>(urange2))},

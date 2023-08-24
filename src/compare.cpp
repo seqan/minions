@@ -655,7 +655,6 @@ void match_strobemer(std::filesystem::path sequence_file1, std::filesystem::path
  *  \param sequence_file1 The first sequence file.
  *  \param sequence_file2 The second sequence file.
  *  \param input_view View that should be tested.
- *  \param compare_view View for comparison, should be kmer_hash view.
  *  \param method_name Name of the tested method.
  *  \param args The arguments about the view to be used, needed for strobemers.
  */

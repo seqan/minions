@@ -313,7 +313,6 @@ public:
     }
     //!\}
 
-    //!\anchor basic_iterator_comparison
     //!\name Comparison operators
     //!\{
 
