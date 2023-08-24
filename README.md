@@ -32,15 +32,48 @@ Run test to check, if Comparison is working as intended. All tests should pass.
 make test
 ```
 
+# Accuracy
+
+Accuracy determines the true positives, false positives true negatives and false negatives of a method given a file with expected results (solution file). Given a list of sequencing files (or the preprocessed binary files from count, see below) accuracy determines each submer for each file and saves these submers in a probalistic data structure, the interleaved Bloom filter. Alternatively, if the interleaved Bloom filter has been already built, the interleaved Bloom filter can be given as an input instead of the sequencing files. Besides sequencing files, accuracy needs a sequence file containing the sequences that should be searched for and a solution file, in which it is stated in which experiments a searched sequence should be found in.  
+
+Example usage for accuracy for a given multiple sequence files `in0.fa`, `in1.fa`. `in2.fa`, a file of sequences to search for `search.fa` and a solution file `expected.out`.
+```
+minions accuracy --method kmer -k 16 in0.fa in1.fa in2.fa --search-file search.fa --solution-file expected.out
+```
+
+`expected.out` should look in the following way, each line starts with the name of a sequence in the search file followed by the position in the input files it should be found in:
+```
+search_sequence_1 0  2
+search_sequence_2 1
+```
+
 # Counts
 
-Counts creates two output files: One named `{method}_{inputfile_name}_counts.out` storing as a binary file all submers and their respective count values and one named `{method}_counts.out` storing the minimium, mean, the variance and maximum of the count values. Count can also handle multiple files and calculate the mean over all sequences found in all files. Counts considers for all supported methods the canonical version.
+Counts determines how often each submer appears. Counts creates thereby two output files: One named `{method}_{inputfile_name}_counts.out` storing as a binary file all submers and their respective count values and one named `{method}_counts.out` storing the minimium, mean, the variance and maximum of the count values. Count can also handle multiple files and calculate the mean over all sequences found in all files. Counts considers for all supported methods the canonical version.
 
 Example usage for calculating the counts of k-mers of a given input file `in.fa`:
 ```
 minions counts --method kmer -k 16 in.fasta
 ```
 This results in the two files: `kmer_hash_16_in_counts.out` and `kmer_hash_16_counts.out`.
+
+# Distance
+
+Distance can only be used with representative submer methods like minimiser, modmers and syncmers and determines the distances between two adjacent submers. Distance creates one output file named `{method}_{inputfile_name}_distances.out` storing each distance and how often it occurs in the given file. 
+
+Example usage for calculating the distance of minimizers of a given input file `in.fa`:
+```
+minions distance --method minimiser -k 16 -w 20 in.fasta
+```
+This results in the one file: `minimiser_hash_16_20_in_distances.out`.
+
+# Match
+
+Match counts the number of matches for a given submer method between two sequencing files.
+
+```
+minions match --method kmer -k 16  file1.fasta file2.fasta
+```
 
 # Speed
 
