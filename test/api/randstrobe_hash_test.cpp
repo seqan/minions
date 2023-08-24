@@ -8,6 +8,7 @@
 #include <seqan3/alphabet/views/complement.hpp>
 #include <seqan3/io/views/detail/take_until_view.hpp>
 #include <seqan3/search/views/kmer_hash.hpp>
+#include <minions_minimiser.hpp>
 
 #include <seqan3/test/expect_range_eq.hpp>
 
@@ -58,6 +59,7 @@ protected:
     result_t result3_gapped{35, 37, 21, 139, 67};
     result_t result3_ungapped_start{39103, 25074};
     result_t result3_gapped_start{139, 67};
+    result_t result3_minimiser{1637,357,25074};
 
     std::vector<seqan3::dna4> text1_3{"AAAAAAAAAAAAAAAA"_dna4};
     result_t result3_1{0}; // Same result for ungapped and gapped
@@ -127,4 +129,6 @@ TEST_F(randstrobe_hash_test, combinability)
     auto start_at_a = std::views::drop(3);
     EXPECT_RANGE_EQ(result3_ungapped_start, text3 | start_at_a | ungapped_view);
     EXPECT_RANGE_EQ(result3_gapped_start, text3 | start_at_a | gapped_view);
+
+    EXPECT_RANGE_EQ(result3_minimiser, text3 | ungapped_view | minions::views::minimiser(2));
 }

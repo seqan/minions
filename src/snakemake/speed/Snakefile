@@ -1,40 +1,81 @@
 rule all:
-    input: "Speed_all.png",
-           "Speed_all8.png",
-           "Speed_kmers.png",
-           "Speed_strobemers.png",
-           "Speed_strobemers4.png",
-           "Speed_strobemers8.png"
+    input:  "../results/Speed_all.png",
+            "../results/Speed_all8.png",
+            "../results/Speed_all_order3.png",
+            "../results/Speed_all8_order3.png",
+            "../results/Speed_strobemers_original_all.png",
+            "../results/Speed_minstrobemers_original.png",
+            "../results/Speed_hybridstrobemers_original.png",
+            "../results/Speed_randstrobemers_original.png",
+            "../results/Speed_randstrobemers_original_order3.png",
+            "../results/Speed_representative.png"
 
 rule plot:
     output:
-        "Speed_all.png",
-        "Speed_all8.png",
-        "Speed_kmers.png",
-        "Speed_strobemers.png",
-        "Speed_strobemers4.png",
-        "Speed_strobemers8.png"
+        "../results/Speed_all.png",
+        "../results/Speed_all8.png",
+        "../results/Speed_kmers.png",
+        "../results/Speed_strobemers.png",
+        "../results/Speed_strobemers4.png",
+        "../results/Speed_strobemers8.png",
+        "../results/Speed_randstrobemers_original.png",
+        "../results/Speed_randstrobemers_original_order3.png"
     input:
         [shape + "_kmer_hash_16_speed.out" for shape in ["0", "36607", "51755"]],
         [shape + "_kmer_hash_18_speed.out" for shape in ["0","233469", "246365"]],
         [shape + "_kmer_hash_20_speed.out" for shape in ["0", "933855", "975475"]],
         [shape + "_kmer_hash_22_speed.out" for shape in ["0", "4192891", "3669089"]],
         [shape + "_kmer_hash_24_speed.out" for shape in ["0", "14548847", "13954519"]],
-        [shape + "_kmer_hash_26_speed.out" for shape in ["0", "14351359", "16503191"]],
-        [shape + "_kmer_hash_28_speed.out" for shape in ["0", "3758077695", "241004285"]],
+        [shape + "_kmer_hash_26_speed.out" for shape in ["0", "62257151", "66560815"]],
+        [shape + "_kmer_hash_28_speed.out" for shape in ["0", "234879855", "241004285"]],
         [shape + "_kmer_hash_30_speed.out" for shape in ["0", "805287931", "1004529051"]],
-        [shape + "_kmer_hash_32_speed.out" for shape in ["0", "3169577727", "241004285"]],
+        [shape + "_kmer_hash_32_speed.out" for shape in ["0", "3169577727", "3856068575"]],
+        # Shapes k + 4/8
+        ["0_kmer_hash_"+str(k)+"_speed.out" for k in range(16,34,2)],
+        [["777695", "2621175", "16252901", "50196477", "251620351", "905838335", "4286578095", "13958643693", "66035113981"][i]+"_kmer_hash_"+str([k for k in range(16,34,2)][i]+4)+"_speed.out" for i in range(9)],
+        [["14021527", "45607667", "180082591", "1068161519", "3522001919", "13957854679", "64423783901", "205814423455", "1094946651927"][i]+"_kmer_hash_"+str([k for k in range(16,34,2)][i]+8)+"_speed.out" for i in range(9)],
         # 4 "gaps"
-        ["minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17)],
-        ["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17)],
-        ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17)],
-        ["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in [9,12,15]],
+        ["minstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_speed.out" for k in range(8,17)],
+        ["minstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_speed.out" for k in [6,8,10]],
+        ["hybridstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_speed.out" for k in range(8,17)],
+        ["hybridstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_speed.out" for k in [6,8,10]],
+        ["randstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_speed.out" for k in range(8,17)],
+        ["randstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_speed.out" for k in [6,8,10]],
         # 8 "gaps"
-        ["minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17)],
-        ["hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17)],
-        ["randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17)],
-        ["randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in [9,12,15]]
+        ["minstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_speed.out" for k in range(8,17)],
+        ["minstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_speed.out" for k in [6,8,10]],
+        ["hybridstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_speed.out" for k in range(8,17)],
+        ["hybridstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_speed.out" for k in [6,8,10]],
+        ["randstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_speed.out" for k in range(8,17)],
+        ["randstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_speed.out" for k in [6,8,10]],
+        # 4 "gaps"
+        ["Original_minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17)],
+        ["Original_hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17)],
+        ["Original_randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in range(8,17)],
+        ["Original_randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(5+k)+"_speed.out" for k in [6,8,10]],
+        # 8 "gaps"
+        ["Original_minstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17)],
+        ["Original_hybridstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17)],
+        ["Original_randstrobemers_"+str(k)+"_2_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in range(8,17)],
+        ["Original_randstrobemers_"+str(k)+"_3_"+str(k+1)+"_"+str(9+k)+"_speed.out" for k in [6,8,10]]
     shell: "python3 plot_speed.py"
+
+rule plot_representative:
+    output:
+        "../results/Speed_representative.png"
+    input:
+        # minimiser
+        ["0_minimiser_hash_20_"+str(w)+"_speed.out" for w in [i for i in range(24,44,4)]],
+        ["0_minimiser_hash_"+str(k)+"_40_speed.out" for k in [i for i in range(16,36,4)]],
+        # modmer
+        ["0_modmer_hash_20_"+str(w)+"_speed.out" for w in [3,5,7,9,11]],
+        ["0_modmer_hash_"+str(k)+"_7_speed.out" for k in [i for i in range(16,36,4)]],
+        # syncmer
+        ["syncmer_hash_20_"+str(w)+"_0_0_speed.out" for w in [18,16,14,12,10]],
+        ["syncmer_hash_"+str(k)+"_10_0_0_speed.out" for k in [i for i in range(22,12,-2)]],
+        ["syncmer_hash_20_"+str(w)+"_0_"+str(20-w)+"_speed.out" for w in [15,11,7,3,1]]
+        #["syncmer_hash_"+str(k)+"_3_0_6_speed.out" for k in [i for i in range(28,8,-4)]]
+    shell: "python3 plot_speed_representative.py"
 
 rule download_example_Data:
     output:
@@ -54,17 +95,17 @@ rule speed_minstrobemer:
     input:
         "../results/simulated_10000.fa.gz"
     output:
-        "minstrobemers_{kmer_size}_2_{wmin}_{wmax}_speed.out"
+        "minstrobemers_{kmer_size}_{order}_{wmin}_{wmax}_speed.out"
     shell:
-        "minions speed --method strobemer --min -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --library --order 2 {input}"
+        "minions speed --method strobemer --min -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --order {wildcards.order} {input}"
 
 rule speed_hybridstrobemer:
     input:
         "../results/simulated_10000.fa.gz"
     output:
-        "hybridstrobemers_{kmer_size}_2_{wmin}_{wmax}_speed.out"
+        "hybridstrobemers_{kmer_size}_{order}_{wmin}_{wmax}_speed.out"
     shell:
-        "minions speed --method strobemer --hybrid -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --library --order 2 {input}"
+        "minions speed --method strobemer --hybrid -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --order {wildcards.order} {input}"
 
 rule speed_randstrobemer:
     input:
@@ -72,4 +113,44 @@ rule speed_randstrobemer:
     output:
         "randstrobemers_{kmer_size}_{order}_{wmin}_{wmax}_speed.out"
     shell:
-        "minions speed --method strobemer --rand -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --library --order {wildcards.order} {input}"
+        "minions speed --method strobemer --rand -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --order {wildcards.order} {input}"
+
+rule speed_minstrobemer_original:
+    input:
+        "../results/simulated_10000.fa.gz"
+    output:
+        "Original_minstrobemers_{kmer_size}_2_{wmin}_{wmax}_speed.out"
+    shell:
+        "minions speed --method strobemer --min -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --original --order 2 {input} -o Original_"
+
+rule speed_hybridstrobemer_original:
+    input:
+        "../results/simulated_10000.fa.gz"
+    output:
+        "Original_hybridstrobemers_{kmer_size}_2_{wmin}_{wmax}_speed.out"
+    shell:
+        "minions speed --method strobemer --hybrid -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --original --order 2 {input} -o Original_"
+
+rule speed_randstrobemer_original:
+    input:
+        "../results/simulated_10000.fa.gz"
+    output:
+        "Original_randstrobemers_{kmer_size}_{order}_{wmin}_{wmax}_speed.out"
+    shell:
+        "minions speed --method strobemer --rand -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --original --order {wildcards.order} {input} -o Original_"
+
+rule speed_minimiser_modmer:
+    input:
+        "../results/simulated_10000.fa.gz"
+    output:
+        "0_{method}_hash_{kmer_size}_{w_size}_speed.out"
+    shell:
+        "minions speed --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.w_size} --shape 0 -o 0_ {input}"
+
+rule speed_syncmer:
+    input:
+        "../results/simulated_10000.fa.gz"
+    output:
+        "syncmer_hash_{kmer_size}_{w_size}_{pos_begin}_{pos_end}_speed.out"
+    shell:
+        "minions speed --method syncmer -k {wildcards.kmer_size} -w {wildcards.w_size} -p {wildcards.pos_begin} -p {wildcards.pos_end} --shape 0 {input}"

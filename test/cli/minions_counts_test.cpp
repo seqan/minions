@@ -62,6 +62,14 @@ TEST_F(cli_test, minstrobemer)
     EXPECT_EQ(result.err, std::string{});
 }
 
+TEST_F(cli_test, minstrobemer_minimiser)
+{
+    cli_test_result result = execute_app("minions counts --method minimiser -w 3 --strobemer -k 19 --w-min 16 --w-max 30 --order 2 --min", data("example1.fasta"));
+    EXPECT_EQ(result.exit_code, 0);
+    EXPECT_EQ(result.out, std::string{});
+    EXPECT_EQ(result.err, std::string{});
+}
+
 TEST_F(cli_test,closedsyncmer)
 {
     cli_test_result result = execute_app("minions counts --method syncmer --pos 0 --pos 16 -k 19 -w 3", data("example1.fasta"));

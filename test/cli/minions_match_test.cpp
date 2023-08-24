@@ -34,7 +34,15 @@ TEST_F(cli_test, modmer)
 {
     cli_test_result result = execute_app("minions match --method modmer -k 19 -w 2 ", data("example1.fasta"), data("example1.fasta"));
     EXPECT_EQ(result.exit_code, 0);
-    EXPECT_EQ(result.out, std::string{"Matches: 3139105\tMissed: 0\nMatch Coverage: 99.9723\nIslands: 0\t0\t0\t0\nExpected Island Size: 0\n"});
+    EXPECT_EQ(result.out, std::string{"Matches: 6425134\tMissed: 18446744073706979809\nMatch Coverage: 100\nIslands: 0\t3.11277e-07\t0.00078902\t2\nExpected Island Size: 6.22553e-07\n"});
+    EXPECT_EQ(result.err, std::string{});
+}
+
+TEST_F(cli_test, syncmer)
+{
+    cli_test_result result = execute_app("minions match --method syncmer -k 19 -w 2 -p 0", data("example1.fasta"), data("example1.fasta"));
+    EXPECT_EQ(result.exit_code, 0);
+    EXPECT_EQ(result.out, std::string{"Matches: 6425122\tMissed: 18446744073704432388\nMatch Coverage: 99.9998\nIslands: 0\t2.17894e-06\t0.00552315\t14\nExpected Island Size: 3.05052e-05\n"});
     EXPECT_EQ(result.err, std::string{});
 }
 
@@ -68,7 +76,7 @@ TEST_F(cli_test, wrong_method)
     std::string expected
     {
         "Error. Incorrect command line input for match. Validation failed "
-        "for option --method: Value submer is not one of [kmer,minimiser,modmer,strobemer].\n"
+        "for option --method: Value submer is not one of [kmer,minimiser,modmer,strobemer,syncmer].\n"
     };
     EXPECT_EQ(result.exit_code, 0);
     EXPECT_EQ(result.out, std::string{});

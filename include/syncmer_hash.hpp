@@ -109,6 +109,57 @@ struct syncmer_hash_fn
     }
 };
 
+struct syncmer_hash_no_reverse_fn
+{
+    /*!\brief Store the kmers and the smers and return a range adaptor closure object.
+    * \param[in] kmers       The k-mer size to be used.
+    * \param[in] smers       The s-mer size (s<k) to be used.
+    * \param[in] pos         The position that determines if an element is a syncmer.
+    * \throws std::invalid_argumentif the s-mer size is smaller than 1 or the k-mer size is smaller than the s-mers.
+    * \returns               A range of converted elements.
+    */
+    auto operator()(size_t const smers, size_t const kmers, std::vector<int> const pos) const
+    {
+        return seqan3::detail::adaptor_from_functor{*this, smers, kmers, pos};
+    }
+
+    /*!\brief Call the view's constructor with the underlying view, a k-mer size and a s-mer size as argument.
+     * \param[in] urange     The input range to process. Must model std::ranges::viewable_range and
+     *                       the reference type of the range must model seqan3::semialphabet.
+     * \param[in] kmers      The k-mer size to be used.
+     * \param[in] smers      The s-mer size (s<k) to be used.
+     * \param[in] pos        The position that determines if an element is a syncmer.
+     * \throws std::invalid_argument if the s-mer size is smaller than 1 or the k-mer size is smaller than the s-mers.
+     * \returns              A range of converted elements.
+     */
+    template <std::ranges::range urng_t>
+    auto operator()(urng_t && urange,
+                    size_t const smers,
+			        size_t const kmers,
+			        std::vector<int> const pos) const
+    {
+        static_assert(std::ranges::viewable_range<urng_t>,
+            "The range parameter to views::syncmer_hash cannot be a temporary of a non-view range.");
+        static_assert(std::ranges::forward_range<urng_t>,
+            "The range parameter to views::syncmer_hash must model std::ranges::forward_range.");
+        static_assert(semialphabet<std::ranges::range_reference_t<urng_t>>,
+            "The range parameter to views::syncmer_hash must be over elements of seqan3::semialphabet.");
+
+        if (smers < 1 || kmers <= smers)
+            throw std::invalid_argument{"The chosen kmers and smers are not valid."
+                                        "Please choose values greater than 1 and a smer size smaller than the kmer size."};
+
+        auto forward_strand = std::forward<urng_t>(urange)
+                                                 | seqan3::views::kmer_hash(seqan3::shape(seqan3::ungapped(kmers)));
+
+        auto forward_strand_smer = std::forward<urng_t>(urange)
+                                                 | seqan3::views::kmer_hash(seqan3::shape(seqan3::ungapped(smers)));
+
+        return seqan3::detail::syncmer_view<decltype(forward_strand_smer), decltype(forward_strand)>
+                                            (forward_strand_smer, forward_strand, kmers - smers + 1, pos);
+    }
+};
+
 } // namespace seqan3::detail
 
 /*!\name Alphabet related views
@@ -156,4 +207,5 @@ struct syncmer_hash_fn
  *
  */
 inline constexpr auto syncmer_hash = seqan3::detail::syncmer_hash_fn{};
+inline constexpr auto syncmer_hash_no_reverse = seqan3::detail::syncmer_hash_no_reverse_fn{};
 //!\}

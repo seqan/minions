@@ -1,0 +1,278 @@
+rule all:
+    input:
+         "../results/Count_all.png",
+         "../results/Count_all8.png",
+         "../results/Unique.out",
+         "../results/Count_representative.png",
+         "../results/Unique_representative.out",
+         "../results/Count_representative_min1.png",
+         "../results/Count_representative_min.png",
+         "../results/Count_representative_hybrid1.png",
+         "../results/Count_representative_hybrid.png",
+         "../results/Count_representative_rand1.png",
+         "../results/Count_representative_rand.png",
+         "../results/Count_representative_min31.png",
+         "../results/Count_representative_min3.png",
+         "../results/Count_representative_hybrid31.png",
+         "../results/Count_representative_hybrid3.png",
+         "../results/Count_representative_rand31.png",
+         "../results/Count_representative_rand3.png",
+         "../results/Unique_representative2.out",
+         "../results/Unique_representative.out"
+
+
+rule plot:
+    input:
+        "../results/Unique.out",
+        #[shape + "_minimiser_hash_16_16_counts.out" for shape in ["0", "36607", "51755"]],
+        #[shape + "_minimiser_hash_18_18_counts.out" for shape in ["0","233469", "246365"]],
+        #[shape + "_minimiser_hash_20_20_counts.out" for shape in ["0", "933855", "975475"]],
+        #[shape + "_minimiser_hash_22_22_counts.out" for shape in ["0", "4192891", "3669089"]],
+        #[shape + "_minimiser_hash_24_24_counts.out" for shape in ["0", "14548847", "13954519"]],
+        #[shape + "_minimiser_hash_26_26_counts.out" for shape in ["0", "62257151", "66560815"]],
+        #[shape + "_minimiser_hash_28_28_counts.out" for shape in ["0", "234879855", "241004285"]],
+        #[shape + "_minimiser_hash_30_30_counts.out" for shape in ["0", "805287931", "1004529051"]],
+        #[shape + "_minimiser_hash_32_32_counts.out" for shape in ["0", "3169577727", "3856068575"]],
+        # Shapes k + 4/8
+        ["0_minimiser_hash_"+str(k)+"_"+str(k)+"_counts.out" for k in range(16,34,2)],
+        [["777695", "2621175", "16252901", "50196477", "251620351", "905838335", "4286578095", "13958643693", "66035113981"][i]+"_minimiser_hash_"+str([k for k in range(16,34,2)][i]+4)+"_"+str([k for k in range(16,34,2)][i]+4)+"_counts.out" for i in range(9)],
+        [["14021527", "45607667", "180082591", "1068161519", "3522001919", "13957854679", "64423783901", "205814423455", "1094946651927"][i]+"_minimiser_hash_"+str([k for k in range(16,34,2)][i]+8)+"_"+str([k for k in range(16,34,2)][i]+8)+"_counts.out" for i in range(9)],
+        # 4 "gaps"
+        ["minstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_counts.out" for k in range(8,17)],
+        ["minstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_counts.out" for k in [6,8,10]],
+        ["hybridstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_counts.out" for k in range(8,17)],
+        ["hybridstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_counts.out" for k in [6,8,10]],
+        ["randstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_counts.out" for k in range(8,17)],
+        ["randstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_counts.out" for k in [6,8,10]],
+        # 8 "gaps"
+        ["minstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_counts.out" for k in range(8,17)],
+        ["minstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_counts.out" for k in [6,8,10]],
+        ["hybridstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_counts.out" for k in range(8,17)],
+        ["hybridstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_counts.out" for k in [6,8,10]],
+        ["randstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_counts.out" for k in range(8,17)],
+        ["randstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_counts.out" for k in [6,8,10]]
+    output:
+        "../results/Count_all.png",
+        "../results/Count_all8.png",
+    shell: "python3 plot_counts.py"
+
+rule plot_representative:
+    output:
+        "../results/Count_representative.png",
+    input:
+        # minimiser
+        ["Rep_minimiser_hash_20_"+str(w)+"_counts.out" for w in [i for i in range(24,44,4)]],
+        ["Rep_minimiser_hash_"+str(k)+"_40_counts.out" for k in [i for i in range(16,36,4)]],
+        # modmer
+        ["Rep_modmer_hash_20_"+str(w)+"_counts.out" for w in [3,5,7,9,11]],
+        ["Rep_modmer_hash_"+str(k)+"_7_counts.out" for k in [i for i in range(16,36,4)]],
+        # syncmer
+        ["syncmer_hash_20_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10]],
+        ["syncmer_hash_"+str(k)+"_10_0_0_counts.out" for k in [i for i in range(22,12,-2)]],
+        ["syncmer_hash_20_"+str(w)+"_0_"+str(20-w)+"_counts.out" for w in [15,11,7,3,1]],
+        ["syncmer_hash_"+str(k)+"_3_0_5_counts.out" for k in [i for i in range(28,8,-4)]],
+    shell: "python3 plot_counts_representative.py"
+
+rule plot_representative2:
+    output:
+        "../results/Count_representative_min1.png",
+        "../results/Count_representative_min.png",
+        "../results/Count_representative_hybrid1.png",
+        "../results/Count_representative_hybrid.png",
+        "../results/Count_representative_rand1.png",
+        "../results/Count_representative_rand.png",
+        "../results/Count_representative_min31.png",
+        "../results/Count_representative_min3.png",
+        "../results/Count_representative_hybrid31.png",
+        "../results/Count_representative_hybrid3.png",
+        "../results/Count_representative_rand31.png",
+        "../results/Count_representative_rand3.png"
+    input:
+ 	# minimiser based on strobemers
+        ["Rep2_"+smethod+"_2_1_14_Strobemer_minimiser_hash_10_"+str(w)+"_counts.out" for w in [i for i in range(24,44,4)] for smethod in ["hybrid"]],
+        ["Rep2_"+smethod+"_2_1_14_Strobemer_minimiser_hash_10_"+str(w)+"_counts.out" for w in [i for i in range(24,44,4)] for smethod in ["min","rand"]],
+        ["Rep2_"+smethod+"_2_1_18_Strobemer_minimiser_hash_10_"+str(w)+"_counts.out" for w in [i for i in range(24,44,4)] for smethod in ["hybrid","min","rand"]],
+        ["Rep2_"+smethod+"_3_1_13_Strobemer_minimiser_hash_9_"+str(w)+"_counts.out" for w in [i for i in range(29,44,4)] for smethod in ["hybrid","min","rand"]],
+        ["Rep2_"+smethod+"_3_1_17_Strobemer_minimiser_hash_9_"+str(w)+"_counts.out" for w in [i for i in range(29,44,4)] for smethod in ["hybrid","min","rand"]],
+        # modmer based on strobemers
+        ["Rep2_"+smethod+"_2_1_14_Strobemer_modmer_hash_10_"+str(w)+"_counts.out" for w in [3,5,7,9,11] for smethod in ["hybrid"]],
+        ["Rep2_"+smethod+"_2_1_14_Strobemer_modmer_hash_10_"+str(w)+"_counts.out" for w in [3,5,7,9,11] for smethod in ["min","rand"]],
+        ["Rep2_"+smethod+"_2_1_18_Strobemer_modmer_hash_10_"+str(w)+"_counts.out" for w in [3,5,7,9,11] for smethod in ["hybrid","min","rand"]],
+        ["Rep2_"+smethod+"_3_1_13_Strobemer_modmer_hash_9_"+str(w)+"_counts.out" for w in [2,4,6,8] for smethod in ["hybrid","min","rand"]],
+        ["Rep2_"+smethod+"_3_1_17_Strobemer_modmer_hash_9_"+str(w)+"_counts.out" for w in [2,4,6,8] for smethod in ["hybrid","min","rand"]],
+        # syncmer based on strobemers
+        [smethod+"_2_1_14_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10] for smethod in ["hybrid"]],
+        [smethod+"_2_1_14_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10] for smethod in ["min","rand"]],
+        [smethod+"_2_1_18_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_counts.out" for w in [18,16,14,12,10] for smethod in ["hybrid","min","rand"]],
+        [smethod+"_3_1_13_Strobemer_syncmer_hash_9_"+str(w)+"_0_0_counts.out" for w in [26,24,22,20] for smethod in ["hybrid","min","rand"]],
+        [smethod+"_3_1_17_Strobemer_syncmer_hash_9_"+str(w)+"_0_0_counts.out" for w in [26,24,22,20] for smethod in ["hybrid","min","rand"]],
+        # syncmer with two positions based on strobemers
+        [smethod+"_2_1_14_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_counts.out" for w in [15,11,7,3,1] for smethod in ["hybrid"]],
+        [smethod+"_2_1_14_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_counts.out" for w in [15,11,7,3,1] for smethod in ["min","rand"]],
+        [smethod+"_2_1_18_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_counts.out" for w in [15,11,7,3,1] for smethod in ["hybrid","min","rand"]],
+        [smethod+"_3_1_13_Strobemer_syncmer_hash_9_"+str(w)+"_0_"+str(27-w)+"_counts.out" for w in [24,20,16,12] for smethod in ["hybrid","min","rand"]],
+        [smethod+"_3_1_17_Strobemer_syncmer_hash_9_"+str(w)+"_0_"+str(27-w)+"_counts.out" for w in [24,20,16,12] for smethod in ["hybrid","min","rand"]]
+
+    shell: "python3 plot_counts_representative2.py"
+
+rule download_human_genome:
+    output:
+        "../results/GRCh38.p13.genome.fa.gz"
+    shell:
+        """wget "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_40/GRCh38.p13.genome.fa.gz"  -O ../results/GRCh38.p13.genome.fa.gz"""
+
+rule count_kmer:
+    input:
+        "../results/GRCh38.p13.genome.fa.gz"
+    output:
+        "{shape}_minimiser_hash_{kmer_size}_{kmer_size}_counts.out",
+        "{shape}_minimiser_hash_{kmer_size}_{kmer_size}_GRCh38.p13.genome.fa_counts.out"
+    shell:
+        "minions counts --method minimiser -k {wildcards.kmer_size} -w {wildcards.kmer_size} --shape {wildcards.shape} -o {wildcards.shape}_ {input}"
+
+rule count_minstrobemer:
+    input:
+        "../results/GRCh38.p13.genome.fa.gz"
+    output:
+        "minstrobemers_{kmer_size}_{order}_{wmin}_{wmax}_counts.out",
+        "minstrobemers_{kmer_size}_{order}_{wmin}_{wmax}_GRCh38.p13.genome.fa_counts.out"
+    shell:
+        "minions counts --method strobemer --min -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --order {wildcards.order} {input}"
+
+rule count_hybridstrobemer:
+    input:
+        "../results/GRCh38.p13.genome.fa.gz"
+    output:
+        "hybridstrobemers_{kmer_size}_{order}_{wmin}_{wmax}_counts.out",
+        "hybridstrobemers_{kmer_size}_{order}_{wmin}_{wmax}_GRCh38.p13.genome.fa_counts.out"
+    shell:
+        """echo  "minions counts --method strobemer --hybrid -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --order {wildcards.order} {input}"
+        minions counts --method strobemer --hybrid -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --order {wildcards.order} {input}"""
+
+rule count_randstrobemer:
+    input:
+        "../results/GRCh38.p13.genome.fa.gz"
+    output:
+        "randstrobemers_{kmer_size}_{order}_{wmin}_{wmax}_counts.out",
+        "randstrobemers_{kmer_size}_{order}_{wmin}_{wmax}_GRCh38.p13.genome.fa_counts.out"
+    shell:
+        "minions counts --method strobemer --rand -k {wildcards.kmer_size} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --order {wildcards.order} {input}"
+
+rule unique_kmer:
+    input:
+        #[shape + "_minimiser_hash_16_16_GRCh38.p13.genome.fa_counts.out" for shape in ["0", "36607", "51755"]],
+        #[shape + "_minimiser_hash_18_18_GRCh38.p13.genome.fa_counts.out" for shape in ["0","233469", "246365"]],
+        #[shape + "_minimiser_hash_20_20_GRCh38.p13.genome.fa_counts.out" for shape in ["0", "933855", "975475"]],
+        #[shape + "_minimiser_hash_22_22_GRCh38.p13.genome.fa_counts.out" for shape in ["0", "4192891", "3669089"]],
+        #[shape + "_minimiser_hash_24_24_GRCh38.p13.genome.fa_counts.out" for shape in ["0", "14548847", "13954519"]],
+        #[shape + "_minimiser_hash_26_26_GRCh38.p13.genome.fa_counts.out" for shape in ["0", "62257151", "66560815"]],
+        #[shape + "_minimiser_hash_28_28_GRCh38.p13.genome.fa_counts.out" for shape in ["0", "234879855", "241004285"]],
+        #[shape + "_minimiser_hash_30_30_GRCh38.p13.genome.fa_counts.out" for shape in ["0", "805287931", "1004529051"]],
+        #[shape + "_minimiser_hash_32_32_GRCh38.p13.genome.fa_counts.out" for shape in ["0", "3169577727", "3856068575"]],
+        # k + 4/8
+        ["0_minimiser_hash_"+str(k)+"_"+str(k)+"_GRCh38.p13.genome.fa_counts.out" for k in range(16,34,2)],
+        [["777695", "2621175", "16252901", "50196477", "251620351", "905838335", "4286578095", "13958643693", "66035113981"][i]+"_minimiser_hash_"+str([k for k in range(16,34,2)][i]+4)+"_"+str([k for k in range(16,34,2)][i]+4)+"_GRCh38.p13.genome.fa_counts.out" for i in range(9)],
+        [["14021527", "45607667", "180082591", "1068161519", "3522001919", "13957854679", "64423783901", "205814423455", "1094946651927"][i]+"_minimiser_hash_"+str([k for k in range(16,34,2)][i]+8)+"_"+str([k for k in range(16,34,2)][i]+8)+"_GRCh38.p13.genome.fa_counts.out" for i in range(9)],
+        # 4 "gaps"
+        ["minstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_GRCh38.p13.genome.fa_counts.out" for k in range(8,17)],
+        ["minstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_GRCh38.p13.genome.fa_counts.out" for k in [6,8,10]],
+        ["hybridstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_GRCh38.p13.genome.fa_counts.out" for k in range(8,17)],
+        ["hybridstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_GRCh38.p13.genome.fa_counts.out" for k in [6,8,10]],
+        ["randstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(4+k)+"_GRCh38.p13.genome.fa_counts.out" for k in range(8,17)],
+        ["randstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(4+k)+"_GRCh38.p13.genome.fa_counts.out" for k in [6,8,10]],
+        # 8 "gaps"
+        ["minstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_GRCh38.p13.genome.fa_counts.out" for k in range(8,17)],
+        ["minstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_GRCh38.p13.genome.fa_counts.out" for k in [6,8,10]],
+        ["hybridstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_GRCh38.p13.genome.fa_counts.out" for k in range(8,17)],
+        ["hybridstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_GRCh38.p13.genome.fa_counts.out" for k in [6,8,10]],
+        ["randstrobemers_"+str(k)+"_2_"+str(1)+"_"+str(8+k)+"_GRCh38.p13.genome.fa_counts.out" for k in range(8,17)],
+        ["randstrobemers_"+str(k)+"_3_"+str(1)+"_"+str(8+k)+"_GRCh38.p13.genome.fa_counts.out" for k in [6,8,10]]
+    output:
+        "../results/Unique.out"
+    shell:
+        "minions unique -o ../results/Unique.out {input}"
+
+rule count_minimiser_modmer:
+    input:
+        "../results/GRCh38.p13.genome.fa.gz"
+    output:
+        "Rep_{method}_hash_{kmer_size}_{w_size}_counts.out",
+        "Rep_{method}_hash_{kmer_size}_{w_size}_GRCh38.p13.genome.fa_counts.out"
+    shell:
+        "minions counts --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.w_size} -o Rep_ {input}"
+
+rule count_syncmer:
+    input:
+        "../results/GRCh38.p13.genome.fa.gz"
+    output:
+        "syncmer_hash_{kmer_size}_{w_size}_{pos_begin}_{pos_end}_counts.out",
+        "syncmer_hash_{kmer_size}_{w_size}_{pos_begin}_{pos_end}_GRCh38.p13.genome.fa_counts.out"
+    shell:
+        "minions counts --method syncmer -k {wildcards.kmer_size} -w {wildcards.w_size} -p {wildcards.pos_begin} -p {wildcards.pos_end} --shape 0 {input}"
+
+rule count_minimiser_modmer_strobemer:
+    input:
+        "../results/GRCh38.p13.genome.fa.gz"
+    output:
+        "Rep2_{smethod}_{order}_{wmin}_{wmax}_Strobemer_{method}_hash_{kmer_size}_{w_size}_counts.out",
+        "Rep2_{smethod}_{order}_{wmin}_{wmax}_Strobemer_{method}_hash_{kmer_size}_{w_size}_GRCh38.p13.genome.fa_counts.out"
+    shell:
+        "minions counts --method {wildcards.method} -k {wildcards.kmer_size} -w {wildcards.w_size} -o Rep2_{wildcards.smethod}_{wildcards.order}_{wildcards.wmin}_{wildcards.wmax}_ {input} --strobemer --{wildcards.smethod} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --order {wildcards.order}"
+
+rule count_syncmer_strobemer:
+    input:
+        "../results/GRCh38.p13.genome.fa.gz"
+    output:
+        "{smethod}_{order}_{wmin}_{wmax}_Strobemer_syncmer_hash_{kmer_size}_{w_size}_{pos_begin}_{pos_end}_counts.out",
+        "{smethod}_{order}_{wmin}_{wmax}_Strobemer_syncmer_hash_{kmer_size}_{w_size}_{pos_begin}_{pos_end}_GRCh38.p13.genome.fa_counts.out"
+    shell:
+        "minions counts --method syncmer -k {wildcards.kmer_size} -w {wildcards.w_size} -p {wildcards.pos_begin} -p {wildcards.pos_end} --shape 0 {input} -o {wildcards.smethod}_{wildcards.order}_{wildcards.wmin}_{wildcards.wmax}_ --strobemer --{wildcards.smethod} --w-min {wildcards.wmin} --w-max {wildcards.wmax} --order {wildcards.order}"
+
+rule unique_representative:
+    input:
+        ["Rep_minimiser_hash_20_"+str(w)+"_GRCh38.p13.genome.fa_counts.out" for w in [i for i in range(24,44,4)]],
+        ["Rep_minimiser_hash_"+str(k)+"_40_GRCh38.p13.genome.fa_counts.out" for k in [i for i in range(16,36,4)]],
+        # modmer
+        ["Rep_modmer_hash_20_"+str(w)+"_GRCh38.p13.genome.fa_counts.out" for w in [3,5,7,9,11]],
+        ["Rep_modmer_hash_"+str(k)+"_7_GRCh38.p13.genome.fa_counts.out" for k in [i for i in range(16,36,4)]],
+        # syncmer
+        ["syncmer_hash_20_"+str(w)+"_0_0_GRCh38.p13.genome.fa_counts.out" for w in [18,16,14,12,10]],
+        ["syncmer_hash_"+str(k)+"_10_0_0_GRCh38.p13.genome.fa_counts.out" for k in [i for i in range(22,12,-2)]],
+        ["syncmer_hash_20_"+str(w)+"_0_"+str(20-w)+"_GRCh38.p13.genome.fa_counts.out" for w in [15,11,7,3,1]],
+        ["syncmer_hash_"+str(k)+"_3_0_5_GRCh38.p13.genome.fa_counts.out" for k in [i for i in range(28,8,-4)]]
+    output:
+        "../results/Unique_representative.out"
+    shell:
+        "minions unique -o ../results/Unique_representative.out {input}"
+
+
+rule unique_representative2:
+    input:
+# minimiser based on strobemers
+        ["Rep2_"+smethod+"_2_1_14_Strobemer_minimiser_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_counts.out" for w in [i for i in range(24,44,4)] for smethod in ["hybrid"]],
+        ["Rep2_"+smethod+"_2_1_14_Strobemer_minimiser_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_counts.out" for w in [i for i in range(24,44,4)] for smethod in ["min","rand"]],
+        ["Rep2_"+smethod+"_2_1_18_Strobemer_minimiser_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_counts.out" for w in [i for i in range(24,44,4)] for smethod in ["hybrid","min","rand"]],
+        ["Rep2_"+smethod+"_3_1_13_Strobemer_minimiser_hash_9_"+str(w)+"_GRCh38.p13.genome.fa_counts.out" for w in [i for i in range(29,44,4)] for smethod in ["hybrid","min","rand"]],
+        ["Rep2_"+smethod+"_3_1_17_Strobemer_minimiser_hash_9_"+str(w)+"_GRCh38.p13.genome.fa_counts.out" for w in [i for i in range(29,44,4)] for smethod in ["hybrid","min","rand"]],
+        # modmer based on strobemers
+        ["Rep2_"+smethod+"_2_1_14_Strobemer_modmer_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_counts.out" for w in [3,5,7,9,11] for smethod in ["hybrid"]],
+        ["Rep2_"+smethod+"_2_1_14_Strobemer_modmer_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_counts.out" for w in [3,5,7,9,11] for smethod in ["min","rand"]],
+        ["Rep2_"+smethod+"_2_1_18_Strobemer_modmer_hash_10_"+str(w)+"_GRCh38.p13.genome.fa_counts.out" for w in [3,5,7,9,11] for smethod in ["hybrid","min","rand"]],
+        ["Rep2_"+smethod+"_3_1_13_Strobemer_modmer_hash_9_"+str(w)+"_GRCh38.p13.genome.fa_counts.out" for w in [2,4,6,8] for smethod in ["hybrid","min","rand"]],
+        ["Rep2_"+smethod+"_3_1_17_Strobemer_modmer_hash_9_"+str(w)+"_GRCh38.p13.genome.fa_counts.out" for w in [2,4,6,8] for smethod in ["hybrid","min","rand"]],
+        # syncmer based on strobemers
+        [smethod+"_2_1_14_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_GRCh38.p13.genome.fa_counts.out" for w in [18,16,14,12,10] for smethod in ["hybrid"]],
+        [smethod+"_2_1_14_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_GRCh38.p13.genome.fa_counts.out" for w in [18,16,14,12,10] for smethod in ["min","rand"]],
+        [smethod+"_2_1_18_Strobemer_syncmer_hash_10_"+str(w)+"_0_0_GRCh38.p13.genome.fa_counts.out" for w in [18,16,14,12,10] for smethod in ["hybrid","min","rand"]],
+        [smethod+"_3_1_13_Strobemer_syncmer_hash_9_"+str(w)+"_0_0_GRCh38.p13.genome.fa_counts.out" for w in [26,24,22,20] for smethod in ["hybrid","min","rand"]],
+        [smethod+"_3_1_17_Strobemer_syncmer_hash_9_"+str(w)+"_0_0_GRCh38.p13.genome.fa_counts.out" for w in [26,24,22,20] for smethod in ["hybrid","min","rand"]],
+        # syncmer with two positions based on strobemers
+        [smethod+"_2_1_14_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_GRCh38.p13.genome.fa_counts.out" for w in [15,11,7,3,1] for smethod in ["hybrid"]],
+        [smethod+"_2_1_14_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_GRCh38.p13.genome.fa_counts.out" for w in [15,11,7,3,1] for smethod in ["min","rand"]],
+        [smethod+"_2_1_18_Strobemer_syncmer_hash_10_"+str(w)+"_0_"+str(20-w)+"_GRCh38.p13.genome.fa_counts.out" for w in [15,11,7,3,1] for smethod in ["hybrid","min","rand"]],
+        [smethod+"_3_1_13_Strobemer_syncmer_hash_9_"+str(w)+"_0_"+str(27-w)+"_GRCh38.p13.genome.fa_counts.out" for w in [24,20,16,12] for smethod in ["hybrid","min","rand"]],
+        [smethod+"_3_1_17_Strobemer_syncmer_hash_9_"+str(w)+"_0_"+str(27-w)+"_GRCh38.p13.genome.fa_counts.out" for w in [24,20,16,12] for smethod in ["hybrid","min","rand"]]
+    output:
+        "../results/Unique_representative2.out"
+    shell:
+        "minions unique -o ../results/Unique_representative2.out {input}"

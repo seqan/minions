@@ -41,6 +41,20 @@ src/snakemake/
 !src/snakemake/genmap/Snakefile
 !src/snakemake/genmap/genmap_uniqueness.py
 
+!src/snakemake/accuracy/add_errors.py
+!src/snakemake/accuracy/README
+!src/snakemake/accuracy/Snakefile
+!src/snakemake/accuracy/plot_match.py
+!src/snakemake/accuracy/plot_match_representative.py
+!src/snakemake/accuracy/create_res.py
+!src/snakemake/count/Snakefile
+!src/snakemake/count/plot_counts.py
+!src/snakemake/count/plot_counts_representative.py
+!src/snakemake/count/plot_counts_representative2.py
+
+!src/snakemake/distance/Snakefile
+
 !src/snakemake/speed/README
 !src/snakemake/speed/Snakefile
 !src/snakemake/speed/plot_speed.py
+!src/snakemake/speed/plot_speed_representative.py

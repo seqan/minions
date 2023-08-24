@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Mitra Darvish <mitra.darvish AT fu-berlin.de>
- * \brief Provides modmer_hash.
+ * \brief Provides seqan3::views::minimiser_hash.
  */
 
 #pragma once
@@ -15,66 +15,61 @@
 #include <seqan3/alphabet/views/complement.hpp>
 #include <seqan3/core/detail/strong_type.hpp>
 #include <seqan3/search/views/kmer_hash.hpp>
-#include <seqan3/search/views/minimiser_hash.hpp>
-#include <seqan3/utility/views/zip.hpp>
+#include <minions_minimiser.hpp>
 
-#include "modmer.hpp"
-#include "shared.hpp"
-
-namespace seqan3::detail
+namespace minions::detail
 {
-//!\brief seqan3::views::modmer_hash's range adaptor object type (non-closure).
+//!\brief seqan3::views::minimiser_hash's range adaptor object type (non-closure).
 //!\ingroup search_views
-struct modmer_hash_distance_fn
+struct minimiser_hash_fn
 {
     /*!\brief Store the shape and the window size and return a range adaptor closure object.
     * \param[in] shape       The seqan3::shape to use for hashing.
-    * \param[in] mod_used    The mod value to use.
-    * \throws std::invalid_argument if the size of the shape is greater than the `mod_used`.
+    * \param[in] window_size The windows size to use.
+    * \throws std::invalid_argument if the size of the shape is greater than the `window_size`.
     * \returns               A range of converted elements.
     */
-    constexpr auto operator()(shape const & shape, uint32_t const mod_used) const
+    constexpr auto operator()(seqan3::shape const & shape, seqan3::window_size const window_size) const
     {
-        return seqan3::detail::adaptor_from_functor{*this, shape, mod_used};
+        return seqan3::detail::adaptor_from_functor{*this, shape, window_size};
     }
 
     /*!\brief Store the shape, the window size and the seed and return a range adaptor closure object.
     * \param[in] shape       The seqan3::shape to use for hashing.
-    * \param[in] mod_used    The mod value to use.
+    * \param[in] window_size The size of the window.
     * \param[in] seed        The seed to use.
-    * \throws std::invalid_argument if the size of the shape is greater than the `mod_used`.
+    * \throws std::invalid_argument if the size of the shape is greater than the `window_size`.
     * \returns               A range of converted elements.
     */
-    constexpr auto operator()(shape const & shape, uint32_t const mod_used, seed const seed) const
+    constexpr auto operator()(seqan3::shape const & shape, seqan3::window_size const window_size, seqan3::seed const seed) const
     {
-        return seqan3::detail::adaptor_from_functor{*this, shape, mod_used, seed};
+        return seqan3::detail::adaptor_from_functor{*this, shape, window_size, seed};
     }
 
     /*!\brief Call the view's constructor with the underlying view, a seqan3::shape and a window size as argument.
      * \param[in] urange      The input range to process. Must model std::ranges::viewable_range and the reference type
      *                        of the range must model seqan3::semialphabet.
      * \param[in] shape       The seqan3::shape to use for hashing.
-     * \param[in] mod_used    The mod value to use.
+     * \param[in] window_size The size of the window.
      * \param[in] seed        The seed to use.
-     * \throws std::invalid_argument if the size of the shape is greater than the `mod_used`.
+     * \throws std::invalid_argument if the size of the shape is greater than the `window_size`.
      * \returns               A range of converted elements.
      */
     template <std::ranges::range urng_t>
     constexpr auto operator()(urng_t && urange,
-                              shape const & shape,
-                              uint32_t const mod_used,
-                              seed const seed = seqan3::seed{0x8F3F73B5CF1C9ADE}) const
+                              seqan3::shape const & shape,
+                              seqan3::window_size const window_size,
+                              seqan3::seed const seed = seqan3::seed{0x8F3F73B5CF1C9ADE}) const
     {
         static_assert(std::ranges::viewable_range<urng_t>,
-            "The range parameter to views::modmer_hash cannot be a temporary of a non-view range.");
+            "The range parameter to views::minimiser_hash cannot be a temporary of a non-view range.");
         static_assert(std::ranges::forward_range<urng_t>,
-            "The range parameter to views::modmer_hash must model std::ranges::forward_range.");
-        static_assert(semialphabet<std::ranges::range_reference_t<urng_t>>,
-            "The range parameter to views::modmer_hash must be over elements of seqan3::semialphabet.");
+            "The range parameter to views::minimiser_hash must model std::ranges::forward_range.");
+        static_assert(seqan3::semialphabet<std::ranges::range_reference_t<urng_t>>,
+            "The range parameter to views::minimiser_hash must be over elements of seqan3::semialphabet.");
 
-        if (mod_used == 1) // Would just return urange1 without any changes
-            throw std::invalid_argument{"The chosen mod_used is not valid. "
-                                        "Please choose a value greater than 1."};
+        if (shape.size() > window_size.get())
+            throw std::invalid_argument{"The size of the shape cannot be greater than the window size."};
 
         auto forward_strand = std::forward<urng_t>(urange) | seqan3::views::kmer_hash(shape)
                                                            | std::views::transform([seed] (uint64_t i)
@@ -87,27 +82,57 @@ struct modmer_hash_distance_fn
                                                                                   {return i ^ seed.get();})
                                                            | std::views::reverse;
 
-        auto combined_strand = seqan3::views::zip(forward_strand, reverse_strand) | std::views::transform([seed](std::tuple<uint64_t, uint64_t> i){return fnv_hash(std::get<0>(i) + std::get<1>(i), seed.get());});
-        return seqan3::detail::modmer_view<decltype(combined_strand), true>(combined_strand, mod_used);
+        return minions::detail::minimiser_view(forward_strand, reverse_strand, window_size.get() - shape.size() + 1);
     }
 };
 
-} // namespace seqan3::detail
+} // namespace minions::::detail
+
+namespace minions::views
+{
 
 /*!\name Alphabet related views
  * \{
  */
 
-/*!\brief                    Computes the distance of modmers for a range with a given shape, mod_used and seed.
+/*!\brief                    Computes minimisers for a range with a given shape, window size and seed.
  * \tparam urng_t            The type of the range being processed. See below for requirements. [template parameter is
  *                           omitted in pipe notation]
  * \param[in] urange         The range being processed. [parameter is omitted in pipe notation]
  * \param[in] shape          The seqan3::shape that determines how to compute the hash value.
- * \param[in] mod_used       The mod value to use.
+ * \param[in] window_size    The window size to use.
  * \param[in] seed           The seed used to skew the hash values. Default: 0x8F3F73B5CF1C9ADE.
- * \returns                  A range of `size_t` where each value is the modmer of the resp. window.
+ * \returns                  A range of `size_t` where each value is the minimiser of the resp. window.
  *                           See below for the properties of the returned range.
- * \ingroup search_views
+ * \ingroup utility_views
+ *
+ * \details
+ *
+ * A sequence can be presented by a small number of k-mers (minimisers). For a given shape and window size all k-mers
+ * are determined in the forward strand and the backward strand and only the lexicographically smallest k-mer is
+ * returned for one window. This process is repeated over every possible window of a sequence. If consecutive windows
+ * share a minimiser, it is saved only once.
+ * For example, in the sequence "TAAAGTGCTAAA" for an ungapped shape of length 3 and a window size of 5 the first,
+ * the second and the last window contain the same minimiser "AAA".
+ * Because the minimisers of the first two consecutive windows also share the same position, storing this minimiser
+ * twice is redundant and it is stored only once. The "AAA" minimiser of the last window on the other hand is stored,
+ * since it is located at an other position than the previous "AAA" minimiser and hence storing the second
+ * "AAA"-minimiser is not redundant but necessary.
+ *
+ * ### Non-lexicographical Minimisers by skewing the hash value with a seed
+ *
+ * It might happen that a minimiser changes only slightly when sliding the window over the sequence. For instance, when
+ * a minimiser starts with a repetition of A’s, then in the next window it is highly likely that the minimiser will
+ * start with a repetition of A’s as well. Because it is only one A shorter, depending on how long the repetition is
+ * this might go on for multiple window shifts. Saving these only slightly different minimiser makes no sense because
+ * they contain no new information about the underlying sequence.
+ * Additionally, sequences with a repetition of A’s will be seen as more similar to each other than they actually are.
+ * As [Marçais et al.](https://doi.org/10.1093/bioinformatics/btx235) have shown, randomizing the order of the k-mers
+ * can solve this problem. Therefore, a random seed is used to XOR all k-mers, thereby randomizing the
+ * order. The user can change the seed to any other value he or she thinks is useful. A seed of 0 is returning the
+ * lexicographical order.
+ *
+ * \sa seqan3::views::minimiser_view
  *
  * \attention
  * Be aware of the requirements of the seqan3::views::kmer_hash view.
@@ -132,11 +157,14 @@ struct modmer_hash_distance_fn
  * |                                  |                                    |                                  |
  * | std::ranges::range_reference_t   | seqan3::semialphabet               | std::size_t                      |
  *
- * See the views views submodule documentation for detailed descriptions of the view properties.
+ * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
+ *
  *
  * \hideinitializer
  *
  */
-inline constexpr auto modmer_hash_distance = seqan3::detail::modmer_hash_distance_fn{};
+inline constexpr auto minimiser_hash = detail::minimiser_hash_fn{};
 
 //!\}
+
+} // namespace minions::views

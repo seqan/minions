@@ -21,6 +21,8 @@
 #include <seqan3/utility/range/concept.hpp>
 #include <seqan3/utility/type_traits/lazy_conditional.hpp>
 
+#include "shared.hpp"
+
 namespace seqan3::detail
 {
 // ---------------------------------------------------------------------------------------------------------------------
@@ -60,6 +62,9 @@ private:
     //!\brief The number of elements in a window.
     size_t window_size{};
 
+    //!\brief The multiplicator.
+    uint64_t multi{};
+
     template <bool const_range>
     class basic_iterator;
 
@@ -84,11 +89,13 @@ public:
     *                        std::ranges::forward_range.
     * \param[in] window_dist  The lower offset for the position of the next window from the previous one.
     * \param[in] window_size The number of elements in a window.
+    * \param[in] multi       The multiplicator.
     */
-    hybridstrobe_view(urng_t urange, size_t const window_dist, size_t const window_size) :
+    hybridstrobe_view(urng_t urange, size_t const window_dist, size_t const window_size, uint64_t const multi) :
         urange{std::move(urange)},
         window_dist{window_dist},
-        window_size{window_size}
+        window_size{window_size},
+        multi{multi}
     {}
 
     /*!\brief Construct from a non-view that can be view-wrapped and the two (lower and upper) offsets
@@ -99,16 +106,18 @@ public:
     *                        std::ranges::forward_range.
     * \param[in] window_dist  The lower offset for the position of the next window from the previous one.
     * \param[in] window_size The number of elements in a window.
+    * \param[in] multi       The multiplicator.
     */
     template <typename other_urng_t>
     //!\cond
         requires (std::ranges::viewable_range<other_urng_t> &&
                   std::constructible_from<urng_t, ranges::ref_view<std::remove_reference_t<other_urng_t>>>)
     //!\endcond
-    hybridstrobe_view(other_urng_t && urange, size_t const window_dist, size_t const window_size) :
+    hybridstrobe_view(other_urng_t && urange, size_t const window_dist, size_t const window_size, uint64_t const multi) :
         urange{std::views::all(std::forward<other_urng_t>(urange))},
         window_dist{window_dist},
-        window_size{window_size}
+        window_size{window_size},
+        multi{multi}
     {}
 
     /*!\name Iterators
@@ -132,7 +141,8 @@ public:
         return {std::ranges::begin(urange),
                 std::ranges::end(urange),
                 window_dist,
-                window_size};
+                window_size,
+                multi};
     }
 
     //!\copydoc begin()
@@ -144,7 +154,8 @@ public:
         return {std::ranges::cbegin(urange),
                 std::ranges::cend(urange),
                 window_dist,
-                window_size};
+                window_size,
+                multi};
     }
 
     /*!\brief Returns an iterator to the element following the last element of the range.
@@ -159,52 +170,8 @@ public:
      * No-throw guarantee.
      */
     sentinel end() const
-    //!\cond
-        requires (!std::ranges::random_access_range<urng_t>)
-    //!\endcond
     {
         return {};
-    }
-
-    /*!\brief Returns an iterator to the element following the last element of the range.
-     * \returns Iterator to the end.
-     *
-     * ### Complexity
-     *
-     * Constant.
-     *
-     * ### Exceptions
-     *
-     * No-throw guarantee.
-     */
-    auto end() noexcept
-    //!\cond
-        requires std::ranges::random_access_range<urng_t>
-    //!\endcond
-    {
-        // If the underlying range supports random access, then we can just jump to the end.
-        return begin()+size();
-
-    }
-
-    /*!\brief Returns an iterator to the element following the last element of the range.
-     * \returns Iterator to the end.
-     *
-     * ### Complexity
-     *
-     * Constant.
-     *
-     * ### Exceptions
-     *
-     * No-throw guarantee.
-     */
-    auto end() const noexcept
-    //!\cond
-        requires const_iterable_range<urng_t> && std::ranges::random_access_range<urng_t>
-    //!\endcond
-    {
-        // If the underlying range supports random access, then we can just jump to the end.
-        return begin()+size();
     }
 
     /*!\brief Returns the size of the range, if the underlying range is a std::ranges::sized_range.
@@ -243,15 +210,13 @@ public:
     //!\brief Type for distances between iterators.
     using difference_type = typename std::iter_difference_t<urng_iterator_t>; //typename std::ranges::range_difference_t<urng_t>;
     //!\brief Value type of the iterator.
-    using value_t = std::ranges::range_value_t<urng_t>;
-    //!\brief Value type of the output.
-    using value_type = std::vector<value_t>;
+    using value_type = std::ranges::range_value_t<urng_t>;
     //!\brief The pointer type.
     using pointer = void;
     //!\brief Reference to `value_type`.
     using reference = value_type;
     //!\brief Tag this class as a bidirectional iterator.
-    using iterator_category = std::random_access_iterator_tag;
+    using iterator_category = std::forward_iterator_tag;
     //!\brief Tag this class as a bidirectional iterator.
     using iterator_concept = iterator_category;
     //!\}
@@ -275,11 +240,11 @@ public:
           first_iterator{std::move(it.first_iterator)},
           second_iterator{std::move(it.second_iterator)},
           third_iterator{std::move(it.third_iterator)},
-          second_iterator_back{std::move(it.second_iterator_back)},
-          third_iterator_back{std::move(it.third_iterator_back)},
           urng_sentinel{std::move(it.urng_sentinel)},
           window_dist{std::move(it.window_dist)},
-          window_size{std::move(it.window_size)}
+          window_size{std::move(it.window_size)},
+          multiplicator{std::move(it.multiplicator)},
+          multiplicator3{std::move(it.multiplicator3)}
 
     {}
 
@@ -289,20 +254,18 @@ public:
     * \param[in] urng_sentinel   Iterator pointing to the last position of the underlying range.
     * \param[in] window_dist     The lower offset for the position of the next window from the previous one.
     * \param[in] window_size     The number of elements in a window.
-    *
+    * \param[in] power_multi           The multiplicator.
     *
     */
     basic_iterator(urng_iterator_t first_iterator,
                    urng_sentinel_t urng_sentinel,
                    size_t window_dist,
-                   size_t window_size) :
+                   size_t window_size,
+                   uint64_t power_multi) :
         first_iterator{first_iterator},
         second_iterator{first_iterator},
         third_iterator{first_iterator},
-        second_iterator_back{first_iterator},
-        third_iterator_back{first_iterator},
         urng_sentinel{std::move(urng_sentinel)},
-        urng_first{first_iterator},
         window_dist{window_dist},
         window_size{window_size}
     {
@@ -318,6 +281,16 @@ public:
         if (window_size == 0u)
             throw std::invalid_argument{"The given window size is too small.\n"
                                         "Please choose a bigger window size greater than 0."};
+
+        if constexpr (order_3)
+        {
+            multiplicator = my_pow(4, power_multi*2);
+            multiplicator3 = my_pow(4, power_multi);
+        }
+        else
+        {
+            multiplicator = my_pow(4, power_multi);
+        }
 
         elem_r = std::ceil(window_size/3.0);
         fill_window();
@@ -438,113 +411,6 @@ public:
         return tmp;
     }
 
-    /*!\brief Pre-decrement.
-    * \attention This function is only available if underlying range is bidirectional.
-    */
-    basic_iterator & operator--() noexcept
-    //!\cond
-        requires std::ranges::bidirectional_range<urng_t>
-    //!\endcond
-    {
-        prev_hybridstrobe();
-        return *this;
-    }
-
-    /*!\brief Post-decrement.
-     * \attention This function is only available if underlying range is bidirectional.
-     */
-    basic_iterator operator--(int) noexcept
-    //!\cond
-        requires std::ranges::bidirectional_range<urng_t>
-    //!\endcond
-    {
-        basic_iterator tmp{*this};
-        prev_hybridstrobe();
-        return tmp;
-    }
-    /*!\brief Forward this iterator.
-     * \attention This function is only available if `urng_t` models std::random_access_iterator.
-     */
-    basic_iterator & operator+=(difference_type const skip) noexcept
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        move_forward_backward(skip);
-        return *this;
-    }
-
-    /*!\brief Forward copy of this iterator.
-     * \attention This function is only available if `urng_t` models std::random_access_iterator.
-     */
-    basic_iterator operator+(difference_type const skip) const noexcept
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        basic_iterator tmp{*this};
-        return tmp += skip;
-    }
-
-    /*!\brief Non-member operator+ delegates to non-friend operator+.
-     * \attention This function is only available if `urng_t` models std::random_access_iterator.
-     */
-    friend basic_iterator operator+(difference_type const skip, basic_iterator const & it) noexcept
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        return it + skip;
-    }
-
-    /*!\brief Decrement iterator by `skip`.
-     * \attention This function is only available if `urng_t` models std::random_access_iterator.
-     */
-    basic_iterator & operator-=(difference_type const skip) noexcept
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        move_forward_backward(-skip);
-        return *this;
-    }
-
-    /*!\anchor basic_iterator_operator-decrement
-     * \brief Return decremented copy of this iterator.
-     * \attention This function is only available if `urng_t` models std::random_access_iterator.
-     */
-    basic_iterator operator-(difference_type const skip) const noexcept
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        basic_iterator tmp{*this};
-        return tmp -= skip;
-    }
-
-    /*!\brief Non-member operator- delegates to non-friend operator-.
-     * \attention This function is only available if `urng_t` models std::random_access_iterator.
-     */
-    friend basic_iterator operator-(difference_type const skip, basic_iterator const & it) noexcept
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        return it - skip;
-    }
-
-    /*!\anchor basic_iterator_operator-difference
-     * \brief Return offset between two iterator's positions.
-     * \attention This function is only available if `urng_t` models std::random_access_iterator.
-     */
-    friend difference_type operator-(basic_iterator const & lhs, basic_iterator const & rhs) noexcept
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        return static_cast<difference_type>(lhs.first_iterator - rhs.first_iterator);
-    }
-
     /*!\brief Return offset between remote sentinel's position and this.
      * \attention This function is only available if sentinel_t and urng_t model std::sized_sentinel_for.
      */
@@ -573,17 +439,6 @@ public:
             return static_cast<difference_type>(lhs.second_iterator - rhs);
     }
 
-    /*!\brief Move the iterator by a given offset and return the corresponding hash value.
-     * \attention This function is only available if `urng_t` models std::random_access_iterator.
-     */
-    reference operator[](difference_type const n) const
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        return *(*this + n);
-    }
-
     //!\brief Return the hybridstrobe.
     value_type operator*() const noexcept
     {
@@ -603,23 +458,14 @@ private:
     //!\brief Iterator to the third strobe of hybridstrobe, if order is 3.
     urng_iterator_t third_iterator{};
 
-    //!\brief Iterator to the left most value of the window and hence the second strobe of minstrobe for bidirectionality.
-    urng_iterator_t second_iterator_back{};
-
-    //!\brief Iterator to the left most value of the second window and hence the third strobe of minstrobe for bidirectionality, if order is 3.
-    urng_iterator_t third_iterator_back{};
-
-    //!\brief Iterator to first element in range. Needed for bidirectionality.
-    urng_iterator_t urng_first{};
-
     //!\brief Iterator to last element in range.
     urng_sentinel_t urng_sentinel{};
 
     //!\brief Stored values per window. It is necessary to store them, because a shift can remove the current hybridstrobe.
-    std::deque<value_t> window_values{};
+    std::deque<value_type> window_values{};
 
     //!\brief Stored values per window for order 3.
-    std::deque<value_t> window_values3{};
+    std::deque<value_type> window_values3{};
 
     //!\brief The result of the mod operation, indicates, which part of a window to consider (sub-window).
     int r_pos{};
@@ -633,31 +479,21 @@ private:
     //!\brief The number of elements in a window.
     size_t window_size{};
 
+    //!\brief The multiplicator.
+    uint64_t multiplicator{};
+
+    //!\brief The multiplicator for order 3.
+    uint64_t multiplicator3{};
+
     //!\brief Advances the window of the iterators to the next position.
     void advance_windows()
     {
         ++first_iterator;
         ++second_iterator;
-        ++second_iterator_back;
 
         if constexpr(order_3)
         {
             ++third_iterator;
-            ++third_iterator_back;
-        }
-    }
-
-    //!\brief Retreat the window of the iterators to the next position.
-    void retreat_windows()
-    {
-        --first_iterator;
-        --second_iterator;
-        --second_iterator_back;
-
-        if constexpr(order_3)
-        {
-            --third_iterator;
-            --third_iterator_back;
         }
     }
 
@@ -666,14 +502,11 @@ private:
     {
         second_iterator = first_iterator;
         std::ranges::advance(second_iterator, window_dist);
-        second_iterator_back = second_iterator;
 
         if constexpr(order_3)
         {
             third_iterator = second_iterator;
-            third_iterator_back = third_iterator;
             std::ranges::advance(third_iterator, window_size + window_dist - 1);
-            third_iterator_back = third_iterator;
         }
 
         for (int i = 1u; i < window_size; ++i)
@@ -699,36 +532,16 @@ private:
     void determine_value()
     {
         r_pos = *first_iterator % 3;
-        auto hybridstrobe_it = std::ranges::min_element(window_values.begin() + (r_pos*elem_r), std::ranges::next(window_values.begin(),((1+r_pos)*elem_r), window_values.end()), std::less_equal<value_t>{});
+        auto hybridstrobe_it = std::ranges::min_element(window_values.begin() + (r_pos*elem_r), std::ranges::next(window_values.begin(),((1+r_pos)*elem_r), window_values.end()), std::less_equal<value_type>{});
         if constexpr(order_3)
         {
-            auto hybridstrobe_it3 = std::ranges::min_element(window_values3.begin() + (r_pos*elem_r), std::ranges::next(window_values3.begin(), ((1+r_pos)*elem_r), window_values3.end()), std::less_equal<value_t>{});
-            hybridstrobe_value = {*first_iterator, *hybridstrobe_it, *hybridstrobe_it3};
+            auto hybridstrobe_it3 = std::ranges::min_element(window_values3.begin() + (r_pos*elem_r), std::ranges::next(window_values3.begin(), ((1+r_pos)*elem_r), window_values3.end()), std::less_equal<value_type>{});
+            hybridstrobe_value = *first_iterator*multiplicator +*hybridstrobe_it*multiplicator3 + *hybridstrobe_it3;
         }
         else
         {
-            hybridstrobe_value = {*first_iterator, *hybridstrobe_it};
+            hybridstrobe_value = *first_iterator*multiplicator + *hybridstrobe_it;
         }
-    }
-
-    /*!\brief Increments or decrements iterator by `skip`.
-     * \param skip Amount to increment.
-     * \attention This function is only available if `urng_iterator_t` models std::random_access_iterator.
-     */
-    void move_forward_backward(difference_type const skip)
-    //!\cond
-        requires std::random_access_iterator<urng_iterator_t>
-    //!\endcond
-    {
-        std::ranges::advance(first_iterator, skip);
-        window_values.clear();
-
-        if constexpr(order_3)
-        {
-            window_values3.clear();
-        }
-        fill_window();
-        determine_value();
     }
 
     /*!\brief Calculates the next hybridstrobe value.
@@ -739,11 +552,11 @@ private:
     void next_hybridstrobe()
     {
         advance_windows();
-        if (second_iterator_back == urng_sentinel)
+        if (second_iterator == urng_sentinel)
             return;
         if constexpr(order_3)
         {
-            if (third_iterator_back == urng_sentinel)
+            if (third_iterator == urng_sentinel)
                 return;
         }
 
@@ -758,44 +571,15 @@ private:
 
         determine_value();
     }
-
-    /*!\brief Calculates the previous hybridstrobe value.
-     * \details
-     * For the following windows, we remove the last window value (is now not in window_values) and add the new
-     * value that results from the window shifting.
-     */
-    void prev_hybridstrobe()
-        requires std::ranges::bidirectional_range<urng_t>
-    {
-        if (second_iterator_back == urng_first)
-            return;
-        if constexpr(order_3)
-        {
-            if (third_iterator_back == urng_first)
-                return;
-        }
-
-        retreat_windows();
-        window_values.pop_back();
-        window_values.push_front(*second_iterator_back);
-
-        if constexpr(order_3)
-        {
-            window_values3.pop_back();
-            window_values3.push_front(*third_iterator_back);
-        }
-
-        determine_value();
-    }
 };
 
 //!\brief A deduction guide for the view class template.
 template <std::ranges::viewable_range rng_t>
-hybridstrobe_view(rng_t &&, size_t const window_dist, size_t const window_size) -> hybridstrobe_view<std::views::all_t<rng_t>>;
+hybridstrobe_view(rng_t &&, size_t const window_dist, size_t const window_size, uint64_t const multi) -> hybridstrobe_view<std::views::all_t<rng_t>>;
 
 //!\brief A deduction guide for the view class template.
 template <std::ranges::viewable_range rng_t, std::uint16_t ord>
-hybridstrobe_view(rng_t &&, size_t const window_dist, size_t const window_size) -> hybridstrobe_view<std::views::all_t<rng_t>, ord>;
+hybridstrobe_view(rng_t &&, size_t const window_dist, size_t const window_size, uint64_t const multi) -> hybridstrobe_view<std::views::all_t<rng_t>, ord>;
 
 // ---------------------------------------------------------------------------------------------------------------------
 // hybridstrobe_fn (adaptor definition)
@@ -807,9 +591,15 @@ hybridstrobe_view(rng_t &&, size_t const window_dist, size_t const window_size) 
 struct hybridstrobe_fn
 {
     //!\brief Store the number of values in two windows and return a range adaptor closure object.
-    constexpr auto operator()(const size_t window_dist, const size_t window_size) const
+    constexpr auto operator()(bool order3, const size_t window_dist, const size_t window_size, uint64_t const multi) const
     {
-        return adaptor_from_functor{*this, window_dist, window_size};
+        return adaptor_from_functor{*this, window_dist, window_size, multi, order3};
+    }
+
+    //!\brief Store the number of values in two windows and return a range adaptor closure object.
+    constexpr auto operator()(const size_t window_dist, const size_t window_size, uint64_t const multi) const
+    {
+        return adaptor_from_functor{*this, window_dist, window_size, multi};
     }
 
     /*!\brief Call the view's constructor with three arguments: the underlying view and an integer indicating a lower
@@ -819,21 +609,40 @@ struct hybridstrobe_fn
      *                        std::ranges::forward_range.
      * \param[in] window_dist The offset for the position of the next window from the previous one.
      * \param[in] window_size The number of elements in a window.
-     * \returns  A range of the converted values in vectors of size 2.
+     * \param[in] multi       The multiplicator.
+     * \returns  A range of the converted values.
      */
     template <std::ranges::range urng_t>
-    constexpr auto operator()(urng_t && urange, size_t const window_dist, size_t const window_size) const
+    constexpr auto operator()(urng_t && urange, size_t const window_dist, size_t const window_size, uint64_t const multi) const
     {
         static_assert(std::ranges::viewable_range<urng_t>,
                       "The range parameter to views::hybridstrobe cannot be a temporary of a non-view range.");
         static_assert(std::ranges::forward_range<urng_t>,
                       "The range parameter to views::hybridstrobe must model std::ranges::forward_range.");
 
-        if (window_size <= window_dist)
-            throw std::invalid_argument{"The chosen min and max windows are not valid."
-                                        "Please choose a window_size greater than window_dist."};
+        return hybridstrobe_view{urange, window_dist, window_size, multi};
+    }
 
-        return hybridstrobe_view{urange, window_dist, window_size};
+    /*!\brief Call the view's constructor with three arguments: the underlying view and an integer indicating a lower
+     *        offset and another integer indicating the upper offset of the second window.
+     * \tparam urng_t         The type of the input range to process. Must model std::ranges::viewable_range.
+     * \param[in] urange      The input range to process. Must model std::ranges::viewable_range and
+     *                        std::ranges::forward_range.
+     * \param[in] window_dist The offset for the position of the next window from the previous one.
+     * \param[in] window_size The number of elements in a window.
+     * \param[in] multi       The multiplicator.
+     * \param[in] order3      Use, if order 3 is wanted. TODO: The actual value does not matter. but make distinction between orders so much easier.
+     * \returns  A range of the converted values.
+     */
+    template <std::ranges::range urng_t>
+    constexpr auto operator()(urng_t && urange, size_t const window_dist, size_t const window_size, uint64_t const multi, bool order3) const
+    {
+        static_assert(std::ranges::viewable_range<urng_t>,
+                      "The range parameter to views::hybridstrobe cannot be a temporary of a non-view range.");
+        static_assert(std::ranges::forward_range<urng_t>,
+                      "The range parameter to views::hybridstrobe must model std::ranges::forward_range.");
+
+        return hybridstrobe_view<urng_t, 3>{urange, window_dist, window_size, multi};
     }
 };
 //![adaptor_def]
@@ -849,6 +658,7 @@ namespace seqan3::views
  * \param[in] urange      The range being processed. [parameter is omitted in pipe notation]
  * \param[in] window_dist The lower offset for the position of the next window from the previous one.
  * \param[in] window_size The number of elements in a window.
+ * \param[in] multi       The multiplicator used to combine strobes. Should be the shape.count().
  * \returns A range of std::totally_ordered where each value is a vector of size 2. See below for the
  *          properties of the returned range.
  * \ingroup search_views
@@ -872,7 +682,7 @@ namespace seqan3::views
  * | std::ranges::input_range         | *required*                         | *preserved*                      |
  * | std::ranges::forward_range       | *required*                         | *preserved*                      |
  * | std::ranges::bidirectional_range |                                    | *preserved*                      |
- * | std::ranges::random_access_range |                                    | *preserved*                      |
+ * | std::ranges::random_access_range |                                    | *lost*                           |
  * | std::ranges::contiguous_range    |                                    | *lost*                           |
  * |                                  |                                    |                                  |
  * | std::ranges::viewable_range      | *required*                         | *guaranteed*                     |

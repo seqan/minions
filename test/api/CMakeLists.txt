@@ -6,14 +6,11 @@ target_use_datasources (comparison_test FILES example1.fasta example.ibf expecte
 add_api_test (hybridstrobe_test.cpp)
 add_api_test (hybridstrobe_hash_test.cpp)
 
-add_api_test (minimiser_distance_test.cpp)
-
 add_api_test (minstrobe_test.cpp)
 add_api_test (minstrobe_hash_test.cpp)
 
 add_api_test (modmer_test.cpp)
 add_api_test (modmer_hash_test.cpp)
-add_api_test (modmer_hash_distance_test.cpp)
 
 add_api_test (randstrobe_test.cpp)
 add_api_test (randstrobe_hash_test.cpp)

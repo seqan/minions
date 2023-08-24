@@ -25,7 +25,7 @@ def get_results(species):
             results[errors.index(e)].append(get_unique(genmap_file))
     fig = plt.figure()
     X = np.arange(len(k_mers))
-    colors = ["#00ba32","#00d6e7","#fad100"]
+    colors = ["#00ba32","#00d6e7","#fad100"] # ["#1b9e77","#d95f02","#7570b3"] #["#00ba32","#00d6e7","#fad100"] 
     pos = [0.25,1.25,2.25,3.25,4.25]
     plt.xlabel("k")
     plt.xticks(pos, k_mers)

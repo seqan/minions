@@ -19,7 +19,6 @@
 #include <seqan3/utility/views/zip.hpp>
 
 #include "modmer.hpp"
-#include "shared.hpp"
 
 namespace seqan3::detail
 {
@@ -65,8 +64,6 @@ struct modmer_hash_fn
                               uint32_t const mod_used,
                               seed const seed = seqan3::seed{0x8F3F73B5CF1C9ADE}) const
     {
-        static_assert(std::ranges::viewable_range<urng_t>,
-            "The range parameter to views::modmer_hash cannot be a temporary of a non-view range.");
         static_assert(std::ranges::forward_range<urng_t>,
             "The range parameter to views::modmer_hash must model std::ranges::forward_range.");
         static_assert(semialphabet<std::ranges::range_reference_t<urng_t>>,
@@ -76,19 +73,14 @@ struct modmer_hash_fn
         //    throw std::invalid_argument{"The chosen mod_used is not valid. "
         //                                "Please choose a value greater than 1."};
 
-        auto forward_strand = std::forward<urng_t>(urange) | seqan3::views::kmer_hash(shape)
-                                                           | std::views::transform([seed] (uint64_t i)
-                                                                                  {return i ^ seed.get();});
+        auto forward_strand = std::forward<urng_t>(urange) | seqan3::views::kmer_hash(shape);
 
         auto reverse_strand = std::forward<urng_t>(urange) | seqan3::views::complement
                                                            | std::views::reverse
                                                            | seqan3::views::kmer_hash(shape)
-                                                           | std::views::transform([seed] (uint64_t i)
-                                                                                  {return i ^ seed.get();})
                                                            | std::views::reverse;
-        // fnv_hash ensures actual randomness.
-        auto combined_strand = seqan3::views::zip(forward_strand, reverse_strand) | std::views::transform([seed](std::tuple<uint64_t, uint64_t> i){return fnv_hash(std::get<0>(i) + std::get<1>(i), seed.get());});
-        return seqan3::detail::modmer_view(combined_strand, mod_used);
+
+        return seqan3::detail::modmer_view(forward_strand, reverse_strand, mod_used, seed.get());
     }
 };
 

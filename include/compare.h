@@ -107,9 +107,10 @@ void store_ibf(IBFType const & ibf,
 }
 
 /*! \brief Function that creates the string name of the used view.
- *  \param args The arguments about the view to be used.
+ *  \param args                 The arguments about the view to be used.
+ *  \param underlying_strobemer If true, "Strobmer" is added to the name.
  */
-std::string create_name(range_arguments & args);
+std::string create_name(range_arguments & args, bool underlying_strobemer = false);
 
 /*! \brief Function, comparing the methods in regard of their coverage.
  *  \param args The arguments about the view to be used.
@@ -119,21 +120,24 @@ void do_accuracy(accuracy_arguments & args);
 /*! \brief Function, comparing the number of submers.
  *  \param sequence_files A vector of sequence files.
  *  \param args The arguments about the view to be used.
+ *  \param underlying_strobemer True, if strobemers should be used with a representative method like minimizer.
  */
-void do_counts(std::vector<std::filesystem::path> sequence_files, range_arguments & args);
+void do_counts(std::vector<std::filesystem::path> sequence_files, range_arguments & args, bool underlying_strobemer = false);
 
 /*! \brief Function, comparing the methods in regard of their distance.
  *  \param sequence_file A sequence file.
  *  \param args The arguments about the view to be used.
+ *  \param underlying_strobemer True, if strobemers should be used with a representative method like minimizer.
  */
-void do_distance(std::filesystem::path sequence_file, range_arguments & args);
+void do_distance(std::filesystem::path sequence_file, range_arguments & args, bool underlying_strobemer = false);
 
 /*! \brief Function, counting number of matches between two sequences.
  *  \param sequence_file1 The first sequence file.
  *  \param sequence_file2 The second sequence file.
  *  \param args The arguments about the view to be used.
+ *  \param underlying_strobemer True, if strobemers should be used with a representative method like minimizer.
  */
-void do_match(std::filesystem::path sequence_file1, std::filesystem::path sequence_file2, range_arguments & args);
+void do_match(std::filesystem::path sequence_file1, std::filesystem::path sequence_file2, range_arguments & args, bool underlying_strobemer = false);
 
 /*! \brief Function, comparing the speed.
  *  \param sequence_files A vector of sequence files.
@@ -141,9 +145,8 @@ void do_match(std::filesystem::path sequence_file1, std::filesystem::path sequen
  */
 void do_speed(std::vector<std::filesystem::path> sequence_files, range_arguments & args);
 
-/*! \brief Function that calculates the uniqueness of submers in given sequence files.
- *  \param sequence_files A vector of sequence files.
- *  \param method_name The name of the method.
- *  \param args The arguments about the view to be used.
+/*! \brief Function that calculates the uniqueness of submers in given files.
+ *  \param input_files A vector of input files. An input file is a count file obtained by counts.
+ *  \param oname The name of the output file.
  */
-void unique(std::vector<std::filesystem::path> sequence_files, std::string method_name, range_arguments & args);
+void unique(std::vector<std::filesystem::path> input_files, std::filesystem::path oname);

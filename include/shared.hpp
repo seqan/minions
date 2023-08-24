@@ -12,12 +12,10 @@ uint64_t fnv_hash(uint64_t hash_value, uint64_t seed)
 
     constexpr static uint64_t default_offset_basis = 0xcbf29ce484222325;
     constexpr static uint64_t prime                = 0x100000001b3;
-
     uint64_t hashed = hash_value;
     std::ostringstream os;
     os << hash_value;
     std::string oss = os.str();
-
     for (int i = 0; i < oss.size(); i++)
     {
         hashed = hashed * prime;
@@ -25,18 +23,6 @@ uint64_t fnv_hash(uint64_t hash_value, uint64_t seed)
     }
 
     return hashed;
-}
-
-//!\brief Function that combines strobes for strobemer hash functions.
-uint64_t combine_strobes(uint64_t multiplicator, uint64_t first_strobe, uint64_t second_strobe)
-{
-    return first_strobe*multiplicator + second_strobe;
-}
-
-//!\brief Function that combines strobes for strobemer hash functions.
-uint64_t combine_strobes(uint64_t multiplicator, uint64_t multiplicator2, uint64_t first_strobe, uint64_t second_strobe, uint64_t third_strobe)
-{
-    return first_strobe*multiplicator + second_strobe*multiplicator2 + third_strobe;
 }
 
 //!\brief My own pow, which should be slightly faster than std::pow for n < 100.

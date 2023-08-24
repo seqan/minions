@@ -510,12 +510,12 @@ private:
         if constexpr (second_range_is_given)
             window_values2.push_front(*urng3_iterator);
 
-	auto smallest_s_it = std::ranges::min_element(window_values, std::less<value_type>{});
+	    auto smallest_s_it = std::ranges::min_element(window_values, std::less<value_type>{});
         syncmer_position_offset = std::distance(std::begin(window_values), smallest_s_it);
 
         if constexpr (second_range_is_given)
         {
-	    smallest_s_it = std::ranges::min_element(window_values2, std::less<value_type>{});
+	        smallest_s_it = std::ranges::min_element(window_values2, std::less<value_type>{});
             syncmer_position_offset2 = std::distance(std::begin(window_values2), smallest_s_it);
 
             if (*urng2_iterator < *urng4_iterator)

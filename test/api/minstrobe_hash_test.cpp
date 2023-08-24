@@ -8,12 +8,14 @@
 #include <seqan3/alphabet/views/complement.hpp>
 #include <seqan3/io/views/detail/take_until_view.hpp>
 #include <seqan3/search/views/kmer_hash.hpp>
+#include "minions_minimiser.hpp"
 
 #include <seqan3/test/expect_range_eq.hpp>
 
 #include <gtest/gtest.h>
 
 #include "minstrobe_hash.hpp"
+#include "modmer.hpp"
 
 using seqan3::operator""_dna4;
 using seqan3::operator""_shape;
@@ -58,6 +60,8 @@ protected:
     result_t result3_gapped{35, 37, 21, 135, 67};
     result_t result3_ungapped_start{39023, 25023};
     result_t result3_gapped_start{135, 67};
+    result_t result3_minimiser{1637,357,25023};
+    result_t result3_modmer{357,25023};
 
     std::vector<seqan3::dna4> text1_3{"AAAAAAAAAAAAAAAA"_dna4};
     result_t result3_1{0}; // Same result for ungapped and gapped
@@ -105,7 +109,7 @@ TEST_F(minstrobe_hash_test, ungapped)
 
     EXPECT_RANGE_EQ(result3_1, text1_3 | ungapped3_view);
     EXPECT_RANGE_EQ(result3_3_ungapped, text3_3 | ungapped3_view);
-    //EXPECT_NO_THROW((text1 | minstrobe3_hash(ungapped_shape,3,6))); // Todo: Fix, Do I want to throw when sequence not long enough? 
+    //EXPECT_NO_THROW((text1 | minstrobe3_hash(ungapped_shape,3,6))); // Todo: Fix, Do I want to throw when sequence not long enough?
     EXPECT_THROW((text3 | minstrobe3_hash(ungapped_shape,3,2)), std::invalid_argument);
 }
 
@@ -127,4 +131,7 @@ TEST_F(minstrobe_hash_test, combinability)
     auto start_at_a = std::views::drop(3);
     EXPECT_RANGE_EQ(result3_ungapped_start, text3 | start_at_a | ungapped_view);
     EXPECT_RANGE_EQ(result3_gapped_start, text3 | start_at_a | gapped_view);
+
+    EXPECT_RANGE_EQ(result3_minimiser, text3 | ungapped_view | minions::views::minimiser(2));
+    EXPECT_RANGE_EQ(result3_modmer, text3 | ungapped_view | modmer(3));
 }

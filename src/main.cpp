@@ -43,12 +43,12 @@ void read_range_arguments_strobemers(seqan3::argument_parser & parser, range_arg
 void read_range_arguments_syncmers(seqan3::argument_parser & parser, range_arguments & args)
 {
     parser.add_option(args.positions, 'p', "pos", "The positions that determine, if a submer is a syncmer.");
-    parser.add_option(args.t, 't', "t_vlue", "The offset for the position of the smallest sub-window.");
 }
 
 void read_range_arguments_minimiser(seqan3::argument_parser & parser, range_arguments & args)
 {
-    parser.add_option(w_size, 'w', "window", "Define window size. Default: 60.");
+    parser.add_option(w_size, 'w', "window", "Define window size for minimiser. For syncmers, use this parameter for "
+                                             "the s-mer size, which should be smaller than the k-mer size in that case. Default: 60.");
     parser.add_option(shape, '\0', "shape", "Define a shape by the decimal of a bitvector, where 0 symbolizes a "
                                            "position to be ignored, 1 a position considered. Default: ungapped.");
     parser.add_option(se, '\0', "seed", "Define seed.");
@@ -79,7 +79,7 @@ int accuracy(seqan3::argument_parser & parser)
     std::string method{};
     parser.add_option(method, '\0', "method", "Pick your method.",
                       seqan3::option_spec::required,
-                      seqan3::value_list_validator{"kmer", "minimiser", "modmer", "syncmer"});
+                      seqan3::value_list_validator{"kmer", "minimiser", "modmer", "syncmer", "strobemer"});
     parser.add_option(args.search_file, '\0', "search-file", "A sequence files with sequences to search for.",
                       seqan3::option_spec::required);
     parser.add_option(args.solution_file, '\0', "solution-file", "A file giving the correct files a sequence should be find in.",
@@ -94,6 +94,7 @@ int accuracy(seqan3::argument_parser & parser)
                       seqan3::option_spec::advanced);
 
     read_range_arguments_minimiser(parser, args);
+    read_range_arguments_strobemers(parser, args);
     read_range_arguments_syncmers(parser, args);
 
     try
@@ -117,10 +118,13 @@ int counts(seqan3::argument_parser & parser)
 {
     range_arguments args{};
     std::vector<std::filesystem::path> sequence_files{};
+    bool underlying_strobemer = false;
     parser.info.short_description = "Counts the number of submers in the given "
                                     "sequence files.";
     parser.add_positional_option(sequence_files,
                                  "Please provide at least one sequence file.");
+    parser.add_flag(underlying_strobemer,'\0', "strobemer", "If strobemers should be used as base for representative "
+                                                            "methods like minimizers. Default: False.");
     all_arguments(parser, args);
     std::string method{};
     parser.add_option(method, '\0', "method", "Pick your method.",
@@ -142,7 +146,7 @@ int counts(seqan3::argument_parser & parser)
     }
 
     string_to_methods(method, args.name);
-    do_counts(sequence_files, args);
+    do_counts(sequence_files, args, underlying_strobemer);
 
     return 0;
 }
@@ -151,15 +155,20 @@ int distance(seqan3::argument_parser & parser)
 {
     range_arguments args{};
     std::filesystem::path sequence_file{};
+    bool underlying_strobemer = false;
     parser.info.short_description = "Estimates the distance of the singular submers to each other for different methods.";
     parser.add_positional_option(sequence_file, "Please provide one sequence file.");
     all_arguments(parser, args);
     std::string method{};
     parser.add_option(method, '\0', "method", "Pick your method.",
                       seqan3::option_spec::required,
-                      seqan3::value_list_validator{"minimiser", "modmer"});
+                      seqan3::value_list_validator{"minimiser", "modmer", "syncmer"});
+    parser.add_flag(underlying_strobemer,'\0', "strobemer", "If strobemers should be used as base for representative "
+                                                            "methods like minimizers. Default: False.");
 
     read_range_arguments_minimiser(parser, args);
+    read_range_arguments_strobemers(parser, args);
+    read_range_arguments_syncmers(parser, args);
 
     try
     {
@@ -173,7 +182,7 @@ int distance(seqan3::argument_parser & parser)
     }
 
     string_to_methods(method, args.name);
-    do_distance(sequence_file, args);
+    do_distance(sequence_file, args, underlying_strobemer);
 
     return 0;
 }
@@ -183,17 +192,21 @@ int match(seqan3::argument_parser & parser)
     range_arguments args{};
     std::filesystem::path sequence_file1;
     std::filesystem::path sequence_file2;
+    bool underlying_strobemer = false;
     parser.info.short_description = "Counts the number of matches for a given method between the two given files.";
     parser.add_positional_option(sequence_file1, "Please provide the first sequence file.");
     parser.add_positional_option(sequence_file2, "Please provide the second sequence file.");
     all_arguments(parser, args);
     std::string method{};
     parser.add_option(method, '\0', "method", "Pick your method.",
-                      seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer"});
+                      seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer", "syncmer"});
     parser.add_flag(args.lib_implementation, '\0', "original", "Set, if you want to use the strobemer implementation from Sahlin.");
+    parser.add_flag(underlying_strobemer,'\0', "strobemer", "If strobemers should be used as base for representative "
+                                                            "methods like minimizers. Default: False.");
 
     read_range_arguments_minimiser(parser, args);
     read_range_arguments_strobemers(parser, args);
+    read_range_arguments_syncmers(parser, args);
 
     try
     {
@@ -207,7 +220,7 @@ int match(seqan3::argument_parser & parser)
     }
 
     string_to_methods(method, args.name);
-    do_match(sequence_file1, sequence_file2, args);
+    do_match(sequence_file1, sequence_file2, args, underlying_strobemer);
 
     return 0;
 }
@@ -222,11 +235,12 @@ int speed(seqan3::argument_parser & parser)
     all_arguments(parser, args);
     std::string method{};
     parser.add_option(method, '\0', "method", "Pick your method.",
-                      seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer"});
-    parser.add_flag(args.lib_implementation, '\0', "library", "Set, if you want to use the strobemer implementation from Sahlin.");
+                      seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer","syncmer"});
+    parser.add_flag(args.lib_implementation, '\0', "original", "Set, if you want to use the strobemer implementation from Sahlin.");
 
     read_range_arguments_minimiser(parser, args);
     read_range_arguments_strobemers(parser, args);
+    read_range_arguments_syncmers(parser, args);
 
     try
     {
@@ -247,24 +261,16 @@ int speed(seqan3::argument_parser & parser)
 
 int unique(seqan3::argument_parser & parser)
 {
-    range_arguments args{};
-    std::vector<std::filesystem::path> sequence_files{};
-    parser.info.short_description = "Calculates the percentage of unique submers of a method for the given sequence files.";
-    parser.add_positional_option(sequence_files,
-                                 "Please provide at least one sequence file.");
-    all_arguments(parser, args);
-    std::string method{};
-    parser.add_option(method, '\0', "method", "Pick your method.",
-                      seqan3::option_spec::required, seqan3::value_list_validator{"kmer", "minimiser", "modmer", "strobemer"});
-    parser.add_flag(args.lib_implementation, '\0', "library", "Set, if you want to use the strobemer implementation from Sahlin.");
-
-    read_range_arguments_minimiser(parser, args);
-    read_range_arguments_strobemers(parser, args);
+    std::filesystem::path oname{};
+    std::vector<std::filesystem::path> input_files{};
+    parser.info.short_description = "Calculates the percentage of unique submers of a method for the given files.";
+    parser.add_positional_option(input_files,
+                                 "Please provide at least one input file. An input file is a count file obtained by minions count.");
+    parser.add_option(oname, 'o', "out", "Name of the output file.");
 
     try
     {
         parser.parse();
-        parsing(args);
     }
     catch (seqan3::argument_parser_error const & ext)                     // catch user errors
     {
@@ -272,8 +278,7 @@ int unique(seqan3::argument_parser & parser)
         return -1;
     }
 
-    string_to_methods(method, args.name);
-    unique(sequence_files, create_name(args), args);
+    unique(input_files, oname);
 
     return 0;
 }
