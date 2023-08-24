@@ -157,7 +157,7 @@ public:
     * \param[in] urange2     The second input range to process. Must model std::ranges::viewable_range and
     *                        std::ranges::forward_range.
     * \param[in] mod_used    The modvalue used.
-    * \param[in] seed_used        The seed used.
+    * \param[in] seed_used   The seed used.
     */
     template <typename other_urng1_t, typename other_urng2_t>
       requires (std::ranges::viewable_range<other_urng1_t>

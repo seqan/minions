@@ -137,7 +137,6 @@ namespace minions::views
  * \attention
  * Be aware of the requirements of the seqan3::views::kmer_hash view.
  *
- * \experimentalapi
  *
  * ### View properties
  *
@@ -160,13 +159,9 @@ namespace minions::views
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
- * ### Example
- *
- * \include test/snippet/search/views/minimiser_hash.cpp
  *
  * \hideinitializer
  *
- * \experimentalapi{Experimental since version 3.1.}
  */
 inline constexpr auto minimiser_hash = detail::minimiser_hash_fn{};
 

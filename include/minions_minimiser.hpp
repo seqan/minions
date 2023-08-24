@@ -555,9 +555,6 @@ namespace minions::views
  * *robust winnowing* by [Chirag et al.](https://www.biorxiv.org/content/10.1101/2020.02.11.943241v1.full.pdf)
  * and is proven to work especially well on repeat regions.
  *
- * ### Example
- *
- * \include test/snippet/search/views/minimiser.cpp
  *
  * ### View properties
  *
@@ -582,7 +579,6 @@ namespace minions::views
  *
  * \hideinitializer
  *
- * \stableapi{Since version 3.1.}
  */
 inline constexpr auto minimiser = minions::detail::minimiser_fn{};
 
